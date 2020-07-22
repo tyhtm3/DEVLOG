@@ -10,7 +10,6 @@ CREATE TABLE `user` (
   `profile_img_url` varchar(256),
   `birthday` varchar(20)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE `user_neighbor` (
 	`seq` int primary key auto_increment,
     `seq_user` int not null,
