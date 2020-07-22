@@ -4,6 +4,7 @@
 <configuration>
 	<mappers>
 		<mapper resource="mappers/PostMapper.xml" />
+		<mapper resource="mappers/ProjectMapper.xml" />
 	</mappers>
 </configuration>
 

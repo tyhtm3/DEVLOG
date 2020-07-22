@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.devlog.mapper.ProjectMapper">
+
+	<!-- 피드에서 모든 블로그의 모든 포스트 반환 -->
+	<select id="selectAllProject" resultType="Project">
+		select * from project
+	</select>
+	
+	<!-- 피드에서 나와 이웃한 블로그의 포스트 반환 -->
+	<select id="selectAllProjectByNeighbor" resultType="Project">
+		select * from project where seq_blog = (
+		select seq from blog where seq_user = (
+		select seq_neighbor from user_neighbor where seq_user = #{seq_user} ))
+	</select>
+
+	<!-- 피드에서 선택한 태그가 들어간 포스트 반환 -->
+	<select id="selectAllProjectByTag" parameterType="java.util.List" resultType="Project">
+		select * from project where seq in ( 
+		select seq_project from project_tag where tag in 
+       <foreach collection="tag" item="item"  open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+		);
+	</select>
+	
+	<!-- 블로그 메인에서 모든 포스트 반환 -->
+	<select id="selectAllProjectByBlog" resultType="Project">
+		select * from project where seq_blog = #{seq_blog};
+	</select>
+	
+	<!-- 블로그 메인에서 선택한 태그가 들어간 포스트 반환 -->
+	<select id="selectAllProjectByBlogByTag" parameterType="java.util.List" resultType="Project">
+		select * from project where seq_blog = #{seq_blog} and seq in ( 
+		select seq_project from project_tag where tag in 
+       <foreach collection="tag" item="item"  open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+		);
+	</select>
+	
+	<!-- 포스트 상세조회  -->
+	<select id="selectProject" resultType="Project">
+		select * from project where seq = #{seq}
+	</select>
+	
+	<!-- 포스트 등록 -->
+	<insert id="insertProject">
+		insert into project(
+			seq_blog, title, content
+		) values (
+			#{seq_blog}, #{title}, #{content} 
+		)
+	</insert>
+	
+	<!-- 포스트 수정 -->
+	<update id="updateProject">
+		update project 
+		   set title = #{title}, 
+		   	   content = #{content}
+		 where seq = #{seq}
+	</update>
+
+	<!-- 포스트 삭제 -->
+	<delete id="deleteProject">
+		delete from project where seq = #{seq}
+	</delete>
+	
+</mapper>
+
