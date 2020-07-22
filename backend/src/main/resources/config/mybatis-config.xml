@@ -5,6 +5,7 @@
 	<mappers>
 		<mapper resource="mappers/BlogMapper.xml" />
 		<mapper resource="mappers/BlogTagMapper.xml" />
+		<mapper resource="mappers/UserTagMapper.xml" />
 	</mappers>
 </configuration>
 
