@@ -192,6 +192,17 @@
     }
 }
 
+.emphasis_custom {
+    text-align: center;
+    border-bottom: 4px solid transparent;
+    &:hover {
+        border-bottom: 4px solid #1abc9c;
+    }
+    h2 {
+        margin-bottom: 20;
+    }
+}
+
 span.tags {
     background: #1abc9c;
     border-radius: 2px;

@@ -45,6 +45,9 @@ import Gmap from './components/modules/Gmap.vue'
 import ChartMap from './components/modules/chart/ChartMap.vue'
 import OpenLayer from './components/modules/OpenLayer.vue'
 
+// devlog
+import BlogMain from './components/modules/y_BlogMain.vue'
+
 // Routes
 const routes = [
   {
@@ -251,11 +254,17 @@ const routes = [
         component: ChartMap
       },
       {
+        path: '/blog-main',
+        name: 'blog-main',
+        component: BlogMain
+      },
+      {
         path: '*',
         name: '404',
         component: NotFound
       }
     ]
+
   }
 ]
 
