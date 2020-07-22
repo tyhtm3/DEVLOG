@@ -35,8 +35,8 @@ public class BlogTagServiceImpl implements BlogTagService {
 	}
 
 	@Override
-	public int deleteBlogTag(int seq_blog) {
-		return blogTagMapper.deleteBlogTag(seq_blog);
+	public int deleteBlogTag(int seq) {
+		return blogTagMapper.deleteBlogTag(seq);
 	}
 
 }

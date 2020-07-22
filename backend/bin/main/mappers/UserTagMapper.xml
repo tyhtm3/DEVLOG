@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.devlog.mapper.UserTagMapper">
+	<!-- 유저태그 전체 조회 -->
+	<select id="selectAllUserTag" resultType="UserTag">
+		select seq, seq_user, tag
+		from user_tag
+	</select>
+	
+	<!-- 유저태그 상세 조회 -->
+	<select id="selectUserTagByUser" resultType="UserTag">
+		select seq, seq_user, tag
+		from user_tag
+		where seq_user = #{seq_user}
+	</select>
+
+	<!-- 유저태그 등록 -->
+	<insert id="insertUserTag">
+		insert into user_tag(
+			seq, seq_user, tag
+		) values (
+			#{seq},#{seq_user},#{tag}
+		)
+	</insert>
+	
+	<!-- 유저태그 수정 -->
+	<update id="updateUserTag">
+		update	user_tag
+		   		seq_user	= #{seq_user},
+		   		tag			= #{tag}
+		 where 	seq 		= #{seq}
+	</update>
+
+	<!-- 유저태그 삭제 -->
+	<delete id="deleteUserTag">
+		delete 
+		from 	user_tag
+		where 	seq = #{seq}
+	</delete>
+</mapper>
+
+
+
+
+
+
