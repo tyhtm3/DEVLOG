@@ -1,19 +1,12 @@
 <template>
     <header class="main-header">
         <!-- Logo -->
-        <span class="logo-mini"><router-link to="/dashboard-ji" class="logo">
+      <router-link to="/dashboard-ji" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <b> <img src="static/img/logo.png" alt="User Image" style="width:10px"></b>
+            <span class="logo-mini"><b> <img src="static/img/logo.png" alt="User Image" style="width:10px"></b></span>
             <!-- logo for regular state and mobile devices -->
-            <!-- <span class="logo-lg"><img src="static/img/logo.png" alt="User Image"><b>Devin</b>vue</span>  -->
-        </router-link></span>
-        <span class="logo-mini"><router-link to="/dashboard-ji" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            <b> <img src="static/img/logo.png" alt="User Image" style="width:10px"></b>
-            <!-- logo for regular state and mobile devices -->
-            <!-- <span class="logo-lg"><img src="static/img/logo.png" alt="User Image"><b>Devin</b>vue</span>  -->
-        </router-link></span>
-
+            <span class="logo-lg"><img src="static/img/logo.png" alt="User Image"><b>Devin</b>vue</span> 
+        </router-link>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
             <!-- Sidebar toggle button-->
