@@ -68,7 +68,7 @@ const routes = [
       {
         path: '',
         name: 'dashboard',
-        component: DashboardIndex
+        component: BlogMain
       }, {
         path: '/login',
         name: 'login',
