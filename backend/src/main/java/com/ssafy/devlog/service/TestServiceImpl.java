@@ -7,12 +7,5 @@ import com.ssafy.devlog.mapper.TestMapper;
 
 @Service
 public class TestServiceImpl {
-
-//	@Autowired
-//	private TestMapper mapper;
 	
-//	@Override
-//	public List<Test> readTest() {
-//		return mapper.readTest();
-//	}
 }
