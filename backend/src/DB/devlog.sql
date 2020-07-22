@@ -1,4 +1,4 @@
-
+use blog;
 
 CREATE TABLE `user` (
   `seq` int primary key auto_increment,
@@ -41,12 +41,31 @@ CREATE TABLE `user_tag`(
 	FOREIGN KEY (`seq_user`) REFERENCES `user` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `project`(
-	`seq` int primary key auto_increment
+CREATE TABLE `post`(
+    `seq` int primary key auto_increment,
+    `seq_blog` int not null,
+    `title` varchar(512) not null,
+    `content` text not null,
+    `regtime` datetime DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`seq_blog`) REFERENCES `blog` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `post`(
-	`seq` int primary key auto_increment
+CREATE TABLE `project`(
+    `seq` int primary key auto_increment,
+    `seq_blog` int not null,
+    `title` varchar(512) not null,
+    `content` text not null,
+    `regtime` datetime DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`seq_blog`) REFERENCES `blog` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `portfolio`(
+    `seq` int primary key auto_increment,
+    `seq_blog` int not null,
+    `title` varchar(512) not null,
+    `content` text not null,
+    `regtime` datetime DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`seq_blog`) REFERENCES `blog` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `comment_project`(
