@@ -20,9 +20,9 @@
 2. 상세 내용
 3. 상세 내용
 - 주요 내용
--주요 내용
+- 주요 내용
 
 ***
 
-마크다운 markdown 작성법 참고
+마크다운 작성법 참고
 <https://gist.github.com/ihoneymon/652be052a0727ad5960>
