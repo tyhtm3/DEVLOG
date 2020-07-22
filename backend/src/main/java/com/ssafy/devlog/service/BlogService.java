@@ -6,8 +6,8 @@ import com.ssafy.devlog.dto.Blog;
 
 public interface BlogService {
 	public List<Blog> selectAllBlog();
-	public Blog selectBlogByUser(int user_seq);
+	public Blog selectBlogByUser(int seq_user);
 	public int insertBlog(Blog blog);
 	public int updateBlog(Blog blog);
-	public int deleteBlog(int user_seq);
+	public int deleteBlog(int seq_user);
 }
