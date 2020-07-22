@@ -47,6 +47,8 @@ import OpenLayer from './components/modules/OpenLayer.vue'
 
 // devlog
 import BlogMain from './components/modules/y_BlogMain.vue'
+import DashboardJi from './components/modules/dashboard/ji_Index.vue'
+import DashboardJu from './components/modules/dashboard/ju_Index.vue'
 
 // Routes
 const routes = [
@@ -257,6 +259,16 @@ const routes = [
         path: '/blog-main',
         name: 'blog-main',
         component: BlogMain
+      },
+      {
+        path: '/dashboard-ji',
+        name: 'dashboard-ji',
+        component: DashboardJi
+      },
+      {
+        path: '/dashboard-ju',
+        name: 'dashboard-ju',
+        component: DashboardJu
       },
       {
         path: '*',

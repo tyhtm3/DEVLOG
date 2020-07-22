@@ -1,24 +1,30 @@
 <template>
     <header class="main-header">
         <!-- Logo -->
-        <router-link to="/dashboard" class="logo">
+        <span class="logo-mini"><router-link to="/dashboard-ji" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b> <img src="static/img/logo.png" alt="User Image"></b></span>
-            <!-- logo for regular staste and mobile devices -->
-            <span class="logo-lg"><img src="static/img/logo.png" alt="User Image"><b>Devin</b>vue</span>
-        </router-link>
+            <b> <img src="static/img/logo.png" alt="User Image" style="width:10px"></b>
+            <!-- logo for regular state and mobile devices -->
+            <!-- <span class="logo-lg"><img src="static/img/logo.png" alt="User Image"><b>Devin</b>vue</span>  -->
+        </router-link></span>
+        <span class="logo-mini"><router-link to="/dashboard-ji" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <b> <img src="static/img/logo.png" alt="User Image" style="width:10px"></b>
+            <!-- logo for regular state and mobile devices -->
+            <!-- <span class="logo-lg"><img src="static/img/logo.png" alt="User Image"><b>Devin</b>vue</span>  -->
+        </router-link></span>
+
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
             <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
-                <span class="icon-bar"></span> <span class="icon-bar"></span>
-            </a>
-            <div class="pull-left-search">
-                <form id="demo-2">
-	                <input class="devin-search" type="search">
-                </form>
-            </div>
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+                                <div class="pull-left-search">
+                        <form id="demo-2">
+	<input class="devin-search" type="search">
+</form>
+    
+    
+    </div>
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <!-- Messages: style can be found in dropdown.less-->
