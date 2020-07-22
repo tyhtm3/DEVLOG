@@ -17,7 +17,7 @@
            
             <div class="navbar-custom-menu">
                 <span><router-link to="/blog-main">[BlogMain]</router-link></span>
-                <span><router-link to="//dashboard-ju">[FeedMain]</router-link></span>
+                <span><router-link to="/dashboard-ju">[FeedMain]</router-link></span>
                 <!-- 로그인 버튼 들어갈 자리 -->
                 <button type="button" class="el-button el-button--default"> 
                     <span>Login</span>
@@ -29,8 +29,6 @@
 <script>
   export default {
     name: 'DashboardHeader',
-    mounted: function () {
-
-    }
+    data: function () { return { openMyInfoFlag: false } }
   }
 </script>
