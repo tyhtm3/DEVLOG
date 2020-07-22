@@ -87,3 +87,18 @@ CREATE TABLE `comment_post`(
     FOREIGN KEY (`seq_post`) REFERENCES `post` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`seq_user`) REFERENCES `user` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `post_tag`(
+	`seq` int primary key auto_increment,
+    `seq_post` int not null,
+    `tag` varchar(256),
+	FOREIGN KEY (`seq_post`) REFERENCES `post` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `project_tag`(
+	`seq` int primary key auto_increment,
+    `seq_project` int not null,
+    `tag` varchar(256),
+	FOREIGN KEY (`seq_project`) REFERENCES `project` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
