@@ -17,20 +17,39 @@
            
             <div class="navbar-custom-menu">
                 <span><router-link to="/blog-main">[BlogMain]</router-link></span>
-                <span><router-link to="//dashboard-ju">[FeedMain]</router-link></span>
-                <!-- 로그인 버튼 들어갈 자리 -->
-                <button type="button" class="el-button el-button--default"> 
-                    <span>Login</span>
-                </button>
+                <span><router-link to="/dashboard-ju">[FeedMain]</router-link></span>
+                <!-- 로그인 폼 시작 -->
+                <el-button :plain="true" @click="loginFormOpen">로그인</el-button>
+                <transition name='modal' appear @close="this.loginFormOpen=false">
+                    <Login v-if="loginFormVisible"></Login>
+                </transition>
+                <!-- 로그인 폼 끝 -->
             </div>
         </nav>
     </header>
 </template>
 <script>
-  export default {
+import Login from '../Login.vue'
+export default {
     name: 'DashboardHeader',
-    mounted: function () {
+    compoenets: Login,
+    data: function () {
+        return { 
+            loginFormVisible: false
+        }
+    },
+    methods : {
+        loginFormOpen(){
+            alert("되냐")
+            this.loginFormVisible = true;
+        },
+         
 
-    }
+        logout(){   
+            this.$store.state.isLogin = false;
+            this.openLoginFlag = false;
+            alert("로그아웃 되었습니다.");
+        },
+    },
   }
 </script>
