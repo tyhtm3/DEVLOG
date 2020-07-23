@@ -20,8 +20,8 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
-	public Blog selectBlogByUser(int seq_user) {
-		return blogMapper.selectBlogByUser(seq_user);
+	public Blog selectBlogByUser(int seq) {
+		return blogMapper.selectBlogByUser(seq);
 	}
 
 	@Override
@@ -35,8 +35,8 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
-	public int deleteBlog(int seq_user) {
-		return blogMapper.deleteBlog(seq_user);
+	public int deleteBlog(int seq) {
+		return blogMapper.deleteBlog(seq);
 	}
 
 }
