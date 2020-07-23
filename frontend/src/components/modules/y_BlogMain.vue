@@ -106,6 +106,22 @@
       'project-page': ProjectPage,
       'post-page': PostPage,
       'portfolio-page': PortfolioPage
+    },
+    data: function () {
+        return { 
+            loginFormVisible: false,
+            form: {
+                name: '',
+                region: '',
+                date1: '',
+                date2: '',
+                delivery: false,
+                type: [],
+                resource: '',
+                desc: ''
+            },
+            formLabelWidth: '120px'
+        }
     }
   }
 </script>
