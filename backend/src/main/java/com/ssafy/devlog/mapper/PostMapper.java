@@ -18,7 +18,7 @@ public interface PostMapper {
 	public List<Post> selectAllPostByBlogByTag(@Param("seq_blog") int seq_blog, @Param("tag") List<String> tag);
 	
 	public Post selectPost(int seq);
-	public int insertPost(@Param("seq_blog") int seq_blog, @Param("post") Post post);
+	public int insertPost(Post post);
 	public int updatePost(Post post);
 	public int deletePost(int seq);
 	

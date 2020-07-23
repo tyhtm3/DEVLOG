@@ -43,8 +43,8 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	@Override
-	public int insertPost(int seq_blog, Post post){
-		return postMapper.insertPost(seq_blog, post);
+	public int insertPost(Post post){
+		return postMapper.insertPost(post);
 	}
 	
 	@Override

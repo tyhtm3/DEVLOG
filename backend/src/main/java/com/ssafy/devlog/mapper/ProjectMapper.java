@@ -18,7 +18,7 @@ public interface ProjectMapper {
 	public List<Project> selectAllProjectByBlogByTag(@Param("seq_blog") int seq_blog, @Param("tag") List<String> tag);
 	
 	public Project selectProject(int seq);
-	public int insertProject(@Param("seq_blog") int seq_blog, @Param("project") Project project);
+	public int insertProject(Project project);
 	public int updateProject(Project project);
 	public int deleteProject(int seq);
 	

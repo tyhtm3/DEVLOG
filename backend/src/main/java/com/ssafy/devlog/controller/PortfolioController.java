@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.Portfolio;
+import com.ssafy.devlog.dto.Project;
 import com.ssafy.devlog.service.PortfolioService;
 
 import io.swagger.annotations.ApiOperation;
@@ -53,9 +54,9 @@ public class PortfolioController {
 	
 	@ApiOperation(value = "새로운 포트폴리오를 입력한다.", response = String.class)
 	@PostMapping(value = "/portfolio")
-	public ResponseEntity<String> insertPortfolio(@RequestBody Map<String, Object> params) {
+	public ResponseEntity<String> insertPortfolio(@RequestBody Portfolio portfolio) {
 		logger.debug("insertPortfolio - 호출");
-		if (portfolioService.insertPortfolio((int)params.get("seq_blog"),(Portfolio)params.get("portfolio"))==1) {
+		if (portfolioService.insertPortfolio(portfolio)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

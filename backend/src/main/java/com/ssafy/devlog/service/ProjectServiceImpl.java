@@ -44,8 +44,8 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 	
 	@Override
-	public int insertProject(int seq_blog, Project project){
-		return projectMapper.insertProject(seq_blog, project);
+	public int insertProject(Project project){
+		return projectMapper.insertProject(project);
 	}
 	
 	@Override

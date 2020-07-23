@@ -31,8 +31,8 @@ public class PortfolioServiceImpl implements PortfolioService{
 	}
 	
 	@Override
-	public int insertPortfolio(int seq_blog, Portfolio portfolio){
-		return portfolioMapper.insertPortfolio(seq_blog, portfolio);
+	public int insertPortfolio(Portfolio portfolio){
+		return portfolioMapper.insertPortfolio(portfolio);
 	}
 	
 	@Override

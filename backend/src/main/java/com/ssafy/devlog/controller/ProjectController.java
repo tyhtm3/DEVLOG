@@ -86,9 +86,9 @@ public class ProjectController {
 	
 	@ApiOperation(value = "새로운 프로젝트를 입력한다.", response = String.class)
 	@PostMapping(value = "/project")
-	public ResponseEntity<String> insertProject(@RequestBody Map<String, Object> params) {
+	public ResponseEntity<String> insertProject(@RequestBody Project project) {
 		logger.debug("insertProject - 호출");
-		if (projectService.insertProject((int)params.get("seq_blog"),(Project)params.get("project"))==1) {
+		if (projectService.insertProject(project)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

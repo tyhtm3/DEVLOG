@@ -14,7 +14,7 @@ public interface PostService {
 	public List<Post> selectAllPostByBlogByTag(int seq_blog, List<String> tag);
 	
 	public Post selectPost(int seq);
-	public int insertPost(int seq_blog, Post post);
+	public int insertPost(Post post);
 	public int updatePost(Post post);
 	public int deletePost(int seq);
 	

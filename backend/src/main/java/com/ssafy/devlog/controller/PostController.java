@@ -86,9 +86,9 @@ public class PostController {
 	
 	@ApiOperation(value = "새로운 게시글을 입력한다.", response = String.class)
 	@PostMapping(value = "/post")
-	public ResponseEntity<String> insertPost(@RequestBody Map<String, Object> params) {
+	public ResponseEntity<String> insertPost(@RequestBody Post post) {
 		logger.debug("insertPost - 호출");
-		if (postService.insertPost((int)params.get("seq_blog"),(Post)params.get("post"))==1) {
+		if (postService.insertPost(post)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
