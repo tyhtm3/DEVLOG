@@ -27,7 +27,7 @@
 	<update id="updateBlog">
 		update	blog
 		   set	seq			= #{seq},
-		   		blog_name	= #{emai},
+		   		blog_name	= #{email},
 		   		seq_user	=#{seq_user},
 		   		blog_detail	= #{blog_detail}
 		 where 	seq_user = #{seq_user}

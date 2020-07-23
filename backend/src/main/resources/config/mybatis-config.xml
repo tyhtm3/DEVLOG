@@ -6,6 +6,9 @@
 		<mapper resource="mappers/BlogMapper.xml" />
 		<mapper resource="mappers/BlogTagMapper.xml" />
 		<mapper resource="mappers/UserTagMapper.xml" />
+		<mapper resource="mappers/PostMapper.xml" />
+		<mapper resource="mappers/ProjectMapper.xml" />
+		<mapper resource="mappers/PortfolioMapper.xml" />
 	</mappers>
 </configuration>
 
