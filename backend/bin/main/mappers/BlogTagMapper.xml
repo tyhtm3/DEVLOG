@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.devlog.mapper.BlogTagMapper">
+	<!-- 블로그태그 전체 조회 -->
+	<select id="selectAllBlogTag" resultType="BlogTag">
+		select seq, seq_blog, tag
+		from blog_tag
+	</select>
+	
+	<!-- 블로그태그 상세 조회 -->
+	<select id="selectBlogTagByBlog" resultType="BlogTag">
+		select seq, seq_blog, tag
+		from blog_tag
+		where seq_blog = #{seq_blog}
+	</select>
+
+	<!-- 블로그태그 등록 -->
+	<insert id="insertBlogTag">
+		insert into blog_tag(
+			seq, seq_blog, tag
+		) values (
+			#{seq},#{seq_blog},#{tag}
+		)
+	</insert>
+	
+	<!-- 블로그태그 수정 -->
+	<update id="updateBlogTag">
+		update	blog_tag
+		   set	seq			= #{seq},
+		   		seq_blog	= #{seq_blog},
+		   		tag			= #{tag}
+		 where 	seq 		= #{seq}
+	</update>
+
+	<!-- 블로그태그 삭제 -->
+	<delete id="deleteBlogTag">
+		delete 
+		from 	blog_tag
+		where 	seq = #{seq}
+	</delete>
+</mapper>
+
+
+
+
+
+
