@@ -37,9 +37,24 @@
                         </div>
                        <br><br>
 
+<div>시자그ㅡㅡㅡㅡㅡㅡ</div>
 
+          <el-carousel :interval="4000" type="card" height="200px">
+    <el-carousel-item v-for="item in 6" :key="item">
+      <h3 class="medium">{{ item }}</h3>
+    </el-carousel-item>
+  </el-carousel>
+        
+<div>끄트ㅡㅡㅡㅡㅡㅡㅡ</div>
                             <!-- 프로젝트 -->
- 
+                          <!-- <mdb-carousel
+                            :items="thumbnailCarousel"
+                            thumbnails
+                            :interval="1000"
+                            indicators
+                            controlls
+                          ></mdb-carousel> -->
+
                             <!-- 포스트 -->
                           <div class="col-md-12">
                                 <div class="inbox-nest">
@@ -111,6 +126,53 @@
    data () {
      return {
        // imgs : 이미지 리스트
+       videoCarousel: [
+                    {
+                      video: true,
+                      src: "https://mdbootstrap.com/img/video/Tropical.mp4",
+                      loop: true,
+                      auto: true,
+                      muted: true
+                    },
+                    {
+                      video: true,
+                      src: "https://mdbootstrap.com/img/video/forest.mp4",
+                      mask: "purple-strong",
+                      loop: true,
+                      auto: true,
+                      muted: true
+                    },
+                    {
+                      video: true,
+                      src: "https://mdbootstrap.com/img/video/Agua-natural.mp4",
+                      loop: true,
+                      auto: true,
+                      muted: true
+                    }
+                  ],
+       thumbnailCarousel: [
+                    {
+                      img: true,
+                      src:
+                        "https://mdbootstrap.com/img/Photos/Slides/img%20(88).jpg",
+                      thumbnail:
+                        "https://mdbootstrap.com/img/Photos/Others/Carousel-thumbs/img%20(88).jpg"
+                    },
+                    {
+                      img: true,
+                      src:
+                        "https://mdbootstrap.com/img/Photos/Slides/img%20(121).jpg",
+                      thumbnail:
+                        "https://mdbootstrap.com/img/Photos/Slides/img%20(121).jpg"
+                    },
+                    {
+                      img: true,
+                      src:
+                        "https://mdbootstrap.com/img/Photos/Slides/img%20(31).jpg",
+                      thumbnail:
+                        "https://mdbootstrap.com/img/Photos/Slides/img%20(31).jpg"
+                    }
+                  ],
        imgs: [
          {
            img: true,
