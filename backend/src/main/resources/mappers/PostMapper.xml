@@ -6,19 +6,19 @@
 
 	<!-- 피드에서 모든 블로그의 모든 포스트 반환 -->
 	<select id="selectAllPost" resultType="Post">
-		select * from post
+		select post.seq, post.seq_blog, post.title, post.regtime, post_basic.content from post inner join post_basic on post.seq = post_basic.seq;
 	</select>
 	
 	<!-- 피드에서 나와 이웃한 블로그의 포스트 반환 -->
 	<select id="selectAllPostByNeighbor" resultType="Post">
-		select * from post where seq_blog in (
-		select seq_neighbor from user_neighbor where seq_user = #{seq_user} ))
+		select post.seq, post.seq_blog, post.title, post.regtime, post_basic.content from post inner join post_basic on post.seq = post_basic.seq where seq_blog in (
+		select seq_neighbor from user_neighbor where seq_user = #{seq_user} )
 	</select>
 
 	<!-- 피드에서 선택한 태그가 들어간 포스트 반환 -->
 	<select id="selectAllPostByTag" parameterType="java.util.List" resultType="Post">
-		select * from post where seq in ( 
-		select seq_post from post_tag where tag in 
+		select post.seq, post.seq_blog, post.title, post.regtime, post_basic.content from post inner join post_basic on post.seq = post_basic.seq where post.seq in ( 
+		select seq_post from post_tag where tag in '
        <foreach collection="tag" item="item"  open="(" close=")" separator=",">
             #{item}
         </foreach>
@@ -27,12 +27,12 @@
 	
 	<!-- 블로그 메인에서 모든 포스트 반환 -->
 	<select id="selectAllPostByBlog" resultType="Post">
-		select * from post where seq_blog = #{seq_blog};
+	    select post.seq, post.seq_blog, post.title, post.regtime, post_basic.content from post inner join post_basic on post.seq = post_basic.seq where seq_blog = #{seq_blog}
 	</select>
 	
 	<!-- 블로그 메인에서 선택한 태그가 들어간 포스트 반환 -->
 	<select id="selectAllPostByBlogByTag" parameterType="java.util.List" resultType="Post">
-		select * from post where seq_blog = #{seq_blog} and seq in ( 
+		select post.seq, post.seq_blog, post.title, post.regtime, post_basic.content from post inner join post_basic on post.seq = post_basic.seq where seq_blog = #{seq_blog} and post.seq in ( 
 		select seq_post from post_tag where tag in 
        <foreach collection="tag" item="item"  open="(" close=")" separator=",">
             #{item}
@@ -42,7 +42,7 @@
 	
 	<!-- 포스트 상세조회  -->
 	<select id="selectPost" resultType="Post">
-		select * from post where seq = #{seq}
+		select post.seq, post.seq_blog, post.title, post.regtime, post_basic.content from post inner join post_basic on post.seq = post_basic.seq where post.seq = #{seq}
 	</select>
 	
 	<!-- 포스트 등록 -->
