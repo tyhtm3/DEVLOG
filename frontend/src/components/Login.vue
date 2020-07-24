@@ -1,70 +1,84 @@
 <template>
-    <div class="form">
-        <div class="wrap">
-            <input v-model="email"
-                        id="email"
-                        placeholder="이메일을 입력해주세요"
-                        type="text"/>
-            <input v-model="password" type="password"
-                        id="password"
-                        placeholder="영문, 숫자 혼용 8자 이상"/>
-            <button @click="login">login</button>
-            <p class="message">
-            Not registered?
-            <!-- <router-link v-bind:to=""> -->
-                Create an account
-            <!-- </router-link> -->
-            </p>
-        </div> 
-    </div>
+	<div class="form">
+		<div class="wrap">
+			<div class="header">
+				<span @click="loginFormClose"><i class="material-icons">close</i></span>
+			</div>
+			<div class="body">
+				<input v-model="id" id="id" placeholder="id" type="text"/>
+				<input v-model="password" type="password" id="password" placeholder="password"/>
+				<button @click="login">login</button>
+				<p class="message">Not registered?
+					<router-link to="/signup">
+						Create an account
+					</router-link>
+				</p>
+				<p class="message">Forgot password?
+					<router-link to="/findpassword">
+						Find password
+					</router-link>
+				</p>
+			</div>
+		</div> 
+	</div>
 </template>
 <script>
-    export default {
-        name: 'Login',
-        components: {
-        },
-        created(){
-        },
-        watch: {
-        },
-        methods: {
-            login() {
-                if(this.email==='')
-                    alert('이메일을 입력해주세요.')
-                else if (!this.validEmail(this.email))
-                    alert("이메일 형식을 확인하세요.")
-                else if(this.password==='')
-                    alert('비밀번호를 입력해주세요.')
-                else
-                    this.$store.dispatch('login', {email: this.email, password: this.password})
-            },
-            validEmail: function(email) {
-                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                return re.test(email);
-            }
-        },
-        data: () => {
-            return {
-                email: '',
-                password: '',
-            }
-        }
-    }
+	export default {
+		name: 'Login',
+		components: {
+		},
+		created(){
+		},
+		watch: {
+		},
+		methods: {
+				loginFormClose(){
+						this.$store.state.loginFormVisible = false
+				},
+				login() {
+						this.$store.state.isLogin = true
+						this.$store.state.loginFormVisible = false
+						alert("로그인 되었습니다(임시)")
+
+						// if(this.id==='')
+						// 		alert('아이디을 입력해주세요.')
+						// else if(this.password==='')
+						// 		alert('비밀번호를 입력해주세요.')
+						// else
+						// 		this.$store.dispatch('login', {id: this.id, password: this.password})
+				}
+		},
+		data: () => {
+				return {
+						id: '',
+						password: '',
+				}
+		}
+	}
 
 </script>
 <style>
  @import url("https://fonts.googleapis.com/css?family=Roboto:300");
- .wrap {
-  position: relative;
+ .wrap{
+  position: absolute;
+  right: 80px;
   z-index: 1;
   background: #ffffff;
   max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
+  margin: 20px auto 100px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
-
+.wrap .header{
+    text-align: right;
+    margin: 20px 20px;
+ }
+.wrap .body{
+  padding: 10px 45px 45px 45px;
+}
+.wrap span{
+    cursor: pointer;
+}
 .form input {
   font-family: "Roboto", sans-serif;
   outline: 0;
