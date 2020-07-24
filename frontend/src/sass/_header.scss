@@ -23,7 +23,7 @@ $devin-header-height: 65px;
         -o-transition: margin-left 0.3s ease-in-out;
         transition: margin-left 0.3s ease-in-out;
         margin-bottom: 0;
-        margin-left: 230px;
+        margin-left: 0px;
         border: none;
         min-height: $devin-header-height;
         border-radius: 0;
@@ -55,6 +55,8 @@ $devin-header-height: 65px;
     .navbar-custom-menu,
     .navbar-right {
         float: right;
+        margin-top: 12px;
+        margin-right: 30px;
     }
     .sidebar-toggle {
         float: left;
@@ -831,7 +833,8 @@ $devin-header-height: 65px;
                             -o-transition: margin-left 0.3s ease-in-out;
                             transition: margin-left 0.3s ease-in-out;
                             margin-bottom: 0;
-                            margin-left: 230px;
+                            // margin-left: 230px;
+                            margin-left: 0px;
                             border: none;
                             min-height: $devin-header-height;
                             border-radius: 0;

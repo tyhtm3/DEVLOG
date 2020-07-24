@@ -322,7 +322,8 @@ $devin-sidebar-width: 230px;
         .content-wrapper,
         .right-side,
         .main-footer {
-            margin-left: 50px !important;
+            // margin-left: 50px !important;
+            margin-left: 0px !important;
             z-index: 840;
         }
         .main-sidebar {

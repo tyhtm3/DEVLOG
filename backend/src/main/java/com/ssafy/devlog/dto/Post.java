@@ -9,15 +9,11 @@ public class Post {
 	private int seq_blog;
 	private String title;
 	private String regtime;
+	private int disclosure; //1 전체공개 2 이웃공개(내가 추가한 이웃) 3 비공개
+	private int like_count;
 	
 	//post_basic
 	private String content;
-	
-	//post_tag
-	private List<PostTag> tag;
-	
-	//post_comment
-	private List<PostComment> comment;
 
 	public int getSeq() {
 		return seq;
@@ -51,6 +47,22 @@ public class Post {
 		this.regtime = regtime;
 	}
 
+	public int getDisclosure() {
+		return disclosure;
+	}
+
+	public void setDisclosure(int disclosure) {
+		this.disclosure = disclosure;
+	}
+
+	public int getLike_count() {
+		return like_count;
+	}
+
+	public void setLike_count(int like_count) {
+		this.like_count = like_count;
+	}
+
 	public String getContent() {
 		return content;
 	}
@@ -59,26 +71,11 @@ public class Post {
 		this.content = content;
 	}
 
-	public List<PostTag> getTag() {
-		return tag;
-	}
-
-	public void setTag(List<PostTag> tag) {
-		this.tag = tag;
-	}
-
-	public List<PostComment> getComment() {
-		return comment;
-	}
-
-	public void setComment(List<PostComment> comment) {
-		this.comment = comment;
-	}
-
 	@Override
 	public String toString() {
 		return "Post [seq=" + seq + ", seq_blog=" + seq_blog + ", title=" + title + ", regtime=" + regtime
-				+ ", content=" + content + ", tag=" + tag + ", comment=" + comment + "]";
+				+ ", disclosure=" + disclosure + ", like_count=" + like_count + ", content=" + content + "]";
+
 	}
 	
 }
