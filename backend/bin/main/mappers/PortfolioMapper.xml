@@ -5,7 +5,7 @@
 <mapper namespace="com.ssafy.devlog.mapper.PortfolioMapper">
 
 	
-	<!-- 블로그 메인에서 모든 프로젝트 반환 -->
+	<!-- 블로그 메인에서 모든 포트폴리오 반환 -->
 	<select id="selectAllPortfolioByBlog" resultType="Portfolio">
 		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content
 		from post as a inner join post_portfolio as b on a.seq = b.seq
@@ -26,7 +26,7 @@
 		where a.seq = #{seq}
 	</select>
 	
-	<!-- 프로젝트 기본 정보 등록 -->
+	<!-- 포트폴리오 기본 정보 등록 -->
 	<insert id="insertPost" useGeneratedKeys="true" keyProperty="seq">
 		insert into post(
 			seq_blog,title,disclosure,like_count
@@ -35,9 +35,9 @@
 		)
 	</insert>
 	
-	<!-- 프로젝트 내용 등록 -->
+	<!-- 포트폴리오 내용 등록 -->
 	<insert id="insertPostPortfolio">
-		insert into post_project(
+		insert into post_portfolio(
 			seq,name,profile_img_url,github_url,birthday,content
 		) values (
 			#{seq}, #{name}, #{profile_img_url}, #{github_url}, #{birthday}, #{content}
@@ -52,15 +52,15 @@
 		 where seq = #{seq}
 	</update>
 		
-	<!-- 프로젝트 내용 수정 -->
+	<!-- 포트폴리오 내용 수정 -->
 	<update id="updatePostPortfolio">
-		update post_project 
-		   set summary = #{summary}, start_date = #{start_date}, finish_date = #{finish_date}, role = #{role}, 
-		   github_url = #{github_url}, etc_url = #{etc_url}, rep_url = #{rep_url}, content = #{content}
+		update post_portfolio 
+		   set name = #{name}, profile_img_url = #{profile_img_url},
+		   github_url = #{github_url}, birthday = #{birthday}, content = #{content}
 		 where seq = #{seq}
 	</update>
 	
-	<!-- 프로젝트 삭제 -->
+	<!-- 포트폴리오 삭제 -->
 	<delete id="deletePortfolio">
 		delete from post where seq = #{seq}
 	</delete>
