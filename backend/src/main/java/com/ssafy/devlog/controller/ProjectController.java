@@ -101,7 +101,6 @@ public class ProjectController {
 		// insertProject 이후 projectBasic 객체에 seq 받아오기 위한 작업
 		Project pjt = new Project();
 		pjt = project;
-		
 		projectService.insertPost(pjt);
 		
 		if (projectService.insertPostProject(pjt)==1) {
