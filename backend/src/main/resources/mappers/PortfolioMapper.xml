@@ -4,68 +4,65 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.devlog.mapper.PortfolioMapper">
 
-	<!-- 피드에서 모든 블로그의 모든 포스트 반환 -->
-	<select id="selectAllPortfolio" resultType="Portfolio">
-		select * from portfolio
-	</select>
 	
-	<!-- 피드에서 나와 이웃한 블로그의 포스트 반환 -->
-	<select id="selectAllPortfolioByNeighbor" resultType="Portfolio">
-		select * from portfolio where seq_blog = (
-		select seq from blog where seq_user = (
-		select seq_neighbor from user_neighbor where seq_user = #{seq_user} ))
-	</select>
-
-	<!-- 피드에서 선택한 태그가 들어간 포스트 반환 -->
-	<select id="selectAllPortfolioByTag" parameterType="java.util.List" resultType="Portfolio">
-		select * from portfolio where seq in ( 
-		select seq_portfolio from portfolio_tag where tag in 
-       <foreach collection="tag" item="item"  open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-		);
-	</select>
-	
-	<!-- 블로그 메인에서 모든 포스트 반환 -->
+	<!-- 블로그 메인에서 모든 포트폴리오 반환 -->
 	<select id="selectAllPortfolioByBlog" resultType="Portfolio">
-		select * from portfolio where seq_blog = #{seq_blog};
+		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content
+		from post as a inner join post_portfolio as b on a.seq = b.seq
+		where seq_blog = #{seq_blog}
+		<if test="seq_user != 0">
+		    and (disclosure=1 or (seq_blog = #{seq_user}))
+		</if>
+		<if test="seq_user == 0">
+		 	and disclosure=1 
+		</if>
 	</select>
 	
-	<!-- 블로그 메인에서 선택한 태그가 들어간 포스트 반환 -->
-	<select id="selectAllPortfolioByBlogByTag" parameterType="java.util.List" resultType="Portfolio">
-		select * from portfolio where seq_blog = #{seq_blog} and seq in ( 
-		select seq_portfolio from portfolio_tag where tag in 
-       <foreach collection="tag" item="item"  open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-		);
-	</select>
 	
-	<!-- 포스트 상세조회  -->
+	<!-- 포트폴리오 상세조회  -->
 	<select id="selectPortfolio" resultType="Portfolio">
-		select * from portfolio where seq = #{seq}
+		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content
+		from post as a inner join post_portfolio as b on a.seq = b.seq
+		where a.seq = #{seq}
 	</select>
 	
-	<!-- 포스트 등록 -->
-	<insert id="insertPortfolio">
-		insert into portfolio(
-			seq_blog, title, content
+	<!-- 포트폴리오 기본 정보 등록 -->
+	<insert id="insertPost" useGeneratedKeys="true" keyProperty="seq">
+		insert into post(
+			seq_blog,title,disclosure,like_count
 		) values (
-			#{seq_blog}, #{title}, #{content} 
+			#{seq_blog}, #{title}, #{disclosure} ,0
 		)
 	</insert>
 	
-	<!-- 포스트 수정 -->
-	<update id="updatePortfolio">
-		update portfolio 
+	<!-- 포트폴리오 내용 등록 -->
+	<insert id="insertPostPortfolio">
+		insert into post_portfolio(
+			seq,name,profile_img_url,github_url,birthday,content
+		) values (
+			#{seq}, #{name}, #{profile_img_url}, #{github_url}, #{birthday}, #{content}
+		)
+	</insert>
+	
+	<!-- 포트폴리오 기본 정보 수정 -->
+	<update id="updatePost">
+		update post 
 		   set title = #{title}, 
-		   	   content = #{content}
+		   	   disclosure = #{disclosure}
 		 where seq = #{seq}
 	</update>
-
-	<!-- 포스트 삭제 -->
+		
+	<!-- 포트폴리오 내용 수정 -->
+	<update id="updatePostPortfolio">
+		update post_portfolio 
+		   set name = #{name}, profile_img_url = #{profile_img_url},
+		   github_url = #{github_url}, birthday = #{birthday}, content = #{content}
+		 where seq = #{seq}
+	</update>
+	
+	<!-- 포트폴리오 삭제 -->
 	<delete id="deletePortfolio">
-		delete from portfolio where seq = #{seq}
+		delete from post where seq = #{seq}
 	</delete>
 	
 </mapper>
