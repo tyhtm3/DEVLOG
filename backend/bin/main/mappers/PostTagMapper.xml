@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.devlog.mapper.PostTagMapper">
+
+	<!-- 포스트의 모든 태그를 반환한다. -->
+	<select id="selectAllPostTag" resultType="PostTag">
+		select *
+		from post_tag
+		where seq_post = #{seq_post}
+	</select>
+	
+	<!-- 포스트의 태그를 추가한다  -->
+	<insert id="insertPostTag">
+		insert into post_tag( seq_post, tag)
+		values ( #{seq_post},#{tag} )
+	</insert>
+	
+	<!-- 포스트의 태그를 삭제한다. -->
+	<delete id="deletePostTag">
+		delete from post_tag
+		where 	seq = #{seq}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+

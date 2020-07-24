@@ -68,9 +68,6 @@ public class PostController {
 	}
 
 	
-	
-	
-	
 	/* show blog post */
 	@ApiOperation(value = "블로그 메인에서 모든 포스트를 반환.", response = List.class)    
 	@GetMapping(value = "/blog/post/{seq_blog}/{seq_user}")
