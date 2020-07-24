@@ -11,7 +11,9 @@
 
 <script>
 export default {
-
+  created(){
+    this.$store.state.loginFormVisible = false;
+  },
 }
 </script>
 

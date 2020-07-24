@@ -25,7 +25,40 @@
         <span><router-link to="/blog-main">[BlogMain]</router-link></span>
         <span><router-link to="/dashboard-ju">[FeedMain]</router-link></span>
 				<span v-if="this.$store.state.isLogin">
-					<el-button :plain="true" @click="logout">로그아웃</el-button>
+					<el-dropdown class="header-dropdown-devin" trigger="click" style="top: 0px;">
+						<span class="el-dropdown-link">
+							<img src="static/img/profile.png" alt="cover" class="cover-profile" />
+						<!-- <el-button type="text" size="small"><i class="ti-bell"></i></el-button> -->
+						</span>
+						<el-dropdown-menu slot="dropdown">
+							<ul class="dropdown-menu-devin">
+								<!-- <li class="header">welcome devlog!</li> -->
+								<li>
+									<!-- inner menu: contains the actual data -->
+									<ul class="menu">
+										<li> <i class="dripicons-gear"></i>
+											<a style="cursor:pointer;" @click="myInfo">
+												<h3>명뮹 <span class="text-green fontello-record"></span></h3>
+												<!-- <p>sub message</p> -->
+											</a>
+										</li>
+										<li> <i class="dripicons-bold"></i>
+											<a style="cursor:pointer;" @click="myBlog">
+												<h3>내 블로그<span class="text-yellow fontello-record"></span></h3>
+												<!-- <p>sub message</p> -->
+											</a>
+										</li>
+										<li> <i class="dripicons-power"></i>
+											<a style="cursor:pointer;" @click="logout">
+												<h3>로그아웃<span class="text-yellow fontello-record"></span></h3>
+												<!-- <p>sub message</p> -->
+											</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</el-dropdown-menu>
+					</el-dropdown>
 				</span>
 				<span v-else>
 					<el-button :plain="true" @click="loginFormOpen">로그인</el-button>
@@ -46,6 +79,12 @@ export default {
   methods : {
     loginFormOpen(){
      this.$store.state.loginFormVisible = true;
+		},
+		myInfo(){
+			alert("정보수정");
+		},
+		myBlog(){
+			alert("내블로그");
 		},
 		logout(){
      this.$store.state.isLogin = false;

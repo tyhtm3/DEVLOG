@@ -7,14 +7,16 @@
 			<div class="body">
 				<input v-model="id" id="id" placeholder="id" type="text"/>
 				<input v-model="password" type="password" id="password" placeholder="password"/>
-				<button @click="login">login</button>
+				<button class="normal" @click="login">login</button><p/>
+				<button class="kakao" @click="login">kakao</button><button class="naver" @click="login">naver</button><p/>
+				<button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button>
 				<p class="message">Not registered?
 					<router-link to="/signup">
 						Create an account
 					</router-link>
-				</p>
+				</p>	
 				<p class="message">Forgot password?
-					<router-link to="/findpassword">
+					<router-link to="/findpw">
 						Find password
 					</router-link>
 				</p>
@@ -90,13 +92,11 @@
   box-sizing: border-box;
   font-size: 14px;
 }
-
 .form button {
-  font-family: "Roboto", sans-serif;
+	font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
   background: #6E6E6E;
-  width: 100%;
   border: 0;
   padding: 15px;
   color: #ffffff;
@@ -104,6 +104,33 @@
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
+}
+.form .normal {
+	width: 100%;
+}
+.form .naver {
+  background: #2DB400;
+	color: #ffffff;
+	width: 50%;
+	display: inline;
+}
+.form .kakao {
+  background: #F7E600;
+	color: #443731;
+	width: 50%;
+	display: inline;
+}
+.form .facebook {
+  background: #3B5998;
+	color: #ffffff;
+	width: 50%;
+	display: inline;
+}
+.form .google {
+  background: #EA4335;
+	color: #ffffff;
+	width: 50%;
+	display: inline;
 }
 
 .form button:hover,
