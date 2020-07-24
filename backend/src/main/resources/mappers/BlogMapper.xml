@@ -3,41 +3,39 @@
 <mapper namespace="com.ssafy.devlog.mapper.BlogMapper">
 <!-- 블로그 전체 조회 -->
 	<select id="selectAllBlog" resultType="Blog">
-		select seq, blog_name, seq_user, blog_detail
+		select seq, blog_name, blog_detail
 		from blog
 	</select>
 	
 	<!-- 블로그 상세 조회 -->
 	<select id="selectBlogByUser" resultType="Blog">
-		select seq, blog_name, seq_user, blog_detail
+		select seq, blog_name, blog_detail
 		from blog
-		where seq_user = #{seq_user}
+		where seq = #{seq}
 	</select>
 
 	<!-- 블로그 등록 -->
 	<insert id="insertBlog">
 		insert into blog(
-			seq, blog_name, seq_user, blog_detail
+			seq, blog_name, blog_detail
 		) values (
-			#{seq},#{blog_name},#{seq_user},#{blog_detail}
+			#{seq},#{blog_name},#{blog_detail}
 		)
 	</insert>
 	
 	<!-- 블로그 수정 -->
 	<update id="updateBlog">
 		update	blog
-		   set	seq			= #{seq},
-		   		blog_name	= #{email},
-		   		seq_user	=#{seq_user},
+		   set	blog_name	= #{blog_name},
 		   		blog_detail	= #{blog_detail}
-		 where 	seq_user = #{seq_user}
+		 where 	seq = #{seq}
 	</update>
 
 	<!-- 블로그 삭제 -->
 	<delete id="deleteBlog">
 		delete 
 		from 	blog
-		where 	seq_user = #{seq_user}
+		where 	seq = #{seq}
 	</delete>
 </mapper>
 

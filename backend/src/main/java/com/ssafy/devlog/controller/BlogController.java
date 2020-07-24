@@ -41,10 +41,10 @@ public class BlogController {
 	}
 	
 	@ApiOperation(value = "특정 유저의 블로그를 반환한다.", response = List.class)
-	@GetMapping("{user_seq}")
-	public ResponseEntity<Blog> selectBlogByUser(@PathVariable int user_seq) throws Exception {
+	@GetMapping("{seq}")
+	public ResponseEntity<Blog> selectBlogByUser(@PathVariable int seq) throws Exception {
 		logger.debug("selectBlogByUser - 호출");
-		return new ResponseEntity<Blog>(blogService.selectBlogByUser(user_seq), HttpStatus.OK);
+		return new ResponseEntity<Blog>(blogService.selectBlogByUser(seq), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "새로운 블로그를 생성한다", response = List.class)
@@ -58,10 +58,10 @@ public class BlogController {
 	}
 	
 	@ApiOperation(value = "블로그를 삭제한다.", response = List.class)
-	@DeleteMapping("{seq_user}")
-	public ResponseEntity<String> deleteBlog(@PathVariable int seq_user) throws Exception {
+	@DeleteMapping("{seq}")
+	public ResponseEntity<String> deleteBlog(@PathVariable int seq) throws Exception {
 		logger.debug("deleteUser - 호출");
-		if(blogService.deleteBlog(seq_user)==1) {
+		if(blogService.deleteBlog(seq)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
