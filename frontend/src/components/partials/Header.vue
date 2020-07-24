@@ -9,6 +9,12 @@
                 <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
                 <span class="icon-bar"></span> <span class="icon-bar"></span>
             </a> -->
+            <span class="logo-mini">
+                <router-link to="/dashboard-ju">
+                <img src="../../assets/logo.png" height="50px" style="margin-left:20px; margin-top:5px">
+                </router-link>
+            </span>
+
             <div class="pull-left-search">
                 <form id="demo-2">
 	                <input class="devin-search" type="search">
@@ -18,21 +24,23 @@
             <div class="navbar-custom-menu">
                 <span><router-link to="/blog-main">[BlogMain]</router-link></span>
                 <span><router-link to="/dashboard-ju">[FeedMain]</router-link></span>
-                <!-- 로그인 폼 시작 -->
                 <el-button :plain="true" @click="loginFormOpen">로그인</el-button>
+            </div>
+        </nav>
+        <!-- 로그인 폼 시작 -->
                 <transition name='modal' appear @close="this.loginFormOpen=false">
                     <Login v-if="loginFormVisible"></Login>
                 </transition>
                 <!-- 로그인 폼 끝 -->
-            </div>
-        </nav>
     </header>
 </template>
 <script>
-import Login from '../Login.vue'
+import Login from '../../components/Login.vue'
 export default {
     name: 'DashboardHeader',
-    compoenets: Login,
+    components: {
+        Login
+    },
     data: function () {
         return { 
             loginFormVisible: false
@@ -40,7 +48,6 @@ export default {
     },
     methods : {
         loginFormOpen(){
-            alert("되냐")
             this.loginFormVisible = true;
         },
          

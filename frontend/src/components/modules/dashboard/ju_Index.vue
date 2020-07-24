@@ -20,7 +20,7 @@
                         indicators
                         controlls
                         ></mdb-carousel>
-                        <br><br>
+                        <br><br>  
 
                         <div>
                             <!-- 돋보기 클릭시 검색 입력창 생성 -->
