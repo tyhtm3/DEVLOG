@@ -121,7 +121,7 @@
 	</update>
 	
 	<!-- 프로젝트 삭제 -->
-	<delete id="deletePost">
+	<delete id="deleteProject">
 		delete from post where seq = #{seq}
 	</delete>
 	

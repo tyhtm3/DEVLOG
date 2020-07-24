@@ -59,10 +59,7 @@ public class ProjectController {
 	@PostMapping(value = "/feed/project/tag")
 	public ResponseEntity<List<Project>> selectAllProjectByTag(@RequestBody Map<String, Object> params) {
 		logger.debug("selectAllProjectByTag - 호출");
-		int seq_user = (params.get("seq_user")==null?0:(int)params.get("seq_user"));
-		@SuppressWarnings("unchecked")
-		List<String> tag = (List<String>)params.get("tag");
-		return new ResponseEntity<List<Project>>(projectService.selectAllProjectByTag(seq_user,tag), HttpStatus.OK);
+		return new ResponseEntity<List<Project>>(projectService.selectAllProjectByTag((int)params.get("seq_user"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}
 
 	
@@ -78,12 +75,11 @@ public class ProjectController {
 	}
 	
 	// Map을 받아오기 때문에 Get 대신 Post를 사용함.
-	@ApiOperation(value = "블로그 메인에서 선택한 태그에 해당하는 모든 프로젝트를 반환 (ex. 'seq_user':0 , 'tag': {'java','mysql'} )", response = List.class)    
+	@ApiOperation(value = "블로그 메인에서 선택한 태그에 해당하는 모든 프로젝트를 반환 (ex. 'seq_user':0 , 'seq_blog':1 , 'tag': {'java','mysql'} )", response = List.class)    
 	@PostMapping(value = "/blog/project/tag")
 	public ResponseEntity<List<Project>> selectAllProjectByBlogByTag(@RequestBody Map<String, Object> params) {
 		logger.debug("selectAllProjectByBlogByTag - 호출");
-		int seq_user = (params.get("seq_user")==null?0:(int)params.get("seq_user"));
-		return new ResponseEntity<List<Project>>(projectService.selectAllProjectByBlogByTag(seq_user,(int)params.get("seq_blog"),(List<String>)params.get("tag")), HttpStatus.OK);
+		return new ResponseEntity<List<Project>>(projectService.selectAllProjectByBlogByTag((int)params.get("seq_user"),(int)params.get("seq_blog"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}
 	
 
@@ -103,14 +99,12 @@ public class ProjectController {
 		logger.debug("insertProject - 호출");
 		
 		// insertProject 이후 projectBasic 객체에 seq 받아오기 위한 작업
-		Project projectBasic = new Project();
-		projectBasic.setSeq_blog(project.getSeq_blog());
-		projectBasic.setTitle(project.getTitle());
-		projectBasic.setDisclosure(project.getDisclosure());
-		projectBasic.setContent(project.getContent());
-		projectService.insertPost(projectBasic);
+		Project pjt = new Project();
+		pjt = project;
 		
-		if (projectService.insertPostProject(projectBasic)==1) {
+		projectService.insertPost(pjt);
+		
+		if (projectService.insertPostProject(pjt)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
