@@ -135,6 +135,11 @@
 </template>
 <script>
   export default {
-    name: 'ji_ProjectPage'
+    name: 'ji_ProjectPage',
+    data: function () {
+        return { 
+          comment: 'test2121'
+        }
+    }
   }
 </script>
