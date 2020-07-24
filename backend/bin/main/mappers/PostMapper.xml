@@ -102,7 +102,7 @@
 	</insert>
 	
 	<!-- 포스트 기본 정보 수정 -->
-	<update id="updatePost" useGeneratedKeys="true" keyProperty="seq">
+	<update id="updatePost">
 		update post 
 		   set title = #{title}, 
 		   	   disclosure = #{disclosure}
