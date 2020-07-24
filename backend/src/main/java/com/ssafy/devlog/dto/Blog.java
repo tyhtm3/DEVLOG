@@ -4,6 +4,7 @@ public class Blog {
 	private int seq;
 	private String blog_name;
 	private String blog_detail;
+	
 	public int getSeq() {
 		return seq;
 	}
