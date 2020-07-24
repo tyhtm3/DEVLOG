@@ -36,43 +36,54 @@ public class PostController {
 	private PostService postService;
 	
 	
+	/* 	비로그인 	: params.get("seq_user")==null 로 판별하여 공개범위가 (전체)인 포스트만 반환
+	 * 	로그인 	: 						!=null 로 판별하여 공개범위가 (전체) 포스트 or 공개범위가 (이웃공개/비공개)인 포스트의 접근여부 판별하여 반환  */
+	
+	
 	/* show feed post */
-	@ApiOperation(value = "피드에서 모든 포스트를 반환한다.", response = List.class)
+	@ApiOperation(value = "피드에서 모든 포스트 반환", response = List.class)
 	@GetMapping(value = "/feed/post")
-	public ResponseEntity<List<Post>> selectAllPost() throws Exception {
+	public ResponseEntity<List<Post>> selectAllPost(@RequestBody Map<String, Integer> params) throws Exception {
 		logger.debug("selectAllPost - 호출");
-		return new ResponseEntity<List<Post>>(postService.selectAllPost(), HttpStatus.OK);
+		int seq_user = (params.get("seq_user")==null?0:params.get("seq_user"));
+		return new ResponseEntity<List<Post>>(postService.selectAllPost(seq_user), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "피드에서 이웃 블로그의 모든 포스트를 반환한다.", response = List.class)
+	@ApiOperation(value = "피드에서 이웃 블로그의 모든 포스트를 반환", response = List.class)
 	@GetMapping(value = "/feed/post/neighbor/{seq_user}")
 	public ResponseEntity<List<Post>> selectAllPostByNeighbor(@PathVariable int seq_user) throws Exception {
 		logger.debug("selectAllPostByNeighbor - 호출");
 		return new ResponseEntity<List<Post>>(postService.selectAllPostByNeighbor(seq_user), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "피드에서 선택한 태그에 해당하는 모든 포스트를 반환한다.", response = List.class)    
+	
+	@ApiOperation(value = "피드에서 선택된 태그를 가진 모든 포스트를 반환", response = List.class)    
 	@GetMapping(value = "/feed/post/tag")
-	public ResponseEntity<List<Post>> selectAllPostByTag(@RequestBody List<String> tag) {
+	public ResponseEntity<List<Post>> selectAllPostByTag(@RequestBody Map<String, Object> params) {
 		logger.debug("selectAllPostByTag - 호출");
-		return new ResponseEntity<List<Post>>(postService.selectAllPostByTag(tag), HttpStatus.OK);
+		int seq_user = (params.get("seq_user")==null?0:(int)params.get("seq_user"));
+		@SuppressWarnings("unchecked")
+		List<String> tag = (List<String>)params.get("tag");
+		return new ResponseEntity<List<Post>>(postService.selectAllPostByTag(seq_user,tag), HttpStatus.OK);
 	}
 
 	
 	
 	/* show blog post */
-	@ApiOperation(value = "블로그 메인에서 모든 포스트를 반환한다.", response = List.class)    
-	@GetMapping(value = "/blog/post/{seq_blog}")
-	public ResponseEntity<List<Post>> selectAllPostByBlog(@PathVariable int seq_blog) {
+	@ApiOperation(value = "블로그 메인에서 모든 포스트를 반환", response = List.class)    
+	@GetMapping(value = "/blog/post")
+	public ResponseEntity<List<Post>> selectAllPostByBlog(@RequestBody Map<String, Integer> params) {
 		logger.debug("selectAllPostByBlog - 호출");
-		return new ResponseEntity<List<Post>>(postService.selectAllPostByBlog(seq_blog), HttpStatus.OK);
+		int seq_user = (params.get("seq_user")==null?0:params.get("seq_user"));
+		return new ResponseEntity<List<Post>>(postService.selectAllPostByBlog(seq_user, params.get("seq_blog")), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "블로그 메인에서 선택한 태그에 해당하는 모든 포스트를 반환한다.", response = List.class)    
+	@ApiOperation(value = "블로그 메인에서 선택한 태그에 해당하는 모든 포스트를 반환", response = List.class)    
 	@GetMapping(value = "/blog/post/tag")
 	public ResponseEntity<List<Post>> selectAllPostByBlogByTag(@RequestBody Map<String, Object> params) {
 		logger.debug("selectAllPostByBlogByTag - 호출");
-		return new ResponseEntity<List<Post>>(postService.selectAllPostByBlogByTag((int)params.get("seq_blog"),(List<String>)params.get("tag")), HttpStatus.OK);
+		int seq_user = (params.get("seq_user")==null?0:(int)params.get("seq_user"));
+		return new ResponseEntity<List<Post>>(postService.selectAllPostByBlogByTag(seq_user,(int)params.get("seq_blog"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}
 	
 	
@@ -90,7 +101,10 @@ public class PostController {
 	@PostMapping(value = "/post")
 	public ResponseEntity<String> insertPost(@RequestBody Post post) {
 		logger.debug("insertPost - 호출");
-		if (postService.insertPost(post)==1) {
+		Post postBasic = new Post();
+		postBasic.setSeq(postService.insertPost(post));
+		postBasic.setContent(post.getContent());
+		if (postService.insertPostBasic(postBasic)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
@@ -100,7 +114,10 @@ public class PostController {
 	@PutMapping(value = "/post")
 	public ResponseEntity<String> updatePost(@RequestBody Post post) {
 		logger.debug("updatePost - 호출");
-		if (postService.updatePost(post)==1) {
+		Post postBasic = new Post();
+		postBasic.setSeq(postService.updatePost(post));
+		postBasic.setContent(post.getContent());
+		if (postService.updatePostBasic(postBasic)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
