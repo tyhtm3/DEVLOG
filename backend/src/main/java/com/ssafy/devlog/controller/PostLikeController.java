@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.devlog.dto.Post;
 import com.ssafy.devlog.dto.PostLike;
 import com.ssafy.devlog.service.PostLikeService;
 import com.ssafy.devlog.service.PostService;
@@ -51,8 +52,13 @@ public class PostLikeController {
 	@ApiOperation(value = "포스트에 좋아요를 추가한다.", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> insertPostLike(@RequestBody PostLike postLike) throws Exception {
-		logger.debug("inserPostLike - 호출");
-		if(postLikeService.updatePostLikeCount(postLike.getSeq(), 1)==1&&postLikeService.insertPostLike(postLike)==1) {
+		logger.debug("insertPostLike - 호출");
+		
+		PostLike pl = new PostLike();
+		pl = postLike;
+		postLikeService.insertPostLike(pl);
+		
+		if(postLikeService.updatePostLikeCount(pl.getSeq(), 1)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

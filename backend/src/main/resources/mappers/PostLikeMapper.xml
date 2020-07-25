@@ -15,8 +15,8 @@
 	</select>
 	
 	<!-- 포스트에 좋아요 추가   -->
-	<insert id="insertPostLike">
-		insert into post_like( seq_post, seq_user
+	<insert id="insertPostLike" useGeneratedKeys="true" keyProperty="seq">
+		insert into post_like( seq_post, seq_user )
 		values ( #{seq_post},#{seq_user} )
 	</insert>
 	
