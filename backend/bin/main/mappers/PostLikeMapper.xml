@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.devlog.mapper.PostLikeMapper">
+
+	<!-- 포스트에 유저가 누른 좋아요 여부 검사  -->
+	<select id="selectPostLikeByUser" resultType="PostLike">
+		select *
+		from post_like
+		where seq_post = #{seq_post} and seq_user = #{seq_user}
+	</select>
+	
+	<!-- 포스트의 모든 좋아요 개수를 반환 -->
+	<select id="selectPostLikeCount" resultType="java.lang.Integer">
+		select count(*) as like_count from post_like where seq_post= #{seq_post} ;
+	</select>
+	
+	<!-- 포스트에 좋아요 추가   -->
+	<insert id="insertPostLike" useGeneratedKeys="true" keyProperty="seq">
+		insert into post_like( seq_post, seq_user )
+		values ( #{seq_post},#{seq_user} )
+	</insert>
+	
+	<!-- 포스트에 누른 좋아요를 취소 -->
+	<delete id="deletePostLike">
+		delete from post_like
+		where 	seq = #{seq}
+	</delete>
+	
+	<!-- 포스트 좋아요 개수 업데이트 -->
+	<update id="updatePostLikeCount">
+		update post 
+		set like_count = like_count + #{count}
+		where seq = (select seq_post from post_like where seq= #{seq} )
+	</update>
+	
+	
+</mapper>
+
+
+
+
+
+

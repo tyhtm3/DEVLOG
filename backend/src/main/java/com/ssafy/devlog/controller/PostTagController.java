@@ -40,7 +40,7 @@ public class PostTagController {
 		return new ResponseEntity<List<PostTag>>(postTagService.selectAllPostTag(seq_post), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "포스트의 태그를 추가한다.", response = List.class)
+	@ApiOperation(value = "포스트의 태그를 추가한다.", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> insertPostTag(@RequestBody PostTag postTag) throws Exception {
 		logger.debug("inserPostTag - 호출");
@@ -50,7 +50,7 @@ public class PostTagController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
-	@ApiOperation(value = "포스트의 태그를 삭제한다.", response = List.class)
+	@ApiOperation(value = "포스트의 태그를 삭제한다.", response = String.class)
 	@DeleteMapping(value = "/{seq}")
 	public ResponseEntity<String> deletePostTag(@PathVariable int seq) throws Exception {
 		logger.debug("deletePostTag - 호출");
