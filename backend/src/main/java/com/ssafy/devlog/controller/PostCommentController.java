@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,7 +52,7 @@ public class PostCommentController {
 	}
 	
 	@ApiOperation(value = "포스트 댓글을 수정한다.", response = List.class)
-	@PostMapping
+	@PutMapping
 	public ResponseEntity<String> updatePostComment(@RequestBody PostComment postComment) throws Exception {
 		logger.debug("updatePostComment - 호출");
 		if(postCommentService.updatePostComment(postComment)==1) {
