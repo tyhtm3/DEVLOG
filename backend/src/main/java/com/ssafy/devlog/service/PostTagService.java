@@ -8,6 +8,5 @@ public interface PostTagService {
 	
 	public List<PostTag> selectAllPostTag(int seq_post);
 	public int insertPostTag(PostTag postTag);
-	public int updatePostTag(PostTag postTag);
 	public int deletePostTag(int seq);
 }

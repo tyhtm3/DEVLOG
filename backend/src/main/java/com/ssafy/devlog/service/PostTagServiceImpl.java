@@ -26,11 +26,6 @@ public class PostTagServiceImpl implements PostTagService {
 	}
 
 	@Override
-	public int updatePostTag(PostTag postTag) {
-		return postTagMapper.updatePostTag(postTag);
-	}
-
-	@Override
 	public int deletePostTag(int seq) {
 		return postTagMapper.deletePostTag(seq);
 	}
