@@ -6,14 +6,14 @@
 
 .container-movie {
     margin: 0 auto;
-    height: 640px;
+    height: 340px;
     background: #F0F0ED;
     border-radius: 5px;
     position: relative;
 }
 
 .hero {
-    height: 342px;
+    height: 200px;
     margin: 0;
     position: relative;
     overflow: hidden;
@@ -30,8 +30,8 @@
     overflow: hidden;
     top: 0;
     left: 0;
-    background: red;
-    background: url("https://source.unsplash.com/collection/431862/800x600");
+    // background: red;
+    // background: url("https://source.unsplash.com/collection/431862/800x600");
     z-index: -1;
     background-position: center;
     background-repeat: no-repeat;
@@ -43,23 +43,42 @@
 }
 
 .cover-profile {
-    position: absolute;
-    bottom: 235px;
-    left: 70px;
+    // position: absolute;
+    height: 35px;
+    width: 35px;
+    // left: 170px;
+    margin-left: 5px;
     z-index: 2;
     border-radius: 50%;
-    border: 6px solid #FFF;
+    border: 3px solid #FFF;
+    
 }
 
 .details-profile {
-    padding: 190px 0 0 280px;
+    padding: 80px 0 0 60px;
     .title1 {
-        color: white;
+        color: #C7C1BA;
         font-size: 44px;
-        margin-bottom: 13px;
+        margin-bottom: 30px;
         position: relative;
+        // span {
+        //     position: absolute;
+        //     top: 3px;
+        //     margin-left: 12px;
+        //     background: #C4AF3D;
+        //     border-radius: 5px;
+        //     color: #544C21;
+        //     font-size: 14px;
+        //     padding: 0px 4px;
+        // }
+    }
+    .title2 {
+        color: #C7C1BA;
+        font-size: 23px;
+        font-weight: 300;
+        margin-bottom: 15px;
         span {
-            position: absolute;
+            // position: absolute;
             top: 3px;
             margin-left: 12px;
             background: #C4AF3D;
@@ -68,12 +87,6 @@
             font-size: 14px;
             padding: 0px 4px;
         }
-    }
-    .title2 {
-        color: #C7C1BA;
-        font-size: 23px;
-        font-weight: 300;
-        margin-bottom: 15px;
     }
     .likes {
         margin-left: 24px;
@@ -88,18 +101,18 @@
 
 .description-profile {
     bottom: 0px;
-    height: 200px;
+    height: 140px;
     font-size: 16px;
     line-height: 26px;
     color: #B1B0AC;
 }
 
 .column1 {
-    padding-left: 50px;
-    padding-top: 120px;
-    width: 30%;
-    float: left;
-    text-align: center;
+    padding-left: 60px;
+    padding-top: 0px;
+    // width: 70%;
+    // float: left;
+    // text-align: center;
 }
 
 .tag {
@@ -117,11 +130,14 @@
 }
 
 .column2 {
-    padding-left: 41px;
-    padding-top: 30px;
-    margin-left: 20px;
+    // position: absolute;
+    // left: 30%;
+    // top: 110px;
+    padding-left: 60px;
+    padding-top: 0px;
+    margin-left: 0px;
     width: 60%;
-    float: left;
+    // float: left;
 }
 
 .avatars {
@@ -184,11 +200,19 @@
 
 .emphasis {
     border-top: 4px solid transparent;
-    &:hover {
-        border-top: 4px solid #1abc9c;
-    }
     h2 {
         margin-bottom: 0;
+    }
+}
+
+.emphasis_custom {
+    text-align: center;
+    border-bottom: 4px solid transparent;
+    &:hover {
+        border-bottom: 4px solid #1abc9c;
+    }
+    h2 {
+        margin-bottom: 20;
     }
 }
 

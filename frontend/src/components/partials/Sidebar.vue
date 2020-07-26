@@ -28,6 +28,14 @@
                                 <router-link to="/dashboard-second">
                                     <avatar username="Dashaboard Two" :size='20' color="#fff"></avatar>Dashboard 2</router-link>
                             </li>
+                            <li>
+                                <router-link to="/dashboard-ji">
+                                    <avatar username="Dashaboard Two" :size='20' color="#fff"></avatar>Dashboard Ji</router-link>
+                            </li>
+                                                        <li>
+                                <router-link to="/dashboard-ju">
+                                    <avatar username="Dashaboard Two" :size='20' color="#fff"></avatar>Dashboard Ju</router-link>
+                            </li>
                         </ul>
                     </li>
                     <li>

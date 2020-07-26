@@ -15,26 +15,26 @@ public class PostServiceImpl implements PostService{
 	private PostMapper postMapper;
 	
 	@Override
-	public List<Post> selectAllPost(){
-		return postMapper.selectAllPost();
+	public List<Post> selectAllPost(int seq_user){
+		return postMapper.selectAllPost(seq_user);
 	}
 	@Override
 	public List<Post> selectAllPostByNeighbor(int seq_user){
 		return postMapper.selectAllPostByNeighbor(seq_user);
 	}
 	@Override
-	public List<Post> selectAllPostByTag(List<String> tag){
-		return postMapper.selectAllPostByTag(tag);
+	public List<Post> selectAllPostByTag(int seq_user, List<String> tag){
+		return postMapper.selectAllPostByTag(seq_user, tag);
 	}
 	
 	@Override
-	public List<Post> selectAllPostByBlog(int seq_blog){
-		return postMapper.selectAllPostByBlog(seq_blog);
+	public List<Post> selectAllPostByBlog(int seq_user, int seq_blog){
+		return postMapper.selectAllPostByBlog(seq_user, seq_blog);
 	}
 	
 	@Override
-	public List<Post> selectAllPostByBlogByTag(int seq_blog, List<String> tag){
-		return postMapper.selectAllPostByBlogByTag(seq_blog, tag);
+	public List<Post> selectAllPostByBlogByTag(int seq_user, int seq_blog, List<String> tag){
+		return postMapper.selectAllPostByBlogByTag(seq_user, seq_blog, tag);
 	}
 	
 	@Override
@@ -48,9 +48,20 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	@Override
+	public int insertPostBasic(Post post){
+		return postMapper.insertPostBasic(post);
+	}
+	
+	@Override
 	public int updatePost(Post post){
 		return postMapper.updatePost(post);
 	}
+	
+	@Override
+	public int updatePostBasic(Post post) {
+		return postMapper.updatePostBasic(post);
+	}
+	
 	@Override
 	public int deletePost(int seq){
 		return postMapper.deletePost(seq);
