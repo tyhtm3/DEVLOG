@@ -21,13 +21,13 @@
         </form>
       </div>
       <div class="navbar-custom-menu">
+				<span @click="test" style="cursor:pointer">test</span>
         <span><router-link to="/blog-main">[BlogMain]</router-link></span>
         <span><router-link to="/dashboard-ju">[FeedMain]</router-link></span>
 				<span v-if="this.$store.state.isLogin">
 					<el-dropdown class="header-dropdown-devin" trigger="click" style="top: 0px;">
 						<span class="el-dropdown-link">
 							<img src="static/img/profile.png" alt="cover" class="cover-profile" />
-						<!-- <el-button type="text" size="small"><i class="ti-bell"></i></el-button> -->
 						</span>
 						<el-dropdown-menu slot="dropdown">
 							<ul class="dropdown-menu-devin">
@@ -71,6 +71,8 @@
 <script>
 import Login from '../../components/Login.vue'
 import router from '../../routes'
+import http from '../../util/http-common'
+import store from '../../store'
 export default {
 	name: 'DashboardHeader',
 	components: {
@@ -84,6 +86,14 @@ export default {
 		 this.$store.state.isLogin = false;
 		 this.$store.state.userInfo = {};
 		},
+		test(){
+			console.log(this.$store.state.userInfo)
+			http
+			.get('/user')
+			.then(({data}) => {
+				console.log(data)
+      })
+		}
   },
 }
 </script>

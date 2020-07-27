@@ -85,9 +85,9 @@ export default {
     this.nickname = this.$store.state.userInfo.nickname,
     this.email = this.$store.state.userInfo.email,
     this.tel = this.$store.state.userInfo.tel,
-    this.birth = this.$store.state.userInfo.birth,
-    this.url = this.$store.state.userInfo.url,
-    this.imageUrl = this.$store.state.userInfo.imageUrl
+    this.birth = this.$store.state.userInfo.birthday,
+    this.url = this.$store.state.userInfo.github_url,
+    this.imageUrl = this.$store.state.userInfo.profile_img_url
   },
   methods: {
     modify() {

@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 import http from './util/http-common'
 import routes from './routes'
+
 const state = {
   token: null
 }
@@ -28,33 +29,33 @@ export default new Vuex.Store({
     mutateIsLogin(state, isLogin){
       state.isLogin = isLogin
     },
+    mutateLoginFormVisible(state, loginFormVisible){
+      state.loginFormVisible = loginFormVisible
+    },
     mutateUserInfo(state, userInfo){
       state.userInfo = userInfo
     }
   },
   actions: {
-    login(context, {id, password}){
-      
-      // 임시 로그인
-      this.state.isLogin = true
-      this.state.loginFormVisible = false
-      this.state.userInfo = {
-        id: id,
-        password: password,
-        name: '임시이름',
-        nickname: '임시닉네임',
-        email: 'ssafy@ssafy.com',
-        tel: '010-1234-1234',
-        birth: '2000-01-01',
-        profileImage: '',
-        url: 'www.devlog.com'
+    login(context, {id, password, url}){
+      context.commit('mutateLoginFormVisible', false)
+      context.commit('mutateIsLogin', true)
+      var userInfo = {
+        seq: 13,
+        id: 'test',
+        password: 'test',
+        name: 'test',
+        nickname: '',
+        email: 'test@test.com',
+        tel: '',
+        github_url: 'https://www.devlog.com',
+        profile_img_url: '',
       }
-      console.log(this.state.isLogin)
-      console.log(this.state.loginFormVisible)
-      console.log(this.state.userInfo)
-
+      context.commit('mutateUserInfo', userInfo)
+      alert("routes")
+      routes.push('/blog-main') //????
       // http
-      // .post('/account/login', { 
+      // .post('/user/login', { 
       //   id: this.id,
       //   password: this.password
       // })
@@ -62,6 +63,7 @@ export default new Vuex.Store({
       //   console.log(data);
       //   context.commit('mutateIsLogin', true)
       //   context.commit('mutateUserInfo', data)
+      //   context.commit('mutateLoginFormVisible', true)
       // })
       // .catch((error) =>  {
       //   if(error.response.status == '404'){
@@ -70,42 +72,56 @@ export default new Vuex.Store({
       // });
     },
     signup(context, {id, password, name, nickname, email, tel, birth, url, imageUrl}) {
-      console.log(id)
-      alert("dd")
       http
-      .post('/account/signup', {
+      .post('/user', {
         id: id,
         password: password,
         name: name,
         nickname: nickname,
         email: email,
         tel: tel,
-        birth: birth,
-        url: url,
-        imageUrl: imageUrl
+        birthday: birth,
+        github_url: url,
+        profile_img_url: imageUrl
       })
       .then(({ data }) => {
         alert("success")
         routes.push('/')
-      });
+      })
+      .catch((error) => {
+        if(error.response.status=='404'){
+          alert("아이디와 비밀번호를 확인해 주세요.")
+        }
+      })
     },
     modify(context, {password, name, nickname, email, tel, birth, url, imageUrl}) {
+      // console.log(this.state.userInfo.seq);
+      // console.log(this.state.userInfo.id);
+      // console.log(name);
+      // console.log(nickname);
+      
       http
-      .put('/account/modify', {
-        id: this.state.id,
+      .put('/user', {
+        seq: this.state.userInfo.seq,
+        id: this.state.userInfo.id,
         password: password,
         name: name,
         nickname: nickname,
         email: email,
         tel: tel,
-        birth: birth,
-        url: url,
-        imageUrl: imageUrl
+        birthday: birth,
+        github_url: url,
+        profile_img_url: imageUrl
       })
       .then(({ data }) => {
         alert("success")
         routes.push('/')
       })
-    }
+      .catch((error) => {
+        if(error.response.status=='404'){
+          alert("404")
+        }
+      })
+    },
   }
 })
