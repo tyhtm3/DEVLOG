@@ -13,6 +13,7 @@
 		<mapper resource="mappers/ProjectMapper.xml" />
 		<mapper resource="mappers/ProjectStackMapper.xml" />
 		<mapper resource="mappers/PortfolioMapper.xml" />
+		<mapper resource="mappers/PortfolioProjectMapper.xml" />
 	</mappers>
 </configuration>
 

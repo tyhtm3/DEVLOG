@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.devlog.mapper.PortfolioProjectMapper">
+
+	<!-- 포트폴리오의 모든 프로젝들을 반환한다  -->
+	<select id="selectAllPortfolioProject" resultType="Project">
+		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count
+		from post inner join post_project on post.seq=post_project.seq
+        where post_project.seq in (
+		select seq_post_project from post_portfolio_project where seq_post_portfolio = #{ seq_post_portfolio } );
+	</select>
+	
+	<!-- 포트폴리오에 프로젝트를 추가한다.  -->
+	<insert id="insertPortfolioProject">
+		insert into post_portfolio_project( seq_post_portfolio, set_post_project)
+		values ( #{seq_post_portfolio}, #{set_post_project} )
+	</insert>
+	
+	<!-- 포트폴리오의 프로젝트를 삭제한다. -->
+	<delete id="deletePortfolioProject">
+		delete from post_portfolio_project
+		where 	seq = #{seq}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
