@@ -41,14 +41,14 @@ export default new Vuex.Store({
       context.commit('mutateLoginFormVisible', false)
       context.commit('mutateIsLogin', true)
       var userInfo = {
-        seq: 13,
+        seq: 8,
         id: 'test',
         password: 'test',
-        name: 'test',
+        name: '감자',
         nickname: '',
         email: 'test@test.com',
         tel: '',
-        github_url: 'https://www.devlog.com',
+        github_url: 'www.devlog.com',
         profile_img_url: '',
       }
       context.commit('mutateUserInfo', userInfo)
@@ -123,5 +123,14 @@ export default new Vuex.Store({
         }
       })
     },
+    signout(context, {seq} ) {
+      http
+      .delete('/user/'+seq)
+      .then(({ data }) => {
+        context.commit('mutateIsLogin', false)
+        alert("탈퇴 처리 되었습니다.")
+        this.$router.push('/')
+      })
+    }
   }
 })

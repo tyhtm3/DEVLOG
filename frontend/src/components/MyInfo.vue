@@ -116,6 +116,15 @@ export default {
         })
       }
     },
+    signout() {
+      var del = confirm("정말 탈퇴하시겠습니까?");
+      if(del){
+        console.log(this.$store.state.userInfo.seq);
+        this.$store.dispatch('signout', {
+          seq: this.$store.state.userInfo.seq
+        })
+      }
+    },
     validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);

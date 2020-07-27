@@ -37,7 +37,7 @@
 									<ul class="menu">
 										<li> <i class="ti-settings "></i>
 											<router-link to="/myinfo">
-												<h3>명뮹 <span class="text-green fontello-record"></span></h3>
+												<h3>{{ this.$store.state.userInfo.name }} <span class="text-green fontello-record"></span></h3>
 												<p>sub message</p>
 											</router-link>
 										</li>
