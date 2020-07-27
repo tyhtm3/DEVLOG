@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
-@RequestMapping(value="/api")
+@RequestMapping(value="/api/portfolio")
 public class PortfolioController {
 
 	private static final Logger logger = LoggerFactory.getLogger(PortfolioController.class);
@@ -40,7 +40,7 @@ public class PortfolioController {
 	
 	/* show blog portfolio */
 	@ApiOperation(value = "블로그 메인에서 모든 포트폴리오를 반환.", response = List.class)    
-	@GetMapping(value = "/blog/portfolio/{seq_blog}/{seq_user}")
+	@GetMapping(value = "/blog/{seq_blog}/{seq_user}")
 	public ResponseEntity<List<Portfolio>> selectAllPortfolioByBlog(@PathVariable int seq_blog, @PathVariable int seq_user) {
 		logger.debug("selectAllPortfolioByBlog - 호출");
 		return new ResponseEntity<List<Portfolio>>(portfolioService.selectAllPortfolioByBlog(seq_user, seq_blog), HttpStatus.OK);
@@ -49,7 +49,7 @@ public class PortfolioController {
 
 	/* basic portfolio crud */
 	@ApiOperation(value = "글번호에 해당하는 포트폴리오를 반환", response = String.class)
-	@GetMapping(value = "/portfolio/{seq}")
+	@GetMapping(value = "/{seq}")
 	public ResponseEntity<Portfolio> selectPortfolio(@PathVariable int seq) {
 		logger.debug("selectPortfolio - 호출");
 		return new ResponseEntity<Portfolio>(portfolioService.selectPortfolio(seq), HttpStatus.OK);
@@ -57,7 +57,7 @@ public class PortfolioController {
 	}
 	
 	@ApiOperation(value = "새로운  포트폴리오 입력 ( seq_blog, title, disclosure, summary, start_date, role ) 필수  ", response = String.class)
-	@PostMapping(value = "/portfolio")
+	@PostMapping
 	public ResponseEntity<String> insertPortfolio(@RequestBody Portfolio portfolio) {
 		
 		logger.debug("insertPortfolio - 호출");
@@ -74,7 +74,7 @@ public class PortfolioController {
 	}
 
 	@ApiOperation(value = " 포트폴리오 수정", response = String.class)
-	@PutMapping(value = "/portfolio")
+	@PutMapping
 	public ResponseEntity<String> updatePortfolio(@RequestBody Portfolio portfolio) {
 		logger.debug("updatePortfolio - 호출");
 		if (portfolioService.updatePost(portfolio)==1&&portfolioService.updatePostPortfolio(portfolio)==1) {
@@ -84,7 +84,7 @@ public class PortfolioController {
 	}
 
 	@ApiOperation(value = "글번호에 해당하는 포트폴리오 삭제", response = String.class)
-	@DeleteMapping(value = "/portfolio/{seq}")
+	@DeleteMapping(value = "/{seq}")
 	public ResponseEntity<String> deletePortfolio(@PathVariable int seq) {
 		logger.debug("deletePortfolio - 호출");
 		if (portfolioService.deletePortfolio(seq)==1) {
