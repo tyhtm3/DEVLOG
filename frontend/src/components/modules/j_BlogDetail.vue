@@ -7,43 +7,48 @@
           <div class="box-body" style="min-height:400px;">
             <div class="movie-card">
               <!-- start profile -->
-              <div class="container-movie">
+              <div class="container-movie" style="height:auto;">
                 <div class="hero">
                   <div class="details-profile">
                     <h1>{{title}}</h1>
                   </div>
                 </div>
                 <!-- end hero -->
-                <div class="description-profile">
+                <div class="description-profile" style="height:auto; padding-bottom:20px;">
                   <div class="column1">
                   <span>
                     <span> <i class="ti-calendar"></i> {{regtime}} </span>&#124;
                     <!-- <span> <i class="el-icon-date"></i> {{postedDate}} </span>&#124; -->
                     <span> <i class="ti-comment-alt"></i> {{comments}} </span>&#124;
-                    <span> <i class="ti-heart"></i> {{like_count}}</span>
+                    <span> <i class="ti-heart"></i> {{like_count}}</span>&#124;
+                    <span><a href="#"><i class="ti-pencil-alt "></i> </a></span> &#124;
+                    <span><a href="#" onclick="deleteEntry(); return false;"><i class="ti-trash"></i></a></span>
                   </span>
-                  <span style="float: right;">
-                    <span><a href="#">수정</a></span> &#124;
-                    <span><a href="#" onclick="deleteEntry(); return false;">삭제</a></span>
-                  </span>
+                  <!-- <span style="float: right; margin-right:60px;">
+                    <span><a href="#"><i class="ti-pencil-alt "></i> </a></span> &#124;
+                    <span><a href="#"><i class="ti-eraser "></i> </a></span> &#124;
+                    <span><a href="#" onclick="deleteEntry(); return false;"><i class="ti-trash"></i></a></span>
+                  </span> -->
                   </div>
                 </div>
               </div>
               <!-- end profile -->
-              <!-- start content -->
               <div class="box" style="padding:30px;">
-              {{content}}
+                
+              <!-- start content -->
+              <div>
+                {{content}}
               </div>
               <!-- end content -->
               <!-- start tag -->
-              <div class="box" style="padding:30px;">
-                <!-- tags에 태그 리스트 받아온뒤 포문으로 출력-->
-                <!-- 사이즈 정돈 필요 -->
+              <div>
                 <span v-for="(tag, index) in tags" v-bind:key="index">
                 <span class="tag" >#{{tag}} </span>
                 </span>
               </div>
               <!-- end tag -->
+              </div>
+              
               <!-- start comment -->
               <div class="comment-nest">
                   <el-input type="textarea" :rows="2" placeholder="바른말 고운말~ 기분 좋아지는 댓글을 작성해주세요 *^^*" v-model="textarea"> </el-input>
@@ -102,32 +107,30 @@
         return { 
           seq:'1',
           seq_blog:'',
-          title:'제목은 깃 브랜치 사용 방법',
-          regtime: '2000-01-01 01:01:01',
-          // 댓글이 disclosure인가요?!
-          disclosure: '12',
-          comments: '17',
-          like_count: '523',
-          content:'내용없다',
+          title:'',
+          regtime: '',
+          disclosure: '', // 공개범위
+          comments: '0',
+          like_count: '',
+          content:'',
           // tags : 태그 리스트 불러오는거 없나!?
           tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
         }
     },
     methods: {
       getPostInfo(){
-        this.$http.get('/api/post/'+this.seq)
+        this.$http.get('devlog/api/post/'+this.seq)
         .then(({data}) => {
-          alert("들어옴");
             this.seq_blog=data.seq_blog;
             this.title = data.title;
             this.regtime = data.regtime;
-            // 댓글이 disclosure인가요?!
+            // 공개여부
             this.disclosure = data.disclosure;
             this.comments = data.comments;
             this.like_count = data.like_count;
             this.content = data.content;
          })
-      },//getUserInfo
+      },
    },
   }
 </script>
