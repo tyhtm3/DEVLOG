@@ -86,7 +86,7 @@ public class PortfolioController {
 	 *  */
 	
 	/* show blog portfolio */
-	@ApiOperation(value = "블로그 메인에서 모든 포트폴리오의 개수 반환. ('seq_user':2,'seq_blog':1)", response = List.class)    
+	@ApiOperation(value = "블로그 메인에서 모든 포트폴리오의 개수 반환. (ex. { seq_user:0 , seq_blog:1 } )", response = List.class)    
 	@GetMapping(value = "/blog/count/{seq_user}/{seq_blog}")
 	public ResponseEntity<Integer> selectPortfolioCntByBlog(@PathVariable int seq_user,@PathVariable int seq_blog) {
 		logger.debug("selectAllPortfolioByBlog - 호출");
@@ -94,7 +94,7 @@ public class PortfolioController {
 	}
 
 
-	@ApiOperation(value = "블로그 메인에서 한 페이지의 포트폴리오를 반환. ('seq_user':2,'seq_blog':1,'offset':5,'limit':1, )", response = List.class)    
+	@ApiOperation(value = "블로그 메인에서 한 페이지의 포트폴리오를 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:10 } )", response = List.class)    
 	@GetMapping(value = "/blog/{seq_user}/{seq_blog}/{offset}/{limit}")
 	public ResponseEntity<List<Portfolio>> selectPortfolioByBlog(@PathVariable int seq_user,@PathVariable int seq_blog,@PathVariable int offset,@PathVariable int limit) {
 		logger.debug("selectPortfolioByBlog - 호출");

@@ -91,7 +91,7 @@ public class ProjectController {
 	// RequestBody로 Map을 받아오기 때문에 Get 대신 Project를 사용함.
 	
 	// show feed
-	@ApiOperation(value = "피드에서 모든 프로젝트의 개수 반환. (ex. 'seq_user':0, 'disclosure':1,'tag': {'java','c++' ... 없으면 null} )", response = List.class)
+	@ApiOperation(value = "피드에서 모든 프로젝트의 개수 반환. (ex. { seq_user:2 , seq_blog:1, tag:['python','java']  } )", response = List.class)
 	@PostMapping(value = "/feed/count")
 	public ResponseEntity<Integer> selectProjectCntByFeed(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("selectProjectCntByFeed - 호출");
@@ -99,7 +99,7 @@ public class ProjectController {
 	}
 	
 	
-	@ApiOperation(value = "피드에서 한 페이지의 프로젝트의 반환. (ex. 'seq_user':0, 'disclosure':1, 'offset':0,'limit':5','tag': {'java','c++' ... 없으면 null} )", response = List.class)
+	@ApiOperation(value = "피드에서 한 페이지의 프로젝트의 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:10 tag:['python']  } )", response = List.class)
 	@PostMapping(value = "/feed")
 	public ResponseEntity<List<Project>> selectProjectByFeed(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("selectProjectByFeed - 호출");
@@ -108,7 +108,7 @@ public class ProjectController {
 	
 	
 	// show blog
-	@ApiOperation(value = "블로그 메인에서 모든 프로젝트의 개수 반환. (ex. 'seq_user':0, 'seq_blog':1,'tag': {'java','c++' ... 없으면 null} )", response = List.class)    
+	@ApiOperation(value = "블로그 메인에서 모든 프로젝트의 개수 반환. (ex. { seq_user:0 , seq_blog:1, tag:['java']  } )", response = List.class)    
 	@PostMapping(value = "/blog/count")
 	public ResponseEntity<Integer> selectProjectCntByBlog(@RequestBody Map<String, Object> params) {
 		logger.debug("selectProjectCntByBlog - 호출");
@@ -116,7 +116,7 @@ public class ProjectController {
 	}
 	
 	
-	@ApiOperation(value = "블로그 메인에서 한 페이지의 프로젝트 반환. (ex. 'seq_user':0, 'seq_blog':1, 'offset':0,'limit':5','tag': {'java','c++' ... 없으면 null} )", response = List.class)    
+	@ApiOperation(value = "블로그 메인에서 한 페이지의 프로젝트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:10, tag:['python','c++']  } )", response = List.class)    
 	@PostMapping(value = "/blog")
 	public ResponseEntity<List<Project>> selectProjectByBlog(@RequestBody Map<String, Object> params) {
 		logger.debug("selectProjectByBlog - 호출");
