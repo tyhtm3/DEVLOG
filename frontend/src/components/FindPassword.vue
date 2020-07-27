@@ -1,11 +1,29 @@
 <template>
 	<div>
-    <p>FindPassWordPage</p>
-    <p>FindPassWordPage</p>
-    <p>FindPassWordPage</p>
-    <p>FindPassWordPage</p>
-    <p>FindPassWordPage</p>
-    <p>FindPassWordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
+    <p>FindPasswordPage</p>
   </div>
 </template>
 
