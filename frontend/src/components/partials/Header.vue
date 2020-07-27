@@ -20,7 +20,6 @@
             <input class="devin-search" type="search">
         </form>
       </div>
-       
       <div class="navbar-custom-menu">
         <span><router-link to="/blog-main">[BlogMain]</router-link></span>
         <span><router-link to="/dashboard-ju">[FeedMain]</router-link></span>
@@ -36,22 +35,22 @@
 								<li>
 									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
-										<li> <i class="dripicons-gear"></i>
-											<a style="cursor:pointer;" @click="myInfo">
+										<li> <i class="ti-settings "></i>
+											<router-link to="/myinfo">
 												<h3>명뮹 <span class="text-green fontello-record"></span></h3>
-												<!-- <p>sub message</p> -->
-											</a>
+												<p>sub message</p>
+											</router-link>
 										</li>
-										<li> <i class="dripicons-bold"></i>
-											<a style="cursor:pointer;" @click="myBlog">
+										<li> <i class="ti-user "></i>
+											<router-link to="/blog-main">
 												<h3>내 블로그<span class="text-yellow fontello-record"></span></h3>
-												<!-- <p>sub message</p> -->
-											</a>
+												<p>sub message</p>
+											</router-link>
 										</li>
-										<li> <i class="dripicons-power"></i>
+										<li> <i class="ti-power-off "></i>
 											<a style="cursor:pointer;" @click="logout">
 												<h3>로그아웃<span class="text-yellow fontello-record"></span></h3>
-												<!-- <p>sub message</p> -->
+												<p>sub message</p>
 											</a>
 										</li>
 									</ul>
@@ -71,24 +70,20 @@
 </template>
 <script>
 import Login from '../../components/Login.vue'
+import router from '../../routes'
 export default {
-  name: 'DashboardHeader',
-  components: {
-    Login
-  },
-  methods : {
+	name: 'DashboardHeader',
+	components: {
+		Login
+	},
+  methods: {
     loginFormOpen(){
      this.$store.state.loginFormVisible = true;
 		},
-		myInfo(){
-			alert("정보수정");
-		},
-		myBlog(){
-			alert("내블로그");
-		},
 		logout(){
-     this.$store.state.isLogin = false;
-    }
+		 this.$store.state.isLogin = false;
+		 this.$store.state.userInfo = {};
+		},
   },
 }
 </script>

@@ -9,7 +9,7 @@
 				<input v-model="password" type="password" id="password" placeholder="password"/>
 				<button class="normal" @click="login">login</button><p/>
 				<button class="kakao" @click="login">kakao</button><button class="naver" @click="login">naver</button><p/>
-				<button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button>
+				<!-- <button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button> -->
 				<p class="message">Not registered?
 					<router-link to="/signup">
 						Create an account
@@ -25,38 +25,28 @@
 	</div>
 </template>
 <script>
-	export default {
-		name: 'Login',
-		components: {
-		},
-		created(){
-		},
-		watch: {
-		},
-		methods: {
-				loginFormClose(){
-						this.$store.state.loginFormVisible = false
-				},
-				login() {
-						this.$store.state.isLogin = true
-						this.$store.state.loginFormVisible = false
-						alert("로그인 되었습니다(임시)")
-
-						// if(this.id==='')
-						// 		alert('아이디을 입력해주세요.')
-						// else if(this.password==='')
-						// 		alert('비밀번호를 입력해주세요.')
-						// else
-						// 		this.$store.dispatch('login', {id: this.id, password: this.password})
-				}
-		},
-		data: () => {
-				return {
-						id: '',
-						password: '',
-				}
+export default {
+	name: 'Login',
+	data: () => {
+		return {
+			id: '',
+			password: '',
 		}
-	}
+	},
+	methods: {
+		loginFormClose(){
+			this.$store.state.loginFormVisible = false
+		},
+		login() {
+			if(this.id==='')
+				alert('아이디을 입력해주세요.')
+			else if(this.password==='')
+				alert('비밀번호를 입력해주세요.')
+			else
+				this.$store.dispatch('login', {id: this.id, password: this.password})
+		}
+	},
+}
 
 </script>
 <style>

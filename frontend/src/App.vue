@@ -12,4 +12,3 @@ export default {
 <style lang="scss">
   @import "sass/main"
 </style>
-
