@@ -52,10 +52,10 @@ public class PortfolioProjectController {
 	}
 	
 	@ApiOperation(value = "포트폴리오의 프로젝트를 삭제한다.", response = String.class)
-	@DeleteMapping(value = "/{seq}")
-	public ResponseEntity<String> deletePortfolioProject(@PathVariable int seq) throws Exception {
+	@DeleteMapping(value = "/{seq_post_portfolio}/{seq_post_project}")
+	public ResponseEntity<String> deletePortfolioProject(@PathVariable int seq_post_portfolio, @PathVariable int seq_post_project) throws Exception {
 		logger.debug("deletePortfolioProject - 호출");
-		if(portfolioProjectService.deletePortfolioProject(seq)==1) {
+		if(portfolioProjectService.deletePortfolioProject(seq_post_portfolio, seq_post_project)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

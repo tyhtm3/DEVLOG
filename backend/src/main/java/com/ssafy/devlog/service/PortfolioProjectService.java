@@ -9,5 +9,5 @@ public interface PortfolioProjectService {
 	
 	public List<Project> selectAllPortfolioProject(int seq_post_portfolio);
 	public int insertPortfolioProject(PortfolioProject portfolioProject);
-	public int deletePortfolioProject(int seq);
+	public int deletePortfolioProject(int seq_post_portfolio, int seq_post_project);
 }
