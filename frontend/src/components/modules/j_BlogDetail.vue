@@ -21,8 +21,8 @@
                     <!-- <span> <i class="el-icon-date"></i> {{postedDate}} </span>&#124; -->
                     <span> <i class="ti-comment-alt"></i> {{comments}} </span>&#124;
                     <span> <i class="ti-heart"></i> {{like_count}}</span>&#124;
-                    <span><a href="#"><i class="ti-pencil-alt "></i> </a></span> &#124;
-                    <span><a href="#" onclick="deleteEntry(); return false;"><i class="ti-trash"></i></a></span>
+                    <span><a class="nocolorlink" href="#" style="text-decoration: none"><i class="ti-pencil-alt "></i> </a></span> &#124;
+                    <span><a class="nocolorlink" href="#" onclick="deleteEntry(); return false;"><i class="ti-trash"></i></a></span>
                   </span>
                   <!-- <span style="float: right; margin-right:60px;">
                     <span><a href="#"><i class="ti-pencil-alt "></i> </a></span> &#124;
@@ -33,22 +33,19 @@
                 </div>
               </div>
               <!-- end profile -->
+              <br>
               <div class="box" style="padding:30px;">
-                
               <!-- start content -->
-              <div>
-                {{content}}
-              </div>
+                {{content}}내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다내용이많아야진짜있는거같으니까가득채워야겠다
               <!-- end content -->
+              </div>
               <!-- start tag -->
-              <div>
+              <div class="box" style="padding:30px; background:#F0F0ED;">
                 <span v-for="(tag, index) in tags" v-bind:key="index">
                 <span class="tag" >#{{tag}} </span>
                 </span>
               </div>
               <!-- end tag -->
-              </div>
-              
               <!-- start comment -->
               <div class="comment-nest">
                   <el-input type="textarea" :rows="2" placeholder="바른말 고운말~ 기분 좋아지는 댓글을 작성해주세요 *^^*" v-model="textarea"> </el-input>
@@ -126,7 +123,6 @@
             this.regtime = data.regtime;
             // 공개여부
             this.disclosure = data.disclosure;
-            this.comments = data.comments;
             this.like_count = data.like_count;
             this.content = data.content;
          })
@@ -134,3 +130,10 @@
    },
   }
 </script>
+<style scoped>
+
+a:link { color: #B1B0AC; text-decoration: none;}
+a:visited { color: #B1B0AC;; text-decoration: none;}
+a:hover { color: black; text-decoration: bold;}
+
+</style>
