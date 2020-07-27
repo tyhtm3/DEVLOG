@@ -15,26 +15,23 @@ public class PostServiceImpl implements PostService{
 	private PostMapper postMapper;
 	
 	@Override
-	public List<Post> selectAllPost(int seq_user){
-		return postMapper.selectAllPost(seq_user);
-	}
-	@Override
-	public List<Post> selectAllPostByNeighbor(int seq_user){
-		return postMapper.selectAllPostByNeighbor(seq_user);
-	}
-	@Override
-	public List<Post> selectAllPostByTag(int seq_user, List<String> tag){
-		return postMapper.selectAllPostByTag(seq_user, tag);
+	public int selectPostCntByFeed(int seq_user, int disclosure, List<String> tag) {
+		return postMapper.selectPostCntByFeed(seq_user, disclosure, tag);
 	}
 	
 	@Override
-	public List<Post> selectAllPostByBlog(int seq_user, int seq_blog){
-		return postMapper.selectAllPostByBlog(seq_user, seq_blog);
+	public List<Post> selectPostByFeed(int seq_user,int disclosure,int offset,int limit,List<String> tag){
+		return postMapper.selectPostByFeed(seq_user, disclosure, offset, limit, tag);
 	}
 	
 	@Override
-	public List<Post> selectAllPostByBlogByTag(int seq_user, int seq_blog, List<String> tag){
-		return postMapper.selectAllPostByBlogByTag(seq_user, seq_blog, tag);
+	public int selectPostCntByBlog(int seq_user, int disclosure, List<String> tag) {
+		return postMapper.selectPostCntByBlog(seq_user, disclosure, tag);
+	}
+	
+	@Override
+	public List<Post> selectPostByBlog(int seq_user,int disclosure,int offset,int limit,List<String> tag){
+		return postMapper.selectPostByBlog(seq_user, disclosure, offset, limit, tag);
 	}
 	
 	@Override

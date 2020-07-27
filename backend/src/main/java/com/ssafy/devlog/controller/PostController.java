@@ -36,56 +36,6 @@ public class PostController {
 	private PostService postService;
 	
 	
-	/* 	비로그인 (seq_user==0) : 공개범위가 '전체'인 포스트 반환
-	 * 	   로그인 (seq_user!=0) : 공개범위가 '전체'인 포스트와 '이웃공개/비공개'인 포스트의 접근여부 판별하여 반환  */
-	
-	
-	
-	/* show feed post */
-	@ApiOperation(value = "피드에서 모든 포스트 반환.", response = List.class)
-	@GetMapping(value = "/feed/{seq_user}")
-	public ResponseEntity<List<Post>> selectAllPost(@PathVariable int seq_user) throws Exception {
-		logger.debug("selectAllPost - 호출");
-		return new ResponseEntity<List<Post>>(postService.selectAllPost(seq_user), HttpStatus.OK);
-	}
-	
-	@ApiOperation(value = "피드에서 이웃 블로그의 모든 포스트를 반환.", response = List.class)
-	@GetMapping(value = "/feed/neighbor/{seq_user}")
-	public ResponseEntity<List<Post>> selectAllPostByNeighbor(@PathVariable int seq_user) throws Exception {
-		logger.debug("selectAllPostByNeighbor - 호출");
-		return new ResponseEntity<List<Post>>(postService.selectAllPostByNeighbor(seq_user), HttpStatus.OK);
-	}
-
-	// Map을 받아오기 때문에 Get 대신 Post를 사용함.
-	@ApiOperation(value = "피드에서 선택된 태그를 가진 모든 포스트를 반환. (ex. 'seq_user':1 , 'tag': {'java','mysql'} )", response = List.class)    
-	@PostMapping(value = "/feed/tag")
-	public ResponseEntity<List<Post>> selectAllPostByTag(@RequestBody Map<String, Object> params) {
-		logger.debug("selectAllPostByTag - 호출");
-		int seq_user = (params.get("seq_user")==null?0:(int)params.get("seq_user"));
-		@SuppressWarnings("unchecked")
-		List<String> tag = (List<String>)params.get("tag");
-		return new ResponseEntity<List<Post>>(postService.selectAllPostByTag(seq_user,tag), HttpStatus.OK);
-	}
-
-	
-	/* show blog post */
-	@ApiOperation(value = "블로그 메인에서 모든 포스트를 반환.", response = List.class)    
-	@GetMapping(value = "/blog/{seq_blog}/{seq_user}")
-	public ResponseEntity<List<Post>> selectAllPostByBlog(@PathVariable int seq_blog, @PathVariable int seq_user) {
-		logger.debug("selectAllPostByBlog - 호출");
-		return new ResponseEntity<List<Post>>(postService.selectAllPostByBlog(seq_user, seq_blog), HttpStatus.OK);
-	}
-	
-	// Map을 받아오기 때문에 Get 대신 Post를 사용함.
-	@ApiOperation(value = "블로그 메인에서 선택한 태그에 해당하는 모든 포스트를 반환 (ex. 'seq_user':0 , 'tag': {'java','mysql'} )", response = List.class)    
-	@PostMapping(value = "/blog/tag")
-	public ResponseEntity<List<Post>> selectAllPostByBlogByTag(@RequestBody Map<String, Object> params) {
-		logger.debug("selectAllPostByBlogByTag - 호출");
-		int seq_user = (params.get("seq_user")==null?0:(int)params.get("seq_user"));
-		return new ResponseEntity<List<Post>>(postService.selectAllPostByBlogByTag(seq_user,(int)params.get("seq_blog"),(List<String>)params.get("tag")), HttpStatus.OK);
-	}
-	
-
 	/* basic post crud */
 	@ApiOperation(value = "글번호에 해당하는 게시글을 반환", response = String.class)
 	@GetMapping(value = "/{seq}")
@@ -103,10 +53,7 @@ public class PostController {
 		
 		// insertPost 이후 postBasic 객체에 seq 받아오기 위한 작업
 		Post postBasic = new Post();
-		postBasic.setSeq_blog(post.getSeq_blog());
-		postBasic.setTitle(post.getTitle());
-		postBasic.setDisclosure(post.getDisclosure());
-		postBasic.setContent(post.getContent());
+		postBasic = post;
 		postService.insertPost(postBasic);
 		
 		if (postService.insertPostBasic(postBasic)==1) {
@@ -124,7 +71,7 @@ public class PostController {
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
-
+	
 	@ApiOperation(value = "글번호에 해당하는 게시글 삭제", response = String.class)
 	@DeleteMapping(value = "/{seq}")
 	public ResponseEntity<String> deletePost(@PathVariable int seq) {
@@ -135,5 +82,50 @@ public class PostController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}	
 	
+	/* 	비로그인 (seq_user==0)		: 공개범위가 '전체'인 포스트 반환
+	 * 	   로그인 (seq_user!=0)		: 공개범위가 '전체'인 포스트와 '이웃공개/비공개'인 포스트의 접근여부 판별하여 반환 
+	 *   전체글 (disclosure==1)	: 전체 글 보기
+	 *   이웃글 (disclosure==2)	: 이웃의 글 보기
+	 *  */
+	
+	// RequestBody로 Map을 받아오기 때문에 Get 대신 Post를 사용함.
+	
+	// show feed
+	@ApiOperation(value = "피드에서 모든 포스트의 개수 반환. (ex. 'seq_user':0, 'disclosure':1,'tag': {'java','c++' ... 없으면 null} )", response = List.class)
+	@PostMapping(value = "/feed/count")
+	public ResponseEntity<Integer> selectPostCntByFeed(@RequestBody Map<String, Object> params) throws Exception {
+		logger.debug("selectPostCntByFeed - 호출");
+		return new ResponseEntity<Integer>(postService.selectPostCntByFeed((int)params.get("seq_user"),(int)params.get("disclosure"),(List<String>)params.get("tag")), HttpStatus.OK);
+	}
+	
+	
+	@ApiOperation(value = "피드에서 한 페이지의 포스트 반환. (ex. 'seq_user':0, 'disclosure':1, 'offset':0,'limit':5','tag': {'java','c++' ... 없으면 null} )", response = List.class)
+	@PostMapping(value = "/feed")
+	public ResponseEntity<List<Post>> selectPostByFeed(@RequestBody Map<String, Object> params) throws Exception {
+		logger.debug("selectPostByFeed - 호출");
+		return new ResponseEntity<List<Post>>(postService.selectPostByFeed((int)params.get("seq_user"),(int)params.get("disclosure"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
+	}
+	
+	
+	// show blog
+	@ApiOperation(value = "블로그 메인에서 모든 포스트의 개수 반환. (ex. 'seq_user':0, 'seq_blog':1,'tag': {'java','c++' ... 없으면 null} )", response = List.class)    
+	@PostMapping(value = "/blog/count")
+	public ResponseEntity<Integer> selectPostCntByBlog(@RequestBody Map<String, Object> params) {
+		logger.debug("selectPostCntByBlog - 호출");
+		return new ResponseEntity<Integer>(postService.selectPostCntByBlog((int)params.get("seq_user"),(int)params.get("seq_blog"),(List<String>)params.get("tag")), HttpStatus.OK);
+	}
+	
+	
+	@ApiOperation(value = "블로그 메인에서 한 페이지의 포스트 반환. (ex. 'seq_user':0, 'seq_blog':1, 'offset':0,'limit':5','tag': {'java','c++' ... 없으면 null} )", response = List.class)    
+	@PostMapping(value = "/blog")
+	public ResponseEntity<List<Post>> selectPostByBlog(@RequestBody Map<String, Object> params) {
+		logger.debug("selectPostByBlog - 호출");
+		return new ResponseEntity<List<Post>>(postService.selectPostByBlog((int)params.get("seq_user"),(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
+	}
+	
+	
 
+
+
+	
 }
