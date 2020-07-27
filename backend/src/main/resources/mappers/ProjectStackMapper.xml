@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.devlog.mapper.ProjectStackMapper">
+
+	<!-- 프로젝트의 모든 기술스택을 반환한다. -->
+	<select id="selectAllProjectStack" resultType="ProjectStack">
+		select *
+		from post_project_stack
+		where seq_post_project = #{seq_post_project}
+	</select>
+	
+	<!-- 프로젝트에 기술스택을 추가한다  -->
+	<insert id="insertProjectStack">
+		insert into post_project_stack( seq_post_project, stack)
+		values ( #{seq_post_project},#{stack} )
+	</insert>
+	
+	<!-- 프로젝트의 기술스택을 삭제한다. -->
+	<delete id="deleteProjectStack">
+		delete from post_project_stack
+		where 	seq = #{seq}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
