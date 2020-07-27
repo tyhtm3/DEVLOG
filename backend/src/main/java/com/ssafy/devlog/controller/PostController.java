@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
-@RequestMapping(value="/api")
+@RequestMapping(value="/api/post")
 public class PostController {
 
 	private static final Logger logger = LoggerFactory.getLogger(PostController.class);
@@ -43,14 +43,14 @@ public class PostController {
 	
 	/* show feed post */
 	@ApiOperation(value = "피드에서 모든 포스트 반환.", response = List.class)
-	@GetMapping(value = "/feed/post/{seq_user}")
+	@GetMapping(value = "/feed/{seq_user}")
 	public ResponseEntity<List<Post>> selectAllPost(@PathVariable int seq_user) throws Exception {
 		logger.debug("selectAllPost - 호출");
 		return new ResponseEntity<List<Post>>(postService.selectAllPost(seq_user), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "피드에서 이웃 블로그의 모든 포스트를 반환.", response = List.class)
-	@GetMapping(value = "/feed/post/neighbor/{seq_user}")
+	@GetMapping(value = "/feed/neighbor/{seq_user}")
 	public ResponseEntity<List<Post>> selectAllPostByNeighbor(@PathVariable int seq_user) throws Exception {
 		logger.debug("selectAllPostByNeighbor - 호출");
 		return new ResponseEntity<List<Post>>(postService.selectAllPostByNeighbor(seq_user), HttpStatus.OK);
@@ -58,7 +58,7 @@ public class PostController {
 
 	// Map을 받아오기 때문에 Get 대신 Post를 사용함.
 	@ApiOperation(value = "피드에서 선택된 태그를 가진 모든 포스트를 반환. (ex. 'seq_user':1 , 'tag': {'java','mysql'} )", response = List.class)    
-	@PostMapping(value = "/feed/post/tag")
+	@PostMapping(value = "/feed/tag")
 	public ResponseEntity<List<Post>> selectAllPostByTag(@RequestBody Map<String, Object> params) {
 		logger.debug("selectAllPostByTag - 호출");
 		int seq_user = (params.get("seq_user")==null?0:(int)params.get("seq_user"));
@@ -70,7 +70,7 @@ public class PostController {
 	
 	/* show blog post */
 	@ApiOperation(value = "블로그 메인에서 모든 포스트를 반환.", response = List.class)    
-	@GetMapping(value = "/blog/post/{seq_blog}/{seq_user}")
+	@GetMapping(value = "/blog/{seq_blog}/{seq_user}")
 	public ResponseEntity<List<Post>> selectAllPostByBlog(@PathVariable int seq_blog, @PathVariable int seq_user) {
 		logger.debug("selectAllPostByBlog - 호출");
 		return new ResponseEntity<List<Post>>(postService.selectAllPostByBlog(seq_user, seq_blog), HttpStatus.OK);
@@ -78,7 +78,7 @@ public class PostController {
 	
 	// Map을 받아오기 때문에 Get 대신 Post를 사용함.
 	@ApiOperation(value = "블로그 메인에서 선택한 태그에 해당하는 모든 포스트를 반환 (ex. 'seq_user':0 , 'tag': {'java','mysql'} )", response = List.class)    
-	@PostMapping(value = "/blog/post/tag")
+	@PostMapping(value = "/blog/tag")
 	public ResponseEntity<List<Post>> selectAllPostByBlogByTag(@RequestBody Map<String, Object> params) {
 		logger.debug("selectAllPostByBlogByTag - 호출");
 		int seq_user = (params.get("seq_user")==null?0:(int)params.get("seq_user"));
@@ -88,7 +88,7 @@ public class PostController {
 
 	/* basic post crud */
 	@ApiOperation(value = "글번호에 해당하는 게시글을 반환", response = String.class)
-	@GetMapping(value = "/post/{seq}")
+	@GetMapping(value = "/{seq}")
 	public ResponseEntity<Post> selectPost(@PathVariable int seq) {
 		logger.debug("selectPost - 호출");
 		return new ResponseEntity<Post>(postService.selectPost(seq), HttpStatus.OK);
@@ -96,7 +96,7 @@ public class PostController {
 	}
 	
 	@ApiOperation(value = "새로운 게시글 입력 ( seq_blog, title, disclosure, content ) 만 사용 ", response = String.class)
-	@PostMapping(value = "/post")
+	@PostMapping
 	public ResponseEntity<String> insertPost(@RequestBody Post post) {
 		
 		logger.debug("insertPost - 호출");
@@ -116,7 +116,7 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "게시글 수정 ( seq, title, disclosure, content ) 만 사용", response = String.class)
-	@PutMapping(value = "/post")
+	@PutMapping
 	public ResponseEntity<String> updatePost(@RequestBody Post post) {
 		logger.debug("updatePost - 호출");
 		if (postService.updatePost(post)==1&&postService.updatePostBasic(post)==1) {
@@ -126,7 +126,7 @@ public class PostController {
 	}
 
 	@ApiOperation(value = "글번호에 해당하는 게시글 삭제", response = String.class)
-	@DeleteMapping(value = "/post/{seq}")
+	@DeleteMapping(value = "/{seq}")
 	public ResponseEntity<String> deletePost(@PathVariable int seq) {
 		logger.debug("deletePost - 호출");
 		if (postService.deletePost(seq)==1) {
