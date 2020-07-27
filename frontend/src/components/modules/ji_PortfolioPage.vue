@@ -1,7 +1,8 @@
 <template>
     <transition name="el-zoom-in-top">
         <section class="content">
-                <div class="row-mansory">
+            포트폴리오출력
+                <!-- <div class="row-mansory">
                     <div class="col-md-4">
                         <div class="well-media">
                             <div class="vendor">
@@ -129,7 +130,7 @@
                         </div>
                     </div>
                 
-                </div>
+                </div> -->
             </section>
     </transition>
 </template>
