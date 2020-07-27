@@ -22,7 +22,7 @@
                     <span> <i class="ti-comment-alt"></i> {{comments}} </span>&#124;
                     <span> <i class="ti-heart"></i> {{like_count}}</span>&#124;
                     <span><a class="nocolorlink" href="#" style="text-decoration: none"><i class="ti-pencil-alt "></i> </a></span> &#124;
-                    <span><a class="nocolorlink" href="#" onclick="deleteEntry(); return false;"><i class="ti-trash"></i></a></span>
+                    <span><a class="nocolorlink" href="#" @click="deletePost()"><i class="ti-trash"></i></a></span>
                   </span>
                   <!-- <span style="float: right; margin-right:60px;">
                     <span><a href="#"><i class="ti-pencil-alt "></i> </a></span> &#124;
@@ -127,6 +127,15 @@
             this.content = data.content;
          })
       },
+      deletePost(){
+        // alert(this.seq);
+        // 정말로 삭제하시겠습니까 버튼 띄우기
+        this.$http.delete('devlog/api/post/'+this.seq).then(({data}) => {
+        console.dir(this.seq+"번 게시물 삭제 완료");
+        alert("삭제 완료! 메인으로 이동합니다. 이걸 더 이쁜 다이어로그에서 띄우기");
+        this.$router.push('/blog-main');
+			})
+      }
    },
   }
 </script>
