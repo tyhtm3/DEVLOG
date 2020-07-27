@@ -23,6 +23,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.3'
+	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -30,8 +31,15 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 
+	//스웨거
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.1'
    	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.1'
+   	
+   	//파일 IO
+   	compile group: 'org.projectlombok', name: 'lombok', version: '1.16.8'
+   	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
+   	compile group: 'commons-io', name: 'commons-io', version: '2.5'
+
 }
 
 test {

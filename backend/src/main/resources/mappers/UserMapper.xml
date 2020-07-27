@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.devlog.mapper.UserMapper">
+	<!-- 회원 전체 조회 -->
+	<select id="selectAllUser" resultType="User">
+		select *
+		from user
+	</select>
+
+	<!-- 회원 상세 조회 -->
+	<select id="selectUserBySeq" resultType="User">
+		select *
+		from user
+		where
+		seq = #{seq}
+	</select>
+
+	<!-- 회원 가입 -->
+	<insert id="insertUser">
+		insert into user(
+		seq,id,password,email,nickname,name,tel,profile_img_url,github_url,birthday
+		) values (
+		#{seq},#{id},#{password},#{email},#{nickname},#{name},#{tel},#{profile_img_url},#{github_url},#{birthday}
+		)
+	</insert>
+
+	<!-- 블로그 수정 -->
+	<update id="updateUser">
+		update user
+		set
+			password = #{password},
+			email = #{email},
+			nickname = #{nickname},
+			name = #{name},
+			tel = #{tel},
+			profile_img_url = #{profile_img_url},
+			github_url = #{github_url},
+			birthday = #{birthday}
+		where seq = #{seq}
+
+	</update>
+
+	<!-- 블로그 삭제 -->
+	<delete id="deleteUser">
+		delete
+		from user
+		where seq = #{seq}
+	</delete>
+</mapper>
+
+
+
+
+
+
