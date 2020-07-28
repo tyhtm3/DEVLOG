@@ -53,17 +53,22 @@ public class UserController {
 		return new ResponseEntity<List<User>>(userService.selectAllUser(), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "로그인 시 id, password를 입력받아 일치여부를 확인한다.", response = List.class)
+	@ApiOperation(value = "로그인 시 id, password를 입력받아 일치여부를 확인한다. // 아이디없음 : 404 , 비밀번호 틀림 : 401", response = List.class)
 	@PostMapping("/login")
 	public ResponseEntity<User> selectUserById(@RequestBody User user) throws Exception {
 		logger.debug("selectUserById - 호출");
 		String id = user.getId();
 		String pwd = user.getPassword();
 		user = userService.selectUserById(id);
-		if (user == null || !user.getPassword().equals(pwd)) {
-			return null;
-		} else
+		if (user == null) {
+			return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);
+		}
+		else if (!user.getPassword().equals(pwd)) {
+			user =null;
+			return new ResponseEntity<User>(user, HttpStatus.UNAUTHORIZED);
+		} else {
 			return new ResponseEntity<User>(user, HttpStatus.OK);
+		}
 	}
 
 	@ApiOperation(value = "특정 회원의 정보를 반환한다.", response = List.class)
@@ -78,7 +83,7 @@ public class UserController {
 	public ResponseEntity<String> insertUser(@RequestBody User user) throws Exception {
 		logger.debug("insertUser - 호출");
 		if (userService.selectUserById(user.getId()) != null) {
-			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
 		}
 		if (userService.insertUser(user) == 1) {
 			Blog blog = new Blog();
@@ -86,8 +91,9 @@ public class UserController {
 			blog.setSeq(user.getSeq());
 			blog.setBlog_name(user.getId() + "님의 블로그");
 			blog.setBlog_detail("블로그 소개를 입력해주세요");
-			if (blogService.insertBlog(blog) == 1)
+			if (blogService.insertBlog(blog) == 1) {
 				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			}
 			else
 				return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		}
