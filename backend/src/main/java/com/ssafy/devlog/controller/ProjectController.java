@@ -35,53 +35,6 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 	
-	/* 	비로그인 (seq_user==0) : 공개범위가 '전체'인 프로젝트 반환
-	 * 	   로그인 (seq_user!=0) : 공개범위가 '전체'인 프로젝트와 '이웃공개/비공개'인 프로젝트의 접근여부 판별하여 반환  */
-	
-	
-	/* show feed project */
-	@ApiOperation(value = "피드에서 모든 프로젝트 반환.", response = List.class)
-	@GetMapping(value = "/feed/{seq_user}")
-	public ResponseEntity<List<Project>> selectAllProject(@PathVariable int seq_user) throws Exception {
-		logger.debug("selectAllProject - 호출");
-		return new ResponseEntity<List<Project>>(projectService.selectAllProject(seq_user), HttpStatus.OK);
-	}
-	
-	@ApiOperation(value = "피드에서 이웃 블로그의 모든 프로젝트를 반환.", response = List.class)
-	@GetMapping(value = "/feed/neighbor/{seq_user}")
-	public ResponseEntity<List<Project>> selectAllProjectByNeighbor(@PathVariable int seq_user) throws Exception {
-		logger.debug("selectAllProjectByNeighbor - 호출");
-		return new ResponseEntity<List<Project>>(projectService.selectAllProjectByNeighbor(seq_user), HttpStatus.OK);
-	}
-
-	// Map을 받아오기 때문에 Get 대신 Post를 사용함.
-	@ApiOperation(value = "피드에서 선택된 태그를 가진 모든 프로젝트를 반환. (ex. 'seq_user':1 , 'tag': {'java','mysql'} )", response = List.class)    
-	@PostMapping(value = "/feed/tag")
-	public ResponseEntity<List<Project>> selectAllProjectByTag(@RequestBody Map<String, Object> params) {
-		logger.debug("selectAllProjectByTag - 호출");
-		return new ResponseEntity<List<Project>>(projectService.selectAllProjectByTag((int)params.get("seq_user"),(List<String>)params.get("tag")), HttpStatus.OK);
-	}
-
-	
-	
-	
-	
-	/* show blog project */
-	@ApiOperation(value = "블로그 메인에서 모든 프로젝트를 반환.", response = List.class)    
-	@GetMapping(value = "/blog/{seq_blog}/{seq_user}")
-	public ResponseEntity<List<Project>> selectAllProjectByBlog(@PathVariable int seq_blog, @PathVariable int seq_user) {
-		logger.debug("selectAllProjectByBlog - 호출");
-		return new ResponseEntity<List<Project>>(projectService.selectAllProjectByBlog(seq_user, seq_blog), HttpStatus.OK);
-	}
-	
-	// Map을 받아오기 때문에 Get 대신 Post를 사용함.
-	@ApiOperation(value = "블로그 메인에서 선택한 태그에 해당하는 모든 프로젝트를 반환 (ex. 'seq_user':0 , 'seq_blog':1 , 'tag': {'java','mysql'} )", response = List.class)    
-	@PostMapping(value = "/blog/tag")
-	public ResponseEntity<List<Project>> selectAllProjectByBlogByTag(@RequestBody Map<String, Object> params) {
-		logger.debug("selectAllProjectByBlogByTag - 호출");
-		return new ResponseEntity<List<Project>>(projectService.selectAllProjectByBlogByTag((int)params.get("seq_user"),(int)params.get("seq_blog"),(List<String>)params.get("tag")), HttpStatus.OK);
-	}
-	
 
 	/* basic project crud */
 	@ApiOperation(value = "글번호에 해당하는 프로젝트를 반환", response = String.class)
@@ -98,7 +51,7 @@ public class ProjectController {
 		
 		logger.debug("insertProject - 호출");
 		
-		// insertProject 이후 projectBasic 객체에 seq 받아오기 위한 작업
+		// insertPost 이후 Project 객체에 seq 받아오기 위한 작업
 		Project pjt = new Project();
 		pjt = project;
 		projectService.insertPost(pjt);
@@ -129,5 +82,48 @@ public class ProjectController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}	
 	
+	/* 	비로그인 (seq_user==0)		: 공개범위가 '전체'인 프로젝트 반환
+	 * 	   로그인 (seq_user!=0)		: 공개범위가 '전체'인 프로젝트와 '이웃공개/비공개'인 프로젝트의 접근여부 판별하여 반환 
+	 *   전체글 (disclosure==1)	: 전체 글 보기
+	 *   이웃글 (disclosure==2)	: 이웃의 글 보기
+	 *  */
+	
+	// RequestBody로 Map을 받아오기 때문에 Get 대신 Project를 사용함.
+	
+	// show feed
+	@ApiOperation(value = "피드에서 모든 프로젝트의 개수 반환. (ex. { seq_user:2 , seq_blog:1, tag:['python','java']  } )", response = List.class)
+	@PostMapping(value = "/feed/count")
+	public ResponseEntity<Integer> selectProjectCntByFeed(@RequestBody Map<String, Object> params) throws Exception {
+		logger.debug("selectProjectCntByFeed - 호출");
+		return new ResponseEntity<Integer>(projectService.selectProjectCntByFeed((int)params.get("seq_user"),(int)params.get("disclosure"),(List<String>)params.get("tag")), HttpStatus.OK);
+	}
+	
+	
+	@ApiOperation(value = "피드에서 한 페이지의 프로젝트의 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:10 tag:['python']  } )", response = List.class)
+	@PostMapping(value = "/feed")
+	public ResponseEntity<List<Project>> selectProjectByFeed(@RequestBody Map<String, Object> params) throws Exception {
+		logger.debug("selectProjectByFeed - 호출");
+		return new ResponseEntity<List<Project>>(projectService.selectProjectByFeed((int)params.get("seq_user"),(int)params.get("disclosure"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
+	}
+	
+	
+	// show blog
+	@ApiOperation(value = "블로그 메인에서 모든 프로젝트의 개수 반환. (ex. { seq_user:0 , seq_blog:1, tag:['java']  } )", response = List.class)    
+	@PostMapping(value = "/blog/count")
+	public ResponseEntity<Integer> selectProjectCntByBlog(@RequestBody Map<String, Object> params) {
+		logger.debug("selectProjectCntByBlog - 호출");
+		return new ResponseEntity<Integer>(projectService.selectProjectCntByBlog((int)params.get("seq_user"),(int)params.get("seq_blog"),(List<String>)params.get("tag")), HttpStatus.OK);
+	}
+	
+	
+	@ApiOperation(value = "블로그 메인에서 한 페이지의 프로젝트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:10, tag:['python','c++']  } )", response = List.class)    
+	@PostMapping(value = "/blog")
+	public ResponseEntity<List<Project>> selectProjectByBlog(@RequestBody Map<String, Object> params) {
+		logger.debug("selectProjectByBlog - 호출");
+		return new ResponseEntity<List<Project>>(projectService.selectProjectByBlog((int)params.get("seq_user"),(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
+	}
+	
+	
+
 
 }

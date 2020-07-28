@@ -10,12 +10,11 @@ import com.ssafy.devlog.dto.Post;
 @Mapper
 public interface PostMapper {
 	
-	public List<Post> selectAllPost(int seq_user);
-	public List<Post> selectAllPostByNeighbor(int seq_user);
-	public List<Post> selectAllPostByTag(@Param("seq_user") int seq_user, @Param("tag") List<String> tag);
+	public int selectPostCntByFeed(@Param("seq_user")int seq_user, @Param("disclosure")int disclosure,@Param("tag") List<String> tag);
+	public List<Post> selectPostByFeed(@Param("seq_user") int seq_user,@Param("disclosure")int disclosure, @Param("offset") int offset, @Param("limit") int limit, @Param("tag") List<String> tag);
 	
-	public List<Post> selectAllPostByBlog(@Param("seq_user") int seq_user, @Param("seq_blog") int seq_blog);
-	public List<Post> selectAllPostByBlogByTag(@Param("seq_user") int seq_user, @Param("seq_blog") int seq_blog, @Param("tag") List<String> tag);
+	public int selectPostCntByBlog(@Param("seq_user")int seq_user, @Param("seq_blog")int seq_blog,@Param("tag") List<String> tag);
+	public List<Post> selectPostByBlog(@Param("seq_user") int seq_user,@Param("seq_blog")int seq_blog, @Param("offset") int offset, @Param("limit") int limit, @Param("tag") List<String> tag);
 	
 	public Post selectPost(int seq);
 	public int insertPost(Post post);

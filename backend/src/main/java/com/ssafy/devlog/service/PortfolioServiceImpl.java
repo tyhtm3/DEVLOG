@@ -17,11 +17,16 @@ public class PortfolioServiceImpl implements PortfolioService{
 	private PortfolioMapper portfolioMapper;
 	
 	
+	@Override
+	public int selectPortfolioCntByBlog(int seq_user,int seq_blog) {
+		return portfolioMapper.selectPortfolioCntByBlog(seq_user, seq_blog);
+	}
 	
 	@Override
-	public List<Portfolio> selectAllPortfolioByBlog(int seq_user, int seq_blog){
-		return portfolioMapper.selectAllPortfolioByBlog(seq_user, seq_blog);
+	public List<Portfolio> selectPortfolioByBlog(int seq_user,int seq_blog,int offset,int limit){
+		return portfolioMapper.selectPortfolioByBlog(seq_user, seq_blog, offset, limit);
 	}
+
 	
 	
 	@Override
