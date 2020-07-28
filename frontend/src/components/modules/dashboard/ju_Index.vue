@@ -37,24 +37,12 @@
                         </div>
                        <br><br>
 
-<div>시자그ㅡㅡㅡㅡㅡㅡ</div>
-
-          <el-carousel :interval="4000" type="card" height="200px">
-    <el-carousel-item v-for="item in 6" :key="item">
-      <h3 class="medium">{{ item }}</h3>
-    </el-carousel-item>
-  </el-carousel>
-        
-<div>끄트ㅡㅡㅡㅡㅡㅡㅡ</div>
-                            <!-- 프로젝트 -->
-                          <!-- <mdb-carousel
-                            :items="thumbnailCarousel"
-                            thumbnails
-                            :interval="1000"
-                            indicators
-                            controlls
-                          ></mdb-carousel> -->
-
+                      <el-carousel :interval="4000" type="card" height="200px">
+                        <el-carousel-item v-for="item in 6" :key="item">
+                          <h3 class="medium">{{ item }}</h3>
+                        </el-carousel-item>
+                      </el-carousel>
+                          
                             <!-- 포스트 -->
                           <div class="col-md-12">
                                 <div class="inbox-nest">
