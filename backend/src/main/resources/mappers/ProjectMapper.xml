@@ -34,7 +34,7 @@
      
      <!-- 피드에서 한 페이지의 프로젝트 반환. -->
 	<select id="selectProjectByFeed" resultType="Project">
-		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count
+		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count,post.img_url
 		from post inner join post_project on post.seq=post_project.seq
 		<if test="seq_user == 0">
 		where disclosure=1
@@ -88,7 +88,7 @@
 
 	<!-- 블로그 메인에서 한 페이지의 프로젝트 반환.-->
 	<select id="selectProjectByBlog" resultType="Project">
-		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count
+		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count,post.img_url
 		from post inner join post_project on post.seq=post_project.seq
 		where seq_blog = #{seq_blog}
 		<if test="seq_user != 0">
@@ -114,7 +114,7 @@
 	
 	<!-- 프로젝트 상세조회  -->
 	<select id="selectProject" resultType="Project">
-		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count
+		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count,post.img_url
 		from post inner join post_project on post.seq=post_project.seq
 		where post.seq = #{seq}
 	</select>
@@ -122,9 +122,9 @@
 	<!-- 프로젝트 기본 정보 등록 -->
 	<insert id="insertPost" useGeneratedKeys="true" keyProperty="seq">
 		insert into post(
-			seq_blog,title,disclosure,like_count
+			seq_blog,title,disclosure,img_url,like_count
 		) values (
-			#{seq_blog}, #{title}, #{disclosure} ,0
+			#{seq_blog}, #{title}, #{disclosure} , #{img_url}, 0
 		)
 	</insert>
 	
@@ -141,7 +141,8 @@
 	<update id="updatePost">
 		update post 
 		   set title = #{title}, 
-		   	   disclosure = #{disclosure}
+		   	   disclosure = #{disclosure},
+		   	   img_url = #{img_url}
 		 where seq = #{seq}
 	</update>
 		

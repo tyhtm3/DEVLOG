@@ -53,6 +53,7 @@ CREATE TABLE `post`(
     `seq` int primary key auto_increment,
     `seq_blog` int not null,
     `title` varchar(512) not null,
+    `img_url` varchar(256),
     `regtime` datetime DEFAULT CURRENT_TIMESTAMP,
     `disclosure` int,
     `like_count` int,

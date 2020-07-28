@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import com.ssafy.devlog.dto.Portfolio;
 import com.ssafy.devlog.dto.Portfolio;
 
 @Mapper

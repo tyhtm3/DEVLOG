@@ -43,9 +43,9 @@
 	<!-- 포트폴리오 기본 정보 등록 -->
 	<insert id="insertPost" useGeneratedKeys="true" keyProperty="seq">
 		insert into post(
-			seq_blog,title,disclosure,like_count
+			seq_blog,title,disclosure,img_url,like_count
 		) values (
-			#{seq_blog}, #{title}, #{disclosure} ,0
+			#{seq_blog}, #{title}, #{disclosure} ,#{img_url}, 0
 		)
 	</insert>
 	
@@ -62,7 +62,8 @@
 	<update id="updatePost">
 		update post 
 		   set title = #{title}, 
-		   	   disclosure = #{disclosure}
+		   	   disclosure = #{disclosure},
+		   	   img_url = #{img_url}
 		 where seq = #{seq}
 	</update>
 		
