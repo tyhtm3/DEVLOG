@@ -3,29 +3,32 @@
     <div class="content-wrapper">
       <!-- start Main content -->
       <section class="content">
+        <!-- start box -->
         <div class="box">
+          <!-- start box-body -->
           <div class="box-body" style="min-height:400px;">
+            <!-- start movie-card -->
             <div class="movie-card">
-              <!-- start profile -->
+              <!-- start container-movie -->
               <div class="container-movie">
+              <!-- <div class="hero">-->
+                <!-- start profile -->
                 <div class="details-profile">
+                <!-- <div class="details-profile"> -->
                   <div class="title1" style="display:inline">
-                    <!-- 명묭이의 코딩일기 -->
-        <!-- start profile -->
-        <!-- <div class="hero">
-                <div class="details-profile">
-                  <div class="title1">
-                    {{blogInfo.blog_name}}
-                  </div> -->
                     <input type="text" id="title" value="명묭이의 코딩일기" disabled>
                   </div>
+                  <!-- 
+                  <div class="title1">
+                        {{blogInfo.blog_name}}
+                  </div> 
+                  -->
                   <i class="ti-pencil-alt" v-if="this.$store.state.settingButtonVisible" @click="alterTitle" style="cursor:pointer;"></i>
                   <div class="title2">
                     by {{blogOwnerInfo.nickname}}
                       <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
                       <a href="#"><img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" /></a>
                     <!-- <span>Web Designer</span> -->
-                    </div>
                   </div>
                 </div>
                 <div class="description-profile">
@@ -39,7 +42,6 @@
                         <h2><strong>{{blogOwnerNumOfPost}}</strong></h2>
                         <p> <small>Post</small> </p>
                       </div>
-
                       <div class="col-sm-4 emphasis" style="cursor:pointer;">
                         <h2><strong @click="follower">{{blogOwnerNumOfNeighbor}}</strong></h2>
                         <p> <small @click="follower">Follower</small> </p>
@@ -59,20 +61,22 @@
                     <span class="tagspecial" style="font-size:20px; ">#{{blogOwnerMainTag}}</span>
                     </span>
                   </div> -->
-                  <!-- end column1 -->
                   <div class="column4" v-if="this.$store.state.isLogin">
-                    <!-- <router-link to="글작성 페이지"> -->
-                    <span>글 작성<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
-                    <!-- </router-link> -->
-                    <span id="setting" @click="set">설정<i class="ti-settings" style="display:inline"></i></span>
+                  <!-- <router-link to="글작성 페이지"> -->
+                  <span>글 작성<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
+                  <!-- </router-link> -->
+                  <span id="setting" @click="set">설정<i class="ti-settings" style="display:inline"></i></span>
                   </div>
                 </div>
               </div>
-              <!-- end profile -->
-              <blog-main-list></blog-main-list>
+                <!-- end profile -->
+              <!-- end container-movie -->
             </div>
             <!-- end movie card -->
           </div>
+          <!-- end box-body -->
+          <blog-main-list></blog-main-list>
+        </div>
       </section>
       <!-- end Main content -->
     </div>
