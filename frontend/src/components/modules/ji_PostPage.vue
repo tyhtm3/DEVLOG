@@ -59,10 +59,10 @@
             .then(({ data }) => {
                 this.postList = data;
                 for(var i=0; i<this.postList.length; i++){
-                    console.log(this.postList[i].seq);
+                    // console.log(this.postList[i].seq);
                     http.get('postcomment/'+this.postList[i].seq)
                      .then(({data}) => {
-                        console.log(data.length);
+                        // console.log(data.length);
                         this.comment.push(data.length);
                     });
                 }

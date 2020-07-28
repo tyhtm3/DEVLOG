@@ -61,10 +61,10 @@
             .then(({ data }) => {
                 this.portfolioList = data;
                 for(var i=0; i<this.portfolioList.length; i++){
-                    console.log(this.portfolioList[i].seq);
+                    // console.log(this.portfolioList[i].seq);
                     http.get('postcomment/'+this.portfolioList[i].seq)
                      .then(({data}) => {
-                        console.log(data.length);
+                        // console.log(data.length);
                         this.comment.push(data.length);
                     });
                 }

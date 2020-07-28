@@ -59,10 +59,10 @@
             .then(({ data }) => {
                 this.projectList = data;
                 for(var i=0; i<this.projectList.length; i++){
-                    console.log(this.projectList[i].seq);
+                    // console.log(this.projectList[i].seq);
                     http.get('postcomment/'+this.projectList[i].seq)
                      .then(({data}) => {
-                        console.log(data.length);
+                        // console.log(data.length);
                         this.comment.push(data.length);
                     });
                 }
