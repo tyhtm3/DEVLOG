@@ -50,6 +50,7 @@ import BlogMain from './components/modules/y_BlogMain.vue'
 import SignUp from './components/SignUp.vue'
 import FindPassword from './components/FindPassword'
 import MyInfo from './components/MyInfo.vue'
+import BlogDetail from './components/modules/j_BlogDetail.vue'
 import DashboardJi from './components/modules/dashboard/ji_Index.vue'
 import DashboardJu from './components/modules/dashboard/ju_Index.vue'
 
@@ -262,6 +263,11 @@ const routes = [
         path: '/blog-main',
         name: 'blog-main',
         component: BlogMain
+      },
+      {
+        path: '/blog-detail',
+        name: 'blog-detail',
+        component: BlogDetail
       },
       {
         path: '/dashboard-ji',

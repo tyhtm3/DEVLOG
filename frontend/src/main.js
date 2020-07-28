@@ -13,7 +13,6 @@ import VCharts from 'v-charts'
 // Resource logic
 Vue.use(Resource)
 Vue.http.options.emulateJSON = true
-Vue.http.options.root = 'http://i3a402.p.ssafy.io:8090/'
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 Vue.use(Bars)
@@ -70,3 +69,9 @@ require('bootstrap')
 require('../node_modules/admin-lte/dist/js/app.min.js')
 require('../node_modules/admin-lte/dist/js/demo.js')
 require('../node_modules/admin-lte/plugins/slimScroll/jquery.slimscroll.js')
+
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(BootstrapVue)

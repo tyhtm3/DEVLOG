@@ -122,7 +122,7 @@ public class UserController {
 
 	@ApiOperation(value = "프로필 이미지 파일을 업로드 한다.")
 	@PostMapping("upload")
-	public String doFileUpload(@RequestParam("upload_file") MultipartFile uploadfile, HttpServletRequest request) {
+	public String doFileUpload(@RequestParam("upload_file") MultipartFile uploadfile) {
 		try {
 			// 업로드 파일 이름에 날짜로 해싱
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -131,11 +131,11 @@ public class UserController {
 
 			// 웹서비스 경로 지정
 			// String root_path = request.getSession().getServletContext().getRealPath("/");
-			String root_path = ("/home/ubuntu");
-			String attach_path = "profile_img/";
+			String root_path = ("/home/ubuntu/");
+			String attach_path = "images/";
 			String filename = dateString + "_" + uploadfile.getOriginalFilename();
 
-			// System.out.println(root_path+attach_path+filename);
+			 System.out.println(root_path+attach_path+filename);
 
 			FileOutputStream fos = new FileOutputStream(root_path + attach_path + filename);
 			// 파일 저장할 경로 + 파일명을 파라미터로 넣고 fileOutputStream 객체 생성하고
@@ -156,7 +156,8 @@ public class UserController {
 			return root_path + attach_path + filename;
 
 		} catch (Exception ex) {
-			throw new RuntimeException("file Save Error");
+			ex.printStackTrace();
+			return FAIL;
 		}
 	}
 }
