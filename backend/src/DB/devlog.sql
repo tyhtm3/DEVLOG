@@ -24,6 +24,7 @@ CREATE TABLE `user_neighbor` (
 	`seq` int primary key auto_increment,
     `seq_user` int not null,
     `seq_neighbor` int not null,
+    `regtime` datetime DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`seq_user`) REFERENCES `user` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`seq_neighbor`) REFERENCES `user` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
