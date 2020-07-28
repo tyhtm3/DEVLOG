@@ -20,6 +20,11 @@ public class BlogTagServiceImpl implements BlogTagService {
 	}
 
 	@Override
+	public BlogTag selectBlogTagByBlogAndTag(BlogTag blogTag) {
+		return blogTagMapper.selectBlogTagByBlogAndTag(blogTag);
+	}
+	
+	@Override
 	public BlogTag selectBlogTagByBlog(int seq_blog) {
 		return blogTagMapper.selectBlogTagByBlog(seq_blog);
 	}
@@ -38,5 +43,6 @@ public class BlogTagServiceImpl implements BlogTagService {
 	public int deleteBlogTag(int seq) {
 		return blogTagMapper.deleteBlogTag(seq);
 	}
+
 
 }

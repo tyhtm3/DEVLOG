@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.PostTag;
+import com.ssafy.devlog.dto.UserTag;
 import com.ssafy.devlog.service.PostTagService;
 
 import io.swagger.annotations.ApiOperation;
@@ -40,11 +41,14 @@ public class PostTagController {
 		return new ResponseEntity<List<PostTag>>(postTagService.selectAllPostTag(seq_post), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "포스트의 태그를 추가한다.", response = String.class)
+	@ApiOperation(value = "포스트의 태그를 추가한다. //중복 입력시 401", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> insertPostTag(@RequestBody PostTag postTag) throws Exception {
 		logger.debug("inserPostTag - 호출");
-		if(postTagService.insertPostTag(postTag)==1) {
+		PostTag check = postTagService.selectPostTagByPostAndTag(postTag);
+		if (check != null)
+			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
+		else if(postTagService.insertPostTag(postTag)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

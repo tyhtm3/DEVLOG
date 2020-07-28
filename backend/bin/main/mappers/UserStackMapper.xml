@@ -9,7 +9,13 @@
 		user_stack
 		where seq_user = #{seq_user}
 	</select>
-
+	
+	<select id="selectUserStackByUserAndStack" resultType="UserStack">
+		select *
+		from user_stack 
+ 		where seq_user= #{seq_user} and stack = #{stack}
+	</select>
+	
 	<!-- 프로젝트에 기술스택을 추가한다 -->
 	<insert id="insertUserStack">
 		insert into user_stack( seq_user, stack)
