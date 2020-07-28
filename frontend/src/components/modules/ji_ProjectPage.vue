@@ -3,7 +3,7 @@
         <section class="content"  style="padding-top:30px">
         <!-- 포스트출력 -->
             <div class="row">
-                    <div class="col-md-4" v-for="(project,index) in projectList" :key="project" :key2="index">
+                    <div class="col-md-4" v-for="(project,index) in projectList" :key="index">
                     <div class="well-media">
                     <a href="#">
                         <div class="vendor">
@@ -42,8 +42,9 @@
     name: 'ji_ProjectPage',
     data(){
         return{
-            seq_blog: 2,
-            seq_user: 2,
+            // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
+            seq_blog: this.$store.state.userInfo.seq,
+            seq_user: this.$store.state.userInfo.seq,
             projectList: [],
             comment: [],
             counter: 0
