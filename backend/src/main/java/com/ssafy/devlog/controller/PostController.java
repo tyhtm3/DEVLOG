@@ -82,6 +82,8 @@ public class PostController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}	
 	
+	
+	
 	/* 	비로그인 (seq_user==0)		: 공개범위가 '전체'인 포스트 반환
 	 * 	   로그인 (seq_user!=0)		: 공개범위가 '전체'인 포스트와 '이웃공개/비공개'인 포스트의 접근여부 판별하여 반환 
 	 *   전체글 (disclosure==1)	: 전체 글 보기
