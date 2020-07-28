@@ -14,6 +14,14 @@
 		where
 		seq = #{seq}
 	</select>
+	
+	<!-- 회원 상세 조회(ID) -->
+	<select id="selectUserById" resultType="User">
+		select *
+		from user
+		where
+		id = #{id}
+	</select>
 
 	<!-- 회원 가입 -->
 	<insert id="insertUser">
@@ -24,7 +32,7 @@
 		)
 	</insert>
 
-	<!-- 블로그 수정 -->
+	<!-- 회원 수정 -->
 	<update id="updateUser">
 		update user
 		set
@@ -40,7 +48,7 @@
 
 	</update>
 
-	<!-- 블로그 삭제 -->
+	<!-- 회원 삭제 -->
 	<delete id="deleteUser">
 		delete
 		from user
