@@ -1,26 +1,33 @@
 <template>
     <transition name="el-zoom-in-top">
-        <section class="content">
+        <section class="content"  style="padding-top:30px">
         <!-- 포스트출력 -->
             <div class="row">
-                    <div class="col-md-4" v-for="portfolio in portfolioList" :key="portfolio">
+                    <div class="col-md-4" v-for="(portfolio,index) in portfolioList" :key="portfolio" :key2="index">
                     <div class="well-media">
                     <a href="#">
                         <div class="vendor">
-                            <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt="">
+                            <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
                         </div>
                         <div class="video-text">
-                            <h2>{{portfolio}}</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <!-- {{portfolio}} -->
+                            <h2 style="font-weight: bold; margin-bottom:10px;">{{portfolio.title}}</h2>
+                            <p style="color:black;">{{portfolio.content}} 세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!! 세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!</p>
                         </div>
-                        <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                        <div class="video-category-bg">
+                        <div class="tag-nest" style="block:inline"> 
+                            <span class="tag">#SpringBoot</span>
+                            <span class="tag">#Vue.js</span>
+                            <span class="tag">#css</span>
+                            <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{portfolio.like_count}} </span>
+                            <!-- <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span>  -->
+                        </div>
+                        <!-- <div class="video-category-bg">
                             <h3>FRONT-END</h3>
                             <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
                             <div class="triangle-white"></div>
                             <div class="triangle-photo-right"></div>
-                        </div>
+                        </div> -->
                     </a>
                     </div>
                 </div>
@@ -29,36 +36,48 @@
     </transition>
 </template>
 <script>
+  import http from '../../util/http-common'
   export default {
-    name: 'ji_ProjectPage',
+    name: 'ji_PortfolioPage',
     data(){
         return{
-            seq_blog: '2',
-            seq_user: '2',
-            portfolioList: ['포', '트', '폴', '리', '오', '페', '이', '지', '포', '트', '폴', '리', '오', '페', '이', '지']
+            seq_blog: 2,
+            seq_user: 2,
+            offset:0,
+            limit:10,
+            portfolioList: [],
+            comment: [],
+            counter: 0
         }
     },
     created(){	 
       this.getportfolioList();
     },
     methods:{
-        // getportfolioList(){
-        //     this.$http.get('devlog/api/blog/post/'+this.seq_blog+'/' + this.seq_user)
-        //     .then(({data}) => {
-		// 		if(data.length != 0) {
-		// 		    this.portfolioList = data;
-		// 		}else{
-		// 		    //this.portfolioList = null;
-		// 		}
-		// 	})
-        // },
         getportfolioList(){
-        //     alert("들어옴");
-        //     this.$http.post('post/blog', { seq_user:1 , seq_blog:1, offset:0, limit:10})
-        //     .then(({ data }) => {
-        //     alert(data)
-        // })
+            // alert(data[0].title)
+            http.get('portfolio/blog/'+this.seq_user+'/'+this.seq_blog+'/'+this.offset+'/'+this.limit)
+            .then(({ data }) => {
+                this.portfolioList = data;
+                for(var i=0; i<this.portfolioList.length; i++){
+                    console.log(this.portfolioList[i].seq);
+                    http.get('postcomment/'+this.portfolioList[i].seq)
+                     .then(({data}) => {
+                        console.log(data.length);
+                        this.comment.push(data.length);
+                    });
+                }
+            })
         }
     }
   }
 </script>
+<style scoped>
+.tag-copy{
+    border-radius: 10px;
+    font-size: 14px;
+    margin-right: 4px;
+    line-height: 35px;
+    cursor: pointer;
+}
+</style>

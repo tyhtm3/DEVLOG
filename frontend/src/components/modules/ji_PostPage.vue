@@ -1,26 +1,34 @@
 <template>
     <transition name="el-zoom-in-top">
-        <section class="content">
+        <section class="content"  style="padding-top:30px">
         <!-- 포스트출력 -->
             <div class="row">
-                    <div class="col-md-4" v-for="post in postList" :key="post">
+                    <div class="col-md-4" v-for="(post,index) in postList" :key="post" :key2="index">
                     <div class="well-media">
                     <a href="#">
                         <div class="vendor">
-                            <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt="">
+                            <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
                         </div>
                         <div class="video-text">
-                            <h2>{{post}}</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <!-- {{post}} -->
+                            <h2 style="font-weight: bold; margin-bottom:10px;">{{post.title}}</h2>
+                            <p style="color:black;">{{post.content}} 세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!! 세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!</p>
                         </div>
-                        <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                        <div class="video-category-bg">
+                        <div class="tag-nest" style="block:inline"> 
+                            <span class="tag">#SpringBoot</span>
+                            <span class="tag">#Vue.js</span>
+                            <span class="tag">#css</span>
+
+                            <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{post.like_count}} </span>
+                            <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span> 
+                        </div>
+                        <!-- <div class="video-category-bg">
                             <h3>FRONT-END</h3>
                             <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
                             <div class="triangle-white"></div>
                             <div class="triangle-photo-right"></div>
-                        </div>
+                        </div> -->
                     </a>
                     </div>
                 </div>
@@ -29,29 +37,46 @@
     </transition>
 </template>
 <script>
+  import http from '../../util/http-common'
   export default {
-    name: 'ji_ProjectPage',
+    name: 'ji_PostPage',
     data(){
         return{
-            seq_blog: '2',
-            seq_user: '0',
-            postList: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow']
+            seq_blog: 2,
+            seq_user: 2,
+            postList: [],
+            comment: [],
+            counter: 0
         }
     },
     created(){	 
-	  this.getpostList();
+      this.getpostList();
     },
     methods:{
         getpostList(){
-            // this.$http.get('devlog/api/post/'+this.seq_blog+'/' + this.seq_user)
-            // .then(({data}) => {
-			// 	if(data.length != 0) {
-			// 	    this.postList = data;
-			// 	}else{
-			// 	    this.postList = null;
-			// 	}
-			// })
-		},
+            // alert(data[0].title)
+            http.post('post/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:0, limit:10})
+            .then(({ data }) => {
+                this.postList = data;
+                for(var i=0; i<this.postList.length; i++){
+                    console.log(this.postList[i].seq);
+                    http.get('postcomment/'+this.postList[i].seq)
+                     .then(({data}) => {
+                        console.log(data.length);
+                        this.comment.push(data.length);
+                    });
+                }
+            })
+        }
     }
   }
 </script>
+<style scoped>
+.tag-copy{
+    border-radius: 10px;
+    font-size: 14px;
+    margin-right: 4px;
+    line-height: 35px;
+    cursor: pointer;
+}
+</style>

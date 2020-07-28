@@ -70,14 +70,14 @@ object {
     border-top: 1px dashed #EDEDED;
     margin: 20px 0;
     padding: 15px 20px;
-    i {
-        font-style: normal;
-        margin-right: 10px;
-        &:before {
-            content: "/" !important;
-            padding-right: 8px;
-        }
-    }
+    // i {
+    //     font-style: normal;
+    //     margin-right: 10px;
+    //     &:before {
+    //         content: "/" !important;
+    //         padding-right: 8px;
+    //     }
+    // }
 }
 
 .video-category-bg {
