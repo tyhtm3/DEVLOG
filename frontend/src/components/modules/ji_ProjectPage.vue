@@ -1,194 +1,57 @@
 <template>
     <transition name="el-zoom-in-top">
         <section class="content">
-            프로젝트출력
-                <!-- <div class="row-mansory">
-                    <div class="col-md-4">
-                        <div class="well-media">
-                            <div class="vendor">
-                                <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a>
-                            </div>
-                            <div class="video-text">
-                                <h2>Black Angel1</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                            <div class="video-category-bg">
-                                <h3>FRONT-END</h3>
-                                <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                                <div class="triangle-white"></div>
-                                <div class="triangle-photo-right"></div>
-                            </div>
+        <!-- 포스트출력 -->
+            <div class="row">
+                    <div class="col-md-4" v-for="project in projectList" :key="project">
+                    <div class="well-media">
+                    <a href="#">
+                        <div class="vendor">
+                            <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt="">
+                            <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="well-media">
-                            <div class="vendor">
-                                <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcScuylqjmZrptLDtCAdrFRnX4DXMEzbOb9WAg&usqp=CAU" alt=""> </a>
-                            </div>
-                            <div class="video-text">
-                                <h2>Black Angel2</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                            <div class="photo-category-bg">
-                                <h3>BACK-END</h3>
-                                <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                                <div class="triangle-white"></div>
-                                <div class="triangle-photo-right"></div>
-                            </div>
+                        <div class="video-text">
+                            <h2>{{project}}</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="well-media">
-                            <div class="vendor">
-                                <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://i.ytimg.com/vi/5eXSuThWOK0/hqdefault.jpg" alt=""> </a>
-                            </div>
-                            <div class="video-text">
-                                <h2>Black Angel3</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                            <div class="photo-category-bg">
-                                <h3>BACK-END</h3>
-                                <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                                <div class="triangle-white"></div>
-                                <div class="triangle-photo-right"></div>
-                            </div>
+                        <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
+                        <div class="video-category-bg">
+                            <h3>FRONT-END</h3>
+                            <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
+                            <div class="triangle-white"></div>
+                            <div class="triangle-photo-right"></div>
                         </div>
+                    </a>
                     </div>
-                    <div class="col-md-4">
-                        <div class="well-media">
-                            <div class="vendor">
-                                <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://archivenew.vop.co.kr/images/8fc5d1792af708d7e3260be624f752cc/2020-04/marked/11041525_111.jpg" alt=""> </a>
-                            </div>
-                            <div class="video-text">
-                                <h2>Black Angel4</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                            <div class="photo-category-bg">
-                                <h3>BACK-END</h3>
-                                <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                                <div class="triangle-white"></div>
-                                <div class="triangle-photo-right"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="well-media">
-                            <div class="vendor">
-                                <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.ablenews.co.kr/news/newsimages/newsimage/c_2_000220180206180105680087.JPG" alt=""> </a>
-                            </div>
-                            <div class="video-text">
-                                <h2>Black Angel5</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                            <div class="video-category-bg">
-                                <h3>FRONT-END</h3>
-                                <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                                <div class="triangle-white"></div>
-                                <div class="triangle-photo-right"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="well-media">
-                            <div class="vendor">
-                                <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a>
-                            </div>
-                            <div class="video-text">
-                                <h2>Black Angel6</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                            <div class="video-category-bg">
-                                <h3>FRONT-END</h3>
-                                <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                                <div class="triangle-white"></div>
-                                <div class="triangle-photo-right"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="well-media">
-                            <div class="vendor">
-                                <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcScuylqjmZrptLDtCAdrFRnX4DXMEzbOb9WAg&usqp=CAU" alt=""> </a>
-                            </div>
-                            <div class="video-text">
-                                <h2>Black Angel7</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                            <div class="photo-category-bg">
-                                <h3>BACK-END</h3>
-                                <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                                <div class="triangle-white"></div>
-                                <div class="triangle-photo-right"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="well-media">
-                            <div class="vendor">
-                                <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://i.ytimg.com/vi/5eXSuThWOK0/hqdefault.jpg" alt=""> </a>
-                            </div>
-                            <div class="video-text">
-                                <h2>Black Angel8</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                            <div class="photo-category-bg">
-                                <h3>BACK-END</h3>
-                                <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                                <div class="triangle-white"></div>
-                                <div class="triangle-photo-right"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="well-media">
-                            <div class="vendor">
-                                <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://archivenew.vop.co.kr/images/8fc5d1792af708d7e3260be624f752cc/2020-04/marked/11041525_111.jpg" alt=""> </a>
-                            </div>
-                            <div class="video-text">
-                                <h2>Black Angel9</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                            <div class="photo-category-bg">
-                                <h3>BACK-END</h3>
-                                <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                                <div class="triangle-white"></div>
-                                <div class="triangle-photo-right"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="well-media">
-                            <div class="vendor">
-                                <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.ablenews.co.kr/news/newsimages/newsimage/c_2_000220180206180105680087.JPG" alt=""> </a>
-                            </div>
-                            <div class="video-text">
-                                <h2>Black Angel10</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="tag-nest"> <i>angel</i><i>dark</i><i>mistic</i> </div>
-                            <div class="video-category-bg">
-                                <h3>FRONT-END</h3>
-                                <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                                <div class="triangle-white"></div>
-                                <div class="triangle-photo-right"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-            </section>
+                </div>
+            </div>
+        </section>
     </transition>
 </template>
 <script>
   export default {
-    name: 'ji_ProjectPage'
+    name: 'ji_ProjectPage',
+    data(){
+        return{
+            seq_blog: '2',
+            seq_user: '2',
+            projectList: ['프', '로', '잭', '트', '페', '이', '지', '프', '로', '잭', '트', '페', '이', '지']
+        }
+    },
+    created(){	 
+	  this.getprojectList();
+    },
+    methods:{
+        getprojectList(){
+        //     this.$http.get('devlog/api/blog/project/'+this.seq_blog+'/' + this.seq_user)
+        //     .then(({data}) => {
+		// 		if(data.length != 0) {
+		// 		    this.projectList = data;
+		// 		}else{
+		// 		    this.projectList = null;
+		// 		}
+		// 	})
+		},
+    }
   }
 </script>

@@ -175,7 +175,6 @@
           // alert(this.curpage);
         });
       });
-
     },
     methods:{
       
