@@ -7,6 +7,7 @@
 		<mapper resource="mappers/BlogTagMapper.xml" />
 		<mapper resource="mappers/UserTagMapper.xml" />
 		<mapper resource="mappers/UserMapper.xml" />
+		<mapper resource="mappers/UserStackMapper.xml" />
 		<mapper resource="mappers/PostMapper.xml" />
 		<mapper resource="mappers/PostTagMapper.xml" />
 		<mapper resource="mappers/PostLikeMapper.xml" />
