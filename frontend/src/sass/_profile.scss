@@ -299,13 +299,14 @@ span.tags {
         clear: left;
         float: left;
         overflow: hidden;
-        padding: 8px 0;
+        padding: 18px 0;
         text-align: left;
         text-overflow: ellipsis;
         white-space: nowrap;
         width: 160px;
     }
     dd {
+        border-bottom: 2px;
         padding: 8px 0;
         &:before {
             content: ":";

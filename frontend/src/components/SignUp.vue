@@ -10,12 +10,12 @@
 							<br>
 							<br>
 							<div class="col-xs-12 col-sm-12 profile-name">
-								<h2>정보 수정</h2>
+								<h2>회원 가입</h2>
 								<hr>
 								<dl class="dl-horizontal-profile">
 									<dt>*아이디</dt>
                   <dd>
-                    <el-input v-model="id" style="width: 40%;" disabled></el-input>
+                    <el-input v-model="id" style="width: 40%;"></el-input>
                     <el-upload
                     class="avatar-uploader"
                     action="https://jsonplaceholder.typicode.com/posts/"
@@ -48,8 +48,7 @@
                   </dd>
 								</dl>
             	</div>
-              <el-button :plain="true" @click="modify">수정</el-button>
-              <el-button :plain="true" @click="signout">탈퇴</el-button>
+              <el-button :plain="true" @click="signup">가입하기</el-button>
 						</div>
           </div>
         </div>
@@ -59,93 +58,78 @@
 </template>
 
 <script>
-export default {
-  components: {
-  },
-  data: () => {
-    return {
-      id: '',
-      password: '',
-      confirm: '',
-      name: '',
-      nickname: '',
-      email: '',
-      tel: '',
-      birth: '',
-      url: '',
-      imageUrl: ''
-    }
-  },
-  created() {
-    this.$store.state.loginFormVisible = false;
-  },
-  mounted() {
-    this.id = this.$store.state.userInfo.id,
-    this.name = this.$store.state.userInfo.name,
-    this.nickname = this.$store.state.userInfo.nickname,
-    this.email = this.$store.state.userInfo.email,
-    this.tel = this.$store.state.userInfo.tel,
-    this.birth = this.$store.state.userInfo.birthday,
-    this.url = this.$store.state.userInfo.github_url,
-    this.imageUrl = this.$store.state.userInfo.profile_img_url
-  },
-  methods: {
-    modify() {
-      if(this.password==='')
-        alert('비밀번호를 입력해 주세요.')
-      else if(this.confirm==='')
-        alert('비밀번호를 한번 더 입력해 주세요.')
-      else if(this.password!==this.confirm)
-        alert('비밀번호가 일치하지 않습니다.')
-      else if(this.name==='')
-        alert('이름을 입력해 주세요.')
-      else if(this.email==='')
-        alert('이메일을 입력해주세요.')
-      else if (!this.validEmail(this.email))
-        alert("이메일 형식을 확인해 주세요")
-      else{
-        this.$store.dispatch('modify', {
-          password: this.password,
-          name: this.name,
-          nickname: this.nickname,
-          email: this.email,
-          tel: this.tel,
-          birth: this.birth,
-          url: this.url,
-          imageUrl: this.imageUrl
-        })
+  export default {
+    components: {
+    },
+    data: () => {
+      return {
+        id: '',
+        password: '',
+        confirm: '',
+        name: '',
+        nickname: '',
+        email: '',
+        tel: '',
+        birth: '',
+        url: '',
+        imageUrl: ''
       }
     },
-    signout() {
-      var del = confirm("정말 탈퇴하시겠습니까?");
-      if(del){
-        console.log(this.$store.state.userInfo.seq);
-        this.$store.dispatch('signout', {
-          seq: this.$store.state.userInfo.seq
-        })
-      }
+    created(){
+      this.$store.state.loginFormVisible = false;
     },
-    validEmail: function(email) {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
-    },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+    methods: {
+      signup() {
+        if(this.id==='')
+          alert('아이디를 입력해 주세요.')
+        else if(this.password==='')
+          alert('비밀번호를 입력해 주세요.')
+        else if(this.confirm==='')
+          alert('비밀번호를 한번 더 입력해 주세요.')
+        else if(this.password!==this.confirm)
+          alert('비밀번호가 일치하지 않습니다.')
+        else if(this.name==='')
+          alert('이름을 입력해 주세요.')
+        else if(this.email==='')
+          alert('이메일을 입력해주세요.')
+        else if (!this.validEmail(this.email))
+          alert("이메일 형식을 확인해 주세요")
+        else
+          this.$store.dispatch('signup', {
+            id: this.id,
+            password: this.password,
+            name: this.name,
+            nickname: this.nickname,
+            email: this.email,
+            tel: this.tel,
+            birth: this.birth,
+            url: this.url,
+            imageUrl: this.imageUrl
+          })
+      },
+      validEmail: function(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
 
-      if (!isJPG) {
-        this.$message.error('Avatar picture must be JPG format!');
+      },
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('Avatar picture must be JPG format!');
+        }
+        if (!isLt2M) {
+          this.$message.error('Avatar picture size can not exceed 2MB!');
+        }
+        return isJPG && isLt2M;
       }
-      if (!isLt2M) {
-        this.$message.error('Avatar picture size can not exceed 2MB!');
-      }
-      return isJPG && isLt2M;
-    }
-  },
-}
+    },
+  }
+
 </script>
 
 <style>
