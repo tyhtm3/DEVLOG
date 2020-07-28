@@ -41,10 +41,10 @@ public class UserTagController {
 	}
 	
 	@ApiOperation(value = "특정 유저의 태그를 반환한다.", response = List.class)
-	@GetMapping("{user_seq}")
-	public ResponseEntity<UserTag> selectUserTagByUser(@PathVariable int user_seq) throws Exception {
+	@GetMapping("{seq_user}")
+	public ResponseEntity<UserTag> selectUserTagByUser(@PathVariable int seq_user) throws Exception {
 		logger.debug("selectUserTagByUser - 호출");
-		return new ResponseEntity<UserTag>(userTagService.selectUserTagByUser(user_seq), HttpStatus.OK);
+		return new ResponseEntity<UserTag>(userTagService.selectUserTagByUser(seq_user), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "새로운 태그를 생성한다", response = List.class)
