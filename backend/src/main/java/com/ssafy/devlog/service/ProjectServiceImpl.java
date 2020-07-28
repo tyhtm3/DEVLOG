@@ -15,27 +15,25 @@ public class ProjectServiceImpl implements ProjectService{
 	private ProjectMapper projectMapper;
 	
 	@Override
-	public List<Project> selectAllProject(int seq_user){
-		return projectMapper.selectAllProject(seq_user);
-	}
-	@Override
-	public List<Project> selectAllProjectByNeighbor(int seq_user){
-		return projectMapper.selectAllProjectByNeighbor(seq_user);
-	}
-	@Override
-	public List<Project> selectAllProjectByTag(int seq_user, List<String> tag){
-		return projectMapper.selectAllProjectByTag(seq_user, tag);
+	public int selectProjectCntByFeed(int seq_user, int disclosure, List<String> tag) {
+		return projectMapper.selectProjectCntByFeed(seq_user, disclosure, tag);
 	}
 	
 	@Override
-	public List<Project> selectAllProjectByBlog(int seq_user, int seq_blog){
-		return projectMapper.selectAllProjectByBlog(seq_user, seq_blog);
+	public List<Project> selectProjectByFeed(int seq_user,int disclosure,int offset,int limit,List<String> tag){
+		return projectMapper.selectProjectByFeed(seq_user, disclosure, offset, limit, tag);
 	}
-	
+
 	@Override
-	public List<Project> selectAllProjectByBlogByTag(int seq_user, int seq_blog, List<String> tag){
-		return projectMapper.selectAllProjectByBlogByTag(seq_user, seq_blog, tag);
+	public int selectProjectCntByBlog(int seq_user, int disclosure, List<String> tag) {
+		return projectMapper.selectProjectCntByBlog(seq_user, disclosure, tag);
 	}
+
+	@Override
+	public List<Project> selectProjectByBlog(int seq_user,int disclosure,int offset,int limit,List<String> tag){
+		return projectMapper.selectProjectByBlog(seq_user, disclosure, offset, limit, tag);
+	}
+
 	
 	@Override
 	public Project selectProject(int seq){
