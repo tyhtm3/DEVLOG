@@ -37,7 +37,7 @@
 									<ul class="menu">
 										<li> <i class="ti-settings "></i>
 											<router-link to="/myinfo">
-												<h3>{{ this.$store.state.userInfo.name }} <span class="text-green fontello-record"></span></h3>
+												<h3>{{ this.$store.state.userInfo.name }}<span class="text-green fontello-record"></span></h3>
 												<p>sub message</p>
 											</router-link>
 										</li>
@@ -83,8 +83,9 @@ export default {
      this.$store.state.loginFormVisible = true;
 		},
 		logout(){
-		 this.$store.state.isLogin = false;
-		 this.$store.state.userInfo = {};
+		 this.$store.state.isLogin = false
+		 this.$store.state.userInfo = {}
+		 alert("로그아웃 되었습니다.")
 		},
 		test(){
 			console.log(this.$store.state.userInfo)

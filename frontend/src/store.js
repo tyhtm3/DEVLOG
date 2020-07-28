@@ -52,7 +52,7 @@ export default new Vuex.Store({
         profile_img_url: '',
       }
       context.commit('mutateUserInfo', userInfo)
-      alert("routes")
+      alert("test")
       routes.push('/blog-main') //????
       // http
       // .post('/user/login', { 
