@@ -38,38 +38,41 @@ export default new Vuex.Store({
   },
   actions: {
     login(context, {id, password, url}){
-      context.commit('mutateLoginFormVisible', false)
-      context.commit('mutateIsLogin', true)
-      var userInfo = {
-        seq: 8,
-        id: 'test',
-        password: 'test',
-        name: '감자',
-        nickname: '',
-        email: 'test@test.com',
-        tel: '',
-        github_url: 'www.devlog.com',
-        profile_img_url: '',
-      }
-      context.commit('mutateUserInfo', userInfo)
-      alert("test")
-      routes.push('/blog-main') //????
-      // http
-      // .post('/user/login', { 
-      //   id: this.id,
-      //   password: this.password
-      // })
-      // .then(({data}) => {
-      //   console.log(data);
-      //   context.commit('mutateIsLogin', true)
-      //   context.commit('mutateUserInfo', data)
-      //   context.commit('mutateLoginFormVisible', true)
-      // })
-      // .catch((error) =>  {
-      //   if(error.response.status == '404'){
-      //       alert('아이디와 비밀번호를 확인해주세요.')
-      //   }
-      // });
+      // context.commit('mutateLoginFormVisible', false)
+      // context.commit('mutateIsLogin', true)
+      // var userInfo = {
+      //   seq: 8,
+      //   id: 'test',
+      //   password: 'test',
+      //   name: '감자',
+      //   nickname: '',
+      //   email: 'test@test.com',
+      //   tel: '',
+      //   github_url: 'www.devlog.com',
+      //   profile_img_url: '',
+      // }
+      // context.commit('mutateUserInfo', userInfo)
+      // alert("test")
+      // routes.push('/blog-main') //????
+      http
+      .post('/user/login', { 
+        id: id,
+        password: password
+      })
+      .then(({data}) => {
+        console.log(data);
+        context.commit('mutateIsLogin', true)
+        context.commit('mutateUserInfo', data)
+        context.commit('mutateLoginFormVisible', false)
+      })
+      .catch((error) =>  {
+        if(error.response.status == '404')
+            alert('존재하지 않는 아이디입니다.')
+        else if(error.response.status == '401')
+            alert('비밀번호가 틀렸습니다.')
+        else
+            alert('로그인 도중 에러가 발생했습니다.')
+      });
     },
     signup(context, {id, password, name, nickname, email, tel, birth, url, imageUrl}) {
       http
@@ -85,12 +88,13 @@ export default new Vuex.Store({
         profile_img_url: imageUrl
       })
       .then(({ data }) => {
-        alert("success")
+        console.log(data)
         routes.push('/')
       })
       .catch((error) => {
+        console.log(error.response.status)
         if(error.response.status=='404'){
-          alert("아이디와 비밀번호를 확인해 주세요.")
+          alert("이미 존재하는 아이디입니다.")
         }
       })
     },
