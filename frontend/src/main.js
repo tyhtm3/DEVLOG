@@ -13,7 +13,7 @@ import VCharts from 'v-charts'
 // Resource logic
 Vue.use(Resource)
 Vue.http.options.emulateJSON = true
-
+Vue.http.options.root = 'http://i3a402.p.ssafy.io:8090/'
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 Vue.use(Bars)
