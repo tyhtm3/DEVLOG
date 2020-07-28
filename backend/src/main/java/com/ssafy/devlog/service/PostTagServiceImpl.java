@@ -21,6 +21,11 @@ public class PostTagServiceImpl implements PostTagService {
 	}
 	
 	@Override
+	public PostTag selectPostTagByPostAndTag(PostTag postTag) {
+		return postTagMapper.selectPostTagByPostAndTag(postTag);
+	}
+	
+	@Override
 	public int insertPostTag(PostTag postTag) {
 		return postTagMapper.insertPostTag(postTag);
 	}

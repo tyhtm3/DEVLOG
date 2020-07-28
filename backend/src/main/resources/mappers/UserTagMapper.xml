@@ -13,7 +13,16 @@
 		from user_tag
 		where seq_user = #{seq_user}
 	</select>
-
+	
+	
+	<!-- 유저태그 상세 조회 -->
+	<select id="selectUserTagByUserAndTag" resultType="UserTag">
+		select seq, seq_user, tag
+		from user_tag 
+ 		where seq_user= #{seq_user} and tag = #{tag}
+	</select>
+	 
+	
 	<!-- 유저태그 등록 -->
 	<insert id="insertUserTag">
 		insert into user_tag(

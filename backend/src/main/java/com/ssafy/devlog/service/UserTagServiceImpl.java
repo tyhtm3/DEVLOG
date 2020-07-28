@@ -20,10 +20,15 @@ public class UserTagServiceImpl implements UserTagService {
 	}
 
 	@Override
-	public UserTag selectUserTagByUser(int seq_user) {
+	public List<UserTag> selectUserTagByUser(int seq_user) {
 		return userTagMapper.selectUserTagByUser(seq_user);
 	}
 
+	@Override
+	public UserTag selectUserTagByUserAndTag(UserTag usertag) {
+		return userTagMapper.selectUserTagByUserAndTag(usertag);
+	}
+	
 	@Override
 	public int insertUserTag(UserTag userTag) {
 		return userTagMapper.insertUserTag(userTag);
@@ -38,5 +43,6 @@ public class UserTagServiceImpl implements UserTagService {
 	public int deleteUserTag(int seq) {
 		return userTagMapper.deleteUserTag(seq);
 	}
+
 
 }

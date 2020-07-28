@@ -10,6 +10,7 @@ import com.ssafy.devlog.dto.PostTag;
 public interface PostTagMapper {
 
 	public List<PostTag> selectAllPostTag(int seq_post);
+	public PostTag selectPostTagByPostAndTag(PostTag postTag);
 	public int insertPostTag(PostTag postTag);
 	public int deletePostTag(int seq);
 	

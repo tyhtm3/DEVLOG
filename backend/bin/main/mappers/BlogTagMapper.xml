@@ -13,7 +13,14 @@
 		from blog_tag
 		where seq_blog = #{seq_blog}
 	</select>
-
+	
+	<!-- 블로그태그 상세 조회 -->
+	<select id="selectBlogTagByBlogAndTag" resultType="BlogTag">
+		select seq, seq_blog, tag
+		from blog_tag
+ 		where seq_blog= #{seq_blog} and tag = #{tag}
+	</select>
+	
 	<!-- 블로그태그 등록 -->
 	<insert id="insertBlogTag">
 		insert into blog_tag(

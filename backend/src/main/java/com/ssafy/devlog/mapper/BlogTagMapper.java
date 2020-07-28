@@ -10,6 +10,7 @@ import com.ssafy.devlog.dto.BlogTag;
 public interface BlogTagMapper {
 	public List<BlogTag> selectAllBlogTag();
 	public BlogTag selectBlogTagByBlog(int seq_blog);
+	public BlogTag selectBlogTagByBlogAndTag(BlogTag blogTag);
 	public int insertBlogTag(BlogTag blogtag);
 	public int updateBlogTag(BlogTag blogtag);
 	public int deleteBlogTag(int seq);

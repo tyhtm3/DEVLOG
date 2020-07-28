@@ -29,4 +29,9 @@ public class UserStackServiceImpl implements UserStackService {
 		return userStackMapper.deleteUserStack(seq);
 	}
 
+	@Override
+	public UserStack selectUserStackByUserAndStack(UserStack userStack) {
+		return userStackMapper.selectUserStackByUserAndStack(userStack);
+	}
+
 }
