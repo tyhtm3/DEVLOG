@@ -1,44 +1,44 @@
 <template>
   <!-- start body -->
-                <div class="box" style="padding:30px;">
-                <div class="row">
-                <div class="col-md-12">
-                  <!-- TABS -->
-                  <!-- 
-                    부트스트랩 깔려있어야 중앙 정렬 되네요
-                    npm install bootstrap-vue bootstrap
-                  -->
-                  <ul id="myTab" class="nav nav-tabs nav-tabs-shop-devin nav-justified" role="tablist">
-                    <li class="active" data-wow-delay="0.6s"><a href="#project" role="tab" data-toggle="tab" aria-expanded="true"><h2><strong>Project</strong></h2></a></li>
-                    <li class="" data-wow-delay="0.4s"><a href="#post" role="tab" data-toggle="tab" aria-expanded="false"><h2><strong>Post</strong></h2></a></li>
-                    <li class="" data-wow-delay="0.2s"><a href="#portfolio" role="tab" data-toggle="tab" aria-expanded="false"><h2><strong>Portfolio</strong></h2></a></li>
-                  </ul>
+    <div class="box" style="padding:30px;">
+      <div class="row">
+        <div class="col-md-12">
+          <!-- TABS -->
+          <!-- 
+            부트스트랩 깔려있어야 중앙 정렬 되네요
+            npm install bootstrap-vue bootstrap
+          -->
+          <ul id="myTab" class="nav nav-tabs nav-tabs-shop-devin nav-justified" role="tablist">
+            <li class="active" data-wow-delay="0.6s"><a href="#project" role="tab" data-toggle="tab" aria-expanded="true"><h2><strong>Project</strong></h2></a></li>
+            <li class="" data-wow-delay="0.4s"><a href="#post" role="tab" data-toggle="tab" aria-expanded="false"><h2><strong>Post</strong></h2></a></li>
+            <li class="" data-wow-delay="0.2s"><a href="#portfolio" role="tab" data-toggle="tab" aria-expanded="false"><h2><strong>Portfolio</strong></h2></a></li>
+          </ul>
 
-                  <div class="tab-content">
-                    <!-- TAB PANEL ITEM-->
-                    <div role="tabpanel" class="tab-pane fade active in" id="project">
-                      <project-page></project-page>
-                    </div>
-                    <!--/ TAB PANEL ITEM -->
+          <div class="tab-content">
+            <!-- TAB PANEL ITEM-->
+            <div role="tabpanel" class="tab-pane fade active in" id="project">
+              <project-page></project-page>
+            </div>
+            <!--/ TAB PANEL ITEM -->
 
-                    <!-- TAB PANEL ITEM-->
-                    <div role="tabpanel" class="tab-pane fade" id="post">
-                      <post-page></post-page>
-                    </div>
-                    <!--/ TAB PANEL ITEM -->
+            <!-- TAB PANEL ITEM-->
+            <div role="tabpanel" class="tab-pane fade" id="post">
+              <post-page></post-page>
+            </div>
+            <!--/ TAB PANEL ITEM -->
 
-                    <!-- TAB PANEL ITEM-->
-                    <div role="tabpanel" class="tab-pane fade" id="portfolio">
-                      <portfolio-page></portfolio-page>
-                    </div>
-                    <!--/ TAB PANEL ITEM -->
-                  </div>
-                  <!-- / TABS -->
-                </div>
-                </div>
-                </div>
-                <!-- /.content -->
-              <!-- end body -->
+            <!-- TAB PANEL ITEM-->
+            <div role="tabpanel" class="tab-pane fade" id="portfolio">
+              <portfolio-page></portfolio-page>
+            </div>
+            <!--/ TAB PANEL ITEM -->
+          </div>
+          <!-- / TABS -->
+        </div>
+      </div>
+    </div>
+    <!-- /.content -->
+  <!-- end body -->
 </template>
 
 <script>

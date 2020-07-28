@@ -8,19 +8,16 @@
             <div class="movie-card">
               <!-- start profile -->
               <div class="container-movie">
-                <div class="hero">
-                  <div class="details-profile">
-                    <div class="title1">
-                      명묭이의 코딩일기
-                    </div>
-                    <div class="title2">
-                      by 명묭
-                      <a href="#"><img src="static/img/profile.png" alt="cover" class="cover-profile" /></a>
-                      <!-- <span>Web Designer</span> -->
-                    </div>
+                <div class="details-profile">
+                  <div class="title1" style="display:inline">
+                    명묭이의 코딩일기
+                  </div>
+                  <div class="title2">
+                    by 명묭
+                    <a href="#"><img src="static/img/profile.png" alt="cover" class="cover-profile" /></a>
+                    <!-- <span>Web Designer</span> -->
                   </div>
                 </div>
-                <!-- end hero -->
                 <div class="description-profile">
                   <div class="column2">
                     <div class="row">
@@ -48,6 +45,10 @@
                     <span class="tag">#Node.js</span>
                   </div>
                   <!-- end column1 -->
+                  <div class="column4">
+                    <span>글 작성<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
+                    <span>설정<i class="ti-settings" style="display:inline"></i></span>
+                  </div>
                 </div>
               </div>
               <!-- end profile -->
@@ -75,3 +76,12 @@
     }
   }
 </script>
+<style>
+  .column4{
+    float: right;
+    margin-right: 40px;
+  }
+  .column4 span{
+    cursor: pointer;
+  }
+</style>
