@@ -9,6 +9,13 @@
 		where seq_post = #{seq_post}
 	</select>
 	
+	<!-- 포스트 태그 상세 조회 -->
+	<select id="selectPostTagByPostAndTag" resultType="PostTag">
+		select seq, seq_post, tag
+		from post_tag
+ 		where seq_post= #{seq_post} and tag = #{tag}
+	</select>
+	
 	<!-- 포스트의 태그를 추가한다  -->
 	<insert id="insertPostTag">
 		insert into post_tag( seq_post, tag)

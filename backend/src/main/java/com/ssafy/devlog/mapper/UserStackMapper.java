@@ -10,6 +10,7 @@ import com.ssafy.devlog.dto.UserStack;
 public interface UserStackMapper {
 
 	public List<UserStack> selectAllUserStack(int seq_user);
+	public UserStack selectUserStackByUserAndStack(UserStack userStack);
 	public int insertUserStack(UserStack userStack);
 	public int deleteUserStack(int seq);
 	

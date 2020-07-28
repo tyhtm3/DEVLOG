@@ -30,4 +30,9 @@ public class ProjectStackServiceImpl implements ProjectStackService {
 		return projectStackMapper.deleteProjectStack(seq);
 	}
 
+	@Override
+	public ProjectStack selectProjectStackByProjectAndStack(ProjectStack projectStack) {
+		return projectStackMapper.selectProjectStackByProjectAndStack(projectStack);
+	}
+
 }

@@ -9,6 +9,12 @@
 		where seq_post_project = #{seq_post_project}
 	</select>
 	
+	<select id="selectProjectStackByProjectAndStack" resultType="ProjectStack">
+		select *
+		from post_project_stack 
+ 		where seq_post_project = #{seq_post_project} and stack = #{stack}
+	</select>
+	
 	<!-- 프로젝트에 기술스택을 추가한다  -->
 	<insert id="insertProjectStack">
 		insert into post_project_stack( seq_post_project, stack)
