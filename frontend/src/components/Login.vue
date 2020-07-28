@@ -1,70 +1,76 @@
 <template>
-    <div class="form">
-        <div class="wrap">
-            <input v-model="email"
-                        id="email"
-                        placeholder="이메일을 입력해주세요"
-                        type="text"/>
-            <input v-model="password" type="password"
-                        id="password"
-                        placeholder="영문, 숫자 혼용 8자 이상"/>
-            <button @click="login">login</button>
-            <p class="message">
-            Not registered?
-            <!-- <router-link v-bind:to=""> -->
-                Create an account
-            <!-- </router-link> -->
-            </p>
-        </div> 
-    </div>
+	<div class="form">
+		<div class="wrap">
+			<div class="header">
+				<span @click="loginFormClose"><i class="material-icons">close</i></span>
+			</div>
+			<div class="body">
+				<input v-model="id" id="id" placeholder="id" type="text"/>
+				<input v-model="password" type="password" id="password" placeholder="password"/>
+				<button class="normal" @click="login">login</button><p/>
+				<button class="kakao" @click="login">kakao</button><button class="naver" @click="login">naver</button><p/>
+				<!-- <button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button> -->
+				<p class="message">Not registered?
+					<router-link to="/signup">
+						Create an account
+					</router-link>
+				</p>	
+				<p class="message">Forgot password?
+					<router-link to="/findpw">
+						Find password
+					</router-link>
+				</p>
+			</div>
+		</div> 
+	</div>
 </template>
 <script>
-    export default {
-        name: 'Login',
-        components: {
-        },
-        created(){
-        },
-        watch: {
-        },
-        methods: {
-            login() {
-                if(this.email==='')
-                    alert('이메일을 입력해주세요.')
-                else if (!this.validEmail(this.email))
-                    alert("이메일 형식을 확인하세요.")
-                else if(this.password==='')
-                    alert('비밀번호를 입력해주세요.')
-                else
-                    this.$store.dispatch('login', {email: this.email, password: this.password})
-            },
-            validEmail: function(email) {
-                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                return re.test(email);
-            }
-        },
-        data: () => {
-            return {
-                email: '',
-                password: '',
-            }
-        }
-    }
+export default {
+	name: 'Login',
+	data: () => {
+		return {
+			id: '',
+			password: '',
+		}
+	},
+	methods: {
+		loginFormClose(){
+			this.$store.state.loginFormVisible = false
+		},
+		login() {
+			if(this.id==='')
+				alert('아이디을 입력해주세요.')
+			else if(this.password==='')
+				alert('비밀번호를 입력해주세요.')
+			else
+				this.$store.dispatch('login', {id: this.id, password: this.password})
+		}
+	},
+}
 
 </script>
 <style>
  @import url("https://fonts.googleapis.com/css?family=Roboto:300");
- .wrap {
-  position: relative;
+ .wrap{
+  position: absolute;
+  right: 80px;
   z-index: 1;
   background: #ffffff;
   max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
+  margin: 20px auto 100px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
-
+.wrap .header{
+    text-align: right;
+    margin: 20px 20px;
+ }
+.wrap .body{
+  padding: 10px 45px 45px 45px;
+}
+.wrap span{
+    cursor: pointer;
+}
 .form input {
   font-family: "Roboto", sans-serif;
   outline: 0;
@@ -76,13 +82,11 @@
   box-sizing: border-box;
   font-size: 14px;
 }
-
 .form button {
-  font-family: "Roboto", sans-serif;
+	font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
   background: #6E6E6E;
-  width: 100%;
   border: 0;
   padding: 15px;
   color: #ffffff;
@@ -90,6 +94,33 @@
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
+}
+.form .normal {
+	width: 100%;
+}
+.form .naver {
+  background: #2DB400;
+	color: #ffffff;
+	width: 50%;
+	display: inline;
+}
+.form .kakao {
+  background: #F7E600;
+	color: #443731;
+	width: 50%;
+	display: inline;
+}
+.form .facebook {
+  background: #3B5998;
+	color: #ffffff;
+	width: 50%;
+	display: inline;
+}
+.form .google {
+  background: #EA4335;
+	color: #ffffff;
+	width: 50%;
+	display: inline;
 }
 
 .form button:hover,
