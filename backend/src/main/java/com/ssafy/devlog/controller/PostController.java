@@ -99,7 +99,7 @@ public class PostController {
 	// RequestBody로 Map을 받아오기 때문에 Get 대신 Post를 사용함.
 	
 	// show feed
-	@ApiOperation(value = "피드에서 한 페이지의 포스트 반환. (ex. { seq_user:1 , disclosure:1, offset:0, limit:6 tag:['python']  } )", response = List.class)
+	@ApiOperation(value = "피드에서 한 페이지의 포스트 반환. (ex. { seq_user:1 , disclosure:1, offset:0, limit:6, tag:['python']  } )", response = List.class)
 	@PostMapping(value = "/feed")
 	public ResponseEntity<List<Post>> selectPostByFeed(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("selectPostByFeed - 호출");
