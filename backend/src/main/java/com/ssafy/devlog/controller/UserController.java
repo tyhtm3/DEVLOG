@@ -144,7 +144,7 @@ public class UserController {
 			String attach_path = "images/";
 			String filename = dateString + "_" + uploadfile.getOriginalFilename();
 
-			 System.out.println(root_path+attach_path+filename);
+//			 System.out.println(root_path+attach_path+filename);
 
 			FileOutputStream fos = new FileOutputStream(root_path + attach_path + filename);
 			// 파일 저장할 경로 + 파일명을 파라미터로 넣고 fileOutputStream 객체 생성하고
@@ -161,8 +161,8 @@ public class UserController {
 				fos.write(buffer, 0, readCount);
 				// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
 			}
-
-			return root_path + attach_path + filename;
+			String serverDomain = "i3a402.p.ssafy.io/images/";
+			return serverDomain + filename;
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
