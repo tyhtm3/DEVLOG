@@ -8,7 +8,6 @@ import com.ssafy.devlog.dto.Portfolio;
 
 public interface PortfolioService {
 	
-	public int selectPortfolioCntByBlog(int seq_user,int seq_blog);
 	public List<Portfolio> selectPortfolioByBlog(int seq_user,int seq_blog,int offset,int limit);
 
 
