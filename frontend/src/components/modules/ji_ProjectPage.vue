@@ -37,13 +37,19 @@
                     </div>
                 </div>
             </div>
+            <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
+            <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
         </section>
     </transition>
 </template>
 <script>
   import http from '../../util/http-common'
+  import InfiniteLoading from 'vue-infinite-loading'
   export default {
     name: 'ji_ProjectPage',
+    components: {
+        InfiniteLoading
+    },
     data(){
         return{
             // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
@@ -52,31 +58,59 @@
             projectList: [],
             comment: [],
             tag:[],
-            counter: 0
+            counter: 0,
+            // 페이지네이션
+            limit: 0,
+            page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3배수)
         }
     },
     created(){	 
       this.getprojectList();
     },
     methods:{
+        // 페이지네이션 하기 전 처음 페이지에 뿌려줄 카드 불러오기
         getprojectList(){
-            http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:0, limit:10})
+            http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:0, limit:this.page})
             .then(({ data }) => {
                 this.projectList = data;
-                for(var i=0; i<this.projectList.length; i++){
-                    // 코멘트
-                    http.get('postcomment/'+this.projectList[i].seq)
-                     .then(({data}) => {
-                        this.comment.push(data.length);
-                    });
-                    // 태그
-                    http.get('posttag/'+this.projectList[i].seq)
-                     .then(({data}) => {
-                        this.tag.push(data);
-                    });
-                }
+                this.getprojectCommentTag(data)
             })
-        }
+        },
+        // 인피니트로딩
+        infiniteHandler($state){
+            http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:this.limit+this.page, limit:this.page})
+            .then(({ data }) => {
+                // 스크롤 페이징을 띄우기 위한 시간 1초
+                setTimeout(()=>{
+                    if(data.length){
+                        this.getprojectCommentTag(data)
+                        this.projectList = this.projectList.concat(data);
+                        $state.loaded()
+                        this.limit +=this.page
+                        if(this.projectList.length/this.page == 0){
+                            $state.complete();
+                        }
+                    }else{
+                        $state.complete();
+                    }
+                },1000)
+            })
+        },
+        // 프로젝트로부터 코멘트 개수와 태그 불러오기
+        getprojectCommentTag(data){
+            for(var i=0; i<data.length; i++){
+                // 코멘트
+                http.get('postcomment/'+data[i].seq)
+                .then(({data}) => {
+                this.comment.push(data.length);
+                });
+                // 태그
+                http.get('posttag/'+data[i].seq)
+                .then(({data}) => {
+                this.tag.push(data);
+                });
+            }   
+        },
     }
   }
 </script>
