@@ -1,12 +1,16 @@
 package com.ssafy.devlog.controller;
 
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +29,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.ssafy.devlog.dto.Blog;
 import com.ssafy.devlog.dto.User;
 import com.ssafy.devlog.service.BlogService;
@@ -160,4 +169,124 @@ public class UserController {
 			return FAIL;
 		}
 	}
+	
+	
+	@ApiOperation(value = "네이버 로그인")
+	@GetMapping("naver")
+	public void naver(@RequestParam(value = "code") String code,@RequestParam(value = "state") String state, HttpServletResponse response ) throws Exception {
+	
+	
+		String apiURL;
+        apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
+        apiURL += "client_id=RSKBTL31UOSpdlckpmTt";
+        apiURL += "&client_secret=MK0P6WjQXn" ;
+        apiURL += "&code=" + code;
+        apiURL += "&state=" + state;
+        String access_token = "";
+        String refresh_token = "";
+        
+        try {
+        	
+        	//로그인이 정상적으로 된 상황이므로 code 와 state, secret pw로 네이버 apiURL을 통해 토큰을 요청한다.
+            URL url = new URL(apiURL);
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("GET");
+            int responseCode = con.getResponseCode();
+            BufferedReader br;
+
+            if(responseCode==200) { 													
+                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            } else {  																	
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            }
+            String inputLine;
+            StringBuffer res = new StringBuffer();
+            while ((inputLine = br.readLine()) != null) {
+                res.append(inputLine);
+            }
+            br.close();
+            
+            if(responseCode==200) { 
+            	
+            	//  정상적으로 토큰을 가져오면 Gson 으로 JSON 파일을 파싱해준다.
+                int id;
+                String nickName, email, tmp;
+                JsonParser parser = new JsonParser();
+                JsonElement accessElement = parser.parse(res.toString());
+                access_token = accessElement.getAsJsonObject().get("access_token").getAsString();
+           
+                // 파싱한 access_token 값으로 네이버에 유저 정보를 요청. 이 함수의 return 값은 id, email, nickname 등 유저 정보들과 상태 코드 등이다.
+                tmp = getUserInfo(access_token);
+                
+                JsonElement userInfoElement = parser.parse(tmp);
+                id = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("id").getAsInt();
+                nickName = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("nickname").getAsString();
+                email = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("email").getAsString();
+     
+                // 마지막으로 이러한 유저 정보들을 JWT 로 만들어준다. 
+                access_token = createJWTToken(id, nickName, email);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        
+        response.sendRedirect("http://localhost:8080/#/dashboard-ju/"+access_token);
+	}
+	
+	private String createJWTToken(int id, String nickname, String email) {
+        String token = null;
+        DecodedJWT jwt = null;
+
+        try {
+            Long EXPIRATION_TIME = 1000L * 60L * 10L;
+            Date issuedAt = new Date();
+            Date notBefore = new Date(issuedAt.getTime());
+            Date expiresAt = new Date(issuedAt.getTime() + EXPIRATION_TIME);
+
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            token = JWT.create()
+                    .withIssuer("auth0") 		//발행자
+                    .withSubject(nickname)		//!닉네임
+                    .withAudience("devlog") 	//토큰 대상자
+                    .withClaim("id", id) 		//!아이디
+                    .withClaim("email", email)	//!이메일
+                    .withNotBefore(notBefore) 	//토큰의 활성 날짜
+                    .withExpiresAt(expiresAt) 	//만료시간
+                    .sign(algorithm);
+        } catch (Exception e) {
+            System.err.println("err: " + e);
+        }
+        return token;
+    }
+	
+	
+	private String getUserInfo(String access_token) {
+        String header = "Bearer " + access_token; // Bearer 다음에 공백 추가해야함
+        try {
+            String apiURL = "https://openapi.naver.com/v1/nid/me";
+            URL url = new URL(apiURL);
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Authorization", header);
+            int responseCode = con.getResponseCode();
+            BufferedReader br;
+            if(responseCode==200) { 
+                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            } else {  
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            }
+            String inputLine;
+            StringBuffer res = new StringBuffer();
+            while ((inputLine = br.readLine()) != null) {
+                res.append(inputLine);
+            }
+            br.close();
+            return res.toString();
+        } catch (Exception e) {
+            System.err.println(e);
+            return "Err";
+        }
+    }
+	
 }

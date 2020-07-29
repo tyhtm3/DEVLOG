@@ -35,22 +35,22 @@
 								<li>
 									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
-										<li> <i class="ti-settings "></i>
+										<li> <i class="ti-user"></i>
 											<router-link to="/myinfo">
-												<h3>{{ this.$store.state.userInfo.name }}<span class="text-green fontello-record"></span></h3>
-												<p>sub message</p>
+												<h3 style="margin-top: 9px;">{{ this.$store.state.userInfo.name }}<span class="text-green fontello-record"></span></h3>
+												<p></p>
 											</router-link>
 										</li>
-										<li> <i class="ti-user "></i>
+										<li> <i class="ti-home"></i>
 											<router-link to="/blog-main">
-												<h3>내 블로그<span class="text-yellow fontello-record"></span></h3>
-												<p>sub message</p>
+												<h3 style="margin-top: 9px;">내 블로그<span class="text-yellow fontello-record"></span></h3>
+												<p></p>
 											</router-link>
 										</li>
-										<li> <i class="ti-power-off "></i>
+										<li> <i class="ti-power-off"></i>
 											<a style="cursor:pointer;" @click="logout">
-												<h3>로그아웃<span class="text-yellow fontello-record"></span></h3>
-												<p>sub message</p>
+												<h3 style="margin-top: 9px;">로그아웃<span class="text-yellow fontello-record"></span></h3>
+												<p></p>
 											</a>
 										</li>
 									</ul>

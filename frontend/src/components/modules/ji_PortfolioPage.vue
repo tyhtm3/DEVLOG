@@ -41,7 +41,7 @@
     name: 'ji_PortfolioPage',
     data(){
         return{
-                        // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
+            // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
             seq_blog: this.$store.state.userInfo.seq,
             seq_user: this.$store.state.userInfo.seq,
             offset:0,
@@ -61,10 +61,10 @@
             .then(({ data }) => {
                 this.portfolioList = data;
                 for(var i=0; i<this.portfolioList.length; i++){
-                    console.log(this.portfolioList[i].seq);
+                    // console.log(this.portfolioList[i].seq);
                     http.get('postcomment/'+this.portfolioList[i].seq)
                      .then(({data}) => {
-                        console.log(data.length);
+                        // console.log(data.length);
                         this.comment.push(data.length);
                     });
                 }
