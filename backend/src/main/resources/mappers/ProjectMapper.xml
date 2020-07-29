@@ -29,7 +29,7 @@
         	</foreach>
 			)
 		</if>
-		ORDER BY regtime
+		ORDER BY regtime desc
 		LIMIT 6
 	</select>
 	   
@@ -56,7 +56,7 @@
         	</foreach>
 			)
 		</if>
-		ORDER BY regtime
+		ORDER BY regtime desc
 		LIMIT #{limit} OFFSET #{offset} 
 	</select>
 	

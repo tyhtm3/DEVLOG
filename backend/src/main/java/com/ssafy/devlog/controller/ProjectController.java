@@ -92,14 +92,15 @@ public class ProjectController {
 	// RequestBody로 Map을 받아오기 때문에 Get 대신 Project를 사용함.
 	
 	// show feed
-	@ApiOperation(value = "피드에서 한 페이지의 프로젝트의 반환. (ex. { seq_user:1 , disclosure:1, tag:['python']  } )", response = List.class)
+	@ApiOperation(value = "피드에서 최신순으로 6개의 프로젝트 반환. (ex. { seq_user:1 , disclosure:1, tag:['python']  } )", response = List.class)
 	@PostMapping(value = "/feed")
 	public ResponseEntity<List<Project>> selectProjectByFeed(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("selectProjectByFeed - 호출");
 		return new ResponseEntity<List<Project>>(projectService.selectProjectByFeed((int)params.get("seq_user"),(int)params.get("disclosure"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "블로그 메인에서 한 페이지의 프로젝트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:10, tag:['python','c++']  } )", response = List.class)    
+	// show blog
+	@ApiOperation(value = "블로그 메인에서 한 페이지의 프로젝트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:6, tag:['python','c++']  } )", response = List.class)    
 	@PostMapping(value = "/blog")
 	public ResponseEntity<List<Project>> selectProjectByBlog(@RequestBody Map<String, Object> params) {
 		logger.debug("selectProjectByBlog - 호출");
