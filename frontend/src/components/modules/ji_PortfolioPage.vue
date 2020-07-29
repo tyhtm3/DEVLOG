@@ -13,7 +13,7 @@
                         <div class="video-text">
                             <!-- {{portfolio}} -->
                             <h2 style="font-weight: bold; margin-bottom:10px;">{{portfolio.title}}</h2>
-                            <p style="color:black;">{{portfolio.content}} 세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!! 세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!</p>
+                            <p class="content-3line" style="color:black;">{{portfolio.content}}</p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 
                             <span class="tag">#SpringBoot</span>
@@ -80,5 +80,21 @@
     margin-right: 4px;
     line-height: 35px;
     cursor: pointer;
+}
+.content-3line{
+    /* 한 줄 자르기 */
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* 3줄만 보이게 */
+    white-space: normal;
+    line-height: 2;
+    height: 6em;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 </style>

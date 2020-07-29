@@ -13,13 +13,17 @@
                         <div class="video-text">
                             <!-- {{project}} -->
                             <h2 style="font-weight: bold; margin-bottom:10px;">{{project.title}}</h2>
-                            <p style="color:black;">{{project.content}} 세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!! 세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!세 줄만 보이게 만들어야되는데 아직 작업 안함!!!! 해야됨!!</p>
+                            <p class="content-3line" style="color:black;">{{project.content}}</p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 
-                            <span class="tag">#SpringBoot</span>
-                            <span class="tag">#Vue.js</span>
-                            <span class="tag">#css</span>
+                           <!-- 태그 3개만 갖고오기--> 
+                            <span v-for="(tag,index) in tag[index].slice(0,3)" :key="index">
+                            <span class="tag">#{{tag.tag}}</span>
+                            </span>
+                            <!-- 여백 -->
+                            <span class="tag"></span>
 
+                            <!-- 좋아요, 코멘트 수 -->
                             <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{project.like_count}} </span>
                             <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span> 
                         </div>
@@ -47,6 +51,7 @@
             seq_user: this.$store.state.userInfo.seq,
             projectList: [],
             comment: [],
+            tag:[],
             counter: 0
         }
     },
@@ -59,11 +64,15 @@
             .then(({ data }) => {
                 this.projectList = data;
                 for(var i=0; i<this.projectList.length; i++){
-                    // console.log(this.projectList[i].seq);
+                    // 코멘트
                     http.get('postcomment/'+this.projectList[i].seq)
                      .then(({data}) => {
-                        // console.log(data.length);
                         this.comment.push(data.length);
+                    });
+                    // 태그
+                    http.get('posttag/'+this.projectList[i].seq)
+                     .then(({data}) => {
+                        this.tag.push(data);
                     });
                 }
             })
@@ -78,5 +87,21 @@
     margin-right: 4px;
     line-height: 35px;
     cursor: pointer;
+}
+.content-3line{
+    /* 한 줄 자르기 */
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* 3줄만 보이게 */
+    white-space: normal;
+    line-height: 2;
+    height: 6em;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 </style>
