@@ -36,13 +36,26 @@
               <br><br><br>
               
               <!-- start project list -->
+              <div class="col-sm-8" style="margin: 0 auto; float: none;">
               <el-carousel :interval="4000" type="card" height="400px">
                 <el-carousel-item v-for="project in projectList" :key="project.seq">
-                  <div>
-                    
+                  <div class="well-media">
+                    <div class="vendor">
+                      <img v-if="post.img_url" class="img-responsive-media" src=post.img_url alt="">
+                      <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
+                    </div>
+                    <div class="video-text">
+                      <h2 style="font-weight: bold; margin-bottom:5px;">{{ project.title }}</h2>
+                    </div>
+                    <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" > 
+                      <span class="tag">#SpringBoot</span>
+                      <span class="tag">#Vue.js</span>
+                      <span class="tag">#css</span> 
+                    </div>
                   </div>
                 </el-carousel-item>
               </el-carousel>
+              </div>
               <!-- end project list -->
 
               <br><br><br>
@@ -64,7 +77,7 @@
                           <a href="#"> <span class="ti-pencil"></span>&nbsp;{{ post.regtime }}</a>
                         </li>
                         <li>
-                          <a href="#"> <span class="ti-comment-alt"></span>&nbsp;0</a>
+                          <a href="#"> <span class="ti-comment-alt"></span>&nbsp;{{ postComment[index] }}</a>
                         </li>
                         <li>
                           <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
@@ -102,6 +115,15 @@
 import http from '../../../util/http-common'
 export default {
   name: 'Main',
+  data () {
+    return {
+      postList: [],
+      projectList: [],
+      projectComment: [],
+      postComment: [],
+      tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
+    }
+  },
   created(){
     http
     .post('/project/feed', {
@@ -122,26 +144,17 @@ export default {
       limit: 10
     })
     .then(({data}) => {
+      this.postList = data
       for(var i=0; i<data.length; i++){
         http
-        .get('/posttag/'+data[i].seq)
-        .then(({tag}) =>{
-          console.log(tag)
-          data[i].tag = tag
-        })
+        .get('postcomment/'+this.postList[i].seq)
+        .then(({data}) => {
+            this.postComment.push(data.length);
+        });
       }
-      this.postList = data
-      console.log(this.postList)
     })
-  },
-  data () {
-    return {
-      postList: [],
-      projectList: [],
-      tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
-     }
-   }
- }
+  }
+}
 </script>
 <style lang="scss">
 
@@ -258,33 +271,5 @@ input.devin-search {
 .blog-list-nest{
   float: left;
 }
-.time {
-  font-size: 13px;
-  color: #999;
-}
 
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-}
-
-.button {
-  padding: 0;
-  float: right;
-}
-
-.image {
-  width: 100%;
-  display: block;
-}
-
-.clearfix:before,
-.clearfix:after {
-    display: table;
-    content: "";
-}
-
-.clearfix:after {
-    clear: both
-}
 </style>
