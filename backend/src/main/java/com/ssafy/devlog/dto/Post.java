@@ -11,7 +11,16 @@ public class Post {
 	private String regtime;
 	private int disclosure; //1 전체공개 2 이웃공개(내가 추가한 이웃) 3 비공개
 	private int like_count;
+	private String img_url;
 	
+	public String getImg_url() {
+		return img_url;
+	}
+
+	public void setImg_url(String img_url) {
+		this.img_url = img_url;
+	}
+
 	//post_basic
 	private String content;
 
@@ -74,9 +83,10 @@ public class Post {
 	@Override
 	public String toString() {
 		return "Post [seq=" + seq + ", seq_blog=" + seq_blog + ", title=" + title + ", regtime=" + regtime
-				+ ", disclosure=" + disclosure + ", like_count=" + like_count + ", content=" + content + "]";
-
+				+ ", disclosure=" + disclosure + ", like_count=" + like_count + ", img_url=" + img_url + ", content="
+				+ content + "]";
 	}
+
 	
 }
 
