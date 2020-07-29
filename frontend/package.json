@@ -29,6 +29,7 @@
     "vue-avatar": "^2.3.0",
     "vue-event-calendar": "^1.4.8",
     "vue-gmaps": "^0.2.2",
+    "vue-infinite-loading": "^2.4.5",
     "vue-resource": "^1.0.3",
     "vue-router": "^2.0.2",
     "vue2-editor": "^2.0.26",

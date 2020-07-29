@@ -6,10 +6,7 @@ import com.ssafy.devlog.dto.Post;
 
 public interface PostService {
 
-	public int selectPostCntByFeed(int seq_user, int disclosure, List<String> tag);
 	public List<Post> selectPostByFeed(int seq_user,int disclosure,int offset,int limit,List<String> tag);
-	
-	public int selectPostCntByBlog(int seq_user, int disclosure, List<String> tag);
 	public List<Post> selectPostByBlog(int seq_user,int disclosure,int offset,int limit,List<String> tag);
 	
 	public Post selectPost(int seq);

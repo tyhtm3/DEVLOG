@@ -14,19 +14,10 @@ public class ProjectServiceImpl implements ProjectService{
 	@Autowired
 	private ProjectMapper projectMapper;
 	
-	@Override
-	public int selectProjectCntByFeed(int seq_user, int disclosure, List<String> tag) {
-		return projectMapper.selectProjectCntByFeed(seq_user, disclosure, tag);
-	}
 	
 	@Override
-	public List<Project> selectProjectByFeed(int seq_user,int disclosure,int offset,int limit,List<String> tag){
-		return projectMapper.selectProjectByFeed(seq_user, disclosure, offset, limit, tag);
-	}
-
-	@Override
-	public int selectProjectCntByBlog(int seq_user, int disclosure, List<String> tag) {
-		return projectMapper.selectProjectCntByBlog(seq_user, disclosure, tag);
+	public List<Project> selectProjectByFeed(int seq_user,int disclosure,List<String> tag){
+		return projectMapper.selectProjectByFeed(seq_user, disclosure, tag);
 	}
 
 	@Override

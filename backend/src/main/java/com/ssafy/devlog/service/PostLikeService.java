@@ -1,7 +1,5 @@
 package com.ssafy.devlog.service;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.ssafy.devlog.dto.PostLike;
 
 public interface PostLikeService {

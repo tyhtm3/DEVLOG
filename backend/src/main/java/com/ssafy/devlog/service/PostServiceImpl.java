@@ -15,18 +15,8 @@ public class PostServiceImpl implements PostService{
 	private PostMapper postMapper;
 	
 	@Override
-	public int selectPostCntByFeed(int seq_user, int disclosure, List<String> tag) {
-		return postMapper.selectPostCntByFeed(seq_user, disclosure, tag);
-	}
-	
-	@Override
 	public List<Post> selectPostByFeed(int seq_user,int disclosure,int offset,int limit,List<String> tag){
 		return postMapper.selectPostByFeed(seq_user, disclosure, offset, limit, tag);
-	}
-	
-	@Override
-	public int selectPostCntByBlog(int seq_user, int disclosure, List<String> tag) {
-		return postMapper.selectPostCntByBlog(seq_user, disclosure, tag);
 	}
 	
 	@Override
