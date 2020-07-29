@@ -5,6 +5,7 @@ public class PostTag {
 	private int seq;
 	private int seq_post;
 	private String tag;
+	
 	public int getSeq() {
 		return seq;
 	}

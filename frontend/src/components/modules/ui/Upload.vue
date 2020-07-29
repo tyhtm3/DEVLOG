@@ -53,7 +53,7 @@
                         <h5>FileList with thumbnail</h5>
                         <hr>
                         
-                        <el-upload
+                        <!-- <el-upload
                           action="https://jsonplaceholder.typicode.com/posts/"
                           list-type="picture-card"
                           :on-preview="handlePictureCardPreview"
@@ -62,7 +62,7 @@
                         </el-upload>
                         <el-dialog v-model="dialogVisible" size="tiny">
                           <img width="100%" :src="dialogImageUrl" alt="">
-                        </el-dialog>
+                        </el-dialog> -->
                     </div>
                 </div>
             </section>

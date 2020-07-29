@@ -6,9 +6,17 @@
 		<mapper resource="mappers/BlogMapper.xml" />
 		<mapper resource="mappers/BlogTagMapper.xml" />
 		<mapper resource="mappers/UserTagMapper.xml" />
+		<mapper resource="mappers/UserMapper.xml" />
+		<mapper resource="mappers/UserStackMapper.xml" />
+		<mapper resource="mappers/UserNeighborMapper.xml" />
 		<mapper resource="mappers/PostMapper.xml" />
+		<mapper resource="mappers/PostTagMapper.xml" />
+		<mapper resource="mappers/PostLikeMapper.xml" />
+		<mapper resource="mappers/PostCommentMapper.xml" />
 		<mapper resource="mappers/ProjectMapper.xml" />
+		<mapper resource="mappers/ProjectStackMapper.xml" />
 		<mapper resource="mappers/PortfolioMapper.xml" />
+		<mapper resource="mappers/PortfolioProjectMapper.xml" /> 
 	</mappers>
 </configuration>
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.BlogTag;
+import com.ssafy.devlog.dto.PostTag;
 import com.ssafy.devlog.service.BlogTagService;
 
 import io.swagger.annotations.ApiOperation;
@@ -47,11 +48,14 @@ public class BlogTagController {
 		return new ResponseEntity<BlogTag>(blogTagService.selectBlogTagByBlog(blog_seq), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "새로운 태그를 생성한다", response = List.class)
+	@ApiOperation(value = "블로그 대표 태그를 생성한다 //중복 입력시 401", response = List.class)
 	@PostMapping
 	public ResponseEntity<String> insertBlogTag(@RequestBody BlogTag blogTag) throws Exception {
 		logger.debug("inserBlogTag - 호출");
-		if(blogTagService.insertBlogTag(blogTag)==1) {
+		BlogTag check = blogTagService.selectBlogTagByBlogAndTag(blogTag);
+		if (check != null)
+			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
+		else if(blogTagService.insertBlogTag(blogTag)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.devlog.dto.Post;
 import com.ssafy.devlog.dto.Portfolio;
+import com.ssafy.devlog.dto.Portfolio;
 import com.ssafy.devlog.mapper.PortfolioMapper;
 
 @Service
@@ -15,15 +16,18 @@ public class PortfolioServiceImpl implements PortfolioService{
 	@Autowired
 	private PortfolioMapper portfolioMapper;
 	
+	
 	@Override
-	public List<Portfolio> selectAllPortfolioByBlog(int seq_blog){
-		return portfolioMapper.selectAllPortfolioByBlog(seq_blog);
+	public int selectPortfolioCntByBlog(int seq_user,int seq_blog) {
+		return portfolioMapper.selectPortfolioCntByBlog(seq_user, seq_blog);
 	}
 	
 	@Override
-	public List<Portfolio> selectAllPortfolioByBlogByTag(int seq_blog, List<String> tag){
-		return portfolioMapper.selectAllPortfolioByBlogByTag(seq_blog, tag);
+	public List<Portfolio> selectPortfolioByBlog(int seq_user,int seq_blog,int offset,int limit){
+		return portfolioMapper.selectPortfolioByBlog(seq_user, seq_blog, offset, limit);
 	}
+
+	
 	
 	@Override
 	public Portfolio selectPortfolio(int seq){
@@ -31,14 +35,25 @@ public class PortfolioServiceImpl implements PortfolioService{
 	}
 	
 	@Override
-	public int insertPortfolio(Portfolio portfolio){
-		return portfolioMapper.insertPortfolio(portfolio);
+	public int insertPost(Portfolio portfolio){
+		return portfolioMapper.insertPost(portfolio);
 	}
 	
 	@Override
-	public int updatePortfolio(Portfolio portfolio){
-		return portfolioMapper.updatePortfolio(portfolio);
+	public int insertPostPortfolio(Portfolio portfolio){
+		return portfolioMapper.insertPostPortfolio(portfolio);
 	}
+	
+	@Override
+	public int updatePost(Portfolio portfolio){
+		return portfolioMapper.updatePost(portfolio);
+	}
+	
+	@Override
+	public int updatePostPortfolio(Portfolio portfolio) {
+		return portfolioMapper.updatePostPortfolio(portfolio);
+	}
+	
 	@Override
 	public int deletePortfolio(int seq){
 		return portfolioMapper.deletePortfolio(seq);

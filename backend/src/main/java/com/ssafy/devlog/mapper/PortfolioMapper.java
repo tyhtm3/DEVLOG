@@ -10,13 +10,14 @@ import com.ssafy.devlog.dto.Portfolio;
 @Mapper
 public interface PortfolioMapper {
 	
-	public List<Portfolio> selectAllPortfolioByBlog(int seq_blog);
-	public List<Portfolio> selectAllPortfolioByBlogByTag(@Param("seq_blog") int seq_blog, @Param("tag") List<String> tag);
-	
+	public int selectPortfolioCntByBlog(@Param("seq_user")int seq_user,@Param("seq_blog") int seq_blog);
+	public List<Portfolio> selectPortfolioByBlog(@Param("seq_user") int seq_user, @Param("seq_blog") int seq_blog,@Param("offset") int offset, @Param("limit") int limit);
+
 	public Portfolio selectPortfolio(int seq);
-	public int insertPortfolio(Portfolio portfolio);
-	public int updatePortfolio(Portfolio portfolio);
+	public int insertPost(Portfolio portfolio);
+	public int insertPostPortfolio(Portfolio portfolio);
+	public int updatePost (Portfolio portfolio);
+	public int updatePostPortfolio(Portfolio portfolio);
 	public int deletePortfolio(int seq);
 	
-
 }

@@ -25,43 +25,46 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/usertag")
 public class UserTagController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(UserTagController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
-	
+
 	@Autowired
 	private UserTagService userTagService;
-	
+
 	@ApiOperation(value = "모든 태그를 반환한다.", response = List.class)
 	@GetMapping
 	public ResponseEntity<List<UserTag>> selectAllUserTag() throws Exception {
 		logger.debug("selectAllTag - 호출");
 		return new ResponseEntity<List<UserTag>>(userTagService.selectAllUserTag(), HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "특정 유저의 태그를 반환한다.", response = List.class)
-	@GetMapping("{user_seq}")
-	public ResponseEntity<UserTag> selectUserTagByUser(@PathVariable int user_seq) throws Exception {
+	@GetMapping("{seq_user}")
+	public ResponseEntity<List<UserTag>> selectUserTagByUser(@PathVariable int seq_user) throws Exception {
 		logger.debug("selectUserTagByUser - 호출");
-		return new ResponseEntity<UserTag>(userTagService.selectUserTagByUser(user_seq), HttpStatus.OK);
+		return new ResponseEntity<List<UserTag>>(userTagService.selectUserTagByUser(seq_user), HttpStatus.OK);
 	}
-	
-	@ApiOperation(value = "새로운 태그를 생성한다", response = List.class)
+
+	@ApiOperation(value = "새로운 태그를 생성한다 //중복 입력시 401", response = List.class)
 	@PostMapping
 	public ResponseEntity<String> insertUserTag(@RequestBody UserTag userTag) throws Exception {
 		logger.debug("insertUserTag - 호출");
-		if(userTagService.insertUserTag(userTag)==1) {
+		UserTag check = userTagService.selectUserTagByUserAndTag(userTag);
+		if (check != null)
+			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
+		else if (userTagService.insertUserTag(userTag) == 1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
-	
+
 	@ApiOperation(value = "특정 태그를 삭제한다.", response = List.class)
 	@DeleteMapping("{seq}")
 	public ResponseEntity<String> deleteUserTag(@PathVariable int seq) throws Exception {
 		logger.debug("deleteUserTag - 호출");
-		if(userTagService.deleteUserTag(seq)==1) {
+		if (userTagService.deleteUserTag(seq) == 1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

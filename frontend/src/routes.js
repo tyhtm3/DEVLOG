@@ -47,6 +47,10 @@ import OpenLayer from './components/modules/OpenLayer.vue'
 
 // devlog
 import BlogMain from './components/modules/y_BlogMain.vue'
+import SignUp from './components/SignUp.vue'
+import FindPassword from './components/FindPassword'
+import MyInfo from './components/MyInfo.vue'
+import BlogDetail from './components/modules/j_BlogDetail.vue'
 import DashboardJi from './components/modules/dashboard/ji_Index.vue'
 import DashboardJu from './components/modules/dashboard/ju_Index.vue'
 
@@ -261,6 +265,11 @@ const routes = [
         component: BlogMain
       },
       {
+        path: '/blog-detail',
+        name: 'blog-detail',
+        component: BlogDetail
+      },
+      {
         path: '/dashboard-ji',
         name: 'dashboard-ji',
         component: DashboardJi
@@ -269,6 +278,21 @@ const routes = [
         path: '/dashboard-ju',
         name: 'dashboard-ju',
         component: DashboardJu
+      },
+      {
+        path: '/signup',
+        name: 'sign-up',
+        component: SignUp
+      },
+      {
+        path: '/findpw',
+        name: 'find-password',
+        component: FindPassword
+      },
+      {
+        path: '/myinfo',
+        name: 'my-info',
+        component: MyInfo
       },
       {
         path: '*',

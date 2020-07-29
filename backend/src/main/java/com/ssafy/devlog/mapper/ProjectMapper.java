@@ -10,16 +10,17 @@ import com.ssafy.devlog.dto.Project;
 @Mapper
 public interface ProjectMapper {
 	
-	public List<Project> selectAllProject();
-	public List<Project> selectAllProjectByNeighbor(int seq_user);
-	public List<Project> selectAllProjectByTag(List<String> tag);
+	public int selectProjectCntByFeed(@Param("seq_user")int seq_user, @Param("disclosure")int disclosure,@Param("tag") List<String> tag);
+	public List<Project> selectProjectByFeed(@Param("seq_user") int seq_user,@Param("disclosure")int disclosure, @Param("offset") int offset, @Param("limit") int limit, @Param("tag") List<String> tag);
 	
-	public List<Project> selectAllProjectByBlog(int seq_blog);
-	public List<Project> selectAllProjectByBlogByTag(@Param("seq_blog") int seq_blog, @Param("tag") List<String> tag);
-	
+	public int selectProjectCntByBlog(@Param("seq_user")int seq_user,@Param("seq_blog")int seq_blog,@Param("tag") List<String> tag);
+	public List<Project> selectProjectByBlog(@Param("seq_user") int seq_user,@Param("seq_blog")int seq_blog, @Param("offset") int offset, @Param("limit") int limit, @Param("tag") List<String> tag);
+
 	public Project selectProject(int seq);
-	public int insertProject(Project project);
-	public int updateProject(Project project);
+	public int insertPost(Project project);
+	public int insertPostProject(Project project);
+	public int updatePost (Project project);
+	public int updatePostProject(Project project);
 	public int deleteProject(int seq);
 	
 

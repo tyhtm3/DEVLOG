@@ -2,51 +2,94 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.devlog.mapper.PostMapper">
+<mapper namespace="com.ssafy.devlog.mapper.PostMapper">     
+            
+	<!-- 피드에서 모든 포스트의 개수 반환. -->
+	<select id="selectPostCntByFeed" resultType="java.lang.Integer">
+		select count(*)
+		from post inner join post_basic on post.seq=post_basic.seq
+		<if test="seq_user == 0">
+		where disclosure=1
+		</if>
+		<if test="seq_user != 0">
+			where  (disclosure=1
+				or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user} ))
+				or (seq_blog = #{seq_user}) )
+			<if test="disclosure == 2">
+			and seq_blog in (select seq_neighbor from user_neighbor where seq_user = #{seq_user} )
+			</if>
+		</if>
+		<!-- 태그 선택시 서치해서 반환 -->
+		<if test="tag != null">
+			and post.seq in ( 
+			select seq_post from post_tag where tag in 
+       		<foreach collection="tag" item="item"  open="(" close=")" separator=",">
+            #{item}
+        	</foreach>
+			)
+		</if>
+	</select>
 
-	<!-- 로그인 여부에 따라 공개범위 고려하여 피드에 모든 포스트 반환 -->
-	<select id="selectAllPost" resultType="Post">
+
+	<!-- 피드에서 한 페이지의 포스트 반환. -->
+	<select id="selectPostByFeed" resultType="Post">
 		select post.*,post_basic.content
 		from post inner join post_basic on post.seq=post_basic.seq
+		<if test="seq_user == 0">
 		where disclosure=1
+		</if>
 		<if test="seq_user != 0">
+			where  (disclosure=1
+				or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user} ))
+				or (seq_blog = #{seq_user}) )
+			<if test="disclosure == 2">
+			and seq_blog in (select seq_neighbor from user_neighbor where seq_user = #{seq_user} )
+			</if>
+		</if>
+		<!-- 태그 선택시 서치해서 반환 -->
+		<if test="tag != null">
+			and post.seq in ( 
+			select seq_post from post_tag where tag in 
+       		<foreach collection="tag" item="item"  open="(" close=")" separator=",">
+            #{item}
+        	</foreach>
+			)
+		</if>
+		ORDER BY regtime
+		LIMIT #{limit} OFFSET #{offset} 
+	</select>
+	
+	
+	<!-- 블로그 메인에서 모든 포스트의 개수 반환. -->
+	<select id="selectPostCntByBlog" resultType="java.lang.Integer">
+		select count(*)
+		from post inner join post_basic on post.seq = post_basic.seq
+		where seq_blog = #{seq_blog}
+		<if test="seq_user != 0">
+		    and (disclosure=1 
 			or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user} ))
-			or (seq_blog = #{seq_user})
+			or (seq_blog = #{seq_user}) )
+		</if>
+		<if test="seq_user == 0">
+		 	and disclosure=1 
+		</if>
+		<!-- 태그 선택시 서치해서 반환 -->
+		<if test="tag != null">
+			and post.seq in ( 
+			select seq_post from post_tag where tag in 
+       		<foreach collection="tag" item="item"  open="(" close=")" separator=",">
+            #{item}
+        	</foreach>
+			)
 		</if>
 	</select>
 	
-        
-	<!-- 피드에서 내가 이웃 추가한 블로그의 포스트 반환 -->
-	<select id="selectAllPostByNeighbor" resultType="Post">
-	    select post.*, post_basic.content
-	    from post inner join post_basic on post.seq = post_basic.seq
-	    where seq_blog in (select seq_neighbor from user_neighbor where seq_user = #{seq_user} )
-	    and
-	    ( disclosure=1 or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user})))
-	</select>
-
-
-	<!-- 피드에서 선택한 태그가 들어간 포스트 반환 -->
-	<select id="selectAllPostByTag" parameterType="java.util.List" resultType="Post">
+	
+	
+	<!-- 블로그 메인에서 한 페이지의 포스트 반환.-->
+	<select id="selectPostByBlog" resultType="Post">
 		select post.*, post_basic.content
 		from post inner join post_basic on post.seq = post_basic.seq
-		where post.seq in ( 
-		select seq_post from post_tag where tag in
-		<foreach collection="tag" item="item"  open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-        ) and disclosure=1
-		<if test="seq_user != 0">
-			or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user} ))
-			or (seq_blog = #{seq_user})
-		</if>
-        
-	</select>
-	
-	
-	<!-- 블로그 메인에서 모든 포스트 반환 -->
-	<select id="selectAllPostByBlog" resultType="Post">
-		select post.*, post_basic.content from post inner join post_basic on post.seq = post_basic.seq
 		where seq_blog = #{seq_blog}
 		<if test="seq_user != 0">
 		    and (disclosure=1 
@@ -56,26 +99,20 @@
 		<if test="seq_user == 0">
 		 	and disclosure=1 
 		</if>
+		<!-- 태그 선택시 서치해서 반환 -->
+		<if test="tag != null">
+			and post.seq in ( 
+			select seq_post from post_tag where tag in 
+       		<foreach collection="tag" item="item"  open="(" close=")" separator=",">
+            #{item}
+        	</foreach>
+			)
+		</if>
+		ORDER BY regtime
+		LIMIT #{limit} OFFSET #{offset} 
 	</select>
 	
-	<!-- 블로그 메인에서 선택한 태그가 들어간 포스트 반환 -->
-	<select id="selectAllPostByBlogByTag" parameterType="java.util.List" resultType="Post">
-		select post.*, post_basic.content from post inner join post_basic on post.seq = post_basic.seq
-		where seq_blog = #{seq_blog} and seq in ( 
-		select seq_post from post_tag where tag in 
-       <foreach collection="tag" item="item"  open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-		)
-		<if test="seq_user != 0">
-		    and (disclosure=1 
-			or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user} ))
-			or (seq_blog = #{seq_user}))
-		</if>
-		<if test="seq_user == 0">
-		 	and disclosure=1 
-		</if>
-	</select>
+	
 	
 	<!-- 포스트 상세조회  -->
 	<select id="selectPost" resultType="Post">
@@ -86,9 +123,9 @@
 	<!-- 포스트 기본 정보 등록 -->
 	<insert id="insertPost" useGeneratedKeys="true" keyProperty="seq">
 		insert into post(
-			seq_blog,title,disclosure,like_count
+			seq_blog,title,disclosure,img_url,like_count
 		) values (
-			#{seq_blog}, #{title}, #{disclosure} ,0
+			#{seq_blog}, #{title}, #{disclosure} ,#{img_url},0
 		)
 	</insert>
 	
@@ -106,6 +143,7 @@
 		update post 
 		   set title = #{title}, 
 		   	   disclosure = #{disclosure}
+		   	   img_url = #{img_url}
 		 where seq = #{seq}
 	</update>
 

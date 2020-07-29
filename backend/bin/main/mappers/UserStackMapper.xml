@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.devlog.mapper.UserStackMapper">
+
+	<!-- 프로젝트의 모든 기술스택을 반환한다. -->
+	<select id="selectAllUserStack" resultType="UserStack">
+		select *
+		from
+		user_stack
+		where seq_user = #{seq_user}
+	</select>
+	
+	<select id="selectUserStackByUserAndStack" resultType="UserStack">
+		select *
+		from user_stack 
+ 		where seq_user= #{seq_user} and stack = #{stack}
+	</select>
+	
+	<!-- 프로젝트에 기술스택을 추가한다 -->
+	<insert id="insertUserStack">
+		insert into user_stack( seq_user, stack)
+		values (
+		#{seq_user},#{stack} )
+	</insert>
+
+	<!-- 프로젝트의 기술스택을 삭제한다. -->
+	<delete id="deleteUserStack">
+		delete from user_stack
+		where seq = #{seq}
+	</delete>
+
+</mapper>
+
+
+
+
+
+
