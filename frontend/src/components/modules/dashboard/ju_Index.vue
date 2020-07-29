@@ -5,84 +5,90 @@
         <div class="box">
           <div class="box-body" style="min-height:400px;">
             
-            <!-- start banner carousel --> 
             <div class="col-sm-12">
-            <!-- 메인 피드의 인포메이션 캐러셀 (2초마다 자동 슬라이드) 
-            https://mdbootstrap.com/docs/vue/advanced/carousel/ 참고
-            사용시 npm install mdbvue 설치 필요 -->
-            <mdb-carousel :items='imgs' :interval='2000' indicators controlls></mdb-carousel>
-            <!-- end banner carousel -->
-            
-            <br><br>
-            
-            <!-- start tag search bar -->
-            <div>
-              <span class="search" id="demo-2">
-                <input class="devin-search" type="search">
-              </span>
-              <!-- tags에 태그 리스트 받아온뒤 포문으로 출력-->          
-              <span v-for="(tag, index) in tags" v-bind:key="index" class="tag" style="font-size:20px; margin:10px;">
-                #{{tag}}
-              </span>
-            </div>
-            <!-- end tag search bar -->
+              <!-- start banner carousel --> 
+              <!-- 메인 피드의 인포메이션 캐러셀 (2초마다 자동 슬라이드) 
+              https://mdbootstrap.com/docs/vue/advanced/carousel/ 참고
+              사용시 npm install mdbvue 설치 필요 -->
+              <!-- <mdb-carousel :items='imgs' :interval='2000' indicators controlls></mdb-carousel> -->
 
-            <br><br>
-            
-            <!-- start project list -->
-            <el-carousel :interval="4000" type="card" height="200px">
-              <el-carousel-item v-for="item in 6" :key="item">
-                <h3 class="medium">{{ item }}</h3>
-              </el-carousel-item>
-            </el-carousel>
-            <!-- end project list -->
+              <el-carousel indicator-position="outside" height='500px'>
+                <el-carousel-item v-for="item in 3" :key="item">
 
-            <!-- start post list -->
-            <div class="col-md-12">
-              <div class="inbox-nest">
-                <ul>
-                  <li> <img alt="" class="img-circle star" src="http://api.randomuser.me/portraits/thumb/men/22.jpg"> <b>David L. Moore</b><i class="icon-attachment"></i><i class="text-orange fontello-record"></i><small>Today, 09:21 PM</small>
-                    <h5>carousel 만들기</h5>
-                    <p>캐러셀(carousel)은 스트리밍 사이트와 e-커머스 사이트에서 중요한 요소입니다. 아마존과 넷플릭스 모두 캐러셀을 중요한 내비게이션 도구로 사용하고 있습니다. 이 튜토리얼에서 두 사이트의 인터랙션 디자인을 평가하고, 그 평가 결과를 완벽한 캐러셀을 실행하는데 활용해 보겠습니다. </p>
-                  </li>
-                  <li> <img alt="" class="img-circle star" src="http://api.randomuser.me/portraits/thumb/women/23.jpg"> <b>Helen D. Murray</b><i class="text-blue fontello-record"></i><small>20 Minute ago</small>
-                    <h5>World Recod</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat nunc, vestibulum eu venenatis ut, feugiat sit amet elit. Donec convallis ornare odio. Donec ac est eget lacus molestie imperdiet vitae ac nunc. Suspendisse odio justo ... </p>
-                  </li>
-                  <li>
-                    <a class="star bg-red" href="#"> <span class="fa  fa-google-plus"></span> </a> <b>Google+ (DesignByHuman)</b><i class="text-aqua fontello-record"></i><small>1 Hour Ago</small>
-                    <h5>Berbagi pos - "This #DOTD by Viviana González makes us ..</h5>
-                    <p>Donec sed mi sem. Maecenas posuere justo dapibus fermentum porttitor. Phasellus ornare lectus a neque molestie sodales. Pellentesque consectetur sed nisl vitae tempor. Duis et odio ut ligula accumsan interdum. ... </p>
-                  </li>
-                  <li> <img alt="" class="img-circle star" src="http://api.randomuser.me/portraits/thumb/women/25.jpg"> <b>Deanna G. Rumph</b><i class=" icon-attachment"></i><i class="text-red fontello-record"></i><small>Yesterday, 09:21 PM</small>
-                    <h5>A new rating has been received for Aurelo Resume</h5>
-                    <p>Etiam cursus feugiat nibh eu efficitur. Praesent lobortis imperdiet neque in tempor. Praesent eu molestie urna, nec dapibus mi. Etiam blandit convallis ligula, sodales sodales nulla scelerisque ac ... </p>
-                  </li>
-                  <li>
-                    <a class="star bg-blue" href="#"> <span class="fa  fa-twitter"></span> </a> <b>Twitter (@Themesmile)</b><i class="text-aqua fontello-record"></i><small>11 November</small>
-                    <h5>Latest tweet from Beyonce</h5>
-                    <p>Suspendisse cursus purus eget magna molestie, a finibus odio malesuada. Maecenas sodales quam a egestas maximus. Donec ultricies nibh eros, non sagittis odio convallis posuere. Nam dolor velit, tincidunt in libero vel ... </p>
-                  </li>
-                  <li>
-                    <a class="star bg-dark-blue" href="#"> <span class="fa  fa-facebook"></span> </a> <b>Facebook ( Gifta Kamilia Putri)</b><i class="text-aqua fontello-record"></i><small>10 November</small>
-                    <h5>People that may you know!</h5>
-                    <p>Fusce eros lectus, hendrerit sit amet nibh et, accumsan sollicitudin urna. Maecenas ac ex id velit imperdiet tincidunt consectetur vel neque. Morbi ornare nibh sapien, sit amet tempus risus dapibus vitae. Donec volutpat, libero sit amet faucibus placerat ... </p>
-                  </li>
-                  <li> <img alt="" class="img-circle star" src="http://api.randomuser.me/portraits/thumb/men/40.jpg"> <b>James B. Miller</b><i class="icon-attachment"></i><i class="text-orange fontello-record"></i><small>10 November</small>
-                    <h5>Will You Be Our Valentine?</h5>
-                    <p>Hi, John i just want to know about my email that i,ve sending yesterday. Dou you read it? ... </p>
-                  </li>
-                  <li> <img alt="" class="img-circle star" src="http://api.randomuser.me/portraits/thumb/men/41.jpg"> <b>John P. McCarthy</b><i class="text-blue fontello-record"></i><small>09 November</small>
-                    <h5>World Recod</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat nunc, vestibulum eu venenatis ut, feugiat sit amet elit. Donec convallis ornare odio. Donec ac est eget lacus molestie imperdiet vitae ac nunc. Suspendisse odio justo ... </p>
-                  </li>
-                  <li>
-                    <a class="star bg-yellow" href="#"> <span class="fa  fa-dribbble"></span> </a> <b>Dribbble (Matt Wulleang)</b><i class="text-aqua fontello-record"></i><small>09 November</small>
-                    <h5>Berbagi pos - "This #DOTD by Viviana González makes us ..</h5>
-                    <p>Donec sed mi sem. Maecenas posuere justo dapibus fermentum porttitor. Phasellus ornare lectus a neque molestie sodales. Pellentesque consectetur sed nisl vitae tempor. Duis et odio ut ligula accumsan interdum. ... </p>
-                  </li>
-                </ul>
-               </div>
+                </el-carousel-item>
+              </el-carousel>
+              <!-- end banner carousel -->
+            
+              <br><br><br>
+              
+              <!-- start tag search bar -->
+              <div>
+                <span class="search" id="demo-2">
+                  <input class="devin-search" type="search">
+                </span>
+                <!-- tags에 태그 리스트 받아온뒤 포문으로 출력-->          
+                <span v-for="(tag, index) in tags" v-bind:key="index" class="tag" style="font-size:20px; margin:10px;">
+                  #{{tag}}
+                </span>
+              </div>
+              <!-- end tag search bar -->
+
+              <br><br><br>
+              
+              <!-- start project list -->
+              <el-carousel :interval="4000" type="card" height="400px">
+                <el-carousel-item v-for="project in projectList" :key="project.seq">
+                  <div>
+                    
+                  </div>
+                </el-carousel-item>
+              </el-carousel>
+              <!-- end project list -->
+
+              <br><br><br>
+
+              <!-- 미구현 목록
+                  1. 포스트의 주요 태그 호출
+                  2. 포스트 댓글 수 표시
+                  3. 본문 3~4줄 넘어가면 줄이기
+                  4. Read More 클릭시 연결
+              -->
+              <!-- start post list -->
+              <div class="col-sm-8" style="margin: 0 auto; float: none;">
+                <div class="blog-list-nest" v-for="post in this.postList" :key="post.seq">
+                  <div class="blog-list-content">
+                    <div class="left">
+                      <h2>{{ post.title }}</h2>
+                      <ul class="list-inline blog-devin-tag">
+                        <li>
+                          <a href="#"> <span class="ti-pencil"></span>&nbsp;{{ post.regtime }}</a>
+                        </li>
+                        <li>
+                          <a href="#"> <span class="ti-comment-alt"></span>&nbsp;0</a>
+                        </li>
+                        <li>
+                          <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
+                        </li>
+                      </ul>
+                      <p>{{ post.content }}</p>
+                      <hr>
+                      <p class="pull-left">
+                        <el-tag type="gray">#Vue.js</el-tag>
+                        <el-tag type="gray">#Spring</el-tag>
+                        <el-tag type="gray">#Django</el-tag>
+                      </p>
+                      <button class="btn btn-info pull-right">Read More</button>
+                      <div style="clear:both;"></div>
+                    </div>
+                    <div class="right">
+                      <div class="vendor">
+                        <img v-if="post.img_url" class="img-responsive-media" src=post.img_url alt="">
+                        <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br><hr><br>
               </div>
               <!-- end post list -->
             </div>
@@ -93,79 +99,46 @@
   </transition>
 </template>
 <script>
-import { mdbCarousel } from 'mdbvue'
+import http from '../../../util/http-common'
 export default {
   name: 'Main',
-  components: {
-    mdbCarousel
+  created(){
+    http
+    .post('/project/feed', {
+      seq_user: 0,
+      disclosure: 1,
+      offset: 0,
+      limit: 10
+    })
+    .then(({data}) => {
+      this.projectList = data
+      console.log(this.projectList)
+    })
+    http
+    .post('/post/feed', {
+      seq_user: 0,
+      disclosure: 1,
+      offset: 0,
+      limit: 10
+    })
+    .then(({data}) => {
+      for(var i=0; i<data.length; i++){
+        http
+        .get('/posttag/'+data[i].seq)
+        .then(({tag}) =>{
+          console.log(tag)
+          data[i].tag = tag
+        })
+      }
+      this.postList = data
+      console.log(this.postList)
+    })
   },
-  methods: {
-    // 돋보기 버튼 클릭시 isSearchOpen 값 토글
-    toggleSearchBar () {
-      this.isSearchOpen = !this.isSearchOpen
-    }
-   },
-   data () {
+  data () {
     return {
-      // imgs : 이미지 리스트
-      videoCarousel: [
-        {
-          video: true,
-          src: "https://mdbootstrap.com/img/video/Tropical.mp4",
-          loop: true,
-          auto: true,
-          muted: true
-        },
-        {
-          video: true,
-          src: "https://mdbootstrap.com/img/video/forest.mp4",
-          mask: "purple-strong",
-          loop: true,
-          auto: true,
-          muted: true
-        },
-        {
-          video: true,
-          src: "https://mdbootstrap.com/img/video/Agua-natural.mp4",
-          loop: true,
-          auto: true,
-          muted: true
-        }
-      ],
-      thumbnailCarousel: [
-        {
-          img: true,
-          src: "https://mdbootstrap.com/img/Photos/Slides/img%20(88).jpg",
-          thumbnail: "https://mdbootstrap.com/img/Photos/Others/Carousel-thumbs/img%20(88).jpg"
-        },
-        {
-          img: true,
-          src: "https://mdbootstrap.com/img/Photos/Slides/img%20(121).jpg",
-          thumbnail: "https://mdbootstrap.com/img/Photos/Slides/img%20(121).jpg"
-        },
-        {
-          img: true,
-          src: "https://mdbootstrap.com/img/Photos/Slides/img%20(31).jpg",
-          thumbnail: "https://mdbootstrap.com/img/Photos/Slides/img%20(31).jpg"
-        }],
-        imgs: [{
-          img: true,
-          src: 'https://mdbootstrap.com/img/Photos/Slides/img%20(4).jpg'
-        },
-        {
-          img: true,
-          src: 'https://mdbootstrap.com/img/Photos/Slides/img%20(5).jpg'
-        },
-        {
-          img: true,
-          src: 'https://mdbootstrap.com/img/Photos/Slides/img%20(6).jpg'
-        }
-      ],
-      // tags : 태그 리스트
+      postList: [],
+      projectList: [],
       tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
-      // isSearchOpen, input : 추가 검색용 변수
-      isSearchOpen: false,
-      input: ''
      }
    }
  }
@@ -256,5 +229,62 @@ input.devin-search {
   &::-webkit-input-placeholder {
     color: transparent;
   }
+}
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 18px;
+  opacity: 0.75;
+  line-height: 300px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+  background-color: #d3dce6;
+}
+.left{
+  width: 60%;
+  float: left;
+  box-sizing: border-box;
+}
+.right{
+  width: 35%;
+  float: right;
+  box-sizing: border-box;
+}
+.blog-list-nest{
+  float: left;
+}
+.time {
+  font-size: 13px;
+  color: #999;
+}
+
+.bottom {
+  margin-top: 13px;
+  line-height: 12px;
+}
+
+.button {
+  padding: 0;
+  float: right;
+}
+
+.image {
+  width: 100%;
+  display: block;
+}
+
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+}
+
+.clearfix:after {
+    clear: both
 }
 </style>
