@@ -79,8 +79,8 @@
 
             <!-- start post list -->
             <!-- 미구현 목록
-                1. 포스트의 어떤 태그를 호출 할지
-                2. 본문 3~4줄 넘어가면 줄이기
+                1. 포스트의 어떤 태그를 호출 할지 - 일단 등록한 태그 3개로 해놓음
+                2. 본문 3~4줄 넘어가면 줄이기 -완료
                 3. Read More 클릭시 연결
             -->
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
@@ -99,12 +99,15 @@
                         <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
                       </li>
                     </ul>
-                    <p>{{ post.content }}</p>
+                    <p class="content-3line">{{ post.content }}</p>
                     <hr>
                     <p class="pull-left">
-                      <el-tag type="gray">#Vue.js</el-tag>
-                      <el-tag type="gray">#Spring</el-tag>
-                      <el-tag type="gray">#Django</el-tag>
+
+                      <!-- 태그 3개만 갖고오기--> 
+                      <span v-for="(tag,index) in postTag[index].slice(0,3)" :key="index">
+                      <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                     </span>
+                     
                     </p>
                     <button class="btn btn-info pull-right">Read More</button>
                     <div style="clear:both;"></div>
@@ -119,7 +122,9 @@
               </div>
               <br><hr><br>
             </div>
-            <!-- end post list -->
+            <!-- end post list -->            <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
+            <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+
           </div>
         </div>
       </div>
@@ -128,8 +133,12 @@
 </template>
 <script>
 import http from '../../../util/http-common'
+import InfiniteLoading from 'vue-infinite-loading'
 export default {
   name: 'Main',
+  components: {
+      InfiniteLoading
+  },
   data () {
     return {
       seq_user: this.$store.state.userInfo.seq,
@@ -137,6 +146,7 @@ export default {
       projectList: [],
       projectComment: [],
       postComment: [],
+      postTag: [],
       tags: [],
       jumbotron: [
         {
@@ -145,13 +155,15 @@ export default {
         {
           src: "https://logoproject-phinf.pstatic.net/20200722_54/1595388554131BfVxn_PNG/NM_80cbfb.png?type=w750"
         }
-      ]
+      ],
+      // 페이지네이션
+      limit: 0,
+      page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3배수)
     }
   },
   created(){
     this.getTags();
-    http
-    .post('/project/feed', {
+    http.post('/project/feed', {
       seq_user: 0,
       disclosure: 1,
       offset: 0,
@@ -169,20 +181,11 @@ export default {
     })
     http
     .post('/post/feed', {
-      seq_user: 0,
-      disclosure: 1,
-      offset: 0,
-      limit: 10
+       seq_user:this.seq_user , disclosure:1, offset:0, limit:this.page 
     })
     .then(({data}) => {
       this.postList = data
-      for(var i=0; i<data.length; i++){
-        http
-        .get('postcomment/'+this.postList[i].seq)
-        .then(({data}) => {
-            this.postComment.push(data.length);
-        });
-      }
+      this.getpostCommentTag(data)
     })
   },
   methods:{
@@ -200,6 +203,41 @@ export default {
               });
             }
         },
+     // 인피니트로딩
+        infiniteHandler($state){
+            http.post('post/feed', {  seq_user:this.seq_user , disclosure:1, offset:this.limit+this.page, limit:this.page })
+            .then(({ data }) => {
+                // 스크롤 페이징을 띄우기 위한 시간 1초
+                setTimeout(()=>{
+                    if(data.length){
+                        this.getpostCommentTag(data)
+                        this.postList = this.postList.concat(data);
+                        $state.loaded()
+                        this.limit +=this.page
+                        if(this.postList.length/this.page == 0){
+                            $state.complete();
+                        }
+                    }else{
+                        $state.complete();
+                    }
+                },1000)
+            })
+        },   
+     // 포스트로부터 코멘트 개수와 태그 불러오기
+      getpostCommentTag(data){
+            for(var i=0; i<data.length; i++){
+                // 코멘트
+                http.get('postcomment/count/'+data[i].seq)
+                .then(({data}) => {
+                this.postComment.push(data);
+                });
+                // 태그
+                http.get('posttag/'+data[i].seq)
+                .then(({data}) => {
+                this.postTag.push(data);
+                });
+            }   
+        },    
   }
 }
 </script>
@@ -332,5 +370,21 @@ input.devin-search {
 .img-resize{
   width:100%;
   height:100%;
+}
+.content-3line{
+    /* 한 줄 자르기 */
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* 3줄만 보이게 */
+    white-space: normal;
+    line-height: 1.6;
+    height: 4.8em;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 </style>
