@@ -42,6 +42,24 @@ public class ProjectStackController {
 		return new ResponseEntity<List<ProjectStack>>(projectStackService.selectAllProjectStack(seq_post_project),
 				HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "프로젝트의 모든 이미지스택을 반환한다.", response = List.class)
+	@GetMapping(value = "image/{seq_post_project}")
+	public ResponseEntity<List<ProjectStack>> selectProjectImageStack(@PathVariable int seq_post_project)
+			throws Exception {
+		logger.debug("selectProjectImageStack - 호출");
+		return new ResponseEntity<List<ProjectStack>>(projectStackService.selectProjectImageStack(seq_post_project),
+				HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "프로젝트의 모든 텍스트스택을 반환한다.", response = List.class)
+	@GetMapping(value = "text/{seq_post_project}")
+	public ResponseEntity<List<ProjectStack>> selectProjectTextStack(@PathVariable int seq_post_project)
+			throws Exception {
+		logger.debug("selectProjectTextStack - 호출");
+		return new ResponseEntity<List<ProjectStack>>(projectStackService.selectProjectTextStack(seq_post_project),
+				HttpStatus.OK);
+	}
 
 	@ApiOperation(value = "프로젝트에 기술스택을 추가한다. //중복 입력시 401", response = String.class)
 	@PostMapping
@@ -51,6 +69,9 @@ public class ProjectStackController {
 		if (check != null)
 			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
 		else if (projectStackService.insertProjectStack(projectStack) == 1) {
+			//이미지 경로 추가
+			//techstack 테이블에 해당 stack명이 있으면 이미지를 넣고 없으면 null
+			projectStackService.updateProjectStackImg(projectStack);
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

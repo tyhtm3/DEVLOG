@@ -40,7 +40,21 @@ public class UserStackController {
 		logger.debug("selectAllUserStack - 호출");
 		return new ResponseEntity<List<UserStack>>(userStackService.selectAllUserStack(seq_user), HttpStatus.OK);
 	}
-
+	
+	@ApiOperation(value = "유저의 모든 이미지스택을 반환한다.", response = List.class)
+	@GetMapping(value = "image/{seq_user}")
+	public ResponseEntity<List<UserStack>> selectUserImageStack(@PathVariable int seq_user) throws Exception {
+		logger.debug("selectUserImageStack - 호출");
+		return new ResponseEntity<List<UserStack>>(userStackService.selectUserImageStack(seq_user), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "유저의 모든 텍스트스택을 반환한다.", response = List.class)
+	@GetMapping(value = "text/{seq_user}")
+	public ResponseEntity<List<UserStack>> selectUserTextStack(@PathVariable int seq_user) throws Exception {
+		logger.debug("selectUserTextStack - 호출");
+		return new ResponseEntity<List<UserStack>>(userStackService.selectUserTextStack(seq_user), HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "유저에 기술스택을 추가한다. //중복 입력시 401", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> insertUserStack(@RequestBody UserStack userStack) throws Exception {
@@ -49,6 +63,9 @@ public class UserStackController {
 		if (check != null)
 			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
 		else if (userStackService.insertUserStack(userStack) == 1) {
+			//이미지 경로 추가
+			//techstack 테이블에 해당 stack명이 있으면 이미지를 넣고 없으면 null
+			userStackService.updateUserStackImg(userStack);
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

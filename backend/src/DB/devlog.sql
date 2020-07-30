@@ -17,6 +17,7 @@ CREATE TABLE `user_stack`(
  	`seq` int primary key auto_increment,
     `seq_user` int not null,
     `stack` varchar(256),
+    `stack_img_url` varchar(256),
     FOREIGN KEY (`seq_user`) REFERENCES `user` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -27,6 +28,12 @@ CREATE TABLE `user_neighbor` (
     `regtime` datetime DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`seq_user`) REFERENCES `user` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`seq_neighbor`) REFERENCES `user` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `stack`(
+ 	`seq` int primary key auto_increment,
+    `stack` varchar(256),
+    `stack_img_url` varchar(256)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `blog` (
@@ -84,6 +91,7 @@ CREATE TABLE `post_project_stack`(
  	`seq` int primary key auto_increment,
     `seq_post_project` int not null,
     `stack` varchar(256),
+    `stack_img_url` varchar(256),
     FOREIGN KEY (`seq_post_project`) REFERENCES `post_project` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

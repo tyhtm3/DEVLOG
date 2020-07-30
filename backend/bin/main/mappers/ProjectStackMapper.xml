@@ -9,6 +9,21 @@
 		where seq_post_project = #{seq_post_project}
 	</select>
 	
+	<!-- 프로젝트의 이미지 기술스택을 반환한다. -->
+	<select id="selectProjectImageStack" resultType="ProjectStack">
+		select *
+		from post_project_stack
+		where seq_post_project = #{seq_post_project} and stack_img_url is not null;
+	</select>
+	
+	<!-- 프로젝트의 텍스트 기술스택을 반환한다. -->
+	<select id="selectProjectTextStack" resultType="ProjectStack">
+		select *
+		from post_project_stack
+		where seq_post_project = #{seq_post_project} and stack_img_url is null;
+	</select>
+	
+	<!-- 프로젝트의 기술스택이 중복되는지 확인한다. -->
 	<select id="selectProjectStackByProjectAndStack" resultType="ProjectStack">
 		select *
 		from post_project_stack 
@@ -20,6 +35,15 @@
 		insert into post_project_stack( seq_post_project, stack)
 		values ( #{seq_post_project},#{stack} )
 	</insert>
+	
+	<!-- 프로젝트 기술스택에 이미지 경로를 추가한다 -->
+	<update id="updateProjectStackImg">
+	update post_project_stack
+	set stack_img_url =	(select stack_img_url
+						from techstack
+						where stack = #{stack})
+	where seq_post_project= #{seq_post_project} and stack = #{stack}
+	</update>
 	
 	<!-- 프로젝트의 기술스택을 삭제한다. -->
 	<delete id="deleteProjectStack">
