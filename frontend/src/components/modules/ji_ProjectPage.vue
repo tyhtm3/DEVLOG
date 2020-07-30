@@ -100,9 +100,9 @@
         getprojectCommentTag(data){
             for(var i=0; i<data.length; i++){
                 // 코멘트
-                http.get('postcomment/'+data[i].seq)
+                http.get('postcomment/count/'+data[i].seq)
                 .then(({data}) => {
-                this.comment.push(data.length);
+                this.comment.push(data);
                 });
                 // 태그
                 http.get('posttag/'+data[i].seq)

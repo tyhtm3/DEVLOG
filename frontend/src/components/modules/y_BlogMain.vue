@@ -133,11 +133,11 @@
             .then(({ data }) => {
               this.blogOwnerInfo=data;
             });
-            http.post('project/blog/count', {seq_user:this.seq_user , seq_blog:this.seq_blog})
+            http.get('project/blog/'+this.seq_user+'/'+this.seq_blog)
             .then(({ data }) => {
                 this.blogOwnerNumOfProject = data;
             });
-            http.post('post/blog/count', {seq_user:this.seq_user , seq_blog:this.seq_blog})
+            http.get('post/blog/'+this.seq_user+'/'+this.seq_blog)
             .then(({ data }) => {
                 this.blogOwnerNumOfPost = data;
             });

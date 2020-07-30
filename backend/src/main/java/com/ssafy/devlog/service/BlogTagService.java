@@ -6,7 +6,7 @@ import com.ssafy.devlog.dto.BlogTag;
 
 public interface BlogTagService {
 	public List<BlogTag> selectAllBlogTag();
-	public BlogTag selectBlogTagByBlog(int seq_blog);
+	public List<BlogTag> selectBlogTagByBlog(int seq_blog);
 	public BlogTag selectBlogTagByBlogAndTag(BlogTag blogTag);
 	public int insertBlogTag(BlogTag blogTag);
 	public int updateBlogTag(BlogTag blogTag);
