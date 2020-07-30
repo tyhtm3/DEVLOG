@@ -5,15 +5,15 @@
             <div class="row">
                     <div class="col-md-4" v-for="(project,index) in projectList" :key="index">
                     <div class="well-media">
-                    <a href="#">
+                    <a href="#" @click="goDetail(project.seq)">
                         <div class="vendor">
                             <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
                         </div>
                         <div class="video-text">
                             <!-- {{project}} -->
-                            <h2 style="font-weight: bold; margin-bottom:10px;">{{project.title}}</h2>
-                            <p class="content-3line" style="color:black;">{{project.content}}</p>
+                            <h2 style="font-weight: bold; margin-bottom:10px;">{{project.title}}{{project.seq}}</h2>
+                            <p class="content-3line" style="color:black;">{{project.summary}}</p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 
                            <!-- 태그 3개만 갖고오기--> 
@@ -68,6 +68,9 @@
       this.getprojectList();
     },
     methods:{
+        goDetail(seq){
+            this.$router.push(`/project-detail/${seq}`)
+        },
         // 페이지네이션 하기 전 처음 페이지에 뿌려줄 카드 불러오기
         getprojectList(){
             http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:0, limit:this.page } )
