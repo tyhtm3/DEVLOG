@@ -58,7 +58,6 @@
             projectList: [],
             comment: [],
             tag:[],
-            counter: 0,
             // 페이지네이션
             limit: 0,
             page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3배수)
