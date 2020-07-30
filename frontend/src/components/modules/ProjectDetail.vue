@@ -1,9 +1,19 @@
 <template>
   <transition name="el-zoom-in-top">
     <div class="content-wrapper" style="background: white;">
-              <div class="vendor"><img src="https://source.unsplash.com/user/grohsfabian/1600x900" alt=""></div>
+
+       <!-- start banner carousel -->
+      <div class="header-block">
+        <div class="header-image">
+        <img src="../../assets/project-banner.jpg" width="100%" style=" max-height: initial;margin-top: -15%;"/>
+        </div>
+        <div class="header-text"><p>{{project.title}}</p></div>
+      </div>
+      <!-- end banner carousel -->
+
+              
               <!-- 헤더 : 프로젝트 작성시간, 댓글수, 좋아요 수, 수정|삭제 -->
-                    <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;">
+                    <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
                         <li><a>&nbsp;&nbsp;<span class="ti-user"></span>{{projectUser.nickname}}</a></li>
                         <li><a> <span class="ti-pencil"></span>&nbsp;{{project.regtime}}</a></li>
                         <li><a> <span class="ti-comment-alt"></span>&nbsp;{{comment.length}}</a></li>
@@ -17,10 +27,20 @@
                             <div class="blog-list-nest">
                                 <div class="blog-list-content">
 
+                                    <!-- 프로젝트 썸네일 -->
+                                    <div class="pull-right" style="width:22%;margin-top:-2px;">
+                                    <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                                    </div>
                                     <!-- 프로젝트 정보 :  프로젝트 명 / 프로젝트 개요 / 개발기간 / 기술스택 / 역할 / URL / 설명-->
                                         
-                                        <p align="center" style="font-size:60px;margin-top:40px;">{{project.title}}</p>
-                                        <hr style="margin-bottom:70px;">
+                                        <div class="row pjt-margin" style="margin-top:100px;">
+                                          <div class="col-sm-3">
+                                          <p class="pjt-title">프로젝트 제목</p>
+                                          </div>
+                                          <div class="col-sm-6">
+                                          <p class="pjt-content" style="font-size:20px;">{{project.title}}</p>
+                                          </div>
+                                        </div>
                                         <div class="row pjt-margin">
                                           <div class="col-sm-3">
                                           <p class="pjt-title">프로젝트 개요</p>
@@ -34,7 +54,7 @@
                                           <p class="pjt-title">개발 기간</p>
                                           </div>
                                           <div class="col-sm-9">
-                                          <p class="pjt-content" style="font-size:27px;">{{project.start_date}} ~ {{project.finish_date}}</p>
+                                          <p class="pjt-content" style="font-size:20px;">{{project.start_date}} ~ {{project.finish_date}}</p>
                                           </div>
                                         </div>
 
@@ -197,13 +217,21 @@
                 this.stack = data;
          })
       },
-      // 프로젝트 삭제
+      // 프로젝트 삭제 미구현
       deleteProject(){
         
       },
-      // 프로젝트 수정
+      // 프로젝트 수정 미구현
       updateProject(){
         
+      },
+      // 댓글 삭제 미구현
+      deleteComment(){
+
+      },
+      // 댓글 수정 미구현
+      updateComment(){
+
       },
       // Url로 이동
       goUrl(url){
@@ -217,6 +245,23 @@
 a:link { color: #B1B0AC; text-decoration: none;}
 a:visited { color: #B1B0AC;; text-decoration: none;}
 a:hover { color: black; text-decoration: bold;}
+.header-block{
+  max-height: 500px;
+  overflow: hidden;
+  position: relative;
+}
+.header-image{
+  	vertical-align: middle;
+}
+.header-text{
+  text-align: center;
+  position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate( -50%, -50% );
+  color:white;
+  font-size:80px;
+}
 .box{
    padding-left:300px;
    padding-right:300px;
@@ -226,12 +271,12 @@ a:hover { color: black; text-decoration: bold;}
 
 }
 .pjt-title{
-  font-size:24px;
+  font-size:18px;
 }
 .pjt-content{
-  font-size:15px;
+  margin-top:-2px;
+  font-size:14px;
   word-spacing: 2px;
-  letter-spacing: 0.5px;
   line-height:30px;
 }
 </style>
