@@ -54,7 +54,7 @@ import BlogDetail from './components/modules/j_BlogDetail.vue'
 import DashboardJi from './components/modules/dashboard/ji_Index.vue'
 import DashboardJu from './components/modules/dashboard/ju_Index.vue'
 import WritePost from './components/WritePost.vue'
-
+import ProjectDetail from './components/modules/ProjectDetail.vue'
 // Routes
 const routes = [
   {
@@ -269,6 +269,11 @@ const routes = [
         path: '/blog-detail',
         name: 'blog-detail',
         component: BlogDetail
+      },
+      {
+        path: '/project-detail/:seq',
+        name: 'project-detail',
+        component: ProjectDetail
       },
       {
         path: '/dashboard-ji',
