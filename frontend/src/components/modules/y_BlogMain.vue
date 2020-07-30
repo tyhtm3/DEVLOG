@@ -62,9 +62,9 @@
                     </span>
                   </div> -->
                   <div class="column4" v-if="this.$store.state.isLogin">
-                  <!-- <router-link to="글작성 페이지"> -->
+                  <router-link to="writePost">
                   <span>글 작성<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
-                  <!-- </router-link> -->
+                  </router-link>
                   <span id="setting" @click="set">설정<i class="ti-settings" style="display:inline"></i></span>
                   </div>
                 </div>

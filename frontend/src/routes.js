@@ -53,6 +53,7 @@ import MyInfo from './components/MyInfo.vue'
 import BlogDetail from './components/modules/j_BlogDetail.vue'
 import DashboardJi from './components/modules/dashboard/ji_Index.vue'
 import DashboardJu from './components/modules/dashboard/ju_Index.vue'
+import WritePost from './components/WritePost.vue'
 
 // Routes
 const routes = [
@@ -74,7 +75,7 @@ const routes = [
       {
         path: '',
         name: 'dashboard',
-        component: BlogMain
+        component: DashboardJu
       }, {
         path: '/login',
         name: 'login',
@@ -293,6 +294,11 @@ const routes = [
         path: '/myinfo',
         name: 'my-info',
         component: MyInfo
+      },
+      {
+        path: '/writepost',
+        name: 'write-post',
+        component: WritePost
       },
       {
         path: '*',

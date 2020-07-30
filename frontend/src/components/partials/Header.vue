@@ -11,7 +11,7 @@
       </a> -->
       <span class="logo-mini">
         <router-link to="/dashboard-ju">
-        <img src="../../assets/logo.png" height="50px" style="margin-left:20px; margin-top:5px">
+        <!-- <img src="../../assets/logo.png" height="50px" style="margin-left:20px; margin-top:5px"> -->
         </router-link>
       </span>
 
@@ -21,9 +21,6 @@
         </form>
       </div>
       <div class="navbar-custom-menu">
-				<span @click="test" style="cursor:pointer">test</span>
-        <span><router-link to="/blog-main">[BlogMain]</router-link></span>
-        <span><router-link to="/dashboard-ju">[FeedMain]</router-link></span>
 				<span v-if="this.$store.state.isLogin">
 					<el-dropdown class="header-dropdown-devin" trigger="click" style="top: 0px;">
 						<span class="el-dropdown-link">
