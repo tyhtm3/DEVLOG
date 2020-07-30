@@ -3,8 +3,11 @@
 <mapper namespace="com.ssafy.devlog.mapper.UserTagMapper">
 	<!-- 유저태그 전체 조회 -->
 	<select id="selectAllUserTag" resultType="UserTag">
-		select seq, seq_user, tag
+		select distinct count(*) seq, tag
 		from user_tag
+        group by tag
+        order by seq desc
+        limit 10
 	</select>
 	
 	<!-- 유저태그 상세 조회 -->
