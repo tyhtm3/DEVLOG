@@ -13,9 +13,6 @@
           <el-carousel-item>
             <img class="img-resize" src="../../../../docs/static/img/banner3.jpg">
           </el-carousel-item>
-          <!-- <el-carousel-item v-for="(item, index) in jumbotron" :key="index">
-            <img src=item.src>
-          </el-carousel-item> -->
         </el-carousel>
       </div>
       <!-- end banner carousel -->
@@ -36,7 +33,7 @@
               --> 
               <div>
                 <span class="search" id="demo-2">
-                  <input class="devin-search tag" type="search" style="font-size:15px; ">
+                  <input class="devin-search tag" type="search" style="font-size:15px;">
                 </span>   
                 <span v-for="(tag, index) in tags" v-bind:key="index" class="tag" style="font-size:20px; margin:10px;">
                   #{{tag.tag}}
@@ -72,8 +69,9 @@
                   </div>
                 </el-carousel-item>
               </el-carousel>
+              <!-- end project list -->
+            
             </div>
-            <!-- end project list -->
 
             <br><br><br>
 
@@ -137,15 +135,7 @@ export default {
       projectList: [],
       projectComment: [],
       postComment: [],
-      tags: [],
-      jumbotron: [
-        {
-          src: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
-        },
-        {
-          src: "https://logoproject-phinf.pstatic.net/20200722_54/1595388554131BfVxn_PNG/NM_80cbfb.png?type=w750"
-        }
-      ]
+      tags: []
     }
   },
   created(){
@@ -187,19 +177,19 @@ export default {
   },
   methods:{
     getTags(){
-            if(this.seq_user==''){
-              // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
-               http.get('usertag')
-              .then(({data}) => {
-              this.tags=data;
-              });
-            }else{
-              http.get('usertag/'+this.seq_user)
-              .then(({data}) => {
-              this.tags=data;
-              });
-            }
-        },
+      if(this.seq_user==''){
+        // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
+          http.get('usertag')
+        .then(({data}) => {
+        this.tags=data;
+        });
+      }else{
+        http.get('usertag/'+this.seq_user)
+        .then(({data}) => {
+        this.tags=data;
+        });
+      }
+    },
   }
 }
 </script>
@@ -217,8 +207,8 @@ export default {
     display: block;
     color: #fff;
     position: absolute;
-    top: 2px;
-    left: 14px;
+    top: 3px;
+    left: 20px;
     font-family: 'themify';
     speak: none;
     font-style: normal;
