@@ -70,7 +70,7 @@
     methods:{
         // 페이지네이션 하기 전 처음 페이지에 뿌려줄 카드 불러오기
         getprojectList(){
-            http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:0, limit:this.page})
+            http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:0, limit:this.page } )
             .then(({ data }) => {
                 this.projectList = data;
                 this.getprojectCommentTag(data)
@@ -78,7 +78,7 @@
         },
         // 인피니트로딩
         infiniteHandler($state){
-            http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:this.limit+this.page, limit:this.page})
+            http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:this.limit+this.page, limit:this.page })
             .then(({ data }) => {
                 // 스크롤 페이징을 띄우기 위한 시간 1초
                 setTimeout(()=>{

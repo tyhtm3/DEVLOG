@@ -73,8 +73,9 @@
         getpostList(){
             http.post('post/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:0, limit:this.page})
             .then(({ data }) => {
+                if(data.length){
                 this.postList = data;
-                this.getpostCommentTag(data)
+                this.getpostCommentTag(data)}
             })
         },
         // 인피니트로딩

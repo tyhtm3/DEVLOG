@@ -102,15 +102,15 @@ public class ProjectController {
 	// show blog
 	@ApiOperation(value = "블로그 메인에서 모든 프로젝트의 개수 반환. (ex.  { seq_user:0 , seq_blog:1 })", response = List.class)    
 	@GetMapping(value = "/blog/{seq_user}/{seq_blog}")
-	public ResponseEntity<Integer> selectProjectCntByBlog(@PathVariable int seq_user,@PathVariable int seq_blog) {
+	public ResponseEntity<Integer> selectProjectCntByBlog(@PathVariable int seq_user,@PathVariable int seq_blog) throws Exception{
 		logger.debug("selectProjectCntByBlog - 호출");
 		return new ResponseEntity<Integer>(projectService.selectProjectCntByBlog(seq_user,seq_blog), HttpStatus.OK);
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	@ApiOperation(value = "블로그 메인에서 한 페이지의 프로젝트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:6, tag:['python','c++']  } )", response = List.class)    
 	@PostMapping(value = "/blog")
-	public ResponseEntity<List<Project>> selectProjectByBlog(@RequestBody Map<String, Object> params) {
+	public ResponseEntity<List<Project>> selectProjectByBlog(@RequestBody Map<String, Object> params) throws Exception{
 		logger.debug("selectProjectByBlog - 호출");
 		return new ResponseEntity<List<Project>>(projectService.selectProjectByBlog((int)params.get("seq_user"),(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}

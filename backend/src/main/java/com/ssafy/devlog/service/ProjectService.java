@@ -9,7 +9,7 @@ import com.ssafy.devlog.dto.Project;
 public interface ProjectService {
 
 	public List<Project> selectProjectByFeed(int seq_user,int disclosure,List<String> tag);
-	public List<Project> selectProjectByBlog(int seq_user,int disclosure,int offset,int limit,List<String> tag);
+	public List<Project> selectProjectByBlog(int seq_user,int seq_blog,int offset,int limit,List<String> tag);
 	public int selectProjectCntByBlog(int seq_user,int seq_blog);
 	
 	public Project selectProject(int seq);

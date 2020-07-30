@@ -20,8 +20,8 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	@Override
-	public List<Post> selectPostByBlog(int seq_user,int disclosure,int offset,int limit,List<String> tag){
-		return postMapper.selectPostByBlog(seq_user, disclosure, offset, limit, tag);
+	public List<Post> selectPostByBlog(int seq_user,int seq_blog,int offset,int limit,List<String> tag){
+		return postMapper.selectPostByBlog(seq_user, seq_blog, offset, limit, tag);
 	}
 	
 	@Override

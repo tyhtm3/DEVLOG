@@ -20,10 +20,10 @@ public class ProjectServiceImpl implements ProjectService{
 	public List<Project> selectProjectByFeed(int seq_user,int disclosure,List<String> tag){
 		return projectMapper.selectProjectByFeed(seq_user, disclosure, tag);
 	}
-
+	
 	@Override
-	public List<Project> selectProjectByBlog(int seq_user,int disclosure,int offset,int limit,List<String> tag){
-		return projectMapper.selectProjectByBlog(seq_user, disclosure, offset, limit, tag);
+	public List<Project> selectProjectByBlog(int seq_user,int seq_blog,int offset,int limit,List<String> tag){
+		return projectMapper.selectProjectByBlog(seq_user, seq_blog, offset, limit, tag);
 	}
 
 	@Override
