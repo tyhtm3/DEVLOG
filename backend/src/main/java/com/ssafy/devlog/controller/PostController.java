@@ -99,15 +99,7 @@ public class PostController {
 	// RequestBody로 Map을 받아오기 때문에 Get 대신 Post를 사용함.
 	
 	// show feed
-	@ApiOperation(value = "피드에서 모든 포스트의 개수 반환. (ex. { seq_user:2 , seq_blog:1, tag:['python','java']  } )", response = List.class)
-	@PostMapping(value = "/feed/count")
-	public ResponseEntity<Integer> selectPostCntByFeed(@RequestBody Map<String, Object> params) throws Exception {
-		logger.debug("selectPostCntByFeed - 호출");
-		return new ResponseEntity<Integer>(postService.selectPostCntByFeed((int)params.get("seq_user"),(int)params.get("disclosure"),(List<String>)params.get("tag")), HttpStatus.OK);
-	}
-	
-	
-	@ApiOperation(value = "피드에서 한 페이지의 포스트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:10 tag:['python']  } )", response = List.class)
+	@ApiOperation(value = "피드에서 한 페이지의 포스트 반환. (ex. { seq_user:1 , disclosure:1, offset:0, limit:6, tag:['python']  } )", response = List.class)
 	@PostMapping(value = "/feed")
 	public ResponseEntity<List<Post>> selectPostByFeed(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("selectPostByFeed - 호출");
@@ -116,15 +108,7 @@ public class PostController {
 	
 	
 	// show blog
-	@ApiOperation(value = "블로그 메인에서 모든 포스트의 개수 반환. (ex.  { seq_user:0 , seq_blog:1, tag:['java']  }   )", response = List.class)    
-	@PostMapping(value = "/blog/count")
-	public ResponseEntity<Integer> selectPostCntByBlog(@RequestBody Map<String, Object> params) {
-		logger.debug("selectPostCntByBlog - 호출");
-		return new ResponseEntity<Integer>(postService.selectPostCntByBlog((int)params.get("seq_user"),(int)params.get("seq_blog"),(List<String>)params.get("tag")), HttpStatus.OK);
-	}
-	
-	
-	@ApiOperation(value = "블로그 메인에서 한 페이지의 포스트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:10, tag:['python','c++']  } )", response = List.class)    
+	@ApiOperation(value = "블로그 메인에서 한 페이지의 포스트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:6, tag:['python','c++']  } )", response = List.class)    
 	@PostMapping(value = "/blog")
 	public ResponseEntity<List<Post>> selectPostByBlog(@RequestBody Map<String, Object> params) {
 		logger.debug("selectPostByBlog - 호출");
@@ -146,7 +130,7 @@ public class PostController {
 			String attach_path = "images/";
 			String filename = dateString + "_" + uploadfile.getOriginalFilename();
 
-			 System.out.println(root_path+attach_path+filename);
+//			 System.out.println(root_path+attach_path+filename);
 
 			FileOutputStream fos = new FileOutputStream(root_path + attach_path + filename);
 			// 파일 저장할 경로 + 파일명을 파라미터로 넣고 fileOutputStream 객체 생성하고
@@ -163,8 +147,8 @@ public class PostController {
 				fos.write(buffer, 0, readCount);
 				// 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
 			}
-
-			return "http://i3a402.p.ssafy.io/" + attach_path + filename;
+			String serverDomain = "i3a402.p.ssafy.io/images/";
+			return serverDomain + filename;
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

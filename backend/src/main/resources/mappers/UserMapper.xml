@@ -54,6 +54,8 @@
 		from user
 		where seq = #{seq}
 	</delete>
+	
+	
 </mapper>
 
 
