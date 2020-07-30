@@ -1,39 +1,21 @@
 <template>
   <header class="main-header">
     <!-- Logo -->
-    <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
-      <!-- 로고 들어갈 자리 -->
-      <!-- Sidebar toggle button -->
-      <!-- <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
-        <span class="icon-bar"></span> <span class="icon-bar"></span>
-      </a> -->
       <span class="logo-mini">
         <router-link to="/dashboard-ju">
-        <img src="../../assets/logo.png" height="50px" style="margin-left:20px; margin-top:5px">
+        <img src="../../assets/logo2.png" height="50px" style="margin-left:30px; margin-top:15px">
         </router-link>
       </span>
-
-      <div class="pull-left-search">
-        <form id="demo-2">
-            <input class="devin-search" type="search">
-        </form>
-      </div>
       <div class="navbar-custom-menu">
-				<span @click="test" style="cursor:pointer">test</span>
-        <span><router-link to="/blog-main">[BlogMain]</router-link></span>
-        <span><router-link to="/dashboard-ju">[FeedMain]</router-link></span>
 				<span v-if="this.$store.state.isLogin">
 					<el-dropdown class="header-dropdown-devin" trigger="click" style="top: 0px;">
 						<span class="el-dropdown-link">
-							<img src="static/img/profile.png" alt="cover" class="cover-profile" />
+							<img src="static/img/profile.png" class="cover-profile" style="width:45px; height:45px; border:0px" alt="cover"/>
 						</span>
 						<el-dropdown-menu slot="dropdown">
 							<ul class="dropdown-menu-devin">
-								<!-- <li class="header">welcome devlog!</li> -->
 								<li>
-									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
 										<li> <i class="ti-user"></i>
 											<router-link to="/myinfo">
@@ -47,10 +29,16 @@
 												<p></p>
 											</router-link>
 										</li>
+										<!-- <li> <i class="ti-user"></i>
+											<router-link to="/myinfo">
+												<h3 style="margin-top: 9px;">회원정보 수정<span class="text-green fontello-record"></span></h3>
+												<p></p>
+											</router-link>
+										</li> -->
 										<li> <i class="ti-power-off"></i>
 											<a style="cursor:pointer;" @click="logout">
 												<h3 style="margin-top: 9px;">로그아웃<span class="text-yellow fontello-record"></span></h3>
-												<p></p>
+												<!-- <p></p> -->
 											</a>
 										</li>
 									</ul>
