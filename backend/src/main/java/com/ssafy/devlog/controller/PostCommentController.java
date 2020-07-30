@@ -33,15 +33,22 @@ public class PostCommentController {
 	
 	@Autowired
 	private PostCommentService postCommentService;
+
+	@ApiOperation(value = "포스트 및 프로젝트의 seq로 댓글 개수를 반환한다.", response = List.class)
+	@GetMapping(value = "/count/{seq_post}")
+	public ResponseEntity<Integer> selectPostCommentCnt(@PathVariable int seq_post) throws Exception {
+		logger.debug("selectPostCommentCnt - 호출");
+		return new ResponseEntity<Integer>(postCommentService.selectPostCommentCnt(seq_post), HttpStatus.OK);
+	}
 	
-	@ApiOperation(value = "포스트의 모든 댓글들을 반환한다.", response = List.class)
+	@ApiOperation(value = "포스트 및 프로젝트의 seq로 모든 댓글을 반환한다.", response = List.class)
 	@GetMapping(value = "/{seq_post}")
 	public ResponseEntity<List<PostComment>> selectAllPostComment(@PathVariable int seq_post) throws Exception {
 		logger.debug("selectAllPostComment - 호출");
 		return new ResponseEntity<List<PostComment>>(postCommentService.selectAllPostComment(seq_post), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "포스트에 댓글을 입력한다.", response = String.class)
+	@ApiOperation(value = "포스트 및 프로젝트에 댓글을 입력한다.", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> insertPostComment(@RequestBody PostComment postComment) throws Exception {
 		logger.debug("inserPostComment - 호출");
@@ -51,7 +58,7 @@ public class PostCommentController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
-	@ApiOperation(value = "포스트 댓글을 수정한다.", response = String.class)
+	@ApiOperation(value = "포스트 및 프로젝트의 댓글을 수정한다.", response = String.class)
 	@PutMapping
 	public ResponseEntity<String> updatePostComment(@RequestBody PostComment postComment) throws Exception {
 		logger.debug("updatePostComment - 호출");
@@ -61,7 +68,7 @@ public class PostCommentController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
-	@ApiOperation(value = "포스트 댓글을 삭제한다.", response = String.class)
+	@ApiOperation(value = "포스트 및 프로젝트의 댓글을 삭제한다.", response = String.class)
 	@DeleteMapping(value = "/{seq}")
 	public ResponseEntity<String> deletePostComment(@PathVariable int seq) throws Exception {
 		logger.debug("deletePostComment - 호출");

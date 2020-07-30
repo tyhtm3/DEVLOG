@@ -106,14 +106,22 @@ public class PostController {
 		return new ResponseEntity<List<Post>>(postService.selectPostByFeed((int)params.get("seq_user"),(int)params.get("disclosure"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}
 	
-	
+
 	// show blog
+	@ApiOperation(value = "블로그 메인에서 모든 포스트의 개수 반환. (ex.  { seq_user:0 , seq_blog:1 })", response = List.class)    
+	@GetMapping(value = "/blog/{seq_user}/{seq_blog}")
+	public ResponseEntity<Integer> selectPostCntByBlog(@PathVariable int seq_user,@PathVariable int seq_blog) {
+		logger.debug("selectPostCntByBlog - 호출");
+		return new ResponseEntity<Integer>(postService.selectPostCntByBlog(seq_user,seq_blog), HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "블로그 메인에서 한 페이지의 포스트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:6, tag:['python','c++']  } )", response = List.class)    
 	@PostMapping(value = "/blog")
 	public ResponseEntity<List<Post>> selectPostByBlog(@RequestBody Map<String, Object> params) {
 		logger.debug("selectPostByBlog - 호출");
 		return new ResponseEntity<List<Post>>(postService.selectPostByBlog((int)params.get("seq_user"),(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}
+	
 	
 	@ApiOperation(value = "포스트 썸네일 이미지 파일을 업로드 한다.")
 	@PostMapping("upload")

@@ -16,6 +16,11 @@ public class PostCommentServiceImpl implements PostCommentService {
 	
 
 	@Override
+	public int selectPostCommentCnt(int seq_post) {
+		return postCommentMapper.selectPostCommentCnt(seq_post);
+	}
+	
+	@Override
 	public List<PostComment> selectAllPostComment(int seq_post){
 		return postCommentMapper.selectAllPostComment(seq_post);
 	}

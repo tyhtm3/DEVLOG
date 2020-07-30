@@ -25,6 +25,11 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	@Override
+	public int selectPostCntByBlog(int seq_user,int seq_blog) {
+		return postMapper.selectPostCntByBlog(seq_user, seq_blog);
+	}
+	
+	@Override
 	public Post selectPost(int seq){
 		return postMapper.selectPost(seq);
 	}
