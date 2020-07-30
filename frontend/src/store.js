@@ -77,7 +77,7 @@ export default new Vuex.Store({
       })
       .then(({ data }) => {
         console.log(data)
-        routes.push('/')
+        routes.push(`/`)
       })
       .catch((error) => {
         console.log(error.response.status)
