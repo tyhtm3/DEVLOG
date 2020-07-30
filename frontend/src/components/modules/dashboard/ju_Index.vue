@@ -36,10 +36,10 @@
               --> 
               <div>
                 <span class="search" id="demo-2">
-                  <input class="devin-search" type="search">
+                  <input class="devin-search tag" type="search" style="font-size:15px; ">
                 </span>   
                 <span v-for="(tag, index) in tags" v-bind:key="index" class="tag" style="font-size:20px; margin:10px;">
-                  #{{tag}}
+                  #{{tag.tag}}
                 </span>
               </div>
               <!-- end tag search bar -->
@@ -132,11 +132,12 @@ export default {
   name: 'Main',
   data () {
     return {
+      seq_user: this.$store.state.userInfo.seq,
       postList: [],
       projectList: [],
       projectComment: [],
       postComment: [],
-      tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
+      tags: [],
       jumbotron: [
         {
           src: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
@@ -148,6 +149,7 @@ export default {
     }
   },
   created(){
+    this.getTags();
     http
     .post('/project/feed', {
       seq_user: 0,
@@ -182,6 +184,22 @@ export default {
         });
       }
     })
+  },
+  methods:{
+    getTags(){
+            if(this.seq_user==''){
+              // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
+               http.get('usertag')
+              .then(({data}) => {
+              this.tags=data;
+              });
+            }else{
+              http.get('usertag/'+this.seq_user)
+              .then(({data}) => {
+              this.tags=data;
+              });
+            }
+        },
   }
 }
 </script>
