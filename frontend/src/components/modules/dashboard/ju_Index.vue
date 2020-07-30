@@ -1,32 +1,43 @@
 <template>
   <transition name="el-zoom-in-top">
-    <div class="content-wrapper">
-      <section class="content">
-        <div class="box">
-          <div class="box-body" style="min-height:400px;">
-            
-            <div class="col-sm-12">
-              <!-- start banner carousel --> 
-              <!-- 메인 피드의 인포메이션 캐러셀 (2초마다 자동 슬라이드) 
-              https://mdbootstrap.com/docs/vue/advanced/carousel/ 참고
-              사용시 npm install mdbvue 설치 필요 -->
-              <!-- <mdb-carousel :items='imgs' :interval='2000' indicators controlls></mdb-carousel> -->
+    <div class="content-wrapper" style="background: white;">
+      <!-- start banner carousel -->
+      <div class="carousel">
+      <el-carousel indicator-position="outside" height='500px'>
+        <el-carousel-item class="img-resize">
+          <img class="img-resize" src="../../../../docs/static/img/banner1.jpg">
+        </el-carousel-item>
+        <el-carousel-item>
+          <img class="img-resize" src="../../../../docs/static/img/banner2.jpg">
+        </el-carousel-item>
+        <el-carousel-item>
+          <img class="img-resize" src="../../../../docs/static/img/banner3.jpg">
+        </el-carousel-item>
+        <!-- <el-carousel-item v-for="(item, index) in jumbotron" :key="index">
+          <img src=item.src>
+        </el-carousel-item> -->
+      </el-carousel>
+      </div>
+      <!-- end banner carousel -->
 
-              <el-carousel indicator-position="outside" height='500px'>
-                <el-carousel-item v-for="item in 3" :key="item">
+      <br><br><br>
 
-                </el-carousel-item>
-              </el-carousel>
-              <!-- end banner carousel -->
-            
-              <br><br><br>
-              
+      <div class="box">
+        <div class="box-body" style="min-height:400px;">
+          <div class="col-sm-12">
+          
+            <br><br><br>
+
+            <div class="col-sm-8" style="margin: 0 auto; float: none;">
               <!-- start tag search bar -->
+              <!-- 미구현 목록
+                  1. 태그 클릭시 기능 ??
+                  2. 태그 입력시 추가되기
+              --> 
               <div>
                 <span class="search" id="demo-2">
                   <input class="devin-search" type="search">
-                </span>
-                <!-- tags에 태그 리스트 받아온뒤 포문으로 출력-->          
+                </span>   
                 <span v-for="(tag, index) in tags" v-bind:key="index" class="tag" style="font-size:20px; margin:10px;">
                   #{{tag}}
                 </span>
@@ -34,14 +45,17 @@
               <!-- end tag search bar -->
 
               <br><br><br>
-              
+
               <!-- start project list -->
-              <div class="col-sm-8" style="margin: 0 auto; float: none;">
+              <!-- 미구현 목록
+                  1. 클릭시 해당 블로그의 프로젝트 글로 이동
+                  2. 프로젝트의 어떤 태그를 가져올지
+              --> 
               <el-carousel :interval="4000" type="card" height="400px">
-                <el-carousel-item v-for="project in projectList" :key="project.seq">
+                <el-carousel-item v-for="(project, index) in projectList" :key="index">
                   <div class="well-media">
                     <div class="vendor">
-                      <img v-if="post.img_url" class="img-responsive-media" src=post.img_url alt="">
+                      <img v-if="project.img_url" class="img-responsive-media" src=project.img_url alt="">
                       <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
                     </div>
                     <div class="video-text">
@@ -50,64 +64,65 @@
                     <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" > 
                       <span class="tag">#SpringBoot</span>
                       <span class="tag">#Vue.js</span>
-                      <span class="tag">#css</span> 
+                      <span class="tag">#css</span>
+
+                      <span class="tag-copy"><i class="ti-heart"></i> {{project.like_count}} </span>
+                      <span class="tag-copy"><i class="ti-comment-alt"></i> {{projectComment[index]}} </span>
                     </div>
                   </div>
                 </el-carousel-item>
               </el-carousel>
-              </div>
-              <!-- end project list -->
+            </div>
+            <!-- end project list -->
 
-              <br><br><br>
+            <br><br><br>
 
-              <!-- 미구현 목록
-                  1. 포스트의 주요 태그 호출
-                  2. 포스트 댓글 수 표시
-                  3. 본문 3~4줄 넘어가면 줄이기
-                  4. Read More 클릭시 연결
-              -->
-              <!-- start post list -->
-              <div class="col-sm-8" style="margin: 0 auto; float: none;">
-                <div class="blog-list-nest" v-for="post in this.postList" :key="post.seq">
-                  <div class="blog-list-content">
-                    <div class="left">
-                      <h2>{{ post.title }}</h2>
-                      <ul class="list-inline blog-devin-tag">
-                        <li>
-                          <a href="#"> <span class="ti-pencil"></span>&nbsp;{{ post.regtime }}</a>
-                        </li>
-                        <li>
-                          <a href="#"> <span class="ti-comment-alt"></span>&nbsp;{{ postComment[index] }}</a>
-                        </li>
-                        <li>
-                          <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
-                        </li>
-                      </ul>
-                      <p>{{ post.content }}</p>
-                      <hr>
-                      <p class="pull-left">
-                        <el-tag type="gray">#Vue.js</el-tag>
-                        <el-tag type="gray">#Spring</el-tag>
-                        <el-tag type="gray">#Django</el-tag>
-                      </p>
-                      <button class="btn btn-info pull-right">Read More</button>
-                      <div style="clear:both;"></div>
-                    </div>
-                    <div class="right">
-                      <div class="vendor">
-                        <img v-if="post.img_url" class="img-responsive-media" src=post.img_url alt="">
-                        <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
-                      </div>
+            <!-- start post list -->
+            <!-- 미구현 목록
+                1. 포스트의 어떤 태그를 호출 할지
+                2. 본문 3~4줄 넘어가면 줄이기
+                3. Read More 클릭시 연결
+            -->
+            <div class="col-sm-8" style="margin: 0 auto; float: none;">
+              <div class="blog-list-nest" v-for="(post,index) in this.postList" :key="index">
+                <div class="blog-list-content">
+                  <div class="left">
+                    <h2>{{ post.title }}</h2>
+                    <ul class="list-inline blog-devin-tag">
+                      <li>
+                        <a href="#"> <span class="ti-pencil"></span>&nbsp;{{ post.regtime }}</a>
+                      </li>
+                      <li>
+                        <a href="#"> <span class="ti-comment-alt"></span>&nbsp;{{ postComment[index] }}</a>
+                      </li>
+                      <li>
+                        <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
+                      </li>
+                    </ul>
+                    <p>{{ post.content }}</p>
+                    <hr>
+                    <p class="pull-left">
+                      <el-tag type="gray">#Vue.js</el-tag>
+                      <el-tag type="gray">#Spring</el-tag>
+                      <el-tag type="gray">#Django</el-tag>
+                    </p>
+                    <button class="btn btn-info pull-right">Read More</button>
+                    <div style="clear:both;"></div>
+                  </div>
+                  <div class="right">
+                    <div class="vendor">
+                      <img v-if="post.img_url" class="img-responsive-media" src=post.img_url alt="">
+                      <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
                     </div>
                   </div>
                 </div>
-                <br><hr><br>
               </div>
-              <!-- end post list -->
+              <br><hr><br>
             </div>
+            <!-- end post list -->
           </div>
         </div>
-      </section>
+      </div>
     </div>
   </transition>
 </template>
@@ -122,6 +137,14 @@ export default {
       projectComment: [],
       postComment: [],
       tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
+      jumbotron: [
+        {
+          src: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+        },
+        {
+          src: "https://logoproject-phinf.pstatic.net/20200722_54/1595388554131BfVxn_PNG/NM_80cbfb.png?type=w750"
+        }
+      ]
     }
   },
   created(){
@@ -134,7 +157,13 @@ export default {
     })
     .then(({data}) => {
       this.projectList = data
-      console.log(this.projectList)
+      for(var i=0; i<data.length; i++){
+        http
+        .get('postcomment/'+this.projectList[i].seq)
+        .then(({data}) => {
+            this.projectComment.push(data.length);
+        });
+      }
     })
     http
     .post('/post/feed', {
@@ -271,5 +300,19 @@ input.devin-search {
 .blog-list-nest{
   float: left;
 }
-
+.tag-copy{
+  float: right;
+  padding-top: 8px;
+  margin-right: 5px;
+}
+.content{
+  padding: 0px;
+}
+.carousel{
+  top: 65px
+}
+.img-resize{
+  width:100%;
+  height:100%;
+}
 </style>
