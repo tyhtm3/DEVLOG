@@ -43,9 +43,9 @@ public class BlogTagController {
 	
 	@ApiOperation(value = "특정 블로그의 태그를 반환한다.", response = List.class)
 	@GetMapping("{blog_seq}")
-	public ResponseEntity<BlogTag> selectBlogTagByBlog(@PathVariable int blog_seq) throws Exception {
+	public ResponseEntity<List<BlogTag>> selectBlogTagByBlog(@PathVariable int blog_seq) throws Exception {
 		logger.debug("selectBlogTagByUser - 호출");
-		return new ResponseEntity<BlogTag>(blogTagService.selectBlogTagByBlog(blog_seq), HttpStatus.OK);
+		return new ResponseEntity<List<BlogTag>>(blogTagService.selectBlogTagByBlog(blog_seq), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "블로그 대표 태그를 생성한다 //중복 입력시 401", response = List.class)

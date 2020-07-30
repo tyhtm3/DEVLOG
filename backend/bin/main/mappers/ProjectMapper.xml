@@ -34,6 +34,22 @@
 	</select>
 	   
 	
+	<!-- 블로그 메인에서 모든 프로젝트의 개수 반환. -->
+	<select id="selectProjectCntByBlog" resultType="java.lang.Integer">
+		select count(*)
+		from post inner join post_project on post.seq=post_project.seq
+		where seq_blog = #{seq_blog}
+		<if test="seq_user != 0">
+		    and (disclosure=1 
+			or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user} ))
+			or (seq_blog = #{seq_user}))
+		</if>
+		<if test="seq_user == 0">
+		 	and disclosure=1 
+		</if>
+	</select>
+	
+	
 	<!-- 블로그 메인에서 한 페이지의 프로젝트 반환.-->
 	<select id="selectProjectByBlog" resultType="Project">
 		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count,post.img_url

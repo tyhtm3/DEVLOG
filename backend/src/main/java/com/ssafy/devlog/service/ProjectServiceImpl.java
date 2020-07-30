@@ -2,6 +2,7 @@ package com.ssafy.devlog.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +20,16 @@ public class ProjectServiceImpl implements ProjectService{
 	public List<Project> selectProjectByFeed(int seq_user,int disclosure,List<String> tag){
 		return projectMapper.selectProjectByFeed(seq_user, disclosure, tag);
 	}
-
+	
 	@Override
-	public List<Project> selectProjectByBlog(int seq_user,int disclosure,int offset,int limit,List<String> tag){
-		return projectMapper.selectProjectByBlog(seq_user, disclosure, offset, limit, tag);
+	public List<Project> selectProjectByBlog(int seq_user,int seq_blog,int offset,int limit,List<String> tag){
+		return projectMapper.selectProjectByBlog(seq_user, seq_blog, offset, limit, tag);
 	}
 
+	@Override
+	public int selectProjectCntByBlog(int seq_user,int seq_blog) {
+		return projectMapper.selectProjectCntByBlog(seq_user, seq_blog);
+	}
 	
 	@Override
 	public Project selectProject(int seq){

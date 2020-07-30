@@ -90,7 +90,6 @@ public class PortfolioController {
 	@GetMapping(value = "/blog/{seq_user}/{seq_blog}/{offset}/{limit}")
 	public ResponseEntity<List<Portfolio>> selectPortfolioByBlog(@PathVariable int seq_user,@PathVariable int seq_blog,@PathVariable int offset,@PathVariable int limit) {
 		logger.debug("selectPortfolioByBlog - 호출");
-		System.out.println(portfolioService.selectPortfolioByBlog(seq_user, seq_blog,offset,limit));
 		return new ResponseEntity<List<Portfolio>>(portfolioService.selectPortfolioByBlog(seq_user, seq_blog,offset,limit), HttpStatus.OK);
 	}
 	

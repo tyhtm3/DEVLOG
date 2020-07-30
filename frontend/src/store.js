@@ -24,7 +24,9 @@ export default new Vuex.Store({
     loginFormVisible: false,
     settingButtonVisible: false,
     isLogin: false,
-    userInfo: {}
+    userInfo: {
+      seq:0,
+    }
   },
   mutations: {
     mutateIsLogin(state, isLogin){

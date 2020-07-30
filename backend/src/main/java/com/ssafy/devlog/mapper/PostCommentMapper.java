@@ -9,6 +9,7 @@ import com.ssafy.devlog.dto.PostComment;
 @Mapper
 public interface PostCommentMapper {
 
+	public int selectPostCommentCnt(int seq_post);
 	public List<PostComment> selectAllPostComment(int seq_post);
 	public int insertPostComment(PostComment postComment);
 	public int updatePostComment(PostComment postComment);

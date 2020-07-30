@@ -1,7 +1,5 @@
 package com.ssafy.devlog.dto;
 
-import java.util.List;
-
 public class Post {
 
 	//post
@@ -13,6 +11,9 @@ public class Post {
 	private int like_count;
 	private String img_url;
 	
+	//post_basic
+	private String content;
+		
 	public String getImg_url() {
 		return img_url;
 	}
@@ -20,9 +21,6 @@ public class Post {
 	public void setImg_url(String img_url) {
 		this.img_url = img_url;
 	}
-
-	//post_basic
-	private String content;
 
 	public int getSeq() {
 		return seq;

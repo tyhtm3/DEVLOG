@@ -25,7 +25,7 @@ public class BlogTagServiceImpl implements BlogTagService {
 	}
 	
 	@Override
-	public BlogTag selectBlogTagByBlog(int seq_blog) {
+	public List<BlogTag> selectBlogTagByBlog(int seq_blog) {
 		return blogTagMapper.selectBlogTagByBlog(seq_blog);
 	}
 

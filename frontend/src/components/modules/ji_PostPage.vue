@@ -73,8 +73,9 @@
         getpostList(){
             http.post('post/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:0, limit:this.page})
             .then(({ data }) => {
+                if(data.length){
                 this.postList = data;
-                this.getpostCommentTag(data)
+                this.getpostCommentTag(data)}
             })
         },
         // 인피니트로딩
@@ -101,9 +102,9 @@
         getpostCommentTag(data){
             for(var i=0; i<data.length; i++){
                 // 코멘트
-                http.get('postcomment/'+data[i].seq)
+                http.get('postcomment/count/'+data[i].seq)
                 .then(({data}) => {
-                this.comment.push(data.length);
+                this.comment.push(data);
                 });
                 // 태그
                 http.get('posttag/'+data[i].seq)
