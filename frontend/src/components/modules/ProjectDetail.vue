@@ -18,7 +18,7 @@
                         <li><a> <span class="ti-pencil"></span>&nbsp;{{project.regtime}}</a></li>
                         <li><a> <span class="ti-comment-alt"></span>&nbsp;{{comment.length}}</a></li>
                         <li><a> <span class="ti-heart"></span>&nbsp;{{project.like_count}}</a></li>
-                        <li class="pull-right" v-if="project.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a> &nbsp;삭제</a></li>
+                        <li class="pull-right" v-if="project.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
                     </ul>
               <!-- 헤더 끝 -->               
                 <div class="box">
@@ -217,9 +217,15 @@
                 this.stack = data;
          })
       },
-      // 프로젝트 삭제 미구현
-      deleteProject(){
-        
+      // 프로젝트 삭제
+      deleteProject(seq){
+        http.delete('project/'+seq)
+        .then(({data}) => {
+            if(data==="SUCCESS"){
+              alert('프로젝트가 삭제되었습니다.')
+              this.$router.push(`/blog-main`)
+            }
+         })
       },
       // 프로젝트 수정 미구현
       updateProject(){

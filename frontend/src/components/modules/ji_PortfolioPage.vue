@@ -2,6 +2,7 @@
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 포스트출력 -->
+        
             <div class="row">
                     <div class="col-md-4" v-for="(portfolio,index) in portfolioList" :key="index">
                     <div class="well-media">
