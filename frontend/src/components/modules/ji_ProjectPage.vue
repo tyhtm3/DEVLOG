@@ -12,7 +12,7 @@
                         </div>
                         <div class="video-text">
                             <!-- {{project}} -->
-                            <h2 style="font-weight: bold; margin-bottom:10px;">{{project.title}}{{project.seq}}</h2>
+                            <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{project.title}}{{project.seq}}</h2>
                             <p class="content-3line" style="color:black;">{{project.summary}}</p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 
@@ -123,6 +123,22 @@
     margin-right: 4px;
     line-height: 35px;
     cursor: pointer;
+}
+.title-1line{
+    /* 한 줄 자르기 */
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* 1줄만 보이게 */
+    white-space: normal;
+    line-height: 2;
+    height: 2em;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 .content-3line{
     /* 한 줄 자르기 */
