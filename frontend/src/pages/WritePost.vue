@@ -16,7 +16,7 @@
           <div class="box-body">
             <div style="margin-bottom: 15px">
               <span style="display:inline-block; width:100px;">제목</span>
-              <input class="title" v-model="postInfo.title" placeholder="제목을 입력해 주세요." style="width:50%">
+              <input class="title" v-model="postInfo.title" placeholder="제목을 입력해 주세요." style="width:50%; border:0px;">
             </div>
             <hr>
             <div style="margin-bottom: 15px">
@@ -174,9 +174,6 @@ export default {
 .ql-editor{
   min-height: 400px;
   width: 50%;
-}
-.box-body input{
-  border: 0px;
 }
 .tag{
   background:gray;

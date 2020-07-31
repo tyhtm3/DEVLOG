@@ -32,9 +32,9 @@
     </transition>
 </template>
 <script>
-  import http from '../../util/http-common'
+  import http from '../util/http-common'
   export default {
-    name: 'ji_PortfolioPage',
+    name: 'portfolioList',
     data(){
         return{
             // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함

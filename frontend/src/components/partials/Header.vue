@@ -3,7 +3,7 @@
     <!-- Logo -->
     <nav class="navbar navbar-static-top">
       <span class="logo-mini">
-        <router-link to="/dashboard-ju">
+        <router-link to="/">
         <img src="../../assets/logo2.png" height="50px" style="margin-left:30px; margin-top:15px">
         </router-link>
       </span>
@@ -24,17 +24,11 @@
 											</router-link>
 										</li>
 										<li> <i class="ti-home"></i>
-											<router-link to="/blog-main">
+											<router-link to="/blog">
 												<h3 style="margin-top: 9px;">내 블로그<span class="text-yellow fontello-record"></span></h3>
 												<p></p>
 											</router-link>
 										</li>
-										<!-- <li> <i class="ti-user"></i>
-											<router-link to="/myinfo">
-												<h3 style="margin-top: 9px;">회원정보 수정<span class="text-green fontello-record"></span></h3>
-												<p></p>
-											</router-link>
-										</li> -->
 										<li> <i class="ti-power-off"></i>
 											<a style="cursor:pointer;" @click="logout">
 												<h3 style="margin-top: 9px;">로그아웃<span class="text-yellow fontello-record"></span></h3>

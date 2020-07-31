@@ -17,7 +17,7 @@
                         </div>
                         <div class="tag-nest" style="block:inline"> 
                            <!-- 태그 3개만 갖고오기--> 
-                            <span v-for="(tag,index) in tag[index].slice(0,3)" :key="index">
+                            <span v-for="(tag,index) in tag[index]" :key="index">
                             <span class="tag">#{{tag.tag}}</span>
                             </span>
                             <!-- 여백 -->
@@ -43,10 +43,10 @@
     </transition>
 </template>
 <script>
-  import http from '../../util/http-common'
+  import http from '../util/http-common'
   import InfiniteLoading from 'vue-infinite-loading'
   export default {
-    name: 'ji_ProjectPage',
+    name: 'projectList',
     components: {
         InfiniteLoading
     },
@@ -68,7 +68,7 @@
     },
     methods:{
         goDetail(seq){
-            this.$router.push(`/project-detail/${seq}`)
+            this.$router.push(`/blog/project/${seq}`)
         },
         // 페이지네이션 하기 전 처음 페이지에 뿌려줄 카드 불러오기
         getprojectList(){
@@ -109,7 +109,7 @@
                 // 태그
                 http.get('posttag/'+data[i].seq)
                 .then(({data}) => {
-                this.tag.push(data);
+                this.tag.push(data.slice(0,3));
                 });
             }   
         },

@@ -75,7 +75,7 @@
             <!-- end movie card -->
           </div>
           <!-- end box-body -->
-          <blog-main-list></blog-main-list>
+          <blog-content></blog-content>
         </div>
       </section>
       <!-- end Main content -->
@@ -83,12 +83,11 @@
   </transition>
 </template>
 <script>
-  import BlogMainList from '../BlogMainList'
-  import http from '../../util/http-common'
+  import blogContent from '../components/blogContent'
+  import http from '../util/http-common'
   export default {
-    name: 'y_blog-main',
     components: {
-     'blog-main-list': BlogMainList
+     'blog-content': blogContent
     },
     data: function () {
         return { 

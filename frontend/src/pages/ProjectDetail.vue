@@ -5,7 +5,7 @@
        <!-- start banner carousel -->
       <div class="header-block">
         <div class="header-image">
-        <img src="../../assets/project-banner.jpg" width="100%" style=" max-height: initial;margin-top: -15%;"/>
+        <img src="../assets/project-banner.jpg" width="100%" style=" max-height: initial;margin-top: -15%;"/>
         </div>
         <div class="header-text"><p>{{project.title}}</p></div>
       </div>
@@ -164,7 +164,7 @@
   </transition>
 </template>
 <script>
-  import http from '../../util/http-common'
+  import http from '../util/http-common'
   export default {
     components: {
     },
@@ -223,7 +223,7 @@
         .then(({data}) => {
             if(data==="SUCCESS"){
               alert('프로젝트가 삭제되었습니다.')
-              this.$router.push(`/blog-main`)
+              this.$router.push(`/blog`)
             }
          })
       },

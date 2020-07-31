@@ -5,13 +5,13 @@
       <div class="carousel">
         <el-carousel indicator-position="outside" height='500px'>
           <el-carousel-item class="img-resize">
-            <img class="img-resize" src="../../../../docs/static/img/banner1.jpg">
+            <img class="img-resize" src="../../docs/static/img/banner1.jpg">
           </el-carousel-item>
           <el-carousel-item>
-            <img class="img-resize" src="../../../../docs/static/img/banner2.jpg">
+            <img class="img-resize" src="../../docs/static/img/banner2.jpg">
           </el-carousel-item>
           <el-carousel-item>
-            <img class="img-resize" src="../../../../docs/static/img/banner3.jpg">
+            <img class="img-resize" src="../../docs/static/img/banner3.jpg">
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -50,13 +50,13 @@
               --> 
               <el-carousel :interval="4000" type="card" height="400px">
                 <el-carousel-item v-for="(project, index) in projectList" :key="index">
-                  <div class="well-media" @click="goDetailProject(project.seq)">
+                  <div class="well-media">
                     <div class="vendor">
                       <img v-if="project.img_url" class="img-responsive-media" src=project.img_url alt="">
                       <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
                     </div>
                     <div class="video-text">
-                      <h2 style="font-weight: bold; margin-bottom:5px;">{{ project.title }}</h2>
+                      <h2 style="font-weight: bold; margin-bottom:5px;" @click="goDetailProject(project.seq)">{{ project.title }}</h2>
                     </div>
                     <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" > 
                       <span class="tag">#SpringBoot</span>
@@ -105,7 +105,7 @@
                     <p class="pull-left">
 
                       <!-- 태그 3개만 갖고오기--> 
-                      <span v-for="(tag,index) in postTag[index].slice(0,3)" :key="index">
+                      <span v-for="(tag,index) in postTag[index]" :key="index">
                       <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
                      </span>
                      
@@ -133,7 +133,7 @@
   </transition>
 </template>
 <script>
-import http from '../../../util/http-common'
+import http from '../util/http-common'
 import InfiniteLoading from 'vue-infinite-loading'
 export default {
   name: 'Main',
@@ -227,7 +227,7 @@ export default {
         // 태그
         http.get('posttag/'+data[i].seq)
         .then(({data}) => {
-          this.postTag.push(data);
+          this.postTag.push(data.slice(0,3));
         });
       }   
     },
@@ -236,7 +236,13 @@ export default {
       text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
       // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
       return text
-    } 
+    },
+    goDetailProject(seq){
+      this.$router.push(`/blog/project/${seq}`)
+    },
+    goDetailPost(seq){
+      this.$router.push(`/blog/post/${seq}`)
+    }
   }
 }
 </script>

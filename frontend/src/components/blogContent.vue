@@ -26,19 +26,19 @@
             <!-- <div v-if="curpage == 0" role="tabpanel" class="tab-pane fade active in" id="project"> -->
             <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade active in" id="project">
-              <project-page></project-page>
+              <project-list></project-list>
             </div>
             <!--/ TAB PANEL ITEM -->
 
             <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade" id="post">
-              <post-page></post-page>
+              <post-list></post-list>
             </div>
             <!--/ TAB PANEL ITEM -->
 
             <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade" id="portfolio">
-              <portfolio-page></portfolio-page>
+              <portfolio-list></portfolio-list>
             </div>
             <!--/ TAB PANEL ITEM -->
           </div>
@@ -51,15 +51,15 @@
 </template>
 
 <script>
-  import ProjectPage from '../components/modules/ji_ProjectPage.vue'
-  import PostPage from '../components/modules/ji_PostPage.vue'
-  import PortfolioPage from '../components/modules/ji_PortfolioPage.vue'
+  import projectList from './projectList.vue'
+  import postList from './postList.vue'
+  import portfolioList from './portfolioList.vue'
   export default {
-    name: 'blog-main-list',
+    name: 'blog-content',
     components: {
-      'project-page': ProjectPage,
-      'post-page': PostPage,
-      'portfolio-page': PortfolioPage
+      'project-list': projectList,
+      'post-list': postList,
+      'portfolio-list': portfolioList
     },
     data: function () {
         return { 
