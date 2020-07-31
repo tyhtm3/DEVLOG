@@ -12,8 +12,8 @@
                         </div>
                         <div class="video-text">
                             <!-- {{portfolio}} -->
-                            <h2 style="font-weight: bold; margin-bottom:10px;">{{portfolio.title}}</h2>
-                            <p class="content-3line" style="color:black;">{{portfolio.content}}</p>
+                            <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{portfolio.title}}</h2>
+                            <p class="content-3line" style="color:black;">{{ removeTag(portfolio.content) }}</p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 
                             <span class="tag">#SpringBoot</span>
@@ -55,6 +55,11 @@
       this.getportfolioList();
     },
     methods:{
+        removeTag(text){
+        text = text.replace(/<br\/>/ig, "\n");
+        text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
+        return text
+        },
         getportfolioList(){
             // alert(data[0].title)
             http.get('portfolio/blog/'+this.seq_user+'/'+this.seq_blog+'/'+this.offset+'/'+this.limit)
@@ -80,6 +85,22 @@
     margin-right: 4px;
     line-height: 35px;
     cursor: pointer;
+}
+.title-1line{
+    /* 한 줄 자르기 */
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* 1줄만 보이게 */
+    white-space: normal;
+    line-height: 2;
+    height: 2em;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 .content-3line{
     /* 한 줄 자르기 */

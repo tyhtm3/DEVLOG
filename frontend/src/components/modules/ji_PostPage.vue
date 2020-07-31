@@ -13,7 +13,7 @@
                         <div class="video-text">
                             <!-- {{post}} -->
                             <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{post.title}}</h2>
-                            <p class="content-3line" style="color:black;" v-text="post.content"></p>
+                            <p class="content-3line" style="color:black;">{{ removeTag(post.content) }}</p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 
                             
@@ -69,6 +69,11 @@
       this.getpostList();
     },
     methods:{
+        removeTag(text){
+        text = text.replace(/<br\/>/ig, "\n");
+        text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
+        return text
+        },
         goDetail(seq){
             this.$router.push(`/post-detail/${seq}`)
         },
