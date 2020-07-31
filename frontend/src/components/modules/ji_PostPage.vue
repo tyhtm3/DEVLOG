@@ -5,15 +5,15 @@
             <div class="row">
                     <div class="col-md-4" v-for="(post,index) in postList" :key="index">
                     <div class="well-media">
-                    <a href="#">
+                    <a href="#" @click="goDetail(post.seq)">
                         <div class="vendor">
                             <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
                         </div>
                         <div class="video-text">
                             <!-- {{post}} -->
-                            <h2 style="font-weight: bold; margin-bottom:10px;">{{post.title}}</h2>
-                            <p class="content-3line" style="color:black;">{{post.content}}</p>
+                            <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{post.title}}</h2>
+                            <p class="content-3line" style="color:black;" v-text="post.content"></p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 
                             
@@ -69,6 +69,9 @@
       this.getpostList();
     },
     methods:{
+        goDetail(seq){
+            this.$router.push(`/post-detail/${seq}`)
+        },
         // 페이지네이션 하기 전 처음 페이지에 뿌려줄 카드 불러오기
         getpostList(){
             http.post('post/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:0, limit:this.page})
@@ -124,6 +127,22 @@
     line-height: 35px;
     cursor: pointer;
 }
+.title-1line{
+    /* 한 줄 자르기 */
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* 1줄만 보이게 */
+    white-space: normal;
+    line-height: 2;
+    height: 2em;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
 .content-3line{
     /* 한 줄 자르기 */
     display: inline-block;
@@ -134,6 +153,7 @@
     white-space: normal;
     line-height: 2;
     height: 6em;
+    word-spacing: 2px;
     text-align: left;
     word-wrap: break-word;
     display: -webkit-box;

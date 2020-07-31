@@ -82,12 +82,15 @@
                 1. 포스트의 어떤 태그를 호출 할지 - 일단 등록한 태그 3개로 해놓음
                 2. 본문 3~4줄 넘어가면 줄이기 -완료
                 3. Read More 클릭시 연결
+
+                추가한 부분
+                1. 포스트 타이틀 1줄만 출력 : title-1line class 로 css수정
             -->
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
               <div class="blog-list-nest" v-for="(post,index) in this.postList" :key="index">
                 <div class="blog-list-content">
                   <div class="left">
-                    <h2>{{ post.title }}</h2>
+                    <h2 class="title-1line">{{ post.title }}</h2>
                     <ul class="list-inline blog-devin-tag">
                       <li>
                         <a href="#"> <span class="ti-pencil"></span>&nbsp;{{ post.regtime }}</a>
@@ -115,7 +118,7 @@
                   <div class="right">
                     <div class="vendor">
                       <img v-if="post.img_url" class="img-responsive-media" src=post.img_url alt="">
-                      <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
+                      <img v-else class="img-responsive-media" style="margin-top:25px;" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
                     </div>
                   </div>
                 </div>
@@ -370,6 +373,22 @@ input.devin-search {
 .img-resize{
   width:100%;
   height:100%;
+}
+.title-1line{
+    /* 한 줄 자르기 */
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* 1줄만 보이게 */
+    white-space: normal;
+    line-height: 2;
+    height: 2em;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 .content-3line{
     /* 한 줄 자르기 */
