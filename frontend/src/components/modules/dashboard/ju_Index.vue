@@ -97,7 +97,7 @@
                         <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
                       </li>
                     </ul>
-                    <p class="content-3line">{{ post.content }}</p>
+                    <p class="content-3line">{{ removeTag(post.content) }}</p>
                     <hr>
                     <p class="pull-left">
 
@@ -227,7 +227,13 @@ export default {
           this.postTag.push(data);
         });
       }   
-    },    
+    },
+    removeTag(text){
+      text = text.replace(/<br\/>/ig, "\n")
+      text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
+      // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
+      return text
+    } 
   }
 }
 </script>
