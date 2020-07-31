@@ -2,6 +2,7 @@
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 포스트출력 -->
+        
             <div class="row">
                     <div class="col-md-4" v-for="(portfolio,index) in portfolioList" :key="index">
                     <div class="well-media">
@@ -12,8 +13,8 @@
                         </div>
                         <div class="video-text">
                             <!-- {{portfolio}} -->
-                            <h2 style="font-weight: bold; margin-bottom:10px;">{{portfolio.title}}</h2>
-                            <p class="content-3line" style="color:black;">{{portfolio.content}}</p>
+                            <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{portfolio.title}}</h2>
+                            <p class="content-3line" style="color:black;">{{ removeTag(portfolio.content) }}</p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 
                             <span class="tag">#SpringBoot</span>
@@ -22,12 +23,7 @@
                             <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{portfolio.like_count}} </span>
                             <!-- <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span>  -->
                         </div>
-                        <!-- <div class="video-category-bg">
-                            <h3>FRONT-END</h3>
-                            <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                            <div class="triangle-white"></div>
-                            <div class="triangle-photo-right"></div>
-                        </div> -->
+  
                     </a>
                     </div>
                 </div>
@@ -55,6 +51,11 @@
       this.getportfolioList();
     },
     methods:{
+        removeTag(text){
+        text = text.replace(/<br\/>/ig, "\n");
+        text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
+        return text
+        },
         getportfolioList(){
             // alert(data[0].title)
             http.get('portfolio/blog/'+this.seq_user+'/'+this.seq_blog+'/'+this.offset+'/'+this.limit)
@@ -80,6 +81,22 @@
     margin-right: 4px;
     line-height: 35px;
     cursor: pointer;
+}
+.title-1line{
+    /* 한 줄 자르기 */
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* 1줄만 보이게 */
+    white-space: normal;
+    line-height: 2;
+    height: 2em;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 .content-3line{
     /* 한 줄 자르기 */

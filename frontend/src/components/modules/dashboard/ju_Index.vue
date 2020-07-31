@@ -53,7 +53,7 @@
               --> 
               <el-carousel :interval="4000" type="card" height="400px">
                 <el-carousel-item v-for="(project, index) in projectList" :key="index">
-                  <div class="well-media">
+                  <div class="well-media" @click="goDetailProject(project.seq)">
                     <div class="vendor">
                       <img v-if="project.img_url" class="img-responsive-media" src=project.img_url alt="">
                       <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
@@ -102,7 +102,7 @@
                         <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
                       </li>
                     </ul>
-                    <p class="content-3line">{{ post.content }}</p>
+                    <p class="content-3line">{{ removeTag(post.content) }}</p>
                     <hr>
                     <p class="pull-left">
 
@@ -112,7 +112,7 @@
                      </span>
                      
                     </p>
-                    <button class="btn btn-info pull-right">Read More</button>
+                    <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button>
                     <div style="clear:both;"></div>
                   </div>
                   <div class="right">
@@ -241,6 +241,17 @@ export default {
                 });
             }   
         },    
+    removeTag(text){
+        text = text.replace(/<br\/>/ig, "\n");
+        text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
+        return text
+    },
+    goDetailPost(seq){
+            this.$router.push(`/post-detail/${seq}`)
+    },
+    goDetailProject(seq){
+            this.$router.push(`/project-detail/${seq}`)
+    },
   }
 }
 </script>
@@ -398,8 +409,8 @@ input.devin-search {
     text-overflow: ellipsis;
     /* 3줄만 보이게 */
     white-space: normal;
-    line-height: 1.6;
-    height: 4.8em;
+    line-height: 2;
+    height: 6em;
     text-align: left;
     word-wrap: break-word;
     display: -webkit-box;
