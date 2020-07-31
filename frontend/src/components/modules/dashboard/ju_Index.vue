@@ -82,6 +82,9 @@
                 1. 포스트의 어떤 태그를 호출 할지 - 일단 등록한 태그 3개로 해놓음
                 2. 본문 3~4줄 넘어가면 줄이기 -완료
                 3. Read More 클릭시 연결
+
+                추가한 부분
+                1. 포스트 타이틀 1줄만 출력 : title-1line class 로 css수정
             -->
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
               <div class="blog-list-nest" v-for="(post,index) in this.postList" :key="index">
