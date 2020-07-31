@@ -35,7 +35,8 @@
     "vue2-editor": "^2.0.26",
     "vuebars": "^0.1.1",
     "vuelayers": "^0.7.4",
-    "vuex": "^2.0.0"
+    "vuex": "^2.0.0",
+    "vuex-persistedstate": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",
