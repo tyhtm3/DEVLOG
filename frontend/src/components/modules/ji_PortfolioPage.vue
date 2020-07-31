@@ -22,12 +22,7 @@
                             <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{portfolio.like_count}} </span>
                             <!-- <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span>  -->
                         </div>
-                        <!-- <div class="video-category-bg">
-                            <h3>FRONT-END</h3>
-                            <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                            <div class="triangle-white"></div>
-                            <div class="triangle-photo-right"></div>
-                        </div> -->
+  
                     </a>
                     </div>
                 </div>

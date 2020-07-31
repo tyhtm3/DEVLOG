@@ -192,17 +192,6 @@ export default {
     })
   },
   methods:{
-    removeTag(text){
-        text = text.replace(/<br\/>/ig, "\n");
-        text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
-        return text
-    },
-    goDetailPost(seq){
-            this.$router.push(`/post-detail/${seq}`)
-    },
-    goDetailProject(seq){
-            this.$router.push(`/project-detail/${seq}`)
-    },
     getTags(){
             if(this.seq_user==''){
               // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
@@ -252,6 +241,17 @@ export default {
                 });
             }   
         },    
+    removeTag(text){
+        text = text.replace(/<br\/>/ig, "\n");
+        text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
+        return text
+    },
+    goDetailPost(seq){
+            this.$router.push(`/post-detail/${seq}`)
+    },
+    goDetailProject(seq){
+            this.$router.push(`/project-detail/${seq}`)
+    },
   }
 }
 </script>
