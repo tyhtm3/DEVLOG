@@ -32,6 +32,9 @@ export default new Vuex.Store({
       seq:0,
     }
   },
+  getters: {
+    userInfo: state => state,
+  },
   mutations: {
     mutateIsLogin(state, isLogin){
       state.isLogin = isLogin
@@ -91,11 +94,7 @@ export default new Vuex.Store({
       })
     },
     modify(context, {password, name, nickname, email, tel, birth, url, imageUrl}) {
-      // console.log(this.state.userInfo.seq);
-      // console.log(this.state.userInfo.id);
-      // console.log(name);
-      // console.log(nickname);
-      
+
       http
       .put('/user', {
         seq: this.state.userInfo.seq,
@@ -111,6 +110,19 @@ export default new Vuex.Store({
       })
       .then(({ data }) => {
         alert("success")
+        this.commit('mutateUserInfo', 
+        {
+          seq: this.state.userInfo.seq,
+          id: this.state.userInfo.id,
+          password:password,
+          name:name,
+          nickname:nickname,
+          email:email,
+          tel:tel,
+          birthday:birth,
+          github_url:url,
+          profile_img_url:imageUrl}
+        )
         routes.push('/')
       })
       .catch((error) => {

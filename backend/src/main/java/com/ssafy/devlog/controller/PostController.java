@@ -51,7 +51,7 @@ public class PostController {
 		
 	}
 	
-	@ApiOperation(value = "새로운 게시글 입력 ( seq_blog, title, disclosure, content ) 만 사용 ", response = String.class)
+	@ApiOperation(value = "새로운 게시글 입력 ( seq_blog, title, disclosure, content ) 사용. 예약기능을 사용할경우 regtime 사용(현재시간일 경우 안넣음) ", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> insertPost(@RequestBody Post post) {
 		

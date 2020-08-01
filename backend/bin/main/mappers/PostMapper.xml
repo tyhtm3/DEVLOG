@@ -87,9 +87,9 @@
 	<!-- 포스트 기본 정보 등록 -->
 	<insert id="insertPost" useGeneratedKeys="true" keyProperty="seq">
 		insert into post(
-			seq_blog,title,disclosure,img_url,like_count
+			seq_blog,title,disclosure,img_url,like_count <if test="regtime != null">, regtime</if>
 		) values (
-			#{seq_blog}, #{title}, #{disclosure} ,#{img_url},0
+			#{seq_blog}, #{title}, #{disclosure} ,#{img_url},0 <if test="regtime != null">, #{regtime}</if>
 		)
 	</insert>
 	
@@ -108,6 +108,7 @@
 		   set title = #{title}, 
 		   	   disclosure = #{disclosure}
 		   	   img_url = #{img_url}
+		   	   <if test="regtime != null">regtime = #{regtime}</if>
 		 where seq = #{seq}
 	</update>
 

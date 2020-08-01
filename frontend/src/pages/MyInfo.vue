@@ -59,8 +59,13 @@
 </template>
 
 <script>
+import http from '../util/http-common'
+import { mapState } from 'vuex'
 export default {
   components: {
+  },
+  computed: {
+    ...mapState(['userInfo']),
   },
   data: () => {
     return {
@@ -80,14 +85,14 @@ export default {
     this.$store.state.loginFormVisible = false;
   },
   mounted() {
-    this.id = this.$store.state.userInfo.id,
-    this.name = this.$store.state.userInfo.name,
-    this.nickname = this.$store.state.userInfo.nickname,
-    this.email = this.$store.state.userInfo.email,
-    this.tel = this.$store.state.userInfo.tel,
-    this.birth = this.$store.state.userInfo.birthday,
-    this.url = this.$store.state.userInfo.github_url,
-    this.imageUrl = this.$store.state.userInfo.profile_img_url
+    this.id = this.userInfo.id,
+    this.name = this.userInfo.name,
+    this.nickname = this.userInfo.nickname,
+    this.email = this.userInfo.email,
+    this.tel = this.userInfo.tel,
+    this.birth = this.userInfo.birthday,
+    this.url = this.userInfo.github_url,
+    this.imageUrl = this.userInfo.profile_img_url
   },
   methods: {
     modify() {
@@ -130,7 +135,15 @@ export default {
       return re.test(email);
     },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      var frm = new FormData();
+      frm.append("upload_file", file.raw);
+
+      http.post('user/upload',frm,{headers: {
+            'Content-Type': 'multipart/form-data'
+          }})
+        .then(({data}) => {
+          this.imageUrl = 'http://'.concat(data)
+      })
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
