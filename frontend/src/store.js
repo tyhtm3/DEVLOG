@@ -110,6 +110,7 @@ export default new Vuex.Store({
       })
       .then(({ data }) => {
         alert("success")
+        // state 정보 업데이트
         this.commit('mutateUserInfo', 
         {
           seq: this.state.userInfo.seq,
