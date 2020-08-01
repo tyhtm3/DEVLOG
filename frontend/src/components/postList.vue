@@ -7,7 +7,8 @@
                     <div class="well-media">
                     <a href="#" @click="goDetail(post.seq)">
                         <div class="vendor">
-                            <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                            <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
+                            <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
                         </div>
                         <div class="video-text">
