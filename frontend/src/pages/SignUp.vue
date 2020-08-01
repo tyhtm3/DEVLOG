@@ -38,7 +38,7 @@
 									<dd><el-input v-model="email" style="width: 70%;"></el-input></dd>
 									<dt>연락처</dt>
                   <dd><el-input v-model="tel" style="width: 70%;"></el-input></dd>
-                  <dt>생년원일</dt>
+                  <dt>생년월일</dt>
                   <dd><el-date-picker v-model="birth" type="date"></el-date-picker></dd>
                   <dt>url</dt>
 									<dd>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import http from '../util/http-common'
   export default {
     components: {
     },
@@ -94,7 +95,7 @@
           alert('이메일을 입력해주세요.')
         else if (!this.validEmail(this.email))
           alert("이메일 형식을 확인해 주세요")
-        else
+        else{
           this.$store.dispatch('signup', {
             id: this.id,
             password: this.password,
@@ -106,6 +107,7 @@
             url: this.url,
             imageUrl: this.imageUrl
           })
+        }
       },
       validEmail: function(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -113,9 +115,19 @@
 
       },
       handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
+        
+        var frm = new FormData();
+        frm.append("upload_file", file.raw);
+
+         http.post('user/upload',frm,{headers: {
+            'Content-Type': 'multipart/form-data'
+          }})
+        .then(({data}) => {
+          this.imageUrl = 'http://'.concat(data)
+         })
       },
       beforeAvatarUpload(file) {
+
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
 
