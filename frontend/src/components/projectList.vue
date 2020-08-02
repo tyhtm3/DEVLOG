@@ -3,9 +3,8 @@
         <section class="content"  style="padding-top:30px">
         <!-- 포스트출력 -->
             <div class="row">
-                    <div class="col-md-4" v-for="(project,index) in projectList" :key="index">
-                    <div class="well-media">
-                    <a href="#" @click="goDetail(project.seq)">
+                <div class="col-md-4" v-for="(project,index) in projectList" :key="index">
+                    <div class="well-media" @click="goDetail(project.seq)" style="cursor:pointer;">
                         <div class="vendor">
                             <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
@@ -33,7 +32,6 @@
                             <div class="triangle-white"></div>
                             <div class="triangle-photo-right"></div>
                         </div> -->
-                    </a>
                     </div>
                 </div>
             </div>
