@@ -112,7 +112,7 @@ const routes = [
         component: WritePost
       },
       {
-        path: '/follwoer',
+        path: '/follower',
         name: 'follower',
         component: Follower
       },

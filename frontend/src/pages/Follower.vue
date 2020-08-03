@@ -4,79 +4,42 @@
       <!-- Main content -->
       <section class="content">
         <div class="container-chat clearfix">
+          <div class="col-md-12">
+            <div style="text-align:center">
+            <h2>이웃 관리</h2></div>
+                <!-- <input class="delete-box" :id=index type="checkbox" :value=post.seq " /> -->
+                    <!-- <label :for=index></label>전체선택 -->
+              <el-button :plain="true" @click='unfollow' type="info">이웃끊기</el-button>
+              <el-button :plain="true" @click='block' type="danger">차단</el-button>
+            </div>
+
           <div class="people-list" id="people-list">
             <div class="search">
               <input type="text" placeholder="search" /> <i class="fa fa-search"></i> </div>
-            <ul class="list">
-              <li class="clearfix"> <img src="http://api.randomuser.me/portraits/men/22.jpg" alt="avatar" />
+            <ul style="text-align:center" class="list">
+              <li @click="selected(index)" style="cursor:pointer  " class="clearfix" v-for="(neighbor, index) in neighborList2" :key="index">
+                <img v-if="neighbor.profile_img_url" :src="neighbor.profile_img_url" alt="avatar" />
+                <img v-else src="upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" alt="avatar" />
                 <div class="about">
-                  <div class="name">Vincent Porter</div>
+                  <div class="name">{{neighbor.name}}</div>
                   <div class="status"> <i class="fa fa-circle online"></i> online </div>
                 </div>
               </li>
-              <li class="clearfix"> <img src="http://api.randomuser.me/portraits/men/23.jpg" alt="avatar" />
-                <div class="about">
-                  <div class="name">Aiden Chavez</div>
-                  <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
-                </div>
-              </li>
-              <li class="clearfix"> <img src="http://api.randomuser.me/portraits/men/24.jpg" alt="avatar" />
-                <div class="about">
-                  <div class="name">Mike Thomas</div>
-                  <div class="status"> <i class="fa fa-circle online"></i> online </div>
-                </div>
-              </li>
-              <li class="clearfix"> <img src="http://api.randomuser.me/portraits/women/25.jpg" alt="avatar" />
-                <div class="about">
-                  <div class="name">Erica Hughes</div>
-                  <div class="status"> <i class="fa fa-circle online"></i> online </div>
-                </div>
-              </li>
-              <li class="clearfix"> <img src="http://api.randomuser.me/portraits/women/26.jpg" alt="avatar" />
-                <div class="about">
-                  <div class="name">Ginger Johnston</div>
-                  <div class="status"> <i class="fa fa-circle online"></i> online </div>
-                </div>
-              </li>
-              <li class="clearfix"> <img src="http://api.randomuser.me/portraits/women/27.jpg" alt="avatar" />
-                <div class="about">
-                  <div class="name">Tracy Carpenter</div>
-                  <div class="status"> <i class="fa fa-circle offline"></i> left 30 mins ago </div>
-                </div>
-              </li>
-              <li class="clearfix"> <img src="http://api.randomuser.me/portraits/men/28.jpg" alt="avatar" />
-                <div class="about">
-                  <div class="name">Christian Kelly</div>
-                  <div class="status"> <i class="fa fa-circle offline"></i> left 10 hours ago </div>
-                </div>
-              </li>
-              <li class="clearfix"> <img src="http://api.randomuser.me/portraits/women/29.jpg" alt="avatar" />
-                <div class="about">
-                  <div class="name">Monica Ward</div>
-                  <div class="status"> <i class="fa fa-circle online"></i> online </div>
-                </div>
-              </li>
-              <li class="clearfix"> <img src="http://api.randomuser.me/portraits/men/30.jpg" alt="avatar" />
-                <div class="about">
-                  <div class="name">Dean Henry</div>
-                  <div class="status"> <i class="fa fa-circle offline"></i> offline since Oct 28 </div>
-                </div>
-              </li>
-              <li class="clearfix"> <img src="http://api.randomuser.me/portraits/women/31.jpg" alt="avatar" />
-                <div class="about">
-                  <div class="name">Peyton Mckinney</div>
-                  <div class="status"> <i class="fa fa-circle online"></i> online </div>
-                </div>
-              </li>
+
+              
             </ul>
           </div>
           <div class="chat">
-            <div class="chat-header clearfix"> <img src="http://api.randomuser.me/portraits/men/32.jpg" alt="avatar" />
+            <div class="chat-header clearfix">
+              <img v-if="selectedImg" :src="selectedImg" style="height: 60px;" alt="avatar" />
+              <img v-else src="upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" alt="avatar" />
               <div class="chat-about">
-                  <div class="chat-with">Chat with Vincent Porter</div>
-                  <div class="chat-num-messages">already 1 902 messages</div>
-              </div> <i class="fa fa-star"></i> </div>
+                  <div class="chat-with">{{selectedName}}</div>
+                  <div class="chat-num-messages">{{selectedRegtime}}</div>
+              </div>
+            </div>
             <!-- end chat-header -->
+           
             <div class="chat-history">
               <ul>
                 <li class="clearfix">
@@ -116,7 +79,40 @@
   </transition>
 </template>
 <script>
-  export default {
-    name: 'Follow'
+import http from '../util/http-common'
+export default {
+  name: 'Follower',
+  created() {
+    http
+    .get('/userneighbor/' + this.$store.state.userInfo.seq)
+    .then(({data}) => {
+      this.neighborList = data
+      for (var i =0; i<data.length; i++){
+        http
+        .get('/user/' + this.neighborList[i].seq_neighbor)
+        .then(({data}) => {
+          console.log(data)
+          this.neighborList2.push(data)
+        })
+      }
+    })
+  },
+  data: function () {
+        return { 
+          selectedName: '',
+          neighborList: [],
+          neighborList2: [],
+          selectedImg: '',
+          selectedRegtime: '',
+        }
+    },
+  methods: {
+    selected(index) {
+      this.selectedName=this.neighborList2[index].name
+      this.selectedImg=this.neighborList2[index].profile_img_url
+      this.selectedRegtime=this.neighborList[index].regtime
+     // console.log(this.selectedImg)
+    }
   }
+}
 </script>

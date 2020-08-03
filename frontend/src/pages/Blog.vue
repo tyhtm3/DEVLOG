@@ -142,7 +142,7 @@
         }
       },
       follower(){
-        alert("이웃관리 페이지로 이동")
+        this.$router.push('/follower')
       },
       alterTitle(){
         $('#title').attr('disabled', false);
