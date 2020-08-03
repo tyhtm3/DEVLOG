@@ -146,7 +146,7 @@
     }
   }
 </script>
-<style>
+<style scoped>
 .tag-copy{
     border-radius: 10px;
     font-size: 14px;
