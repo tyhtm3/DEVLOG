@@ -11,23 +11,17 @@
             <div class="movie-card">
               <!-- start container-movie -->
               <div class="container-movie">
-              <!-- <div class="hero">-->
                 <!-- start profile -->
                 <div class="details-profile">
-                <!-- <div class="details-profile"> -->
                   <div class="title1" style="display:inline">
+                    
                     <input type="text" id="title" value="명묭이의 코딩일기" disabled>
                   </div>
-                  <!-- 
-                  <div class="title1">
-                        {{blogInfo.blog_name}}
-                  </div> 
-                  -->
                   <i class="ti-pencil-alt" v-if="this.$store.state.settingButtonVisible" @click="alterTitle" style="cursor:pointer;"></i>
                   <div class="title2">
                     by {{blogOwnerInfo.nickname}}
-                      <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
-                      <a href="#"><img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" /></a>
+                    <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
+                    <a href="#"><img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" /></a>
                     <!-- <span>Web Designer</span> -->
                   </div>
                 </div>
@@ -48,19 +42,6 @@
                       </div>
                     </div>
                   </div>
-                  <!-- end column2 -->
-                  <!-- 태그 2개 이상이면 500에러 뜸!-->
-                  <!-- {{blogOwnerMainTags.tag}} -->
-                  <!-- <div class="column1">
-                    <span v-for="(blogOwnerMainTag, index) in blogOwnerMainTags" v-bind:key="index">
-                    <span class="tag">#{{blogOwnerMainTag}}</span>
-                    </span>
-                  </div> -->
-                  <!-- <div class="column1">
-                    <span v-for="(blogOwnerMainTag, index) in blogOwnerMainTags" v-bind:key="index">
-                    <span class="tagspecial" style="font-size:20px; ">#{{blogOwnerMainTag}}</span>
-                    </span>
-                  </div> -->
                   <div class="column4" v-if="this.$store.state.isLogin">
                   <router-link to="writePost">
                   <span>글 작성<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
@@ -68,8 +49,8 @@
                   <span id="setting" @click="set">설정<i class="ti-settings" style="display:inline"></i></span>
                   </div>
                 </div>
-              </div>
                 <!-- end profile -->
+              </div>
               <!-- end container-movie -->
             </div>
             <!-- end movie card -->

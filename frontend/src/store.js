@@ -93,6 +93,7 @@ export default new Vuex.Store({
           alert("이미 존재하는 아이디입니다.")
         }
       })
+      routes.push(`/`)
     },
     modify(context, {password, name, nickname, email, tel, birth, url, imageUrl}) {
 
@@ -125,7 +126,8 @@ export default new Vuex.Store({
           github_url:url,
           profile_img_url:imageUrl}
         )
-        routes.push('/')
+        console.log("라우터되나??")
+        routes.push(`/`)
       })
       .catch((error) => {
         if(error.response.status=='404'){
@@ -139,7 +141,7 @@ export default new Vuex.Store({
       .then(({ data }) => {
         context.commit('mutateIsLogin', false)
         alert("탈퇴 처리 되었습니다.")
-        this.$router.push('/')
+        this.$router.push(`/`)
       })
     }
   }

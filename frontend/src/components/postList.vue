@@ -1,11 +1,24 @@
 <template>
+
+    <!-- 문제점
+    1.  셋팅 아이콘을 누르면 체크박스와 삭제 버튼이 보여야 하는데
+        체크박스를 생성할 때 v-show="this.$store.state.settingButtonVisible" 속성이 적용이 안됨
+    2.  선택된 포스트를 삭제하면 갱신된 postList를 새로 받아오는데
+        postList의 값이 바뀌어도 화면이 다시 렌더링이 되지 않음
+    -->
+
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 포스트출력 -->
+            <div class="delete" @click="deletePost" v-show="this.$store.state.settingButtonVisible">
+                <i class="ti-trash"></i> 삭제
+            </div>
             <div class="row">
-                    <div class="col-md-4" v-for="(post,index) in postList" :key="index">
-                    <div class="well-media">
-                    <a href="#" @click="goDetail(post.seq)">
+                <div class="col-md-4" v-for="(post,index) in postList" :key="index">
+                    <input class="delete-box" :id=index type="checkbox" :value=post.seq v-model="deleteList" />
+                    <label :for=index></label>
+                    
+                    <div class="well-media" style="cursor:pointer;">
                         <div class="vendor">
                             <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
                             <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
@@ -16,7 +29,7 @@
                             <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{post.title}}</h2>
                             <p class="content-3line" style="color:black;">{{ removeTag(post.content) }}</p>
                         </div>
-                        <div class="tag-nest" style="block:inline"> 
+                        <div class="tag-nest" style="block:inline">
                             
                             <!-- 태그 3개만 갖고오기--> 
                             <span v-for="(tag,index) in tag[index]" :key="index">
@@ -29,13 +42,6 @@
                             <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{post.like_count}} </span>
                             <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span> 
                         </div>
-                        <!-- <div class="video-category-bg">
-                            <h3>FRONT-END</h3>
-                            <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                            <div class="triangle-white"></div>
-                            <div class="triangle-photo-right"></div>
-                        </div> -->
-                    </a>
                     </div>
                 </div>
             </div>
@@ -47,6 +53,7 @@
 <script>
   import http from '../util/http-common'
   import InfiniteLoading from 'vue-infinite-loading'
+  import store from '../store'
   export default {
     name: 'postList',
     components: {
@@ -64,6 +71,9 @@
             // 페이지네이션
             limit: 0,
             page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3배수)
+            deleteList: [],
+            postVisible: [
+            ],
         }
     },
     created(){	 
@@ -110,6 +120,7 @@
         // 포스트로부터 코멘트 개수와 태그 불러오기
         getpostCommentTag(data){
             for(var i=0; i<data.length; i++){
+                this.postVisible[i] = true;
                 // 코멘트
                 http.get('postcomment/count/'+data[i].seq)
                 .then(({data}) => {
@@ -122,6 +133,18 @@
                 });
             }   
         },
+        deletePost(){
+            console.log(this.deleteList)
+            for(var i=0; i<this.deleteList.length; i++){
+                console.log(this.deleteList[i]+"번 삭제 시도")
+                http.delete('post/'+this.deleteList[i])
+                .then(({data}) => {
+                    console.log(this.deleteList[i]+"번 삭제 성공")
+                })
+            }
+            console.log("포스트 목록 갱신") // 갱신이 안됨
+            this.getpostList();
+        }
     }
   }
 </script>
@@ -165,5 +188,59 @@
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+}
+
+.delete{
+    font-size: 20px;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 50px;
+    margin-right: 20px;
+}
+/* checkbox 디자인 */
+input[type="checkbox"] { 
+  display: none;
+ }
+ 
+input[type="checkbox"] + label {
+  display: inline;
+  position: absolute;
+  top: 25px;
+  left: 40px;
+  z-index: 1;
+  font: 14px/20px 'Open Sans', Arial, sans-serif;
+  color: #222;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+ 
+input[type="checkbox"] + label:last-child { margin-bottom: 0; }
+ 
+input[type="checkbox"] + label:before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #6cc0e5;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: .6;
+  -webkit-transition: all .12s, border-color .08s;
+  transition: all .12s, border-color .08s;
+}
+ 
+input[type="checkbox"]:checked + label:before {
+  width: 10px;
+  top: -5px;
+  left: 5px;
+  border-radius: 0;
+  opacity: 1;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 </style>

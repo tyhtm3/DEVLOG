@@ -176,7 +176,7 @@ a:hover { color: black; text-decoration: bold;}
   position: relative;
 }
 .header-image{
-  	vertical-align: middle;
+  vertical-align: middle;
 }
 .header-text{
   text-align: center;
@@ -188,8 +188,8 @@ a:hover { color: black; text-decoration: bold;}
   font-size:35px;
 }
 .box{
-   padding-left:300px;
-   padding-right:300px;
+  padding-left:300px;
+  padding-right:300px;
 }
 .pjt-title{
   font-size:18px;

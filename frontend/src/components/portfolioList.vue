@@ -5,8 +5,7 @@
         
             <div class="row">
                     <div class="col-md-4" v-for="(portfolio,index) in portfolioList" :key="index">
-                    <div class="well-media">
-                    <a href="#">
+                    <div class="well-media"  style="cursor:pointer;">
                         <div class="vendor">
                             <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
@@ -23,8 +22,6 @@
                             <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{portfolio.like_count}} </span>
                             <!-- <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span>  -->
                         </div>
-  
-                    </a>
                     </div>
                 </div>
             </div>
