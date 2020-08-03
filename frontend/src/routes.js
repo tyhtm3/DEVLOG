@@ -51,6 +51,7 @@ import WritePost from './pages/WritePost.vue'
 import Follower from './pages/Follower.vue'
 import ProjectDetail from './pages/ProjectDetail.vue'
 import PostDetail from './pages/PostDetail.vue'
+import PortfolioDetail from './pages/PortfolioDetail.vue'
 import NotFound from './pages/error/404.vue'
 import NotFoundSecond from './pages/error/500.vue'
 
@@ -90,6 +91,11 @@ const routes = [
         path: '/blog/project/:seq',
         name: 'project-detail',
         component: ProjectDetail
+      },
+      {
+        path: '/blog/portfolio/:seq',
+        name: 'portfolio-detail',
+        component: PortfolioDetail
       },
       {
         path: '/signup',
