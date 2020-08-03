@@ -4,33 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.devlog.mapper.PostMapper">     
             
-	<!-- 피드에서 모든 포스트의 개수 반환. -->
-	<select id="selectPostCntByFeed" resultType="java.lang.Integer">
-		select count(*)
-		from post inner join post_basic on post.seq=post_basic.seq
-		<if test="seq_user == 0">
-		where disclosure=1
-		</if>
-		<if test="seq_user != 0">
-			where  (disclosure=1
-				or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user} ))
-				or (seq_blog = #{seq_user}) )
-			<if test="disclosure == 2">
-			and seq_blog in (select seq_neighbor from user_neighbor where seq_user = #{seq_user} )
-			</if>
-		</if>
-		<!-- 태그 선택시 서치해서 반환 -->
-		<if test="tag != null">
-			and post.seq in ( 
-			select seq_post from post_tag where tag in 
-       		<foreach collection="tag" item="item"  open="(" close=")" separator=",">
-            #{item}
-        	</foreach>
-			)
-		</if>
-	</select>
-
-
+	
 	<!-- 피드에서 한 페이지의 포스트 반환. -->
 	<select id="selectPostByFeed" resultType="Post">
 		select post.*,post_basic.content
@@ -55,7 +29,7 @@
         	</foreach>
 			)
 		</if>
-		ORDER BY regtime
+		ORDER BY regtime desc
 		LIMIT #{limit} OFFSET #{offset} 
 	</select>
 	
@@ -73,17 +47,7 @@
 		<if test="seq_user == 0">
 		 	and disclosure=1 
 		</if>
-		<!-- 태그 선택시 서치해서 반환 -->
-		<if test="tag != null">
-			and post.seq in ( 
-			select seq_post from post_tag where tag in 
-       		<foreach collection="tag" item="item"  open="(" close=")" separator=",">
-            #{item}
-        	</foreach>
-			)
-		</if>
 	</select>
-	
 	
 	
 	<!-- 블로그 메인에서 한 페이지의 포스트 반환.-->
@@ -108,7 +72,7 @@
         	</foreach>
 			)
 		</if>
-		ORDER BY regtime
+		ORDER BY regtime desc
 		LIMIT #{limit} OFFSET #{offset} 
 	</select>
 	
@@ -123,9 +87,9 @@
 	<!-- 포스트 기본 정보 등록 -->
 	<insert id="insertPost" useGeneratedKeys="true" keyProperty="seq">
 		insert into post(
-			seq_blog,title,disclosure,img_url,like_count
+			seq_blog,title,disclosure,img_url,like_count <if test="regtime != null">, regtime</if>
 		) values (
-			#{seq_blog}, #{title}, #{disclosure} ,#{img_url},0
+			#{seq_blog}, #{title}, #{disclosure} ,#{img_url},0 <if test="regtime != null">, #{regtime}</if>
 		)
 	</insert>
 	
@@ -144,6 +108,7 @@
 		   set title = #{title}, 
 		   	   disclosure = #{disclosure}
 		   	   img_url = #{img_url}
+		   	   <if test="regtime != null">regtime = #{regtime}</if>
 		 where seq = #{seq}
 	</update>
 

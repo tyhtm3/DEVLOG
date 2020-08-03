@@ -21,7 +21,8 @@
                     action="https://jsonplaceholder.typicode.com/posts/"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
+                    :before-upload="beforeAvatarUpload"
+                    >
                     <img v-if="imageUrl" :src="imageUrl" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
@@ -38,7 +39,7 @@
 									<dd><el-input v-model="email" style="width: 70%;"></el-input></dd>
 									<dt>연락처</dt>
                   <dd><el-input v-model="tel" style="width: 70%;"></el-input></dd>
-                  <dt>생년원일</dt>
+                  <dt>생년월일</dt>
                   <dd><el-date-picker v-model="birth" type="date"></el-date-picker></dd>
                   <dt>url</dt>
 									<dd>
@@ -58,6 +59,7 @@
 </template>
 
 <script>
+import http from '../util/http-common'
   export default {
     components: {
     },
@@ -94,7 +96,8 @@
           alert('이메일을 입력해주세요.')
         else if (!this.validEmail(this.email))
           alert("이메일 형식을 확인해 주세요")
-        else
+        else{
+
           this.$store.dispatch('signup', {
             id: this.id,
             password: this.password,
@@ -102,20 +105,45 @@
             nickname: this.nickname,
             email: this.email,
             tel: this.tel,
-            birth: this.birth,
+            birth: this.date_to_str(this.birth),
             url: this.url,
             imageUrl: this.imageUrl
           })
+        }
       },
       validEmail: function(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
 
       },
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
+      date_to_str(format){
+        if(format!==''){
+        var year = format.getFullYear();
+        var month = format.getMonth() + 1;
+        if(month<10) month = '0' + month;
+        var date = format.getDate();
+        if(date<10) date = '0' + date;
+        var hour = format.getHours();
+        if(hour<10) hour = '0' + hour;
+        var min = format.getMinutes();
+        if(min<10) min = '0' + min;
+        var sec = format.getSeconds();
+        if(sec<10) sec = '0' + sec;
+        return year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;}
       },
+     handleAvatarSuccess(res, file) {
+      var frm = new FormData();
+      frm.append("upload_file", file.raw);
+
+      http.post('user/upload',frm,{headers: {
+            'Content-Type': 'multipart/form-data'
+          }})
+        .then(({data}) => {
+          this.imageUrl = 'http://'.concat(data)
+      })
+    },
       beforeAvatarUpload(file) {
+
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
 

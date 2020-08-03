@@ -18,7 +18,16 @@ public class UserStackServiceImpl implements UserStackService {
 	public List<UserStack> selectAllUserStack(int seq_user) {
 		return userStackMapper.selectAllUserStack(seq_user);
 	}
+	@Override
+	public List<UserStack> selectUserImageStack(int seq_user) {
+		return userStackMapper.selectUserImageStack(seq_user);
+	}
 
+	@Override
+	public List<UserStack> selectUserTextStack(int seq_user) {
+		// TODO Auto-generated method stub
+		return userStackMapper.selectUserTextStack(seq_user);
+	}
 	@Override
 	public int insertUserStack(UserStack userStack) {
 		return userStackMapper.insertUserStack(userStack);
@@ -33,5 +42,12 @@ public class UserStackServiceImpl implements UserStackService {
 	public UserStack selectUserStackByUserAndStack(UserStack userStack) {
 		return userStackMapper.selectUserStackByUserAndStack(userStack);
 	}
+
+	@Override
+	public int updateUserStackImg(UserStack userStack) {
+		return userStackMapper.updateUserStackImg(userStack);
+	}
+
+	
 
 }

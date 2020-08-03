@@ -1,64 +1,64 @@
-import Dashboard from './components/Dashboard.vue'
-import DashboardIndex from './components/modules/dashboard/Index.vue'
-import NotFound from './components/modules/dashboard/404.vue'
-import WidgetsIndex from './components/modules/widgets/Index.vue'
-import UIButtons from './components/modules/ui/Buttons.vue'
-import UIGeneral from './components/modules/ui/General.vue'
-import UIIcons from './components/modules/ui/Icons.vue'
-import UIModals from './components/modules/ui/Modals.vue'
-import UISliders from './components/modules/ui/Sliders.vue'
-import UITimeline from './components/modules/ui/Timeline.vue'
-// Form
-import FormRadio from './components/modules/form/FormRadio.vue'
-import FormCheckbox from './components/modules/form/FormCheckbox.vue'
-import FormInput from './components/modules/form/FormInput.vue'
-import FormSelect from './components/modules/form/FormSelect.vue'
-import FormCascader from './components/modules/form/FormCascader.vue'
-import FormSwitch from './components/modules/form/FormSwitch.vue'
-import VueBar from './components/modules/chart/VueBar.vue'
-import ChartJs from './components/modules/chart/ChartJs.vue'
-import ChartBar from './components/modules/chart/ChartBar.vue'
-import ChartPie from './components/modules/chart/ChartPie.vue'
-import FormSlider from './components/modules/form/FormSlider.vue'
-import FormTimePicker from './components/modules/form/FormTimePicker.vue'
-import Mail from './components/modules/Mail.vue'
-import DashboardSecond from './components/modules/dashboard/DashboardSecond.vue'
-import Chat from './components/modules/Chat.vue'
-import Calendar from './components/modules/Calendar.vue'
-import ToDo from './components/modules/ToDo.vue'
-import BlogList from './components/modules/BlogList.vue'
-import BlogDetails from './components/modules/BlogDetails.vue'
-import BlogMansory from './components/modules/BlogMansory.vue'
-import ShopHome from './components/modules/ShopHome.vue'
-import ShopItem from './components/modules/ShopItem.vue'
-import BlankPage from './components/modules/common-page/BlankPage.vue'
-import InvoicePage from './components/modules/common-page/Invoice.vue'
-import Profile from './components/modules/common-page/Profile.vue'
-import Login from './components/Login.vue'
-import NotFoundSecond from './components/modules/dashboard/500.vue'
-import SimpleTable from './components/modules/tables/SimpleTable.vue'
-import SelectTable from './components/modules/tables/SelectTable.vue'
-import ExpandableTable from './components/modules/tables/ExpandableTable.vue'
-import Editor from './components/modules/ui/Editor.vue'
-import Upload from './components/modules/ui/Upload.vue'
-import Gmap from './components/modules/Gmap.vue'
-import ChartMap from './components/modules/chart/ChartMap.vue'
-import OpenLayer from './components/modules/OpenLayer.vue'
+import DashboardIndex from './References/dashboard/Index.vue'
+import WidgetsIndex from './References/widgets/Index.vue'
+import UIButtons from './References/ui/Buttons.vue'
+import UIGeneral from './References/ui/General.vue'
+import UIIcons from './References/ui/Icons.vue'
+import UIModals from './References/ui/Modals.vue'
+import UISliders from './References/ui/Sliders.vue'
+import UITimeline from './References/ui/Timeline.vue'
+import FormRadio from './References/form/FormRadio.vue'
+import FormCheckbox from './References/form/FormCheckbox.vue'
+import FormInput from './References/form/FormInput.vue'
+import FormSelect from './References/form/FormSelect.vue'
+import FormCascader from './References/form/FormCascader.vue'
+import FormSwitch from './References/form/FormSwitch.vue'
+import VueBar from './References/chart/VueBar.vue'
+import ChartJs from './References/chart/ChartJs.vue'
+import ChartBar from './References/chart/ChartBar.vue'
+import ChartPie from './References/chart/ChartPie.vue'
+import FormSlider from './References/form/FormSlider.vue'
+import FormTimePicker from './References/form/FormTimePicker.vue'
+import Mail from './References/Mail.vue'
+import DashboardSecond from './References/dashboard/DashboardSecond.vue'
+import Chat from './References/Chat.vue'
+import Calendar from './References/Calendar.vue'
+import ToDo from './References/ToDo.vue'
+import BlogList from './References/BlogList.vue'
+import BlogDetails from './References/BlogDetails.vue'
+import BlogMansory from './References/BlogMansory.vue'
+import ShopHome from './References/ShopHome.vue'
+import ShopItem from './References/ShopItem.vue'
+import BlankPage from './References/common-page/BlankPage.vue'
+import InvoicePage from './References/common-page/Invoice.vue'
+import Profile from './References/common-page/Profile.vue'
+import SimpleTable from './References/tables/SimpleTable.vue'
+import SelectTable from './References/tables/SelectTable.vue'
+import ExpandableTable from './References/tables/ExpandableTable.vue'
+import Editor from './References/ui/Editor.vue'
+import Upload from './References/ui/Upload.vue'
+import Gmap from './References/Gmap.vue'
+import ChartMap from './References/chart/ChartMap.vue'
+import OpenLayer from './References/OpenLayer.vue'
 
 // devlog
-import BlogMain from './components/modules/y_BlogMain.vue'
-import SignUp from './components/SignUp.vue'
-import FindPassword from './components/FindPassword'
-import MyInfo from './components/MyInfo.vue'
-import BlogDetail from './components/modules/j_BlogDetail.vue'
-import DashboardJi from './components/modules/dashboard/ji_Index.vue'
-import DashboardJu from './components/modules/dashboard/ju_Index.vue'
+import Devlog from './pages/Devlog.vue'
+import Main from './pages/Main.vue'
+import Blog from './pages/Blog.vue'
+import SignUp from './pages/SignUp.vue'
+import MyInfo from './pages/MyInfo.vue'
+import FindPassword from './pages/FindPassword'
+import WritePost from './pages/WritePost.vue'
+import Follower from './pages/Follower.vue'
+import ProjectDetail from './pages/ProjectDetail.vue'
+import PostDetail from './pages/PostDetail.vue'
+import NotFound from './pages/error/404.vue'
+import NotFoundSecond from './pages/error/500.vue'
 
 // Routes
 const routes = [
   {
     path: '/',
-    component: Dashboard,
+    component: Devlog,
     meta: { requiresAuth: true },
     beforeEnter: (to, from, next) => {
       document.body.className += 'skin-dark sidebar-mini'
@@ -73,13 +73,76 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'dashboard',
-        component: BlogMain
+        name: 'main',
+        component: Main
+      },
+      {
+        path: '/blog',
+        name: 'blog',
+        component: Blog
+      },
+      {
+        path: '/blog/post/:seq',
+        name: 'post-detail',
+        component: PostDetail
+      },
+      {
+        path: '/blog/project/:seq',
+        name: 'project-detail',
+        component: ProjectDetail
+      },
+      {
+        path: '/signup',
+        name: 'sign-up',
+        component: SignUp
+      },
+      {
+        path: '/findpw',
+        name: 'find-password',
+        component: FindPassword
+      },
+      {
+        path: '/myinfo',
+        name: 'my-info',
+        component: MyInfo
+      },
+      {
+        path: '/writepost',
+        name: 'write-post',
+        component: WritePost
+      },
+      {
+        path: '/follwoer',
+        name: 'follower',
+        component: Follower
+      },
+      {
+        path: '/404',
+        name: '404-eror',
+        component: NotFound
       }, {
-        path: '/login',
-        name: 'login',
-        component: Login
-      }, {
+        path: '/500',
+        name: '500',
+        component: NotFoundSecond
+      },
+      {
+        path: '*',
+        name: '404',
+        component: NotFound
+      },
+
+
+
+      ///////////////////////////
+      ///////////////////////////
+      ///////////////////////////
+      ///////////////////////////
+      ///////////////////////////
+      ///////////////////////////
+
+
+
+      {
         path: '/dashboard',
         name: 'dashboard-first',
         component: DashboardIndex
@@ -139,14 +202,6 @@ const routes = [
         path: '/profile',
         name: 'profile',
         component: Profile
-      }, {
-        path: '/404',
-        name: '404-eror',
-        component: NotFound
-      }, {
-        path: '/500',
-        name: '500',
-        component: NotFoundSecond
       }, {
         path: '/simple-table',
         name: 'simple-table',
@@ -258,46 +313,6 @@ const routes = [
         path: '/chart/chart-map',
         name: 'chart-map',
         component: ChartMap
-      },
-      {
-        path: '/blog-main',
-        name: 'blog-main',
-        component: BlogMain
-      },
-      {
-        path: '/blog-detail',
-        name: 'blog-detail',
-        component: BlogDetail
-      },
-      {
-        path: '/dashboard-ji',
-        name: 'dashboard-ji',
-        component: DashboardJi
-      },
-      {
-        path: '/dashboard-ju',
-        name: 'dashboard-ju',
-        component: DashboardJu
-      },
-      {
-        path: '/signup',
-        name: 'sign-up',
-        component: SignUp
-      },
-      {
-        path: '/findpw',
-        name: 'find-password',
-        component: FindPassword
-      },
-      {
-        path: '/myinfo',
-        name: 'my-info',
-        component: MyInfo
-      },
-      {
-        path: '*',
-        name: '404',
-        component: NotFound
       }
     ]
 

@@ -9,7 +9,14 @@ public class Portfolio {
 	private String regtime;
 	private int disclosure; //1 전체공개 2 이웃공개(내가 추가한 이웃) 3 비공개
 	private int like_count;
+	private String img_url;
 	
+	public String getImg_url() {
+		return img_url;
+	}
+	public void setImg_url(String img_url) {
+		this.img_url = img_url;
+	}
 	//portfolio
 	private String name;
 	private String profile_img_url;
@@ -85,10 +92,11 @@ public class Portfolio {
 	@Override
 	public String toString() {
 		return "Portfolio [seq=" + seq + ", seq_blog=" + seq_blog + ", title=" + title + ", regtime=" + regtime
-				+ ", disclosure=" + disclosure + ", like_count=" + like_count + ", name=" + name + ", profile_img_url="
-				+ profile_img_url + ", github_url=" + github_url + ", birthday=" + birthday + ", content=" + content
-				+ "]";
+				+ ", disclosure=" + disclosure + ", like_count=" + like_count + ", img_url=" + img_url + ", name="
+				+ name + ", profile_img_url=" + profile_img_url + ", github_url=" + github_url + ", birthday="
+				+ birthday + ", content=" + content + "]";
 	}
+
 	
 	
 	

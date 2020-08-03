@@ -1822,20 +1822,23 @@ input.devin-search {
     &::-webkit-input-placeholder {
         color: #999;
     }
+    
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 #demo-2 input {
     &[type=search] {
-        width: 20px;
-        padding-left: 10px;
+        width: 35px;
+        // padding-left: 10px;
         color: transparent;
         cursor: pointer;
         &:hover {
             background-color: #ccc;
         }
         &:focus {
-            width: 330px;
-            padding-left: 32px;
+            width: 97%;
+            // padding-left: 32px;
             color: #000;
             background-color: #eee;
             cursor: auto;

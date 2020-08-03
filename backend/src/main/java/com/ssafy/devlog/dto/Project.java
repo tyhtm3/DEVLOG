@@ -9,7 +9,8 @@ public class Project {
 	private String regtime;
 	private int disclosure; //1 전체공개 2 이웃공개(내가 추가한 이웃) 3 비공개
 	private int like_count;
-	
+	private String img_url;
+
 	//post_project
 	private String summary;
 	private String start_date;
@@ -19,7 +20,16 @@ public class Project {
 	private String etc_url;
 	private String rep_url;
 	private String content;
+
 	
+	
+	public String getImg_url() {
+		return img_url;
+	}
+	public void setImg_url(String img_url) {
+		this.img_url = img_url;
+	}
+
 	public int getSeq() {
 		return seq;
 	}
@@ -104,13 +114,15 @@ public class Project {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
 	@Override
 	public String toString() {
 		return "Project [seq=" + seq + ", seq_blog=" + seq_blog + ", title=" + title + ", regtime=" + regtime
-				+ ", disclosure=" + disclosure + ", like_count=" + like_count + ", summary=" + summary + ", start_date="
-				+ start_date + ", finish_date=" + finish_date + ", role=" + role + ", github_url=" + github_url
-				+ ", etc_url=" + etc_url + ", rep_url=" + rep_url + ", content=" + content + "]";
+				+ ", disclosure=" + disclosure + ", like_count=" + like_count + ", img_url=" + img_url + ", summary="
+				+ summary + ", start_date=" + start_date + ", finish_date=" + finish_date + ", role=" + role
+				+ ", github_url=" + github_url + ", etc_url=" + etc_url + ", rep_url=" + rep_url + ", content="
+				+ content + "]";
 	}
+	
+
 	
 }

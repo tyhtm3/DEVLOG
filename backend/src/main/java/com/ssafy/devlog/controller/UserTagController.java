@@ -33,7 +33,7 @@ public class UserTagController {
 	@Autowired
 	private UserTagService userTagService;
 
-	@ApiOperation(value = "모든 태그를 반환한다.", response = List.class)
+	@ApiOperation(value = "모든 태그를 반환한다.( 사용 빈도 순 정렬, limit : 10 )", response = List.class)
 	@GetMapping
 	public ResponseEntity<List<UserTag>> selectAllUserTag() throws Exception {
 		logger.debug("selectAllTag - 호출");

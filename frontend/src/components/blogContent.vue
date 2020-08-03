@@ -7,29 +7,38 @@
           <!-- 
             부트스트랩 깔려있어야 중앙 정렬 되네요
             npm install bootstrap-vue bootstrap
+            <h1> 현재페이지: {{ curpage }}</h1><br>
+            <h2> watch: {{ newnew }}</h2>
+            <p v-html="newnew"> </p>
           -->
           <ul id="myTab" class="nav nav-tabs nav-tabs-shop-devin nav-justified" role="tablist">
+            <!--
             <li class="active" data-wow-delay="0.6s"><a href="#project" role="tab" data-toggle="tab" aria-expanded="true"><h2><strong>Project</strong></h2></a></li>
             <li class="" data-wow-delay="0.4s"><a href="#post" role="tab" data-toggle="tab" aria-expanded="false"><h2><strong>Post</strong></h2></a></li>
             <li class="" data-wow-delay="0.2s"><a href="#portfolio" role="tab" data-toggle="tab" aria-expanded="false"><h2><strong>Portfolio</strong></h2></a></li>
+            -->
+            <li class="active" data-wow-delay="0.6s"><a href="#project" role="tab" data-toggle="tab" aria-expanded="true" @click="curpage=0"><h2><strong>Project</strong></h2></a></li>
+            <li class="" data-wow-delay="0.4s"><a href="#post" role="tab" data-toggle="tab" aria-expanded="false" @click="curpage=1"><h2><strong>Post</strong></h2></a></li>
+            <li class="" data-wow-delay="0.2s"><a href="#portfolio" role="tab" data-toggle="tab" aria-expanded="false" @click="curpage=2"><h2><strong>Portfolio</strong></h2></a></li>
           </ul>
 
           <div class="tab-content">
+            <!-- <div v-if="curpage == 0" role="tabpanel" class="tab-pane fade active in" id="project"> -->
             <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade active in" id="project">
-              <project-page></project-page>
+              <project-list></project-list>
             </div>
             <!--/ TAB PANEL ITEM -->
 
             <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade" id="post">
-              <post-page></post-page>
+              <post-list></post-list>
             </div>
             <!--/ TAB PANEL ITEM -->
 
             <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade" id="portfolio">
-              <portfolio-page></portfolio-page>
+              <portfolio-list></portfolio-list>
             </div>
             <!--/ TAB PANEL ITEM -->
           </div>
@@ -42,15 +51,15 @@
 </template>
 
 <script>
-  import ProjectPage from '../components/modules/ji_ProjectPage.vue'
-  import PostPage from '../components/modules/ji_PostPage.vue'
-  import PortfolioPage from '../components/modules/ji_PortfolioPage.vue'
+  import projectList from './projectList.vue'
+  import postList from './postList.vue'
+  import portfolioList from './portfolioList.vue'
   export default {
-    name: 'blog-main-list',
+    name: 'blog-content',
     components: {
-      'project-page': ProjectPage,
-      'post-page': PostPage,
-      'portfolio-page': PortfolioPage
+      'project-list': projectList,
+      'post-list': postList,
+      'portfolio-list': portfolioList
     },
     data: function () {
         return { 

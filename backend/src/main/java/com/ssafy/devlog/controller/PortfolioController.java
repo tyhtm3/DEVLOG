@@ -84,17 +84,9 @@ public class PortfolioController {
 	/* 	비로그인 (seq_user==0)		: 공개범위가 '전체'인 포스트 반환
 	 * 	   로그인 (seq_user!=0)		: 공개범위가 '전체'인 포스트와 '이웃공개/비공개'인 포스트의 접근여부 판별하여 반환 
 	 *  */
-	
-	/* show blog portfolio */
-	@ApiOperation(value = "블로그 메인에서 모든 포트폴리오의 개수 반환. (ex. { seq_user:0 , seq_blog:1 } )", response = List.class)    
-	@GetMapping(value = "/blog/count/{seq_user}/{seq_blog}")
-	public ResponseEntity<Integer> selectPortfolioCntByBlog(@PathVariable int seq_user,@PathVariable int seq_blog) {
-		logger.debug("selectAllPortfolioByBlog - 호출");
-		return new ResponseEntity<Integer>(portfolioService.selectPortfolioCntByBlog(seq_user, seq_blog), HttpStatus.OK);
-	}
 
 
-	@ApiOperation(value = "블로그 메인에서 한 페이지의 포트폴리오를 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:10 } )", response = List.class)    
+	@ApiOperation(value = "블로그 메인에서 한 페이지의 포트폴리오를 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:6 } )", response = List.class)    
 	@GetMapping(value = "/blog/{seq_user}/{seq_blog}/{offset}/{limit}")
 	public ResponseEntity<List<Portfolio>> selectPortfolioByBlog(@PathVariable int seq_user,@PathVariable int seq_blog,@PathVariable int offset,@PathVariable int limit) {
 		logger.debug("selectPortfolioByBlog - 호출");

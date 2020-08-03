@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -20,11 +21,19 @@ const mutations = {
 }
 
 export default new Vuex.Store({
+  plugins: [
+    createPersistedState()
+  ],
   state: {
     loginFormVisible: false,
     settingButtonVisible: false,
     isLogin: false,
-    userInfo: {}
+    userInfo: {
+      seq:0,
+    }
+  },
+  getters: {
+    userInfo: state => state,
   },
   mutations: {
     mutateIsLogin(state, isLogin){
@@ -61,6 +70,7 @@ export default new Vuex.Store({
       });
     },
     signup(context, {id, password, name, nickname, email, tel, birth, url, imageUrl}) {
+   
       http
       .post('/user', {
         id: id,
@@ -75,7 +85,7 @@ export default new Vuex.Store({
       })
       .then(({ data }) => {
         console.log(data)
-        routes.push('/')
+        routes.push(`/`)
       })
       .catch((error) => {
         console.log(error.response.status)
@@ -83,13 +93,10 @@ export default new Vuex.Store({
           alert("이미 존재하는 아이디입니다.")
         }
       })
+      routes.push(`/`)
     },
     modify(context, {password, name, nickname, email, tel, birth, url, imageUrl}) {
-      // console.log(this.state.userInfo.seq);
-      // console.log(this.state.userInfo.id);
-      // console.log(name);
-      // console.log(nickname);
-      
+
       http
       .put('/user', {
         seq: this.state.userInfo.seq,
@@ -105,7 +112,22 @@ export default new Vuex.Store({
       })
       .then(({ data }) => {
         alert("success")
-        routes.push('/')
+        // state 정보 업데이트
+        this.commit('mutateUserInfo', 
+        {
+          seq: this.state.userInfo.seq,
+          id: this.state.userInfo.id,
+          password:password,
+          name:name,
+          nickname:nickname,
+          email:email,
+          tel:tel,
+          birthday:birth,
+          github_url:url,
+          profile_img_url:imageUrl}
+        )
+        console.log("라우터되나??")
+        routes.push(`/`)
       })
       .catch((error) => {
         if(error.response.status=='404'){
@@ -119,7 +141,7 @@ export default new Vuex.Store({
       .then(({ data }) => {
         context.commit('mutateIsLogin', false)
         alert("탈퇴 처리 되었습니다.")
-        this.$router.push('/')
+        this.$router.push(`/`)
       })
     }
   }

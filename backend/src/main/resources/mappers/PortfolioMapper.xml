@@ -4,19 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.devlog.mapper.PortfolioMapper">
 
-	<!-- 블로그 메인에서 모든 포트폴리오의 개수 반환 -->
-	<select id="selectPortfolioCntByBlog" resultType="java.lang.Integer">
-		select count(*)
-		from post as a inner join post_portfolio as b on a.seq = b.seq
-		where seq_blog = #{seq_blog}
-		<if test="seq_user != 0">
-		    and (disclosure=1 or (seq_blog = #{seq_user}))
-		</if>
-		<if test="seq_user == 0">
-		 	and disclosure=1 
-		</if>
-	</select>
-	
+
 	<!-- 블로그 메인에서 한 페이지의 포트폴리오 반환 -->
 	<select id="selectPortfolioByBlog" resultType="Portfolio">
 		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content
@@ -28,7 +16,7 @@
 		<if test="seq_user == 0">
 		 	and disclosure=1 
 		</if>
-		ORDER BY regtime
+		ORDER BY regtime desc
 		LIMIT #{limit} OFFSET #{offset} 
 	</select>
 	
