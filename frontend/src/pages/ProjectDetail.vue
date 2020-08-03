@@ -112,16 +112,18 @@
                                       #{{tag.tag}}
                                       </span>
                                     </p>
-                                   
+     
                                     <div style="clear:both;"></div>
                                 </div>
                             </div>
                             <!-- 댓글 입력 창 -->
                             <div class="comment-nest">
-                                <el-input type="textarea" :rows="5" placeholder="LEAVE A COMMENT:" v-model="textarea"> </el-input>
+                                <!-- 어떻게 사이즈를 줄이는지 전혀 모르겠다 -->
+                                <vue-editor v-model="commentContent" style="display:inline-block;max-height:200px;"></vue-editor>
+
                                 <br>
                                 <br>
-                                <el-button class="pull-right">Submit</el-button>
+                                <el-button class="pull-right" @click="insertComment">Submit</el-button>
                                 <div style="margin-bottom:70px;"></div>
 
                                 <!-- 댓글 리스트 -->
@@ -134,12 +136,13 @@
                                                 <h3> <a class="link-comment" href="#">{{commentUser[index].nickname}}</a>
                                             <span style="font-size:12px;"><i class="entypo-globe"></i>&nbsp;{{comment.regtime}}</span>
                                             <span v-if="commentUser[index].seq==seq_user">
-                                                <span style="font-size:14px;"><a class="link-comment pull-right" href="#"><i class="fontawesome-share"></i>&nbsp;삭제</a></span>
+                                                <span style="font-size:14px;"><a class="link-comment pull-right" href="#" @click="deleteComment(comment.seq)"><i class="fontawesome-share"></i>&nbsp;삭제</a></span>
                                                 <span style="font-size:14px;"><a class="link-comment pull-right"><i class="fontawesome-share"></i>&nbsp; | </a></span>
                                                 <span style="font-size:14px;"><a class="link-comment pull-right" href="#"><i class="fontawesome-share"></i>&nbsp;수정</a></span>
                                             </span>
                                         </h3> </div>
-                                            <p>{{comment.content}}</p>
+                                            <p>{{ removeTag(comment.content) }}</p>
+                                            <!--<p>{{comment.content}}</p>-->
                                         </div>
                                         <br>
                                     </li>
@@ -165,18 +168,23 @@
 </template>
 <script>
   import http from '../util/http-common'
+  import { VueEditor } from 'vue2-editor'
   export default {
     components: {
+      VueEditor
     },
     data: function () {
         return { 
           project:'',
           projectUser:'',
           comment:'',
-          commentUser:[],
+          commentUser:[], 
           tag: [],
           stack: [],
           seq_user: this.$store.state.userInfo.seq,
+          // 댓글 작성,수정,삭제
+          commentContent: '',
+
         }
     },
     created(){
@@ -195,17 +203,7 @@
             }) 
          })
         // 댓글 불러오기
-        http.get('postcomment/'+seq)
-        .then(({data}) => {
-            // 댓글을 작성한 사용자 정보를 불러오기
-            for(var i=0; i<data.length; i++){
-                http.get('user/'+data[i].seq_user)
-                .then(({data}) => {
-                    this.commentUser.push(data);
-                });
-            }
-            this.comment=data
-         })
+        this.getComment(seq)
         // 태그 불러오기
          http.get('posttag/'+seq)
                 .then(({data}) => {
@@ -231,9 +229,36 @@
       updateProject(){
         
       },
-      // 댓글 삭제 미구현
-      deleteComment(){
-
+      // 댓글 리스트 불러오기
+       getComment(seq){
+        this.commentUser = []
+        http.get('postcomment/'+seq)
+        .then(({data}) => {
+            // 댓글을 작성한 사용자 정보를 불러오기
+            for(var i=0; i<data.length; i++){
+                http.get('user/'+data[i].seq_user)
+                .then(({data}) => {
+                    this.commentUser.push(data);
+                });
+            }
+            this.comment=data
+         })
+      },
+      // 댓글 입력
+      insertComment(){
+         http.post('postcomment',{content:this.commentContent,seq_post:this.project.seq,seq_user:this.seq_user})
+                .then(({data}) => {
+              //댓글 입력하고 리스트 업데이트
+               this.getComment(this.project.seq)
+         })
+      },
+      // 댓글 삭제
+      deleteComment(seq){
+         http.delete('postcomment/'+seq)
+                .then(({data}) => {
+              //댓글 삭제하고 리스트 업데이트
+               this.getComment(this.project.seq)
+         })
       },
       // 댓글 수정 미구현
       updateComment(){
@@ -242,7 +267,13 @@
       // Url로 이동
       goUrl(url){
         window.open(url, '_blank');
-      }
+      },
+       removeTag(text){
+      text = text.replace(/<br\/>/ig, "\n")
+      text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
+      // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
+      return text
+    },
    },
   }
 </script>

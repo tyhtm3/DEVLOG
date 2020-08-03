@@ -70,6 +70,7 @@ export default new Vuex.Store({
       });
     },
     signup(context, {id, password, name, nickname, email, tel, birth, url, imageUrl}) {
+   
       http
       .post('/user', {
         id: id,
