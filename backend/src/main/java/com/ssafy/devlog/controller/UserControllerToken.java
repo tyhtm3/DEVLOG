@@ -22,7 +22,7 @@ public class UserControllerToken {
 	public User login(@RequestBody User user) {
 		
 		String id = user.getId();
-		
+	
 		System.out.println(id);
 		String token = getJWTToken(id);
 		User nUser = new User();
