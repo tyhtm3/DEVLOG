@@ -8,21 +8,22 @@
             <h2>이웃 관리</h2></div>
                 <!-- <input class="delete-box" :id=index type="checkbox" :value=post.seq " /> -->
                     <!-- <label :for=index></label>전체선택 -->
-              <el-button :plain="true" @click='unfollow' type="info">이웃끊기</el-button>
-              <el-button :plain="true" @click='block' type="danger">차단</el-button>
+              <el-button :plain="true" type="info">이웃끊기</el-button>
+              <el-button :plain="true" type="danger">차단</el-button>
             </div>
 
           <div class="people-list" id="people-list">
             <div class="search">
-              <input type="text" placeholder="search" /> <i class="fa fa-search"></i> </div>
-            <ul style="text-align:center" class="list">
-              <li @click="selected(index) " style="cursor:pointer  " class="clearfix" v-for="(neighbor, index) in neighborList2" :key="index">
+              <input type="text" v-model="search" placeholder="search follower" /> <i class="fa fa-search"></i> </div>
+            <ul style="text-align:center" class="list" >
+              <li @click="selected(index) " style="cursor:pointer  " class="clearfix" v-for="(neighbor, index) in requestneighborList" :key="index" v-if="neighbor.name.includes(search)" >
                 <img v-if="neighbor.profile_img_url" :src="neighbor.profile_img_url" alt="avatar" />
                 <img v-else src="upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" alt="avatar" />
                 <div class="about">
                   <div class="name">{{neighbor.name}}</div>
                   <div class="status"> <i class="fa fa-circle online"></i> online </div>
                 </div>
+               <!-- <div><li>{{neighbor}}</li></div> -->
               </li>
 
               
@@ -77,9 +78,9 @@ export default {
       for (var i =0; i<data.length; i++){
         http
         .get('/user/' + this.neighborList[i].seq_neighbor)
-        .then(({data}) => {
+        .then(({data}) => { 
         //  console.log(data)
-          this.neighborList2.push(data)
+          this.requestneighborList.push(data)
         })
       }
     })
@@ -88,24 +89,23 @@ export default {
         return { 
           selectedName: '',
           neighborList: [],
-          neighborList2: [],
+          requestneighborList: [],
           selectedImg: '',
           selectedRegtime: '',
           select: false,
+          search: '',
+
         }
     },
   methods: {
     selected(index) {
-      this.selectedName=this.neighborList2[index].name
-      this.selectedImg=this.neighborList2[index].profile_img_url
+      this.selectedName=this.requestneighborList[index].name
+      this.selectedImg=this.requestneighborList[index].profile_img_url
       this.selectedRegtime=this.neighborList[index].regtime
      // console.log(this.selectedImg)
     },
-    unfollow() {
-      
-    },
+
   },
-  
 
 }
 </script>
