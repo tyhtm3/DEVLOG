@@ -48,7 +48,6 @@ import SignUp from './pages/SignUp.vue'
 import MyInfo from './pages/MyInfo.vue'
 import FindPassword from './pages/FindPassword'
 import WritePost from './pages/WritePost.vue'
-import Follower from './pages/Follower.vue'
 import ProjectDetail from './pages/ProjectDetail.vue'
 import PostDetail from './pages/PostDetail.vue'
 import NotFound from './pages/error/404.vue'
@@ -110,11 +109,6 @@ const routes = [
         path: '/writepost',
         name: 'write-post',
         component: WritePost
-      },
-      {
-        path: '/follower',
-        name: 'follower',
-        component: Follower
       },
       {
         path: '/404',

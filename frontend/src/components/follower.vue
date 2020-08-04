@@ -1,8 +1,7 @@
 <template>
   <transition name="el-zoom-in-top">
-    <div class="content-wrapper">
       <!-- Main content -->
-      <section class="content">
+      <!-- <section class="content"> -->
         <div class="container-chat clearfix">
           <div class="col-md-12">
             <div style="text-align:center">
@@ -17,7 +16,7 @@
             <div class="search">
               <input type="text" placeholder="search" /> <i class="fa fa-search"></i> </div>
             <ul style="text-align:center" class="list">
-              <li @click="selected(index)" style="cursor:pointer  " class="clearfix" v-for="(neighbor, index) in neighborList2" :key="index">
+              <li @click="selected(index) " style="cursor:pointer  " class="clearfix" v-for="(neighbor, index) in neighborList2" :key="index">
                 <img v-if="neighbor.profile_img_url" :src="neighbor.profile_img_url" alt="avatar" />
                 <img v-else src="upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" alt="avatar" />
                 <div class="about">
@@ -32,50 +31,38 @@
           <div class="chat">
             <div class="chat-header clearfix">
               <img v-if="selectedImg" :src="selectedImg" style="height: 60px;" alt="avatar" />
-              <img v-else src="upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" alt="avatar" />
+              <img v-else src="upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" style="height: 60px;" alt="avatar" />
               <div class="chat-about">
                   <div class="chat-with">{{selectedName}}</div>
                   <div class="chat-num-messages">{{selectedRegtime}}</div>
               </div>
             </div>
             <!-- end chat-header -->
-           
-            <div class="chat-history">
+            <div class="inbox-nest">
               <ul>
-                <li class="clearfix">
-                  <div class="message-data align-right"> <span class="message-data-time">10:10 AM, Today</span> &nbsp; &nbsp; <span class="message-data-name">Olia</span> <i class="fa fa-circle me"></i> </div>
-                  <div class="message other-message float-right"> Hi Vincent, how are you? How is the project coming along? </div>
+                <li> <b>David L. Moore</b><i class="icon-attachment"></i><i class="text-orange fontello-record"></i><small>Today, 09:21 PM</small>
+                    <h5>Will You Be Our Valentine?</h5>
+                    <p>Hi, John i just want to know about my email that i,ve sending yesterday. Dou you read it? ... </p>
+                </li>
+                <li> <img alt="" class="img-circle star" src="http://api.randomuser.me/portraits/thumb/women/23.jpg"> <b>Helen D. Murray</b><i class="text-blue fontello-record"></i><small>20 Minute ago</small>
+                    <h5>World Recod</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat nunc, vestibulum eu venenatis ut, feugiat sit amet elit. Donec convallis ornare odio. Donec ac est eget lacus molestie imperdiet vitae ac nunc. Suspendisse odio justo ... </p>
                 </li>
                 <li>
-                  <div class="message-data"> <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span> <span class="message-data-time">10:12 AM, Today</span> </div>
-                  <div class="message my-message"> Are we meeting today? Project has been already finished and I have results to show you. </div>
-                </li>
-                <li class="clearfix">
-                  <div class="message-data align-right"> <span class="message-data-time">10:14 AM, Today</span> &nbsp; &nbsp; <span class="message-data-name">Olia</span> <i class="fa fa-circle me"></i> </div>
-                  <div class="message other-message float-right"> Well I am not sure. The rest of the team is not here yet. Maybe in an hour or so? Have you faced any problems at the last phase of the project? </div>
-                </li>
-                <li>
-                  <div class="message-data"> <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span> <span class="message-data-time">10:20 AM, Today</span> </div>
-                  <div class="message my-message"> Actually everything was fine. I'm very excited to show this to our team. </div>
-                </li>
-                <li>
-                  <div class="message-data"> <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span> <span class="message-data-time">10:31 AM, Today</span> </div> <i class="fa fa-circle online"></i> <i class="fa fa-circle online" style="color: #AED2A6"></i> <i class="fa fa-circle online" style="color:#DAE9DA"></i>
+                    <a class="star bg-red" href="#"> <span class="fa  fa-google-plus"></span> </a> <b>Google+ (DesignByHuman)</b><i class="text-aqua fontello-record"></i><small>1 Hour Ago</small>
+                    <h5>Berbagi pos - "This #DOTD by Viviana González makes us ..</h5>
+                    <p>Donec sed mi sem. Maecenas posuere justo dapibus fermentum porttitor. Phasellus ornare lectus a neque molestie sodales. Pellentesque consectetur sed nisl vitae tempor. Duis et odio ut ligula accumsan interdum. ... </p>
                 </li>
               </ul>
             </div>
             <!-- end chat-history -->
-            <div class="chat-message clearfix">
-              <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea> <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp; <i class="fa fa-file-image-o"></i>
-              <button>Send</button>
-            </div>
+
             <!-- end chat-message -->
           </div>
           <!-- end chat -->
         </div>
         <!-- end container -->
-      </section>
-      <!-- /.content -->
-    </div>
+      <!-- </section> -->
   </transition>
 </template>
 <script>
@@ -91,7 +78,7 @@ export default {
         http
         .get('/user/' + this.neighborList[i].seq_neighbor)
         .then(({data}) => {
-          console.log(data)
+        //  console.log(data)
           this.neighborList2.push(data)
         })
       }
@@ -104,6 +91,7 @@ export default {
           neighborList2: [],
           selectedImg: '',
           selectedRegtime: '',
+          select: false,
         }
     },
   methods: {
@@ -112,7 +100,12 @@ export default {
       this.selectedImg=this.neighborList2[index].profile_img_url
       this.selectedRegtime=this.neighborList[index].regtime
      // console.log(this.selectedImg)
-    }
-  }
+    },
+    unfollow() {
+      
+    },
+  },
+  
+
 }
 </script>

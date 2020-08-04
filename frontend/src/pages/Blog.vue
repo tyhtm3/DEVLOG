@@ -57,7 +57,8 @@
           </div>
           <!-- end box-body -->
           <blog-content></blog-content>
-        </div>
+          <follower></follower>
+        </div> 
       </section>
       <!-- end Main content -->
     </div>
@@ -65,10 +66,12 @@
 </template>
 <script>
   import blogContent from '../components/blogContent'
+  import follower from '../components/follower'
   import http from '../util/http-common'
   export default {
     components: {
-     'blog-content': blogContent
+     'blog-content': blogContent,
+     'follower': follower,
     },
     data: function () {
         return { 
