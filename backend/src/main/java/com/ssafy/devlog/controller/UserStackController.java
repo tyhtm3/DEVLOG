@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.UserStack;
 import com.ssafy.devlog.dto.UserTag;
+import com.ssafy.devlog.service.JwtService;
 import com.ssafy.devlog.service.UserStackService;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,25 +34,30 @@ public class UserStackController {
 
 	@Autowired
 	private UserStackService userStackService;
+	@Autowired
+	private JwtService jwtService;
 
 	@ApiOperation(value = "유저의 모든 기술스택을 반환한다.", response = List.class)
-	@GetMapping(value = "/{seq_user}")
-	public ResponseEntity<List<UserStack>> selectAllUserStack(@PathVariable int seq_user) throws Exception {
+	@GetMapping
+	public ResponseEntity<List<UserStack>> selectAllUserStack() throws Exception {
 		logger.debug("selectAllUserStack - 호출");
+		int seq_user = jwtService.getSeq();
 		return new ResponseEntity<List<UserStack>>(userStackService.selectAllUserStack(seq_user), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "유저의 모든 이미지스택을 반환한다.", response = List.class)
-	@GetMapping(value = "image/{seq_user}")
-	public ResponseEntity<List<UserStack>> selectUserImageStack(@PathVariable int seq_user) throws Exception {
+	@GetMapping(value = "/image")
+	public ResponseEntity<List<UserStack>> selectUserImageStack() throws Exception {
 		logger.debug("selectUserImageStack - 호출");
+		int seq_user = jwtService.getSeq();
 		return new ResponseEntity<List<UserStack>>(userStackService.selectUserImageStack(seq_user), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "유저의 모든 텍스트스택을 반환한다.", response = List.class)
-	@GetMapping(value = "text/{seq_user}")
-	public ResponseEntity<List<UserStack>> selectUserTextStack(@PathVariable int seq_user) throws Exception {
+	@GetMapping(value = "/text")
+	public ResponseEntity<List<UserStack>> selectUserTextStack() throws Exception {
 		logger.debug("selectUserTextStack - 호출");
+		int seq_user = jwtService.getSeq();
 		return new ResponseEntity<List<UserStack>>(userStackService.selectUserTextStack(seq_user), HttpStatus.OK);
 	}
 	
@@ -59,6 +65,7 @@ public class UserStackController {
 	@PostMapping
 	public ResponseEntity<String> insertUserStack(@RequestBody UserStack userStack) throws Exception {
 		logger.debug("insertUserStack - 호출");
+		userStack.setSeq_user(jwtService.getSeq());
 		UserStack check = userStackService.selectUserStackByUserAndStack(userStack);
 		if (check != null)
 			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);

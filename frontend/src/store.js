@@ -58,6 +58,8 @@ export default new Vuex.Store({
         context.commit('mutateIsLogin', true)
         context.commit('mutateUserInfo', data)
         context.commit('mutateLoginFormVisible', false)
+        location.reload(true);
+        
         routes.push('/blog-main') // 작동 안됨...
       })
       .catch((error) =>  {

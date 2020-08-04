@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.ProjectStack;
 import com.ssafy.devlog.dto.UserStack;
+import com.ssafy.devlog.service.JwtService;
 import com.ssafy.devlog.service.ProjectStackService;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +34,8 @@ public class ProjectStackController {
 
 	@Autowired
 	private ProjectStackService projectStackService;
-
+	@Autowired
+	private JwtService jwtService;
 	@ApiOperation(value = "프로젝트의 모든 기술스택을 반환한다.", response = List.class)
 	@GetMapping(value = "/{seq_post_project}")
 	public ResponseEntity<List<ProjectStack>> selectAllProjectStack(@PathVariable int seq_post_project)

@@ -8,6 +8,7 @@ public interface PostCommentService {
 	
 	public int selectPostCommentCnt(int seq_post);
 	public List<PostComment> selectAllPostComment(int seq_post);
+	public List<PostComment> selectAllPostCommentByNeighbor(int seq_user, int seq_blog);
 	public int insertPostComment(PostComment postComment);
 	public int updatePostComment(PostComment postComment);
 	public int deletePostComment(int seq);

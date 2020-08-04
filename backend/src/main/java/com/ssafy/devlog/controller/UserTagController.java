@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.UserTag;
+import com.ssafy.devlog.service.JwtService;
 import com.ssafy.devlog.service.UserTagService;
 
 import io.swagger.annotations.ApiOperation;
@@ -32,25 +33,29 @@ public class UserTagController {
 
 	@Autowired
 	private UserTagService userTagService;
+	@Autowired
+	private JwtService jwtService;
 
-	@ApiOperation(value = "모든 태그를 반환한다.( 사용 빈도 순 정렬, limit : 10 )", response = List.class)
+
+	@ApiOperation(value = "특정 유저의 태그를 반환한다.", response = List.class)
 	@GetMapping
+	public ResponseEntity<List<UserTag>> selectUserTagByUser() throws Exception {
+		logger.debug("selectUserTagByUser - 호출");
+		int seq_user = jwtService.getSeq();
+		return new ResponseEntity<List<UserTag>>(userTagService.selectUserTagByUser(seq_user), HttpStatus.OK);
+	}
+	@ApiOperation(value = "모든 태그를 반환한다.( 사용 빈도 순 정렬, limit : 10 )", response = List.class)
+	@GetMapping("/feed")
 	public ResponseEntity<List<UserTag>> selectAllUserTag() throws Exception {
 		logger.debug("selectAllTag - 호출");
 		return new ResponseEntity<List<UserTag>>(userTagService.selectAllUserTag(), HttpStatus.OK);
-	}
-
-	@ApiOperation(value = "특정 유저의 태그를 반환한다.", response = List.class)
-	@GetMapping("{seq_user}")
-	public ResponseEntity<List<UserTag>> selectUserTagByUser(@PathVariable int seq_user) throws Exception {
-		logger.debug("selectUserTagByUser - 호출");
-		return new ResponseEntity<List<UserTag>>(userTagService.selectUserTagByUser(seq_user), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "새로운 태그를 생성한다 //중복 입력시 401", response = List.class)
 	@PostMapping
 	public ResponseEntity<String> insertUserTag(@RequestBody UserTag userTag) throws Exception {
 		logger.debug("insertUserTag - 호출");
+		userTag.setSeq_user(jwtService.getSeq());
 		UserTag check = userTagService.selectUserTagByUserAndTag(userTag);
 		if (check != null)
 			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);

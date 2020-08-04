@@ -40,4 +40,9 @@ public class PostCommentServiceImpl implements PostCommentService {
 		return postCommentMapper.deletePostComment(seq);
 	}
 
+	@Override
+	public List<PostComment> selectAllPostCommentByNeighbor(int seq_user,int seq_blog) {
+		return postCommentMapper.selectAllPostCommentByNeighbor(seq_user, seq_blog);
+	}
+
 }

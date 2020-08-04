@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.Blog;
 import com.ssafy.devlog.service.BlogService;
+import com.ssafy.devlog.service.JwtService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -32,6 +33,9 @@ public class BlogController {
 	
 	@Autowired
 	private BlogService blogService;
+	
+	@Autowired
+	private JwtService jwtService;
 	
 	@ApiOperation(value = "모든 블로그를 반환한다.", response = List.class)
 	@GetMapping
@@ -50,7 +54,7 @@ public class BlogController {
 	@ApiOperation(value = "새로운 블로그를 생성한다", response = List.class)
 	@PostMapping
 	public ResponseEntity<String> insertBlog(@RequestBody Blog blog) throws Exception {
-		logger.debug("insertUser - 호출");
+		logger.debug("insertBlog - 호출");
 		if(blogService.insertBlog(blog)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -58,9 +62,10 @@ public class BlogController {
 	}
 	
 	@ApiOperation(value = "블로그를 삭제한다.", response = List.class)
-	@DeleteMapping("{seq}")
-	public ResponseEntity<String> deleteBlog(@PathVariable int seq) throws Exception {
-		logger.debug("deleteUser - 호출");
+	@DeleteMapping
+	public ResponseEntity<String> deleteBlog() throws Exception {
+		logger.debug("deleteBlog - 호출");
+		int seq = jwtService.getSeq();
 		if(blogService.deleteBlog(seq)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

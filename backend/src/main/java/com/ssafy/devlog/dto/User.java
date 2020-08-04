@@ -11,6 +11,7 @@ public class User {
 	private String profile_img_url;
 	private String github_url;
 	private String birthday;
+	private String token;
 	
 	public int getSeq() {
 		return seq;
@@ -91,12 +92,21 @@ public class User {
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 	public User() {
 	}
 
 	public User(int seq, String id, String password, String email, String nickname, String name, String tel,
-			String profile_img_url, String github_url, String birthday) {
+			String profile_img_url, String github_url, String birthday, String token) {
+		super();
 		this.seq = seq;
 		this.id = id;
 		this.password = password;
@@ -107,13 +117,14 @@ public class User {
 		this.profile_img_url = profile_img_url;
 		this.github_url = github_url;
 		this.birthday = birthday;
+		this.token = token;
 	}
 
 	@Override
 	public String toString() {
 		return "User [seq=" + seq + ", id=" + id + ", password=" + password + ", email=" + email + ", nickname="
 				+ nickname + ", name=" + name + ", tel=" + tel + ", profile_img_url=" + profile_img_url
-				+ ", github_url=" + github_url + ", birthday=" + birthday + "]";
+				+ ", github_url=" + github_url + ", birthday=" + birthday + ", token=" + token + "]";
 	}
 
 }

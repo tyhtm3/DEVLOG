@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.devlog.dto.BlogTag;
 import com.ssafy.devlog.dto.PostTag;
 import com.ssafy.devlog.service.BlogTagService;
+import com.ssafy.devlog.service.JwtService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -33,6 +34,9 @@ public class BlogTagController {
 	
 	@Autowired
 	private BlogTagService blogTagService;
+	
+	@Autowired
+	private JwtService jwtService;
 	
 	@ApiOperation(value = "모든 태그를 반환한다.", response = List.class)
 	@GetMapping
@@ -52,6 +56,7 @@ public class BlogTagController {
 	@PostMapping
 	public ResponseEntity<String> insertBlogTag(@RequestBody BlogTag blogTag) throws Exception {
 		logger.debug("inserBlogTag - 호출");
+		blogTag.setSeq_blog(jwtService.getSeq());
 		BlogTag check = blogTagService.selectBlogTagByBlogAndTag(blogTag);
 		if (check != null)
 			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);

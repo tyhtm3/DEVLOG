@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.UserNeighbor;
+import com.ssafy.devlog.service.JwtService;
 import com.ssafy.devlog.service.UserNeighborService;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,10 +34,14 @@ public class UserNeighborController {
 	@Autowired
 	private UserNeighborService userNeighborService;
 
+	@Autowired
+	private JwtService jwtService;
+	
 	@ApiOperation(value = "유저의 모든 이웃을 반환한다.", response = List.class)
-	@GetMapping(value = "/{seq_user}")
-	public ResponseEntity<List<UserNeighbor>> selectAllUserNeighbor(@PathVariable int seq_user) throws Exception {
+	@GetMapping
+	public ResponseEntity<List<UserNeighbor>> selectAllUserNeighbor() throws Exception {
 		logger.debug("selectAllUserNeighbor - 호출");
+		int seq_user = jwtService.getSeq();
 		return new ResponseEntity<List<UserNeighbor>>(userNeighborService.selectAllUserNeighbor(seq_user),
 				HttpStatus.OK);
 	}
@@ -45,6 +50,7 @@ public class UserNeighborController {
 	@PostMapping
 	public ResponseEntity<String> insertUserNeighbor(@RequestBody UserNeighbor userNeighbor) throws Exception {
 		logger.debug("insertUserNeighbor - 호출");
+		userNeighbor.setSeq_user(jwtService.getSeq());
 		if (userNeighborService.insertUserNeighbor(userNeighbor) == 1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
