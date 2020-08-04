@@ -1,12 +1,4 @@
 <template>
-
-
-
-            <!-- 썸네일 연결 안됨..! -->
-            <!-- 썸네일 연결 안됨..! -->
-
-
-            
   <transition name="el-zoom-in-top">
     <div class="content-wrapper">
       <section class="content" style="margin-bottom:20px">
@@ -169,9 +161,9 @@ export default {
     }
   }
 }
-</script>
+</script> 
 
-<style>
+<style scoped>
 .ql-editor{
   min-height: 400px;
   width: 50%;

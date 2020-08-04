@@ -52,7 +52,7 @@
                 <el-carousel-item v-for="(project, index) in projectList" :key="index">
                   <div class="well-media">
                     <div class="vendor">
-                      <img v-if="project.img_url" class="img-responsive-media" src=project.img_url alt="">
+                      <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url">
                       <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
                     </div>
                     <div class="video-text">
@@ -115,7 +115,7 @@
                   </div>
                   <div class="right">
                     <div class="vendor">
-                      <img v-if="post.img_url" class="img-responsive-media" src=post.img_url alt="">
+                      <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
                       <img v-else class="img-responsive-media" style="margin-top:25px;" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
                     </div>
                   </div>
@@ -125,7 +125,6 @@
             </div>
             <!-- end post list -->            <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
             <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
-
           </div>
         </div>
       </div>
@@ -246,8 +245,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-
+<style scoped lang="scss">
 .search {
   float: none;
   position: relative;
@@ -261,7 +259,7 @@ export default {
     color: #fff;
     position: absolute;
     top: 3px;
-    left: 20px;
+    left: 21px;
     font-family: 'themify';
     speak: none;
     font-style: normal;
@@ -275,64 +273,6 @@ export default {
   }
 }
 
-input.devin-search {
-  outline: none;
-  &[type=search] {
-    -webkit-appearance: textfield;
-    -webkit-box-sizing: content-box;
-    font-family: inherit;
-    font-size: 100%;
-  }
-  &::-webkit-search-decoration,
-  &::-webkit-search-cancel-button {
-      display: none;
-  }
-  &[type=search] {
-    background: #ddd;
-    border: solid 0px #ddd;
-    padding: 10px 10px 10px 32px;
-    width: 55px;
-    -webkit-border-radius: 10em;
-    -moz-border-radius: 10em;
-    border-radius: 10em;
-    -webkit-transition: all .5s;
-    -moz-transition: all .5s;
-    transition: all .5s;
-    position: relative;
-    &:focus {
-      width: 130px;
-      background-color: #eee;
-      border: solid 1px #eee;
-    }
-  }
-  &:-moz-placeholder,
-  &::-webkit-input-placeholder {
-    color: #999;
-  }
-}
-
-#demo-2 input {
-  &[type=search] {
-    width: 20px;
-    padding-left: 10px;
-    color: transparent;
-    cursor: pointer;
-    &:hover {
-        background-color: #ccc;
-    }
-    &:focus {
-      width: 330px;
-      padding-left: 32px;
-      color: #000;
-      background-color: #eee;
-      cursor: auto;
-    }
-  }
-  &:-moz-placeholder,
-  &::-webkit-input-placeholder {
-    color: transparent;
-  }
-}
 .el-carousel__item h3 {
   color: #475669;
   font-size: 18px;
