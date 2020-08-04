@@ -72,15 +72,13 @@ public class UserController {
 		String id = user.getId();
 		String pwd = user.getPassword();
 		user = userService.selectUserById(id);
-		System.out.println(id+ " " + pwd);
 		if (user == null) {
 			return new ResponseEntity<String>("null", HttpStatus.NOT_FOUND);
 		} else if (!user.getPassword().equals(pwd)) {
 			user = null;
 			return new ResponseEntity<String>("null", HttpStatus.UNAUTHORIZED);
 		} else {
-			String jwt = jwtService.create("seq", user.getSeq(), "user");
-			System.out.println(jwt);
+			String jwt = jwtService.create("member", user.getSeq(), "user");
 			return new ResponseEntity<String>(jwt, HttpStatus.OK);
 		}
 	}

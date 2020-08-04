@@ -28,6 +28,7 @@ public class JwtServiceImpl implements JwtService{
 						 .setHeaderParam("typ", "JWT")
 						 .setHeaderParam("regDate", System.currentTimeMillis())
 						 .setSubject(subject)
+						 .claim(key, data)
 						 .signWith(SignatureAlgorithm.HS256, this.generateKey())
 						 .compact();
 		return jwt;
@@ -63,6 +64,7 @@ public class JwtServiceImpl implements JwtService{
 	public int get(String key) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		String jwt = request.getHeader("Authorization");
+//		System.out.println(jwt);
 		Jws<Claims> claims = null;
 		try {
 			claims = Jwts.parser()
@@ -71,13 +73,15 @@ public class JwtServiceImpl implements JwtService{
 		} catch (Exception e) {
 				e.printStackTrace();
 		}
+//		System.out.println(claims.getBody());
 		@SuppressWarnings("unchecked")
 		int value = (int) claims.getBody().get(key);
+//		System.out.println(key+"======================"+value);
 		return value;
 	}
 
 	@Override
 	public int getSeq() {
-		return (int)this.get("seq");
+		return (int)this.get("member");
 	}
 }
