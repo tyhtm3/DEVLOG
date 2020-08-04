@@ -67,6 +67,7 @@ export default {
 		logout(){
 		 this.$store.state.isLogin = false
 		 this.$store.state.userInfo = {seq:0}
+		 localStorage.clear()
 		 alert("로그아웃 되었습니다.")
 		},
 		test(){
