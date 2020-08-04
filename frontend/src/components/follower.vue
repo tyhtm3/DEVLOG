@@ -8,27 +8,27 @@
             <h2>이웃 관리</h2></div>
                 <!-- <input class="delete-box" :id=index type="checkbox" :value=post.seq " /> -->
                     <!-- <label :for=index></label>전체선택 -->
-              <el-button :plain="true" @click="unfollow" type="info" v-bind:class="{ active: isActive}">이웃끊기</el-button>
+              <el-button :plain="true" @click="unfollowmode" type="info" v-bind:class="{ active: isActive}">이웃끊기</el-button>
               <el-button :plain="true" type="danger">차단</el-button>
-              <el-button :plain="true" v-if="isActive" type="danger">이웃 삭제</el-button>
+              
             </div>
 
           <div class="people-list" id="people-list">
             <div class="search">
               <input type="text" v-model="search" placeholder="search follower" /> <i class="fa fa-search"></i> </div>
             <ul style="text-align:center" class="list" >
-              <li @click="selected(index) " style="cursor:pointer  " class="clearfix" v-for="(neighbor, index) in requestneighborList" :key="index" v-if="neighbor.name.includes(search)" >
+              <li @click="selected(index) "style="cursor:pointer" class="clearfix" v-for="(neighbor, index) in requestneighborinfoList" :key="index" v-if="neighbor.name.includes(search)" >
                 <img v-if="neighbor.profile_img_url" :src="neighbor.profile_img_url" alt="avatar" />
                 <img v-else src="upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" alt="avatar" />
                 <div class="about">
                   <div class="name">{{neighbor.name}}</div>
                   <div class="comments">  댓글 수 </div>
-                    <input type="checkbox" id=""v-if="isActive">
-                    <div>{{isActive}}</div>
+                    <el-button :plain="true" @click="deleteneighbor(index)" v-if="isActive" type="danger">이웃 삭제</el-button>
+                  
                 </div>
-               <!-- <div><li>{{neighbor}}</li></div> -->
+             
               </li>
-
+             
               
             </ul>
           </div>
@@ -83,7 +83,7 @@ export default {
         .get('/user/' + this.neighborList[i].seq_neighbor)
         .then(({data}) => { 
         //  console.log(data)
-          this.requestneighborList.push(data)
+          this.requestneighborinfoList.push(data)
         })
       }
     })
@@ -92,28 +92,34 @@ export default {
         return { 
           selectedName: '',
           neighborList: [],
-          requestneighborList: [],
+          requestneighborinfoList: [],
           selectedImg: '',
           selectedRegtime: '',
           select: false,
           search: '',
           isActive : false,
-
         }
     },
   methods: {
     selected(index) {
-      this.selectedName=this.requestneighborList[index].name
-      this.selectedImg=this.requestneighborList[index].profile_img_url
+      this.selectedName=this.requestneighborinfoList[index].name
+      this.selectedImg=this.requestneighborinfoList[index].profile_img_url
       this.selectedRegtime=this.neighborList[index].regtime
+      
      // console.log(this.selectedImg)
     },
-    unfollow() {
+    unfollowmode() {
       this.isActive = !this.isActive
-
+    },
+    deleteneighbor(index) {
+      for (var i =0; i<this.neighborList.length; i++){
+        if ( this.requestneighborinfoList[index].seq == this.neighborList[i].seq_neighbor ) {
+          http.delete('/userneighbor/' + this.neighborList[i].seq)
+          // console.log(this.requestneighborinfoList[index].seq)
+          // console.log(this.neighborList[i].seq)
+        }
+      }
     }
-
   },
-
 }
 </script>
