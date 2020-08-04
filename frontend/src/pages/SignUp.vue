@@ -160,7 +160,7 @@ import http from '../util/http-common'
 
 </script>
 
-<style>
+<style scoped>
   .avatar-uploader .el-upload {
     top: 90px;
     left: 500px;

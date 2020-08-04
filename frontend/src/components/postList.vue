@@ -1,12 +1,4 @@
 <template>
-
-    <!-- 문제점
-    1.  셋팅 아이콘을 누르면 체크박스와 삭제 버튼이 보여야 하는데
-        체크박스를 생성할 때 v-show="this.$store.state.settingButtonVisible" 속성이 적용이 안됨
-    2.  선택된 포스트를 삭제하면 갱신된 postList를 새로 받아오는데
-        postList의 값이 바뀌어도 화면이 다시 렌더링이 되지 않음
-    -->
-
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 포스트출력 -->
@@ -15,17 +7,16 @@
             </div>
             <div class="row">
                 <div class="col-md-4" v-for="(post,index) in postList" :key="index">
+                    <span v-show="$store.state.settingButtonVisible">
                     <input class="delete-box" :id=index type="checkbox" :value=post.seq v-model="deleteList" />
                     <label :for=index></label>
-                    
+                    </span>
                     <div class="well-media" style="cursor:pointer;">
                         <div class="vendor">
                             <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
                             <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
-                            <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
                         </div>
                         <div class="video-text">
-                            <!-- {{post}} -->
                             <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{post.title}}</h2>
                             <p class="content-3line" style="color:black;">{{ removeTag(post.content) }}</p>
                         </div>
@@ -51,10 +42,10 @@
     </transition>
 </template>
 <script>
-  import http from '../util/http-common'
-  import InfiniteLoading from 'vue-infinite-loading'
-  import store from '../store'
-  export default {
+import http from '../util/http-common'
+import InfiniteLoading from 'vue-infinite-loading'
+import store from '../store'
+export default {
     name: 'postList',
     components: {
         InfiniteLoading
@@ -74,6 +65,7 @@
             deleteList: [],
             postVisible: [
             ],
+            temp: true
         }
     },
     created(){	 
@@ -134,19 +126,23 @@
             }   
         },
         deletePost(){
+            var _this = this
             console.log(this.deleteList)
             for(var i=0; i<this.deleteList.length; i++){
+                console.log(this.deleteList[i])
                 console.log(this.deleteList[i]+"번 삭제 시도")
-                http.delete('post/'+this.deleteList[i])
+                http
+                .delete('post/'+this.deleteList[i])
                 .then(({data}) => {
-                    console.log(this.deleteList[i]+"번 삭제 성공")
+                    // 삭제 목록을 비우고, 포스트 리스트를 갱신
+                    this.deleteList = []
+                    this.getpostList()
+                    alert("삭제 완료")
                 })
             }
-            console.log("포스트 목록 갱신") // 갱신이 안됨
-            this.getpostList();
         }
     }
-  }
+}
 </script>
 <style scoped>
 .tag-copy{

@@ -155,7 +155,7 @@
     }
   }
 </script>
-<style>
+<style scoped>
 .column4{
     float: right;
     margin-right: 40px;
