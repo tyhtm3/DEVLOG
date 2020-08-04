@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.PostComment;
+import com.ssafy.devlog.service.JwtService;
 import com.ssafy.devlog.service.PostCommentService;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +34,9 @@ public class PostCommentController {
 	
 	@Autowired
 	private PostCommentService postCommentService;
-
+	@Autowired
+	private JwtService jwtService;
+	
 	@ApiOperation(value = "포스트 및 프로젝트의 seq로 댓글 개수를 반환한다.", response = List.class)
 	@GetMapping(value = "/count/{seq_post}")
 	public ResponseEntity<Integer> selectPostCommentCnt(@PathVariable int seq_post) throws Exception {
@@ -52,6 +55,7 @@ public class PostCommentController {
 	@PostMapping
 	public ResponseEntity<String> insertPostComment(@RequestBody PostComment postComment) throws Exception {
 		logger.debug("inserPostComment - 호출");
+		postComment.setSeq_user(jwtService.getSeq());
 		if(postCommentService.insertPostComment(postComment)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -62,6 +66,7 @@ public class PostCommentController {
 	@PutMapping
 	public ResponseEntity<String> updatePostComment(@RequestBody PostComment postComment) throws Exception {
 		logger.debug("updatePostComment - 호출");
+		postComment.setSeq_user(jwtService.getSeq());
 		if(postCommentService.updatePostComment(postComment)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

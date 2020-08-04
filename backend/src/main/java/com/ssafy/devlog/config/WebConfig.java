@@ -9,10 +9,12 @@ import com.ssafy.devlog.interceptor.JwtInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-//    private static final String[] EXCLUDE_PATHS = {
-//            "/member/**",
-//            "/error/**"
-//    };
+    private static final String[] EXCLUDE_PATHS = {
+            "/devlog/api/**",
+            "/api/**",
+            "/error/**",
+            "/devlog/**"
+    };
 
     @Autowired
     private JwtInterceptor jwtInterceptor;
@@ -20,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtInterceptor)
-						.addPathPatterns("/**");
-						//.excludePathPatterns(EXCLUDE_PATHS);
+						.addPathPatterns("/**")
+						.excludePathPatterns(EXCLUDE_PATHS);
     }
 }
