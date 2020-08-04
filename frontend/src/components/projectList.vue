@@ -8,8 +8,8 @@
             <div class="row">
                 <div class="col-md-4" v-for="(project,index) in projectList" :key="index">
                     <span v-show="$store.state.settingButtonVisible">
-                        <input class="delete-box" :id=index type="checkbox" :value=project.seq v-model="deleteList" />
-                        <label :for=index></label>
+                        <input class="delete-box" :id=project.seq type="checkbox" :value=project.seq v-model="deleteList" />
+                        <label :for=project.seq></label>
                     </span>
                     
                     <div class="well-media" @click="goDetail(project.seq)" style="cursor:pointer;">
@@ -68,6 +68,7 @@
             limit: 0,
             page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3배수)
             deleteList: [],
+            deleteSuccess: true
         }
     },
     created(){	 
@@ -121,16 +122,23 @@
             }   
         },
         deleteProject(){
-            console.log(this.deleteList)
-            for(var i=0; i<this.deleteList.length; i++){
-                http
-                .delete('project/'+this.deleteList[i])
-                .then(({data}) => {
-                    // 삭제 목록을 비우고, 프로젝트 리스트를 갱신
-                    this.deleteList = []
-                    this.getprojectList()
+            if(this.deleteList.length === 0)
+                alert("삭제할 프로젝트를 선택해 주세요")
+            else{
+                for(var i=0; i<this.deleteList.length; i++){
+                    http
+                    .delete('project/'+this.deleteList[i])
+                    .then(({data}) => {
+                        this.deleteList = []
+                        this.getprojectList()
+                    })
+                    .catch((error) => {
+                        this.deleteSuccess = false
+                    })
+                }
+                if(this.deleteSuccess){
                     alert("삭제 완료")
-                })
+                }
             }
         }
     }

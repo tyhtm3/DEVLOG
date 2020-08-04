@@ -8,8 +8,8 @@
             <div class="row">
                 <div class="col-md-4" v-for="(post,index) in postList" :key="index">
                     <span v-show="$store.state.settingButtonVisible">
-                    <input class="delete-box" :id=index type="checkbox" :value=post.seq v-model="deleteList" />
-                    <label :for=index></label>
+                        <input class="delete-box" :id=post.seq type="checkbox" :value=post.seq v-model="deleteList" />
+                        <label :for=post.seq></label>
                     </span>
                     <div class="well-media" style="cursor:pointer;">
                         <div class="vendor">
@@ -65,7 +65,7 @@ export default {
             deleteList: [],
             postVisible: [
             ],
-            temp: true
+            deleteSuccess: true,
         }
     },
     created(){	 
@@ -126,19 +126,23 @@ export default {
             }   
         },
         deletePost(){
-            var _this = this
-            console.log(this.deleteList)
-            for(var i=0; i<this.deleteList.length; i++){
-                console.log(this.deleteList[i])
-                console.log(this.deleteList[i]+"번 삭제 시도")
-                http
-                .delete('post/'+this.deleteList[i])
-                .then(({data}) => {
-                    // 삭제 목록을 비우고, 포스트 리스트를 갱신
-                    this.deleteList = []
-                    this.getpostList()
+            if(this.deleteList.length === 0)
+                alert("삭제할 포스트를 선택해 주세요")
+            else{
+                for(var i=0; i<this.deleteList.length; i++){
+                    http
+                    .delete('post/'+this.deleteList[i])
+                    .then(({data}) => {
+                        this.deleteList = []
+                        this.getpostList()
+                    })
+                    .catch((error) => {
+                        this.deleteSuccess = false
+                    })
+                }
+                if(this.deleteSuccess){
                     alert("삭제 완료")
-                })
+                }
             }
         }
     }
