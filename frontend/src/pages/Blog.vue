@@ -38,7 +38,7 @@
                       </div>
                       <div class="col-sm-4 emphasis" style="cursor:pointer;">
                         <h2><strong @click="follower">{{blogOwnerNumOfNeighbor}}</strong></h2>
-                        <p> <small @click="follower">Follower</small> </p>
+                        <p> <small @click="follower" v-bind="followerpage">Follower</small> </p>
                       </div>
                     </div>
                   </div>
@@ -56,8 +56,8 @@
             <!-- end movie card -->
           </div>
           <!-- end box-body -->
-          <blog-content></blog-content>
-          <follower></follower>
+          <blog-content v-if="followerpage===false"></blog-content>
+          <follower v-if="followerpage"></follower>
         </div> 
       </section>
       <!-- end Main content -->
@@ -86,6 +86,7 @@
           blogOwnerNumOfNeighbor:'',
           blogOwnerMainTags:[],
           tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
+          followerpage: false,
         }
     },
     created(){	 
@@ -145,7 +146,8 @@
         }
       },
       follower(){
-        this.$router.push('/follower')
+        // this.$router.push('/follower')
+        this.followerpage =!this.followerpage
       },
       alterTitle(){
         $('#title').attr('disabled', false);

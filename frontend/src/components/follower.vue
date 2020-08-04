@@ -8,8 +8,9 @@
             <h2>이웃 관리</h2></div>
                 <!-- <input class="delete-box" :id=index type="checkbox" :value=post.seq " /> -->
                     <!-- <label :for=index></label>전체선택 -->
-              <el-button :plain="true" type="info">이웃끊기</el-button>
+              <el-button :plain="true" @click="unfollow" type="info" v-bind:class="{ active: isActive}">이웃끊기</el-button>
               <el-button :plain="true" type="danger">차단</el-button>
+              <el-button :plain="true" v-if="isActive" type="danger">이웃 삭제</el-button>
             </div>
 
           <div class="people-list" id="people-list">
@@ -21,7 +22,9 @@
                 <img v-else src="upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" alt="avatar" />
                 <div class="about">
                   <div class="name">{{neighbor.name}}</div>
-                  <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                  <div class="comments">  댓글 수 </div>
+                    <input type="checkbox" id=""v-if="isActive">
+                    <div>{{isActive}}</div>
                 </div>
                <!-- <div><li>{{neighbor}}</li></div> -->
               </li>
@@ -41,9 +44,9 @@
             <!-- end chat-header -->
             <div class="inbox-nest">
               <ul>
-                <li> <b>David L. Moore</b><i class="icon-attachment"></i><i class="text-orange fontello-record"></i><small>Today, 09:21 PM</small>
-                    <h5>Will You Be Our Valentine?</h5>
-                    <p>Hi, John i just want to know about my email that i,ve sending yesterday. Dou you read it? ... </p>
+                <li> <b>Django 게시글</b><i class="icon-attachment"></i><i class="text-orange fontello-record"></i><small>Today, 09:21 PM</small>
+                  
+                    <p>댓글 내용</p>
                 </li>
                 <li> <img alt="" class="img-circle star" src="http://api.randomuser.me/portraits/thumb/women/23.jpg"> <b>Helen D. Murray</b><i class="text-blue fontello-record"></i><small>20 Minute ago</small>
                     <h5>World Recod</h5>
@@ -94,6 +97,7 @@ export default {
           selectedRegtime: '',
           select: false,
           search: '',
+          isActive : false,
 
         }
     },
@@ -104,6 +108,10 @@ export default {
       this.selectedRegtime=this.neighborList[index].regtime
      // console.log(this.selectedImg)
     },
+    unfollow() {
+      this.isActive = !this.isActive
+
+    }
 
   },
 
