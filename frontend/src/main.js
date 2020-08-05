@@ -10,14 +10,17 @@ import VueAnimateNumber from 'vue-animate-number'
 import VueGmaps from 'vue-gmaps'
 import VueLayers from 'vuelayers'
 import VCharts from 'v-charts'
+import locale from 'element-ui/lib/locale/lang/en'
+
 // Resource logic
 Vue.use(Resource)
 Vue.http.options.emulateJSON = true
 
 Vue.use(VueRouter)
-Vue.use(ElementUI)
 Vue.use(Bars)
-Vue.use(vueEventCalendar, {locale: 'en'})
+Vue.use(ElementUI, { locale })
+// Vue.use(ElementUI)
+// Vue.use(vueEventCalendar, {locale: 'en'})
 Vue.use(VueAnimateNumber)
 Vue.use(VueGmaps, {
   key: 'AIzaSyCpr35b_ZSoP8nbz0VnBjVz6ABb7iurRCU',

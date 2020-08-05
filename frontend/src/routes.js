@@ -48,8 +48,14 @@ import SignUp from './pages/SignUp.vue'
 import MyInfo from './pages/MyInfo.vue'
 import FindPassword from './pages/FindPassword'
 import WritePost from './pages/WritePost.vue'
+<<<<<<< HEAD
+=======
+import WritePortfolio from './pages/WritePortfolio.vue'
+import Follower from './pages/Follower.vue'
+>>>>>>> feature/FE-portfolioDetailPage
 import ProjectDetail from './pages/ProjectDetail.vue'
 import PostDetail from './pages/PostDetail.vue'
+import PortfolioDetail from './pages/PortfolioDetail.vue'
 import NotFound from './pages/error/404.vue'
 import NotFoundSecond from './pages/error/500.vue'
 
@@ -91,6 +97,11 @@ const routes = [
         component: ProjectDetail
       },
       {
+        path: '/blog/portfolio/:seq',
+        name: 'portfolio-detail',
+        component: PortfolioDetail
+      },
+      {
         path: '/signup',
         name: 'sign-up',
         component: SignUp
@@ -111,6 +122,19 @@ const routes = [
         component: WritePost
       },
       {
+<<<<<<< HEAD
+=======
+        path: '/writeportfolio',
+        name: 'write-portfolio',
+        component: WritePortfolio
+      },
+      {
+        path: '/follwoer',
+        name: 'follower',
+        component: Follower
+      },
+      {
+>>>>>>> feature/FE-portfolioDetailPage
         path: '/404',
         name: '404-eror',
         component: NotFound
