@@ -95,7 +95,7 @@ export default new Vuex.Store({
       })
       routes.push(`/`)
     },
-    modify(context, {password, name, nickname, email, tel, birth, url, imageUrl}) {
+    modify(context, {password, name, nickname, email, tel, birth, url, imageUrl, target}) {
 
       http
       .put('/user', {
@@ -124,10 +124,16 @@ export default new Vuex.Store({
           tel:tel,
           birthday:birth,
           github_url:url,
-          profile_img_url:imageUrl}
-        )
+          profile_img_url:imageUrl
+        })
+
+        this.$message({
+          type: 'success',
+          message: '정보가 수정되었습니다.'
+        });
+        console.log(this)
         console.log("라우터되나??")
-        routes.push(`/`)
+        routes.push('/')
       })
       .catch((error) => {
         if(error.response.status=='404'){
@@ -140,8 +146,11 @@ export default new Vuex.Store({
       .delete('/user/'+seq)
       .then(({ data }) => {
         context.commit('mutateIsLogin', false)
-        alert("탈퇴 처리 되었습니다.")
-        this.$router.push(`/`)
+        $message({
+          type: 'success',
+          message: '탈퇴 처리 되었습니다.'
+        });
+        $router.push(`/`)
       })
     }
   }

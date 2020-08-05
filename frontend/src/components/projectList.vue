@@ -1,7 +1,7 @@
 <template>
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
-        <!-- 포스트출력 -->
+        <!-- 프로젝트 출력 -->
             <div class="delete" @click="deleteProject" v-show="this.$store.state.settingButtonVisible">
                 <i class="ti-trash"></i> 삭제
             </div>
@@ -11,7 +11,6 @@
                         <input class="delete-box" :id=project.seq type="checkbox" :value=project.seq v-model="deleteList" />
                         <label :for=project.seq></label>
                     </span>
-                    
                     <div class="well-media" @click="goDetail(project.seq)" style="cursor:pointer;">
                         <div class="vendor">
                             <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
@@ -122,27 +121,45 @@
             }   
         },
         deleteProject(){
-            if(this.deleteList.length === 0)
-                alert("삭제할 프로젝트를 선택해 주세요")
+             if(this.deleteList.length === 0){
+                this.$message({
+                    type: 'info',
+                    message: '선택한 프로젝트가 없습니다.',
+                });
+            }
             else{
-                for(var i=0; i<this.deleteList.length; i++){
-                    http
-                    .delete('project/'+this.deleteList[i])
-                    .then(({data}) => {
-                        this.deleteList = []
-                        this.getprojectList()
-                    })
-                    .catch((error) => {
-                        this.deleteSuccess = false
-                    })
-                }
-                if(this.deleteSuccess){
-                    alert("삭제 완료")
-                }
+                this
+                .$confirm('삭제하시겠습니까?', {
+                    confirmButtonText: '삭제',
+                    cancelButtonText: '취소',
+                    type: 'warning'
+                })
+                .then(() => {
+                    for(var i=0; i<this.deleteList.length; i++){
+                        http
+                        .delete('project/'+this.deleteList[i])
+                        .then(({data}) => {
+                            this.deleteList = []
+                            this.getprojectList()
+                        })
+                        .catch((error) => {
+                            this.deleteSuccess = false
+                        })
+                    }
+                    if(this.deleteSuccess){
+                        this.$message({
+                            type: 'success',
+                            message: '선택한 프로젝트가 삭제되었습니다.',
+                        });
+                    }
+                    this.deleteSuccess = true
+                })
+                .catch(() => {
+                });
             }
         }
     }
-  }
+}
 </script>
 <style scoped>
 .tag-copy{
