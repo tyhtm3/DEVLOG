@@ -1,18 +1,15 @@
 <template>
-	<transition name="el-zoom-in-top">
-      <!-- start Main content -->
-          <div style="align:center; min-height:400px; max-width:800px; margin:auto">
-						<div class="col-sm-12">
-							<br>
-							<br>
-							<br>
-							<div class="col-xs-12 col-sm-12">
-								<!-- <div style="text-align: center"><h2>포트폴리오 작성 페이지</h2></div>
-								<hr> -->
+  <transition name="el-zoom-in-top">
+    <!-- <div class="content-wrapper"> -->
+      <!-- <section class="content"> -->
+        <div class="box">
+          <div class="box-body" style="align:center; min-height:400px; max-width:800px; margin:auto; padding : 0px;">
+						<div class="col-sm-12" style="padding:0px">
+							<div class="col-xs-12 col-sm-12" style="padding:0px">
 								<dl class="dl-horizontal-profile">
 									<dt>이름</dt>
                   <dd>
-                    <el-input v-model="name" style="width: 40%;"></el-input>
+                    <el-input v-model="name" style="width: 40%; border: 0px"></el-input>
                     <el-upload
                     class="avatar-uploader"
                     action="https://jsonplaceholder.typicode.com/posts/"
@@ -29,7 +26,7 @@
 									<dd><el-input v-model="email" style="width: 40%;"></el-input></dd>
                   <dt>GIT 주소</dt>
 									<dd>
-                    <el-input v-model="url" style="width: 64%;">
+                    <el-input v-model="url" style="width: 70%;">
                       <template slot="prepend">https://</template>
                     </el-input>
                   </dd>
@@ -45,14 +42,18 @@
             	</div>
               <el-button :plain="true" @click="modify">수정</el-button>
               <el-button :plain="true" @click="signout">탈퇴</el-button>
-						</div>
-            
-                <div>
-                {{projectList}}
-                </div>
+						</div>  
+            <div>
+            {{projectList}}<br>
+            둘다보이기<br>
+            {{data}}
+            </div>
           </div>
           <!--/myCarousel-->
+        </div>
       <!--/well-->
+      <!-- </section> -->
+    <!-- </div> -->
 	</transition>
 </template>
 
@@ -66,32 +67,36 @@ export default {
     ...mapState(['userInfo']),
   },
   data: () => {
-    // var projectList = ['서울','부산'];
-    var generateData = _input => {
-      var data = [];
-      var states = ['California', 'Illinois', 'Maryland', 'Texas', 'Florida', 'Colorado', 'Connecticut '];
-      var initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
-      var projectList = ['서울','부산'];
-      // var projectList = [];
-      // alert(_input);
-      http
-      .post('project/blog', { seq_user:_input , seq_blog:_input, offset:0, limit:100} )
-      .then(({ data }) => {
-          projectList = data;
-          alert("안에서" + projectList);
-      })
-      projectList.push('gogo');
-      alert("나와서" + projectList);
+    const generateData = _ => {
+      const data = [];
+      const states = ['California', 'Illinois', 'Maryland', 'Texas', 'Florida', 'Colorado', 'Connecticut '];
+      const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
+      // http
+      // .post('project/blog', { seq_user:_input , seq_blog:_input, offset:0, limit:100} )
+      // .then(({ data }) => {
+      //   alert(data[0].title)
+      //     // states.push('ABC');
+      //     // alert("안에서 " + states);
+      // })
+      // alert("출력" + _input);
+      alert("불러옴");
       states.forEach((city, index) => {
-        data.push({
-          label: city,
-          key: index,
-          initial: initials[index]
-        });
+          data.push({
+            label: city,
+            key: index,
+            initial: initials[index]
+          });
       });
       return data;
     };
-
+    // const fromDB = _input => {
+    //   http
+    //   .post('project/blog', { seq_user:_input , seq_blog:_input, offset:0, limit:100} )
+    //   .then(({ data }) => {
+    //   // alert(data[0].title);
+    //   return data;
+    //   })
+    // };
     return {
       seq: '',
       name: '',
@@ -100,20 +105,19 @@ export default {
       birth: '',
       giturl: '',
       imageUrl: '',
-      // projects:['서울'],
-      // projectList: ['서울'],
-      // data:generateData('4'),
-      data: generateData(4),
+      data: generateData(),
       value: [],
       filterMethod(query, item) {
         return item.initial.toLowerCase().indexOf(query.toLowerCase()) > -1;
       },
+      projectList: [],
     }
   },
   created() {
     this.$store.state.loginFormVisible = false;
     // this.generateData();
     // this.getProjectInfo();
+    this.data.push(this.generateData()[0]);
   },
   mounted() {
     this.seq = this.userInfo.seq,
@@ -130,9 +134,18 @@ export default {
     //   .post('project/blog', { seq_user:this.userInfo.seq , seq_blog:this.userInfo.seq, offset:0, limit:100} )
     //   .then(({ data }) => {
     //       this.projectList = data;
-    //       // alert(this.projectList);
     //   })
     // },
+    generateData(){
+      // alert("함수들어옴")
+      http.post('project/blog', { seq_user:4, seq_blog:4, offset:0, limit:6 } )
+      .then(({ data }) => {
+          this.projectList = data;
+          // alert(data)
+      })  
+      return data;
+    },
+    
     // generateData(){
     //   alert("들어옴")
     //   http.post('project/blog', { seq_user:4, seq_blog:4, offset:0, limit:6 } )
@@ -142,27 +155,27 @@ export default {
     //   })  
     // },
     
-    generateData(){
-      let data = [];
-      let projectSeq = ['CA'];
-      let temp=[];
-      // let projects=['California'];  
-      http
-      .post('project/blog', { seq_user:4 , seq_blog:4, offset:0, limit:100} )
-      .then(({ data }) => {
-          temp = data;
-          // alert(temp[0].seq);
-          alert(data.size);
-      })
-      projects.forEach((project, index) => {
-        data.push({
-          label: project,
-          key: index,
-          initial: projectSeq[index]
-        });
-      });
-      return data;
-    },
+    // generateData(){
+    //   let data = [];
+    //   let projectSeq = ['CA'];
+    //   let temp=[];
+    //   // let projects=['California'];  
+    //   http
+    //   .post('project/blog', { seq_user:4 , seq_blog:4, offset:0, limit:100} )
+    //   .then(({ data }) => {
+    //       temp = data;
+    //       // alert(temp[0].seq);
+    //       alert(data.size);
+    //   })
+    //   projects.forEach((project, index) => {
+    //     data.push({
+    //       label: project,
+    //       key: index,
+    //       initial: projectSeq[index]
+    //     });
+    //   });
+    //   return data;
+    // },
     modify() {
       this.$store.dispatch('modify', {
       password: this.password,
@@ -209,7 +222,7 @@ export default {
 <style>
   .avatar-uploader .el-upload {
     top: 0px;
-    left: 500px;
+    left: 70%;
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
