@@ -160,7 +160,7 @@ import http from '../util/http-common'
 
 </script>
 
-<style scoped>
+<style>
   .avatar-uploader .el-upload {
     top: 90px;
     left: 500px;
@@ -178,7 +178,7 @@ import http from '../util/http-common'
     color: #8c939d;
     width: 168px;
     height: 168px;
-    line-height: 168px;
+    line-height: 34px;
     text-align: center;
   }
   .avatar {

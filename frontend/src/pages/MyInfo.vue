@@ -117,18 +117,29 @@ export default {
           tel: this.tel,
           birth: this.birth,
           url: this.url,
-          imageUrl: this.imageUrl
+          imageUrl: this.imageUrl,
         })
       }
     },
     signout() {
-      var del = confirm("정말 탈퇴하시겠습니까?");
-      if(del){
-        console.log(this.$store.state.userInfo.seq);
-        this.$store.dispatch('signout', {
-          seq: this.$store.state.userInfo.seq
-        })
-      }
+      this
+      .$confirm('탈퇴하시겠습니까?', {
+          confirmButtonText: '탈퇴',
+          cancelButtonText: '취소',
+          type: 'warning'
+      })
+      .then(() => {
+        http
+        .delete('/user/'+this.$store.state.userInfo.seq)
+        .then(({ data }) => {
+          this.$store.commit('mutateIsLogin', false)
+          this.$message({
+            type: 'success',
+            message: '탈퇴 처리 되었습니다.'
+          });
+          this.$router.push(`/`)
+        }) 
+      })
     },
     validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -161,7 +172,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   .avatar-uploader .el-upload {
     top: 90px;
     left: 500px;
@@ -179,7 +190,7 @@ export default {
     color: #8c939d;
     width: 168px;
     height: 168px;
-    line-height: 168px;
+    line-height: 34px;
     text-align: center;
   }
   .avatar {

@@ -1,17 +1,16 @@
 <template>
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
-        <!-- 포스트출력 -->
+        <!-- 프로젝트 출력 -->
             <div class="delete" @click="deleteProject" v-show="this.$store.state.settingButtonVisible">
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
                 <div class="col-md-4" v-for="(project,index) in projectList" :key="index">
                     <span v-show="$store.state.settingButtonVisible">
-                        <input class="delete-box" :id=index type="checkbox" :value=project.seq v-model="deleteList" />
-                        <label :for=index></label>
+                        <input class="delete-box" :id=project.seq type="checkbox" :value=project.seq v-model="deleteList" />
+                        <label :for=project.seq></label>
                     </span>
-                    
                     <div class="well-media" @click="goDetail(project.seq)" style="cursor:pointer;">
                         <div class="vendor">
                             <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
@@ -68,6 +67,7 @@
             limit: 0,
             page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3배수)
             deleteList: [],
+            deleteSuccess: true
         }
     },
     created(){	 
@@ -121,20 +121,45 @@
             }   
         },
         deleteProject(){
-            console.log(this.deleteList)
-            for(var i=0; i<this.deleteList.length; i++){
-                http
-                .delete('project/'+this.deleteList[i])
-                .then(({data}) => {
-                    // 삭제 목록을 비우고, 프로젝트 리스트를 갱신
-                    this.deleteList = []
-                    this.getprojectList()
-                    alert("삭제 완료")
+             if(this.deleteList.length === 0){
+                this.$message({
+                    type: 'info',
+                    message: '선택한 프로젝트가 없습니다.',
+                });
+            }
+            else{
+                this
+                .$confirm('삭제하시겠습니까?', {
+                    confirmButtonText: '삭제',
+                    cancelButtonText: '취소',
+                    type: 'warning'
                 })
+                .then(() => {
+                    for(var i=0; i<this.deleteList.length; i++){
+                        http
+                        .delete('project/'+this.deleteList[i])
+                        .then(({data}) => {
+                            this.deleteList = []
+                            this.getprojectList()
+                        })
+                        .catch((error) => {
+                            this.deleteSuccess = false
+                        })
+                    }
+                    if(this.deleteSuccess){
+                        this.$message({
+                            type: 'success',
+                            message: '선택한 프로젝트가 삭제되었습니다.',
+                        });
+                    }
+                    this.deleteSuccess = true
+                })
+                .catch(() => {
+                });
             }
         }
     }
-  }
+}
 </script>
 <style scoped>
 .tag-copy{
