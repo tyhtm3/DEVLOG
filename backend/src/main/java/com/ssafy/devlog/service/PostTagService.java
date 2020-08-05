@@ -7,7 +7,6 @@ import com.ssafy.devlog.dto.PostTag;
 public interface PostTagService {
 	
 	public List<PostTag> selectAllPostTag(int seq_post);
-	public PostTag selectPostTagByPostAndTag(PostTag postTag);
-	public int insertPostTag(PostTag postTag);
-	public int deletePostTag(int seq);
+	public int insertPostTag(int seq_post, List<String> tag);
+	public int deletePostTag(int seq_post);
 }

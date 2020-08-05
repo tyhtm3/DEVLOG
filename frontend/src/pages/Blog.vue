@@ -44,9 +44,9 @@
                   </div>
                   <div class="column4" v-if="this.$store.state.isLogin">
                   <router-link to="writePost">
-                  <span>글 작성<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
+                  <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
                   </router-link>
-                  <span id="setting" @click="set">설정<i class="ti-settings" style="display:inline"></i></span>
+                  <span id="setting" @click="set">관리<i class="ti-settings" style="display:inline"></i></span>
                   </div>
                 </div>
                 <!-- end profile -->
@@ -132,15 +132,22 @@
             http.get('blogtag/'+this.seq_blog)
             .then(({ data }) => {
                 this.blogOwnerMainTags = data;
-                // alert( this.blogOwnerMainTags);
             });
       },
       set(){
         if(this.$store.state.settingButtonVisible){
+          this.$message({
+              type: 'info',
+              message: '관리모드가 비활성화 되었습니다.'
+          });
           $('#setting').css('color','#B1B0AC');
           this.$store.state.settingButtonVisible = false;
         }
         else{
+          this.$message({
+              type: 'info',
+              message: '관리모드가 활성화 되었습니다.'
+          });
           $('#setting').css('color', 'black');
           this.$store.state.settingButtonVisible = true;
         }

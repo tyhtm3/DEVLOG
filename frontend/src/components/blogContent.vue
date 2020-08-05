@@ -4,22 +4,10 @@
       <div class="row">
         <div class="col-md-12">
           <!-- TABS -->
-          <!-- 
-            부트스트랩 깔려있어야 중앙 정렬 되네요
-            npm install bootstrap-vue bootstrap
-            <h1> 현재페이지: {{ curpage }}</h1><br>
-            <h2> watch: {{ newnew }}</h2>
-            <p v-html="newnew"> </p>
-          -->
-          <ul id="myTab" class="nav nav-tabs nav-tabs-shop-devin nav-justified" role="tablist">
-            <!--
-            <li class="active" data-wow-delay="0.6s"><a href="#project" role="tab" data-toggle="tab" aria-expanded="true"><h2><strong>Project</strong></h2></a></li>
-            <li class="" data-wow-delay="0.4s"><a href="#post" role="tab" data-toggle="tab" aria-expanded="false"><h2><strong>Post</strong></h2></a></li>
-            <li class="" data-wow-delay="0.2s"><a href="#portfolio" role="tab" data-toggle="tab" aria-expanded="false"><h2><strong>Portfolio</strong></h2></a></li>
-            -->
-            <li class="active" data-wow-delay="0.6s"><a href="#project" role="tab" data-toggle="tab" aria-expanded="true" @click="curpage=0"><h2><strong>Project</strong></h2></a></li>
-            <li class="" data-wow-delay="0.4s"><a href="#post" role="tab" data-toggle="tab" aria-expanded="false" @click="curpage=1"><h2><strong>Post</strong></h2></a></li>
-            <li class="" data-wow-delay="0.2s"><a href="#portfolio" role="tab" data-toggle="tab" aria-expanded="false" @click="curpage=2"><h2><strong>Portfolio</strong></h2></a></li>
+          <ul id="myTab" class="nav nav-tabs nav-tabs-shop-devin" role="tablist" style="text-align:center;">
+            <li class="active" data-wow-delay="0.6s" style="width:33%"><a href="#project" role="tab" data-toggle="tab" aria-expanded="true" @click="curpage=0"><h2><strong>Project</strong></h2></a></li>
+            <li class="" data-wow-delay="0.2s" style="width:33%"><a href="#portfolio" role="tab" data-toggle="tab" aria-expanded="false" @click="curpage=2"><h2><strong>Portfolio</strong></h2></a></li>
+            <li class="" data-wow-delay="0.4s" style="width:33%"><a href="#post" role="tab" data-toggle="tab" aria-expanded="false" @click="curpage=1"><h2><strong>etc</strong></h2></a></li>
           </ul>
 
           <div class="tab-content">
@@ -31,16 +19,17 @@
             <!--/ TAB PANEL ITEM -->
 
             <!-- TAB PANEL ITEM-->
+            <div role="tabpanel" class="tab-pane fade" id="portfolio">
+              <portfolio-list></portfolio-list>
+            </div>
+            <!--/ TAB PANEL ITEM -->
+
+            <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade" id="post">
               <post-list></post-list>
             </div>
             <!--/ TAB PANEL ITEM -->
 
-            <!-- TAB PANEL ITEM-->
-            <div role="tabpanel" class="tab-pane fade" id="portfolio">
-              <portfolio-list></portfolio-list>
-            </div>
-            <!--/ TAB PANEL ITEM -->
           </div>
           <!-- / TABS -->
         </div>
@@ -105,6 +94,14 @@
   }
 </script>
 
-<style>
-
+<style scoped>
+#myTab {
+  display: table;
+  width: 100%;
+  list-style: none;
+}
+#myTab li {
+display: table-cell;
+text-align: center;
+}
 </style>
