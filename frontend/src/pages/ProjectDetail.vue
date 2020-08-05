@@ -209,7 +209,7 @@
         http.delete('project/'+seq)
         .then(({data}) => {
             if(data==="SUCCESS"){
-              alert('프로젝트가 삭제되었습니다.')
+              this.$message.success('프로젝트가 삭제되었습니다.')
               this.$router.push(`/blog`)
             }
          })

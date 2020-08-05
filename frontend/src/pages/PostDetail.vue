@@ -135,7 +135,7 @@
          http.delete('post/'+seq)
         .then(({data}) => {
             if(data==="SUCCESS"){
-              alert('게시글이 삭제되었습니다.')
+              this.$message.success('게시글이 삭제되었습니다.')
               this.$router.push(`/blog`)
             }
          })

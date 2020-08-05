@@ -1,17 +1,17 @@
 <template>
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
-        <!-- 포스트출력 -->
+        <!-- 포스트 출력 -->
             <div class="delete" @click="deletePost" v-show="this.$store.state.settingButtonVisible">
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
                 <div class="col-md-4" v-for="(post,index) in postList" :key="index">
                     <span v-show="$store.state.settingButtonVisible">
-                    <input class="delete-box" :id=index type="checkbox" :value=post.seq v-model="deleteList" />
-                    <label :for=index></label>
+                        <input class="delete-box" :id=post.seq type="checkbox" :value=post.seq v-model="deleteList" />
+                        <label :for=post.seq></label>
                     </span>
-                    <div class="well-media" style="cursor:pointer;">
+                    <div class="well-media" @click="goDetail(post.seq)" style="cursor:pointer;">
                         <div class="vendor">
                             <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
                             <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
@@ -65,7 +65,7 @@ export default {
             deleteList: [],
             postVisible: [
             ],
-            temp: true
+            deleteSuccess: true,
         }
     },
     created(){	 
@@ -126,21 +126,43 @@ export default {
             }   
         },
         deletePost(){
-            var _this = this
-            console.log(this.deleteList)
-            for(var i=0; i<this.deleteList.length; i++){
-                console.log(this.deleteList[i])
-                console.log(this.deleteList[i]+"번 삭제 시도")
-                http
-                .delete('post/'+this.deleteList[i])
-                .then(({data}) => {
-                    // 삭제 목록을 비우고, 포스트 리스트를 갱신
-                    this.deleteList = []
-                    this.getpostList()
-                    alert("삭제 완료")
-                })
+            if(this.deleteList.length === 0){
+                this.$message({
+                    type: 'info',
+                    message: '선택한 포스트가 없습니다.',
+                });
             }
-        }
+            else{
+                this
+                .$confirm('삭제하시겠습니까?', {
+                    confirmButtonText: '삭제',
+                    cancelButtonText: '취소',
+                    type: 'warning'
+                })
+                .then(() => {
+                    for(var i=0; i<this.deleteList.length; i++){
+                        http
+                        .delete('post/'+this.deleteList[i])
+                        .then(({data}) => {
+                            this.deleteList = []
+                            this.getpostList()
+                        })
+                        .catch((error) => {
+                            this.deleteSuccess = false
+                        })
+                    }
+                    if(this.deleteSuccess){
+                        this.$message({
+                            type: 'success',
+                            message: '선택한 포스트가 삭제 되었습니다.'
+                        });
+                    }
+                    this.deleteSuccess = true
+                })
+                .catch(() => {
+                });
+            }
+        },
     }
 }
 </script>

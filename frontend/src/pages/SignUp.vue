@@ -83,31 +83,47 @@ import http from '../util/http-common'
     methods: {
       signup() {
         if(this.id==='')
-          alert('아이디를 입력해 주세요.')
+          this.$message.warning('아이디를 입력해 주세요.')
         else if(this.password==='')
-          alert('비밀번호를 입력해 주세요.')
+          this.$message.warning('비밀번호를 입력해 주세요.')
         else if(this.confirm==='')
-          alert('비밀번호를 한번 더 입력해 주세요.')
+          this.$message.warning('비밀번호를 한번 더 입력해 주세요.')
         else if(this.password!==this.confirm)
-          alert('비밀번호가 일치하지 않습니다.')
+          this.$message.error('비밀번호가 일치하지 않습니다.')
         else if(this.name==='')
-          alert('이름을 입력해 주세요.')
+          this.$message.warning('이름을 입력해 주세요.')
         else if(this.email==='')
-          alert('이메일을 입력해주세요.')
+          this.$message.warning('이메일을 입력해주세요.')
         else if (!this.validEmail(this.email))
-          alert("이메일 형식을 확인해 주세요")
+          this.$message.error("이메일 형식을 확인해 주세요")
         else{
-
-          this.$store.dispatch('signup', {
+          http
+          .post('/user', {
             id: this.id,
             password: this.password,
             name: this.name,
             nickname: this.nickname,
             email: this.email,
             tel: this.tel,
-            birth: this.date_to_str(this.birth),
-            url: this.url,
-            imageUrl: this.imageUrl
+            birthday: this.birth,
+            github_url: this.url,
+            profile_img_url: this.imageUrl
+          })
+          .then(({ data }) => {
+            this.$message({
+              type: 'success',
+              message: '회원 가입이 완료되었습니다.'
+            });
+            this.$router.push('/blog')
+          })
+          .catch((error) => {
+            console.log(error.response.status)
+            if(error.response.status=='404'){
+              this.$message({
+                type: 'warning',
+                message: '이미 존재하는 아이디입니다.'
+              });
+            }
           })
         }
       },
@@ -160,7 +176,7 @@ import http from '../util/http-common'
 
 </script>
 
-<style scoped>
+<style>
   .avatar-uploader .el-upload {
     top: 90px;
     left: 500px;
@@ -178,7 +194,7 @@ import http from '../util/http-common'
     color: #8c939d;
     width: 168px;
     height: 168px;
-    line-height: 168px;
+    line-height: 34px;
     text-align: center;
   }
   .avatar {

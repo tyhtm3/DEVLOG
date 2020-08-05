@@ -100,24 +100,35 @@ export default {
         disclosure: this.postInfo.disclosure,
         img_url: this.dialogImageUrl
       })
-      
-     // this.postInfo.img_url = this.dialogImageUrl
-      this.postInfo.tags = this.tags
-      //console.log(this.dialogImageUrl)
-      console.log(this.postInfo)
+      .then(({data}) => {
+        this.postInfo.tags = this.tags
+        console.log(this.postInfo.tags)
+        http
+        .post('./posttag', {
+          seq_post: data,
+          tag: this.postInfo.tags
+        })
+        .then(({data})=>{
+          this.$message({
+            type: 'success',
+            message: '포스팅 완료.'
+          });
+         this.$router.push('/blog')      
+        })
+      })
     },
     handleAvatarSuccess(res, file) {
         
-        var frm = new FormData();
-        frm.append("upload_file", file.raw);
+      var frm = new FormData();
+      frm.append("upload_file", file.raw);
 
-         http.post('user/upload',frm,{headers: {
-            'Content-Type': 'multipart/form-data'
-          }})
-        .then(({data}) => {
-         this.dialogImageUrl = 'http://'.concat(data)
-         })
-      },
+        http.post('user/upload',frm,{headers: {
+          'Content-Type': 'multipart/form-data'
+        }})
+      .then(({data}) => {
+        this.dialogImageUrl = 'http://'.concat(data)
+        })
+    },
     beforeAvatarUpload(file) {
 
         const isJPG = file.type === 'image/jpeg';
