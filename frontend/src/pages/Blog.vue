@@ -17,6 +17,7 @@
                     
                     <input type="text" id="title" value="명묭이의 코딩일기" disabled>
                   </div>
+                  <button @click="subscribe">구독</button>
                   <i class="ti-pencil-alt" v-if="this.$store.state.settingButtonVisible" @click="alterTitle" style="cursor:pointer;"></i>
                   <div class="title2">
                     by {{blogOwnerInfo.nickname}}
@@ -38,7 +39,7 @@
                       </div>
                       <div class="col-sm-4 emphasis" style="cursor:pointer;">
                         <h2><strong @click="follower">{{blogOwnerNumOfNeighbor}}</strong></h2>
-                        <p> <small @click="follower">Follower</small> </p>
+                        <p> <small @click="follower" v-bind="followerpage">Follower</small> </p>
                       </div>
                     </div>
                   </div>
@@ -56,8 +57,9 @@
             <!-- end movie card -->
           </div>
           <!-- end box-body -->
-          <blog-content></blog-content>
-        </div>
+          <blog-content v-if="followerpage===false"></blog-content>
+          <follower v-if="followerpage"></follower>
+        </div> 
       </section>
       <!-- end Main content -->
     </div>
@@ -65,10 +67,12 @@
 </template>
 <script>
   import blogContent from '../components/blogContent'
+  import follower from '../components/follower'
   import http from '../util/http-common'
   export default {
     components: {
-     'blog-content': blogContent
+     'blog-content': blogContent,
+     'follower': follower,
     },
     data: function () {
         return { 
@@ -83,6 +87,7 @@
           blogOwnerNumOfNeighbor:'',
           blogOwnerMainTags:[],
           tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
+          followerpage: false,
         }
     },
     created(){	 
@@ -149,6 +154,8 @@
         }
       },
       follower(){
+        // this.$router.push('/follower')
+        this.followerpage =!this.followerpage
       },
       alterTitle(){
         $('#title').attr('disabled', false);
@@ -157,6 +164,13 @@
           if(e.which == 13)
             $('#title').attr('disabled', true);
         })
+      },
+      // 팔로우 페이지 이웃리스트에 추가해야하는데..
+      subscribe() {
+        http.post('userneighbor/' + this.seq_blog)
+        .then(({ data }) => {
+            this.neighborList.push(data)
+          });
       }
     }
   }
