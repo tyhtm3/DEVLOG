@@ -48,9 +48,9 @@ import SignUp from './pages/SignUp.vue'
 import MyInfo from './pages/MyInfo.vue'
 import FindPassword from './pages/FindPassword'
 import WritePost from './pages/WritePost.vue'
-import Follower from './pages/Follower.vue'
 import ProjectDetail from './pages/ProjectDetail.vue'
 import PostDetail from './pages/PostDetail.vue'
+import PortfolioDetail from './pages/PortfolioDetail.vue'
 import NotFound from './pages/error/404.vue'
 import NotFoundSecond from './pages/error/500.vue'
 
@@ -92,6 +92,11 @@ const routes = [
         component: ProjectDetail
       },
       {
+        path: '/blog/portfolio/:seq',
+        name: 'portfolio-detail',
+        component: PortfolioDetail
+      },
+      {
         path: '/signup',
         name: 'sign-up',
         component: SignUp
@@ -110,11 +115,6 @@ const routes = [
         path: '/writepost',
         name: 'write-post',
         component: WritePost
-      },
-      {
-        path: '/follwoer',
-        name: 'follower',
-        component: Follower
       },
       {
         path: '/404',
