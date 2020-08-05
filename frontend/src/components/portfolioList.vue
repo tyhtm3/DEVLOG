@@ -2,9 +2,15 @@
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 포스트출력 -->
-        
+            <div class="delete" @click="deletePortfolio" v-show="this.$store.state.settingButtonVisible">
+                <i class="ti-trash"></i> 삭제
+            </div>
             <div class="row">
-                    <div class="col-md-4" v-for="(portfolio,index) in portfolioList" :key="index">
+                <div class="col-md-4" v-for="(portfolio,index) in portfolioList" :key="index">
+                    <span v-show="$store.state.settingButtonVisible">
+                        <input class="delete-box" :id=portfolio.seq type="checkbox" :value=portfolio.seq v-model="deleteList" />
+                        <label :for=portfolio.seq></label>
+                    </span>
                     <div class="well-media"  style="cursor:pointer;">
                         <div class="vendor">
                             <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
@@ -41,13 +47,18 @@
             limit:10,
             portfolioList: [],
             comment: [],
-            counter: 0
+            counter: 0,
+            deleteList: [],
+            deleteSuccess: true
         }
     },
     created(){	 
       this.getportfolioList();
     },
     methods:{
+        goDetail(seq){
+            this.$router.push(`/blog/portfolio/${seq}`)
+        },
         removeTag(text){
         text = text.replace(/<br\/>/ig, "\n");
         text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
@@ -67,6 +78,44 @@
                     });
                 }
             })
+        },
+        deletePortfolio(){
+             if(this.deleteList.length === 0){
+                this.$message({
+                    type: 'info',
+                    message: '선택한 포트폴리오가 없습니다.',
+                });
+            }
+            else{
+                this
+                .$confirm('삭제하시겠습니까?', {
+                    confirmButtonText: '삭제',
+                    cancelButtonText: '취소',
+                    type: 'warning'
+                })
+                .then(() => {
+                    for(var i=0; i<this.deleteList.length; i++){
+                        http
+                        .delete('portfolio/'+this.deleteList[i])
+                        .then(({data}) => {
+                            this.deleteList = []
+                            this.getportfolioList()
+                        })
+                        .catch((error) => {
+                            this.deleteSuccess = false
+                        })
+                    }
+                    if(this.deleteSuccess){
+                        this.$message({
+                            type: 'success',
+                            message: '선택한 프로젝트가 삭제되었습니다.',
+                        });
+                    }
+                    this.deleteSuccess = true
+                })
+                .catch(() => {
+                });
+            }
         }
     }
   }
@@ -110,5 +159,59 @@
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+}
+
+.delete{
+    font-size: 20px;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 50px;
+    margin-right: 20px;
+}
+/* checkbox 디자인 */
+input[type="checkbox"] { 
+  display: none;
+ }
+ 
+input[type="checkbox"] + label {
+  display: inline;
+  position: absolute;
+  top: 25px;
+  left: 40px;
+  z-index: 1;
+  font: 14px/20px 'Open Sans', Arial, sans-serif;
+  color: #222;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+ 
+input[type="checkbox"] + label:last-child { margin-bottom: 0; }
+ 
+input[type="checkbox"] + label:before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #6cc0e5;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: .6;
+  -webkit-transition: all .12s, border-color .08s;
+  transition: all .12s, border-color .08s;
+}
+ 
+input[type="checkbox"]:checked + label:before {
+  width: 10px;
+  top: -5px;
+  left: 5px;
+  border-radius: 0;
+  opacity: 1;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 </style>
