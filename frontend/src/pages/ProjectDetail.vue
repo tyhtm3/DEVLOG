@@ -10,14 +10,17 @@
       </div>
       <!-- end banner carousel -->
 
-    
+
       <!-- 헤더 : 프로젝트 작성시간, 댓글수, 좋아요 수, 수정|삭제 -->
       <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
         <li><a>&nbsp;&nbsp;<span class="ti-user"></span>{{projectUser.nickname}}</a></li>
         <li><a> <span class="ti-pencil"></span>&nbsp;{{project.regtime}}</a></li>
-        <li><a> <span class="ti-comment-alt"></span>&nbsp;{{comment.length}}</a></li>
-        <li><a> <span class="ti-heart"></span>&nbsp;{{project.like_count}}</a></li>
-        <li class="pull-right" v-if="project.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
+        <li><a> <span class="ti-comment-alt"></span>&nbsp;{{commentCnt}}</a></li>
+        <li>
+          <i v-if="isLike" @click="cancelLike" class="material-icons">favorite</i>
+          <i v-else @click="like" class="material-icons">favorite_border</i>
+          &nbsp;{{project.like_count}}</li>
+        <li class="pull-right" v-if="project.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject()"> &nbsp;삭제</a></li>
       </ul>
       <!-- 헤더 끝 -->               
       <div class="box">
@@ -109,40 +112,13 @@
                 <div style="clear:both;"></div>
               </div>
             </div>
-            <!-- 댓글 입력 창 -->
-            <div class="comment-nest">
-              <!-- 어떻게 사이즈를 줄이는지 전혀 모르겠다 -->
-              <vue-editor v-model="commentContent" style="display:inline-block;max-height:200px;"></vue-editor>
-              <br>
-              <br>
-              <el-button class="pull-right" @click="insertComment">Submit</el-button>
-              <div style="margin-bottom:70px;"></div>
-              <!-- 댓글 리스트 -->
-              <div v-for="(comment,index) in comment" :key="index">
-                <ul class="media-list">
-                  <li class="media">
-                    <a class="pull-left" href="#"> <img class="media-object img-circle" data-src="holder.js/64x64" alt="64x64" src="http://api.randomuser.me/portraits/thumb/women/21.jpg" style="width: 64px; height: 64px;"> </a>
-                    <div class="media-body">
-                      <div class="social-profile">
-                        <h3> <a class="link-comment" href="#">{{commentUser[index].nickname}}</a>
-                          <span style="font-size:12px;"><i class="entypo-globe"></i>&nbsp;{{comment.regtime}}</span>
-                          <span v-if="commentUser[index].seq==seq_user">
-                            <span style="font-size:14px;"><a class="link-comment pull-right" href="#" @click="deleteComment(comment.seq)"><i class="fontawesome-share"></i>&nbsp;삭제</a></span>
-                            <span style="font-size:14px;"><a class="link-comment pull-right"><i class="fontawesome-share"></i>&nbsp; | </a></span>
-                            <span style="font-size:14px;"><a class="link-comment pull-right" href="#"><i class="fontawesome-share"></i>&nbsp;수정</a></span>
-                          </span>
-                        </h3>
-                      </div>
-                      <p>{{ removeTag(comment.content) }}</p>
-                    </div>
-                    <br>
-                  </li>
-                </ul>
-                <hr>
-              </div>
-            </div>
+          
+           <!-- 댓글 리스트 -->
+              <comment v-bind:seq="seq"></comment>
             <!-- 댓글 창 끝 -->
 
+
+            
             <ul class="pager success">
               <li class="previous"><a href="#">← Older</a> </li>
               <li class="next disabled"><a href="#">Newer →</a> </li>
@@ -155,29 +131,29 @@
     </div>
   </transition>
 </template>
-<script>
+<script> 
+  import Comment from '../components/detailComment'
   import http from '../util/http-common'
-  import { VueEditor } from 'vue2-editor'
   export default {
     components: {
-      VueEditor
+      Comment
     },
     data: function () {
         return { 
+          seq:'',
           project:'',
           projectUser:'',
-          comment:'',
-          commentUser:[], 
+          isLike:'',
+          commentCnt:'',
           tag: [],
           stack: [],
           seq_user: this.$store.state.userInfo.seq,
-          // 댓글 작성,수정,삭제
-          commentContent: '',
 
         }
     },
     created(){
-      this.getInfo(this.$route.params.seq)
+      this.seq= this.$route.params.seq
+      this.getInfo(this.seq)
     },
     methods: {
       getInfo(seq){
@@ -191,8 +167,11 @@
               this.projectUser=data
             }) 
          })
-        // 댓글 불러오기
-        this.getComment(seq)
+        // 댓글 개수 불러오기
+         http.get('postcomment/count/'+seq)
+                .then(({data}) => {
+                this.commentCnt = data;
+         })
         // 태그 불러오기
          http.get('posttag/'+seq)
                 .then(({data}) => {
@@ -203,10 +182,37 @@
                 .then(({data}) => {
                 this.stack = data;
          })
+        // 좋아요 여부 불러오기
+        http.get(`postlike/${seq}/${this.seq_user}`)
+                .then(({data}) => {
+                if(data.length==0){
+                  this.isLike=false
+                }else{
+                  this.isLike=true
+                }
+         })
+      },
+      // 좋아요
+      like(){
+        http.post('postlike/',{seq_post:this.seq, seq_user:this.seq_user})
+                .then(({data}) => {
+                this.project.like_count+=1
+                this.isLike=true
+         })
+      },
+      // 좋아요 취소
+      cancelLike(){
+        http.get(`postlike/${this.seq}/${this.seq_user}`)
+                .then(({data}) => {
+                http.delete(`postlike/${data.seq}`).then(({data})=>{
+                  this.project.like_count-=1
+                  this.isLike=false
+                })
+         })
       },
       // 프로젝트 삭제
-      deleteProject(seq){
-        http.delete('project/'+seq)
+      deleteProject(){
+        http.delete('project/'+this.seq)
         .then(({data}) => {
             if(data==="SUCCESS"){
               this.$message.success('프로젝트가 삭제되었습니다.')
@@ -217,41 +223,6 @@
       // 프로젝트 수정 미구현
       updateProject(){
         
-      },
-      // 댓글 리스트 불러오기
-       getComment(seq){
-        this.commentUser = []
-        http.get('postcomment/'+seq)
-        .then(({data}) => {
-            // 댓글을 작성한 사용자 정보를 불러오기
-            for(var i=0; i<data.length; i++){
-                http.get('user/'+data[i].seq_user)
-                .then(({data}) => {
-                    this.commentUser.push(data);
-                });
-            }
-            this.comment=data
-         })
-      },
-      // 댓글 입력
-      insertComment(){
-         http.post('postcomment',{content:this.commentContent,seq_post:this.project.seq,seq_user:this.seq_user})
-                .then(({data}) => {
-              //댓글 입력하고 리스트 업데이트
-               this.getComment(this.project.seq)
-         })
-      },
-      // 댓글 삭제
-      deleteComment(seq){
-         http.delete('postcomment/'+seq)
-                .then(({data}) => {
-              //댓글 삭제하고 리스트 업데이트
-               this.getComment(this.project.seq)
-         })
-      },
-      // 댓글 수정 미구현
-      updateComment(){
-
       },
       // Url로 이동
       goUrl(url){
@@ -267,7 +238,6 @@
   }
 </script>
 <style scoped>
-
 a:link { color: #B1B0AC; text-decoration: none;}
 a:visited { color: #B1B0AC;; text-decoration: none;}
 a:hover { color: black; text-decoration: bold;}
