@@ -190,6 +190,7 @@ public class UserController {
 		apiURL += "&state=" + state;
 		String access_token = "";
 		String refresh_token = "";
+		String jwt = "";
 
 		try {
 
@@ -227,44 +228,28 @@ public class UserController {
 
 				JsonElement userInfoElement = parser.parse(tmp);
 				id = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("id").getAsInt();
-				nickName = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("nickname")
-						.getAsString();
+				nickName = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("nickname").getAsString();
 				email = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("email").getAsString();
 
-				// 마지막으로 이러한 유저 정보들을 JWT 로 만들어준다.
-				access_token = createJWTToken(id, nickName, email);
+				// 소셜정보를 devlog 유저로 셋팅
+				User user = new User();
+				user.setNickname(nickName);
+				user.setEmail(email);
+				
+				// 첫 로그인일시 회원가입
+				userService.insertUser(user);
+				user = userService.selectUserById(user.getId());
+				
+				// seq로  JWT를 만들어준다.
+				jwt = jwtService.create("member", user.getSeq(), "user");
 			}
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 
-		response.sendRedirect("http://localhost:8080/#/dashboard-ju/" + access_token);
+		response.sendRedirect("http://localhost:8080/#/dashboard-ju/" + jwt);
 	}
 
-	private String createJWTToken(int id, String nickname, String email) {
-		String token = null;
-		DecodedJWT jwt = null;
-
-		try {
-			Long EXPIRATION_TIME = 1000L * 60L * 10L;
-			Date issuedAt = new Date();
-			Date notBefore = new Date(issuedAt.getTime());
-			Date expiresAt = new Date(issuedAt.getTime() + EXPIRATION_TIME);
-
-			Algorithm algorithm = Algorithm.HMAC256("secret");
-			token = JWT.create().withIssuer("auth0") // 발행자
-					.withSubject(nickname) // !닉네임
-					.withAudience("devlog") // 토큰 대상자
-					.withClaim("id", id) // !아이디
-					.withClaim("email", email) // !이메일
-					.withNotBefore(notBefore) // 토큰의 활성 날짜
-					.withExpiresAt(expiresAt) // 만료시간
-					.sign(algorithm);
-		} catch (Exception e) {
-			System.err.println("err: " + e);
-		}
-		return token;
-	}
 
 	private String getUserInfo(String access_token) {
 		String header = "Bearer " + access_token; // Bearer 다음에 공백 추가해야함

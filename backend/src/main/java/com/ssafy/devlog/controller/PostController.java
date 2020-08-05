@@ -55,7 +55,7 @@ public class PostController {
 
 	@ApiOperation(value = "새로운 게시글 입력 ( seq_blog, title, disclosure, content ) 사용. 예약기능을 사용할경우 regtime 사용(현재시간일 경우 안넣음) ", response = String.class)
 	@PostMapping
-	public ResponseEntity<String> insertPost(@RequestBody Post post) {
+	public ResponseEntity<Integer> insertPost(@RequestBody Post post) {
 
 		logger.debug("insertPost - 호출");
 
@@ -66,9 +66,9 @@ public class PostController {
 		postService.insertPost(postBasic);
 
 		if (postService.insertPostBasic(postBasic) == 1) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			return new ResponseEntity<Integer>(postBasic.getSeq(), HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Integer>(0, HttpStatus.NO_CONTENT);
 	}
 
 	@ApiOperation(value = "게시글 수정 ( seq, title, disclosure, content ) 만 사용", response = String.class)
