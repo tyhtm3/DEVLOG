@@ -11,7 +11,7 @@
                         <input class="delete-box" :id=portfolio.seq type="checkbox" :value=portfolio.seq v-model="deleteList" />
                         <label :for=portfolio.seq></label>
                     </span>
-                    <div class="well-media"  style="cursor:pointer;">
+                    <div class="well-media" @click="goDetail(portfolio.seq)" style="cursor:pointer;">
                         <div class="vendor">
                             <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
