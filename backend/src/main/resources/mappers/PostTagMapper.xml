@@ -8,27 +8,20 @@
 		from post_tag
 		where seq_post = #{seq_post}
 	</select>
-	
 
-	
-	<!-- 포스트 태그 상세 조회 -->
-	<select id="selectPostTagByPostAndTag" resultType="PostTag">
-		select seq, seq_post, tag
-		from post_tag
- 		where seq_post= #{seq_post} and tag = #{tag}
-	</select>
-	
-	
 	<!-- 포스트의 태그를 추가한다  -->
 	<insert id="insertPostTag">
 		insert into post_tag( seq_post, tag)
-		values ( #{seq_post},#{tag} )
+		values 
+		<foreach collection="tag" item="item" separator=",">
+            (#{seq_post}, #{item})
+        </foreach>
 	</insert>
 	
 	<!-- 포스트의 태그를 삭제한다. -->
 	<delete id="deletePostTag">
 		delete from post_tag
-		where 	seq = #{seq}
+		where 	seq_post = #{seq_post}
 	</delete>
 	
 </mapper>
