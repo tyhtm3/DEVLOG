@@ -128,7 +128,6 @@
             http.get('blogtag/'+this.seq_blog)
             .then(({ data }) => {
                 this.blogOwnerMainTags = data;
-                // alert( this.blogOwnerMainTags);
             });
       },
       set(){

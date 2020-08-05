@@ -15,7 +15,7 @@
 								<dl class="dl-horizontal-profile">
 									<dt>*아이디</dt>
                   <dd>
-                    <el-input v-model="id" style="width: 40%;" disabled></el-input>
+                    <el-input v-model="userInfo.id" style="width: 40%;" disabled></el-input>
                     <el-upload
                     class="avatar-uploader"
                     action="https://jsonplaceholder.typicode.com/posts/"
@@ -31,18 +31,18 @@
 									<dt>*비밀번호 확인</dt>
                   <dd><el-input v-model="confirm" type="password" style="width: 40%;"></el-input></dd>
 									<dt>*이름</dt>
-                  <dd><el-input v-model="name" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="userInfo.name" style="width: 70%;"></el-input></dd>
 									<dt>닉네임</dt>
-                  <dd><el-input v-model="nickname" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="userInfo.nickname" style="width: 70%;"></el-input></dd>
                   <dt>*이메일</dt>
-									<dd><el-input v-model="email" style="width: 70%;"></el-input></dd>
+									<dd><el-input v-model="userInfo.email" style="width: 70%;"></el-input></dd>
 									<dt>연락처</dt>
-                  <dd><el-input v-model="tel" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="userInfo.tel" style="width: 70%;"></el-input></dd>
                   <dt>생년원일</dt>
-                  <dd><el-date-picker v-model="birth" type="date"></el-date-picker></dd>
+                  <dd><el-date-picker v-model="userInfo.birthday" type="date"></el-date-picker></dd>
                   <dt>url</dt>
 									<dd>
-                    <el-input v-model="url" style="width: 70%;">
+                    <el-input v-model="userInfo.github_url" style="width: 70%;">
                       <template slot="prepend">https://</template>
                     </el-input>
                   </dd>
@@ -69,55 +69,77 @@ export default {
   },
   data: () => {
     return {
-      id: '',
+      imageUrl: '',
       password: '',
-      confirm: '',
-      name: '',
-      nickname: '',
-      email: '',
-      tel: '',
-      birth: '',
-      url: '',
-      imageUrl: ''
+      confirm: ''
     }
   },
   created() {
     this.$store.state.loginFormVisible = false;
+    this.imageUrl = this.userInfo.profile_img_url
   },
   mounted() {
-    this.id = this.userInfo.id,
-    this.name = this.userInfo.name,
-    this.nickname = this.userInfo.nickname,
-    this.email = this.userInfo.email,
-    this.tel = this.userInfo.tel,
-    this.birth = this.userInfo.birthday,
-    this.url = this.userInfo.github_url,
-    this.imageUrl = this.userInfo.profile_img_url
   },
   methods: {
     modify() {
-      if(this.password==='')
-        alert('비밀번호를 입력해 주세요.')
-      else if(this.confirm==='')
-        alert('비밀번호를 한번 더 입력해 주세요.')
-      else if(this.password!==this.confirm)
-        alert('비밀번호가 일치하지 않습니다.')
-      else if(this.name==='')
-        alert('이름을 입력해 주세요.')
-      else if(this.email==='')
-        alert('이메일을 입력해주세요.')
-      else if (!this.validEmail(this.email))
-        alert("이메일 형식을 확인해 주세요")
+      if(this.password===''){
+        this.$message({
+          type: 'warning',
+          message: '비밀번호를 입력해 주세요.'
+        })
+      }
+      else if(this.confirm===''){
+        this.$message({
+          type: 'warning',
+          message: '비밀번호를 한번 더 입력해 주세요.'
+        })
+      }
+      else if(this.password!==this.confirm){
+          this.$message({
+          type: 'error',
+          message: '비밀번호가 일치하지 않습니다.'
+        })
+      }
+      else if(this.userInfo.name===''){
+          this.$message({
+          type: 'warning',
+          message: '이름을 입력해 주세요.'
+        })
+      }
+      else if (!this.validEmail(this.userInfo.email)){
+          this.$message({
+          type: 'error',
+          message: '이메일 형식을 확인해 주세요 입력해 주세요.'
+        })
+      }
       else{
-        this.$store.dispatch('modify', {
+        http
+        .put('/user', {
+          seq: this.userInfo.seq,
+          id: this.userInfo.id,
           password: this.password,
-          name: this.name,
-          nickname: this.nickname,
-          email: this.email,
-          tel: this.tel,
-          birth: this.birth,
-          url: this.url,
-          imageUrl: this.imageUrl,
+          name: this.userInfo.name,
+          nickname: this.userInfo.nickname,
+          email: this.userInfo.email,
+          tel: this.userInfo.tel,
+          birthday: this.userInfo.birthday,
+          github_url: this.userInfo.github_url,
+          profile_img_url: this.imageUrl
+        })
+        .then(({ data }) => {
+          this.$message({
+            type: 'success',
+            message: '정보가 수정되었습니다.'
+          })
+          this.$router.push('/blog')
+        })
+        .catch((error) => {
+          if(error.response.status=='404'){
+            this.$message({
+              type: 'error',
+              message: '정보 수정 도중 발생했습니다.'
+            })
+          }
         })
       }
     },
@@ -135,7 +157,7 @@ export default {
           this.$store.commit('mutateIsLogin', false)
           this.$message({
             type: 'success',
-            message: '탈퇴 처리 되었습니다.'
+            message: '탈퇴가 완료되었습니다.'
           });
           this.$router.push(`/`)
         }) 

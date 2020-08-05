@@ -38,9 +38,9 @@ export default {
 		},
 		login() {
 			if(this.id==='')
-				alert('아이디를 입력해주세요.')
+				this.$message.warning('아이디를 입력해주세요')
 			else if(this.password==='')
-				alert('비밀번호를 입력해주세요.')
+				this.$message.warning('비밀번호를 입력해주세요')
 			else
 				this.$store.dispatch('login', {id: this.id, password: this.password})
 		}
