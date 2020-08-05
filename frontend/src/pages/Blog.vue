@@ -17,6 +17,7 @@
                     
                     <input type="text" id="title" value="명묭이의 코딩일기" disabled>
                   </div>
+                  <button @click="subscribe">구독</button>
                   <i class="ti-pencil-alt" v-if="this.$store.state.settingButtonVisible" @click="alterTitle" style="cursor:pointer;"></i>
                   <div class="title2">
                     by {{blogOwnerInfo.nickname}}
@@ -163,6 +164,13 @@
           if(e.which == 13)
             $('#title').attr('disabled', true);
         })
+      },
+      // 팔로우 페이지 이웃리스트에 추가해야하는데..
+      subscribe() {
+        http.post('userneighbor/' + this.seq_blog)
+        .then(({ data }) => {
+            this.neighborList.push(data)
+          });
       }
     }
   }
