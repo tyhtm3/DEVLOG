@@ -15,7 +15,11 @@
         <li><a>&nbsp;&nbsp;<span class="ti-user"></span>{{postUser.nickname}}</a></li>
         <li><a> <span class="ti-pencil"></span>&nbsp;{{post.regtime}}</a></li>
         <li><a> <span class="ti-comment-alt"></span>&nbsp;{{commentCnt}}</a></li>
-        <li><i v-if="isLike" @click="cancelLike" class="material-icons">favorite</i><i v-else @click="like" class="material-icons">favorite_border</i>&nbsp;{{post.like_count}}</li>
+        <li>
+          <i v-if="isLike" @click="cancelLike" class="material-icons">favorite</i>
+          <i v-else @click="like" class="material-icons">favorite_border</i>
+          &nbsp;{{post.like_count}}
+        </li>
         <li class="pull-right" v-if="post.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deletePost(post.seq)"> &nbsp;삭제</a></li>
       </ul>
       <!-- 헤더 끝 -->               
@@ -56,7 +60,7 @@
   </transition>
 </template>
 <script>
-  import Comment from '../pages/DetailComment'
+  import Comment from '../components/detailComment'
   import http from '../util/http-common'
   export default {
     components: {
@@ -149,6 +153,7 @@
 a:link { color: #B1B0AC; text-decoration: none;}
 a:visited { color: #B1B0AC;; text-decoration: none;}
 a:hover { color: black; text-decoration: bold;}
+
 .header-block{
   max-height: 500px;
   overflow: hidden;

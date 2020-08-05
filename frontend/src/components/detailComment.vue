@@ -1,12 +1,14 @@
 <template>
     <!-- 댓글 입력 창 -->
         <div class="comment-nest">
+              <div v-if="updateSeq==0">
               <div style="display:inline-block; height:100px;;width:100%;">
               <vue-editor v-model="insertContent"></vue-editor>
               </div>
               <br>
               <br>
               <el-button class="pull-right" @click="insertComment">Comment</el-button>
+              </div>
               <div style="margin-bottom:70px;"></div>
               <!-- 댓글 리스트 -->
               <div v-for="(comment,index) in comment" :key="index">
@@ -23,18 +25,19 @@
                         <h3> <a class="link-comment" href="#">{{commentUser[index].nickname}}</a>
                           <span style="font-size:12px;"><i class="entypo-globe"></i>&nbsp;{{comment.regtime}}</span>
                           <span v-if="commentUser[index].seq==seq_user">
-                            <span style="font-size:14px;"><a class="link-comment pull-right"  @click="deleteComment(comment.seq)"><i class="fontawesome-share"></i>&nbsp;삭제</a></span>
-                            <span style="font-size:14px;"><a class="link-comment pull-right"><i class="fontawesome-share"></i>&nbsp; | </a></span>
-                            <span style="font-size:14px;"><a class="link-comment pull-right" @click="showCommentEditor(comment.seq,comment.content)"><i class="fontawesome-share"></i>&nbsp;수정</a></span>
+                            <span style="font-size:13px;"><a class="link-comment pull-right"  @click="deleteComment(comment.seq)"><i class="fontawesome-share"></i>&nbsp;삭제</a></span>
+                            <span style="font-size:13px;"><a class="link-comment pull-right"><i class="fontawesome-share"></i>&nbsp; | </a></span>
+                            <span style="font-size:13px;"><a class="link-comment pull-right" @click="showCommentEditor(comment.seq,comment.content)"><i class="fontawesome-share"></i>&nbsp;수정</a></span>
                           </span>
                         </h3>
                       </div>
                       
                       <!-- 댓글 수정 클릭시 updateContent 정보가 담겨진 vue editor가 나타난다.-->
-                      <vue-editor v-model="updateContent" v-if="updateSeq==comment.seq" style="display:inline-block;width:100%;"></vue-editor>
-                      <el-button  v-if="updateSeq==comment.seq" class="pull-right" @click="updateComment">Comment</el-button>
-
-                      <p v-else v-html="comment.content"></p>
+                      <div v-if="updateSeq==comment.seq" style="margin-top:20px;">
+                      <vue-editor v-model="updateContent" style="display:inline-block;width:100%;"></vue-editor><br><br>
+                      <el-button class="pull-right" @click="updateComment">Comment</el-button>
+                      </div>
+                      <p v-else v-html="comment.content" style="margin-left:0px;"></p>
                       
                     </div>
                     <br>
@@ -105,6 +108,7 @@
         if(this.updateSeq==seq){
           this.updateSeq=0
           this.updateContent =''
+          this.insertContent =''
         }
         // 댓글 수정창 열기
         else{

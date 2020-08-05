@@ -16,7 +16,10 @@
         <li><a>&nbsp;&nbsp;<span class="ti-user"></span>{{projectUser.nickname}}</a></li>
         <li><a> <span class="ti-pencil"></span>&nbsp;{{project.regtime}}</a></li>
         <li><a> <span class="ti-comment-alt"></span>&nbsp;{{commentCnt}}</a></li>
-        <li><i v-if="isLike" @click="cancelLike" class="material-icons">favorite</i><i v-else @click="like" class="material-icons">favorite_border</i>&nbsp;{{project.like_count}}</li>
+        <li>
+          <i v-if="isLike" @click="cancelLike" class="material-icons">favorite</i>
+          <i v-else @click="like" class="material-icons">favorite_border</i>
+          &nbsp;{{project.like_count}}</li>
         <li class="pull-right" v-if="project.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject()"> &nbsp;삭제</a></li>
       </ul>
       <!-- 헤더 끝 -->               
@@ -129,7 +132,7 @@
   </transition>
 </template>
 <script> 
-  import Comment from '../pages/DetailComment'
+  import Comment from '../components/detailComment'
   import http from '../util/http-common'
   export default {
     components: {
