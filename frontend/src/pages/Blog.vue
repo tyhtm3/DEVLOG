@@ -1,24 +1,26 @@
 <template>
   <transition name="el-zoom-in-top">
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="background: white;">
       <!-- start Main content -->
-      <section class="content">
+      <section class="content" >
         <!-- start box -->
         <div class="box">
           <!-- start box-body -->
-          <div class="box-body" style="min-height:400px;">
-            <!-- start movie-card -->
-            <div class="movie-card">
-              <!-- start container-movie -->
+          <div class="box-body" >
+
+        <!-- start container-movie : 블로그 배너-->
               <div class="container-movie">
                 <!-- start profile -->
-                <div class="details-profile">
+                <div class="details-profile" >
                   <div class="title1" style="display:inline">
-                    
-                    <input type="text" id="title" value="명묭이의 코딩일기" disabled>
+                    <!-- input length 바꾸게 하는것 -->
+                    <input type="text" style="font-size:40px;" id="title" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog" readonly />
+                    <br>
+                    <input type="text" style="font-size:15px;" id="detail" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog" readonly />
                   </div>
-                  <button @click="subscribe">구독</button>
-                  <i class="ti-pencil-alt" v-if="this.$store.state.settingButtonVisible" @click="alterTitle" style="cursor:pointer;"></i>
+                  
+                  <i class="ti-pencil-alt" v-if="this.$store.state.settingButtonVisible" @click="alterBlog" style="cursor:pointer;"></i>
+                  
                   <div class="title2">
                     by {{blogOwnerInfo.nickname}}
                     <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
@@ -40,9 +42,17 @@
                       <div class="col-sm-4 emphasis" style="cursor:pointer;">
                         <h2><strong @click="follower">{{blogOwnerNumOfNeighbor}}</strong></h2>
                         <p> <small @click="follower" v-bind="followerpage">Follower</small> </p>
+                        <button style="margin=0px;" @click="subscribe">구독</button>
                       </div>
                     </div>
                   </div>
+                
+                <span style="margin-left:60px;"></span>  
+                <!-- 블로그 태그 -->
+                <span class = "tag" v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="margin-right:20px;">
+                  #{{tag.tag}}
+                </span>
+
                   <div class="column4" v-if="this.$store.state.isLogin">
                   <router-link to="writePost">
                   <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
@@ -53,8 +63,8 @@
                 <!-- end profile -->
               </div>
               <!-- end container-movie -->
-            </div>
-            <!-- end movie card -->
+                 
+         
           </div>
           <!-- end box-body -->
           <blog-content v-if="followerpage===false"></blog-content>
@@ -80,7 +90,7 @@
           // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
           seq_blog: this.$store.state.userInfo.seq,
           seq_user: this.$store.state.userInfo.seq,
-          blogInfo:[],
+          blogInfo:'',
           blogOwnerInfo:[],
           blogOwnerNumOfProject:'',
           blogOwnerNumOfPost:'',
@@ -96,8 +106,9 @@
     mounted(){
       var value = $('#title').val();
       $('.title1').append('<div id="virtual_dom" style="display:inline;">' + value + '</div>');
-      var inputWidth =  $('#virtual_dom').width() + 10;
+      var inputWidth =  $('#virtual_dom').width() + 400;
       $('#title').css('width', inputWidth); 
+      $('#detail').css('width', inputWidth-200); 
       $('#virtual_dom').remove();
 
       $('#title').on('keydown', function(e){
@@ -157,12 +168,36 @@
         // this.$router.push('/follower')
         this.followerpage =!this.followerpage
       },
-      alterTitle(){
-        $('#title').attr('disabled', false);
+      updateBlog(){
+        http.put('blog',this.blogInfo)
+            .then(({ data }) => {
+              if(data=="success"){
+              this.$message({
+              type: 'info',
+              message: '블로그 정보 수정이 완료되었습니다.'
+              }); }
+              else{
+              this.$message({
+              type: 'danger',
+              message: '블로그 정보 수정에 실패하였습니다.'
+              });
+              }
+        });
+      },
+      alterBlog(){
+        $('#title').attr('readonly', false);
         $('#title').focus();
         $('#title').keypress(function (e) {
-          if(e.which == 13)
-            $('#title').attr('disabled', true);
+          if(e.which == 13){
+            $('#title').attr('readonly', true);
+          }
+        })
+        $('#detail').attr('readonly', false);
+        $('#detail').focus();
+        $('#detail').keypress(function (e) {
+          if(e.which == 13){
+            $('#detail').attr('readonly', true);
+          }
         })
       },
       // 팔로우 페이지 이웃리스트에 추가해야하는데..
@@ -183,7 +218,7 @@
   .column4 span{
     cursor: pointer;
   }
-  #title{
+  #title, #detail{
     padding: 0px;
     border: none;
     background: transparent;
