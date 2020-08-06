@@ -26,7 +26,7 @@
 									<dd><el-input v-model="email" style="width: 40%;"></el-input></dd>
                   <dt>GIT 주소</dt>
 									<dd>
-                    <el-input v-model="url" style="width: 70%;">
+                    <el-input v-model="giturl" style="width: 70%;">
                       <template slot="prepend">https://</template>
                     </el-input>
                   </dd>
@@ -142,7 +142,7 @@
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 -->
                 <!-- {{projectInfoList}}<br><br>
                 프로젝트 사이즈 : {{projectInfoList.length}}<br><br> -->
-                <div v-if="projectInfoList.length>0" class="showProject">
+                <div v-if="stackInfoList.length>0" class="showProject">
                   <div class="tocenter" style="padding: 10px">
                     <div style="margin-bottom:15px; font-size:15px"><b>기술스택 정보</b></div>
                     <div style="margin-bottom:15px; text-align:center"><img :src=stackInfoList[0].stack_img_url width="200px"/></div>
@@ -177,10 +177,6 @@
                   </div>
                 </div>
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
-                <!-- 
-                <div class="selectTemplate">
-                  템플릿 선택
-                </div> -->
               </div>
               <hr>
               <br>
@@ -190,10 +186,10 @@
 								<dl class="dl-horizontal-profile">
                   <dt>TITLE</dt>
                   <dd><el-input v-model="portfolioTitle" style="width: 70%;"></el-input></dd>
-                  <dt>SUMMARY</dt>
-									<dd><el-input v-model="portfolioSummary" style="width: 70%;"></el-input></dd>
-                  <dt>POSITION</dt>
-									<dd><el-input v-model="portfolioRole" style="width: 70%;"></el-input></dd>
+                  <dt>CONTENT</dt>
+									<dd><el-input v-model="portfolioContent" style="width: 70%;"></el-input></dd>
+                  <!-- <dt>POSITION</dt>
+									<dd><el-input v-model="portfolioRole" style="width: 70%;"></el-input></dd> -->
                   <dt>공개 여부</dt>
                   <dd>
                     <el-radio-group v-model="portfolioDisclosure">
@@ -215,9 +211,6 @@
     <!-- </div> -->
 	</transition>
 </template>
-
- 
-
 <script>
 import http from '../util/http-common'
 import { mapState } from 'vuex'
@@ -231,11 +224,12 @@ export default {
   data: () => {
     return {
       // 포트폴리오 기본정보
-      portfolioContent:'content',
+      portfolioContent:'',
       portfolioTitle:'',
-      portfolioSummary:'',
-      portfolioRole:'',
+      portfolioSummary:'summary',
+      // portfolioRole:'',
       portfolioDisclosure: '',
+      portfolioSeq:'',
       // 개인정보
       seq: '',
       name: '',
@@ -244,6 +238,7 @@ export default {
       birth: '',
       giturl: '',
       imageUrl: '',
+      temp:[],
       // 플젝정보
       projectList: [],
       includedProject: [],
@@ -299,7 +294,7 @@ export default {
         for(let i=0; i<data.length; i++){
           this.stackList.push({
           label: data[i].stack,
-          key:data[i].seq,
+          key:i,
           initial: data[i].seq
           })
         }
@@ -313,27 +308,53 @@ export default {
         this.portfolioDisclosure = 2
       else
         this.portfolioDisclosure = 3
-
-      alert(this.portfolioDisclosure)
-      // http
-      // .post('portfoliopjt', {
-      // })
-      // .then(({ data }) => {
-      //   this.$message({
-      //     type: 'success',
-      //     message: '회원 가입이 완료되었습니다.'
-      //   });
-      //   this.$router.push('/blog')
-      // })
-      // .catch((error) => {
-      //   console.log(error.response.status)
-      //   if(error.response.status=='404'){
-      //     this.$message({
-      //       type: 'warning',
-      //       message: '이미 존재하는 아이디입니다.'
-      //     });
-      //   }
-      // })
+      http
+      .post('portfolio', {
+        content: this.portfolioContent,
+        disclosure: this.portfolioDisclosure,
+        github_url: this.giturl,
+        img_url: this.imageUrl,
+        name: this.name,
+        profile_img_url: this.imageUrl,
+        seq_blog: this.seq,
+        title: this.portfolioTitle
+      })
+      .then(({ data }) => {
+        this.portfolioSeq=data;
+        http
+        .post('portfolio', {
+          seq_post_portfolio: this.portfolioSeq,
+          seq_post_project: this.includedProject
+        })
+        .then(({ data }) => {
+          console.log(this.portfolioSeq+"번 portfolio에 "+  this.includedProject + "번 프로젝트 입력 성공!")
+        })
+        .catch((error)=>{
+          console.log(error.response.status)
+        })
+        for(let i=0; i<this.includedStack.length; i++){
+          http
+          .post('projectstack', {
+            seq_post_project: this.includedProject,
+            stack: this.stackInfoList[this.includedStack[i]].stack,
+            stack_img_url: this.stackInfoList[this.includedStack[i]].stack_img_url
+          })
+          .then(({ data }) => {
+            console.log(this.portfolioSeq+"번 portfolio에 "+  this.stackInfoList[this.includedStack[i]].stack + " 기술스택 입력 성공!")
+          })
+          .catch((error)=>{
+            console.log(error.response.status)
+          })
+        }
+        this.$message({
+            type: 'success',
+            message: '포트폴리오 생성 완료.'
+        });
+        this.$router.push('/blog')
+      })
+      .catch((error) => {
+        console.log(error.response.status)
+      })
     },
     
     validEmail: function(email) {
