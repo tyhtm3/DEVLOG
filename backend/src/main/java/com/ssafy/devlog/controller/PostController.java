@@ -3,7 +3,7 @@ package com.ssafy.devlog.controller;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Date; 
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +64,7 @@ public class PostController {
 		postBasic = post;
 		postBasic.setSeq_blog(jwtService.getSeq());
 		postService.insertPost(postBasic);
-
+		
 		if (postService.insertPostBasic(postBasic) == 1) {
 			return new ResponseEntity<Integer>(postBasic.getSeq(), HttpStatus.OK);
 		}
