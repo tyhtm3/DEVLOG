@@ -30,7 +30,8 @@
               <div class="blog-list-content">
                 <!-- 프로젝트 썸네일 -->
                 <div class="pull-right" style="width:22%;margin-top:-2px;">
-                  <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                  <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" alt="">
+                  <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                 </div>
                 <!-- 프로젝트 정보 :  프로젝트 명 / 프로젝트 개요 / 개발기간 / 기술스택 / 역할 / URL / 설명-->
                 <div class="row pjt-margin" style="margin-top:100px;">

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +57,16 @@ public class BlogController {
 	public ResponseEntity<String> insertBlog(@RequestBody Blog blog) throws Exception {
 		logger.debug("insertBlog - 호출");
 		if(blogService.insertBlog(blog)==1) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@ApiOperation(value = "블로그 정보를 수정한다", response = List.class)
+	@PutMapping
+	public ResponseEntity<String> updateBlog(@RequestBody Blog blog) throws Exception {
+		logger.debug("updateBlog - 호출");
+		if(blogService.updateBlog(blog)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

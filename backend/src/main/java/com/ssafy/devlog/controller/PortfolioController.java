@@ -44,7 +44,7 @@ public class PortfolioController {
 		
 	}
 	
-	@ApiOperation(value = "새로운  포트폴리오 입력 ( seq_blog, title, disclosure, summary, start_date, role ) 필수  ", response = String.class)
+	@ApiOperation(value = "새로운  포트폴리오 입력 ( seq_blog, title, disclosure ) 필수  ", response = String.class)
 	@PostMapping
 	public ResponseEntity<Integer> insertPortfolio(@RequestBody Portfolio portfolio) {
 		
