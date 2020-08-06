@@ -51,7 +51,7 @@ public class ProjectController {
 	
 	@ApiOperation(value = "새로운  프로젝트 입력 ( seq_blog, title, disclosure, summary, start_date, role ) 필수  ", response = String.class)
 	@PostMapping
-	public ResponseEntity<String> insertProject(@RequestBody Project project) {
+	public ResponseEntity<Integer> insertProject(@RequestBody Project project) {
 		
 		logger.debug("insertProject - 호출");
 		
@@ -62,9 +62,9 @@ public class ProjectController {
 		projectService.insertPost(pjt);
 		
 		if (projectService.insertPostProject(pjt)==1) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			return new ResponseEntity<Integer>(pjt.getSeq(), HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Integer>(0, HttpStatus.NO_CONTENT);
 	}
 
 	@ApiOperation(value = " 프로젝트 수정", response = String.class)
