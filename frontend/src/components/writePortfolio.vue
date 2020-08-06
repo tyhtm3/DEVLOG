@@ -204,12 +204,12 @@
               <el-button @click="makePortfolio" style="float:right; margin-bottom: 20px">프로젝트 생성</el-button>
 
               
-              <div class="one">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+              <!-- <div class="one">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
                 <div class="two">BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
                   <div class="three">CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
                   </div>
                 </div>
-              </div>
+              </div> -->
 						</div> 
           </div>
           <!--/myCarousel-->
