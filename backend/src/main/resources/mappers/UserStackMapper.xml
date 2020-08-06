@@ -6,8 +6,14 @@
 	<select id="selectAllUserStack" resultType="UserStack">
 		select *
 		from
+		<if test="seq_user == 0">
+		techstack
+		</if>
+		
+		<if test="seq_user != 0">
 		user_stack
 		where seq_user = #{seq_user}
+		</if>
 	</select>
 	
 	<!-- 사용자의 이미지 기술스택을 반환한다. -->

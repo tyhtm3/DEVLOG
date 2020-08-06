@@ -13,7 +13,10 @@
 	<!-- 포트폴리오에 프로젝트를 추가한다.  -->
 	<insert id="insertPortfolioProject">
 		insert into post_portfolio_project( seq_post_portfolio, seq_post_project)
-		values ( #{seq_post_portfolio}, #{seq_post_project} )
+		values 
+		<foreach collection="seq_post_project" item="item" separator=",">
+		(#{seq_post_portfolio}, #{item} )
+		</foreach>
 	</insert>
 	
 	<!-- 포트폴리오의 프로젝트를 삭제한다. -->

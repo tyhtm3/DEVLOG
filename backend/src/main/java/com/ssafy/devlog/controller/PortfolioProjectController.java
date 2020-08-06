@@ -1,6 +1,7 @@
 package com.ssafy.devlog.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,14 +42,19 @@ public class PortfolioProjectController {
 		return new ResponseEntity<List<Project>>(portfolioProjectService.selectAllPortfolioProject(seq_post_portfolio), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "포트폴리오에 프로젝트를 추가한다.", response = String.class)
+	@ApiOperation(value = "포트폴리오에 프로젝트를 추가하거나 삭제한다(seq_post_project == null >> 해당 포트폴리오 연관 프로젝트 전체 삭제) ex) {seq_post_portfolio : 4, seq_post_project :[3,16,42,62]}", response = String.class)
 	@PostMapping
-	public ResponseEntity<String> insertPortfolioProject(@RequestBody PortfolioProject portfolioProject) throws Exception {
+	public ResponseEntity<String> insertPortfolioProject(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("insertPortfolioProject - 호출");
-		if(portfolioProjectService.insertPortfolioProject(portfolioProject)==1) {
+		List<Integer> seq_post_project = (List<Integer>)params.get("seq_post_project");
+		int seq_post_portfolio = (int)params.get("seq_post_portfolio");
+		if(seq_post_project == null)
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		else if(portfolioProjectService.insertPortfolioProject(seq_post_portfolio,seq_post_project)!=0)
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		else 
+			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
+		
 	}
 	
 	@ApiOperation(value = "포트폴리오의 프로젝트를 삭제한다.", response = String.class)

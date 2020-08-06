@@ -22,8 +22,8 @@ public class PortfolioProjectServiceImpl implements PortfolioProjectService {
 	}
 	
 	@Override
-	public int insertPortfolioProject(PortfolioProject portfolioProject) {
-		return portfolioProjectMapper.insertPortfolioProject(portfolioProject);
+	public int insertPortfolioProject(int seq_post_portfolio,List<Integer> seq_post_project) {
+		return portfolioProjectMapper.insertPortfolioProject(seq_post_portfolio,seq_post_project);
 	}
 
 	@Override
