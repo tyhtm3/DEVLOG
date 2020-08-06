@@ -50,7 +50,7 @@ export default new Vuex.Store({
         localStorage.setItem('token',data)
         context.commit('mutateLoginFormVisible', false)
         http
-        .get('/user/me',{headers : {'Authorization' : data}})
+        .get('/user/me',{headers : {'Authorization' : data,}})
         .then(({data}) =>{
             context.commit('mutateUserInfo',data)
         });
