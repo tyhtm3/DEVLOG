@@ -28,6 +28,11 @@ public class UserServiceImpl implements UserService {
 	public User selectUserById(String id) {
 		return userMapper.selectUserById(id);
 	}
+
+	@Override
+	public User selectUserBySocialId(String social_id) {
+		return userMapper.selectUserBySocialId(social_id);
+	}
 	
 	@Override
 	public int insertUser(User user) {

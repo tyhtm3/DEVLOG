@@ -7,7 +7,7 @@
       </div>
       <hr>
       <div style="margin-bottom: 15px">
-        <vue-editor v-model="postInfo.content"></vue-editor>
+        <vue-editor v-model="postInfo.content" id="editor"></vue-editor>
       </div>
       <hr>
       <div style="margin-bottom: 15px">
@@ -84,8 +84,7 @@ export default {
       else
         this.postInfo.disclosure = 3
       http
-      .post('./post', {
-        seq: this.$store.state.userInfo.seq,
+      .post('./post', {      
         seq_blog: this.$store.state.userInfo.seq,
         title: this.postInfo.title,
         content: this.postInfo.content,
@@ -93,8 +92,10 @@ export default {
         img_url: this.dialogImageUrl
       })
       .then(({data}) => {
-        this.postInfo.tags = this.tags
-        console.log(this.postInfo.tags)
+        if(this.tags.length==0)
+          this.postInfo.tags = null
+        else
+          this.postInfo.tags = this.tags
         http
         .post('./posttag', {
           seq_post: data,
@@ -166,8 +167,8 @@ export default {
 }
 </script> 
 
-<style>
-.ql-editor{
-  min-height: 400px;
+<style scoped>
+#editor .ql-editor{
+  min-height: 600px;
 }
 </style>

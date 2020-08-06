@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,9 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.devlog.dto.Blog;
@@ -195,9 +194,9 @@ public class UserController {
 
 	@ApiOperation(value = "네이버 로그인")
 	@GetMapping("naver")
-	public void naver(@RequestParam(value = "code") String code, @RequestParam(value = "state") String state,
+	public ResponseEntity<Object> naver(@RequestParam(value = "code") String code, @RequestParam(value = "state") String state,
 			HttpServletResponse response) throws Exception {
-
+		
 		String apiURL;
 		apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
 		apiURL += "client_id=RSKBTL31UOSpdlckpmTt";
@@ -232,38 +231,61 @@ public class UserController {
 			if (responseCode == 200) {
 
 				// 정상적으로 토큰을 가져오면 Gson 으로 JSON 파일을 파싱해준다.
-				int id;
-				String nickName, email, tmp;
+				
+				String id,nickName, email, profile_img_url,tmp;
 				JsonParser parser = new JsonParser();
 				JsonElement accessElement = parser.parse(res.toString());
 				access_token = accessElement.getAsJsonObject().get("access_token").getAsString();
 
-				// 파싱한 access_token 값으로 네이버에 유저 정보를 요청. 이 함수의 return 값은 id, email, nickname 등 유저
-				// 정보들과 상태 코드 등이다.
+				// 파싱한 access_token 값으로 네이버에 유저 정보를 요청. 이 함수의 return 값은 id, email, nickname 등 유저정보들과 상태 코드 등.
 				tmp = getUserInfo(access_token);
 
 				JsonElement userInfoElement = parser.parse(tmp);
-				id = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("id").getAsInt();
+				id = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("id").getAsString();
 				nickName = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("nickname").getAsString();
 				email = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("email").getAsString();
-
-				// 소셜정보를 devlog 유저로 셋팅
-				User user = new User();
-				user.setNickname(nickName);
-				user.setEmail(email);
+				profile_img_url =  userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("profile_image").getAsString();
+			
+				/* id:99480180
+				 * nickname:dfaf
+				 * email:tab1200@naver.com
+				 * profile_img_url : https://ssl.pstatic.net/static/pwe/address/img_profile.png*/
 				
-				// 첫 로그인일시 회원가입
-				userService.insertUser(user);
-				user = userService.selectUserById(user.getId());
+				User user = new User();
+				user = userService.selectUserBySocialId(id);
+				
+				// 첫 로그인시 회원가입 및 블로그 생성
+				if(user==null){
+					user.setSocial_id(id);
+					user.setSocial("Naver");
+					user.setId(email);
+					user.setName(nickName);
+					user.setPassword(id);
+					user.setNickname(nickName);
+					user.setEmail(email);
+					user.setProfile_img_url(profile_img_url);
+					userService.insertUser(user);
+					
+					user = userService.selectUserBySocialId(id);
+					Blog blog = new Blog();
+					blog.setSeq(user.getSeq());
+					blog.setBlog_name(user.getId() + "님의 블로그");
+					blog.setBlog_detail("블로그 소개를 입력해주세요");
+					blogService.insertBlog(blog);
+				}				
 				
 				// seq로  JWT를 만들어준다.
 				jwt = jwtService.create("member", user.getSeq(), "user");
+				
 			}
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-
-		response.sendRedirect("http://localhost:8080/#/dashboard-ju/" + jwt);
+	
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(URI.create("http://localhost:8080/jwt?"+jwt));
+		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+		
 	}
 
 
