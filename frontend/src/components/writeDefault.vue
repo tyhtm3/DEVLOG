@@ -7,7 +7,7 @@
       </div>
       <hr>
       <div style="margin-bottom: 15px">
-        <vue-editor v-model="postInfo.content"></vue-editor>
+        <vue-editor v-model="postInfo.content" id="editor"></vue-editor>
       </div>
       <hr>
       <div style="margin-bottom: 15px">
@@ -166,8 +166,8 @@ export default {
 }
 </script> 
 
-<style>
-.ql-editor{
-  min-height: 400px;
+<style scoped>
+#editor .ql-editor{
+  min-height: 600px;
 }
 </style>

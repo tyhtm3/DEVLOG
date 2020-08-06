@@ -1,66 +1,137 @@
 <template>
 
-<!-- 지원하는 직무에 적합한 3개의
+<!--  지원하는 직무에 적합한 3개의
 핵심 프로젝트를 어필하는데 적합한 템플릿 -->
 
 <section id="timelineTemplate">
-  
-  <div class="tl-item" @click="openDetail">
+
+  <!-- about me 시작 -->
+  <div class="tl-item" @click="aboutmeVisible=true">
     <div class="tl-bg" style="background-image: url('../../static/img/template01_01.png')"></div>
     <div class="tl-year">
       <p class="f2 heading--sanSerif">about me</p>
     </div>
     <div class="tl-content">
-      <h1>Lorem ipsum dolor sit</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.</p>
+      <h1>김유창 / Kim-Yuchang</h1>
+      <p>센스있는 개발자 김유창입니다.</p>
+      <p>가장 자신있는 언어는 Java 입니다.</p>
+      <p>기획부터 디자인, 프론트엔드, 백엔드까지 관심있습니다.</p>
+      <p>항상 많이 배우겠습니다.</p>
     </div>
   </div>
 
-  <div class="tl-item">  
+  <el-dialog title="About Me" :visible.sync="aboutmeVisible">
+    <img src="../../static/img/template01_09.jpg" style="position:absolute; top:0; left:0; height:100%; width:100%;">
+  </el-dialog>
+  <!-- about me 끝 -->
+
+  <!-- project1 시작 -->
+  <div class="tl-item" @click="project1Visible=true">
     <div class="tl-bg" style="background-image: url('../../static/img/template01_02.jpg')"></div>
     <div class="tl-year">
       <p class="f2 heading--sanSerif">졸업가능?</p>
     </div>
     <div class="tl-content">
-      <h1 class="f3 text--accent ttu">Vestibulum laoreet lorem</h1>
-      <p>Suspendisse potenti. Sed sollicitudin eros lorem, eget accumsan risus dictum id. Maecenas dignissim ipsum vel mi rutrum egestas. Donec mauris nibh, facilisis ut hendrerit vel, fringilla sed felis. Morbi sed nisl et arcu.</p>
+      <h1 class="f3 text--accent ttu">졸업 가능 여부를 판단해주는 졸업자가진단시스템</h1>
+      <p>4학년 재학생을 대상으로 자신의 학사 정보를 입력하면 졸업 가능 여부와
+        부족한 이수 학점을 알려주고 과목추천 등 추가기능을 제공하는 졸업자가진단 시스템입니다.</p>
+      <p>개발 기간 : 2014.05 ~ 2014.06</p>
+      <p>개발 환경 : C#, MS Access</p>
+      <p>역할 : 인터페이스 및 졸업 여부를 계산하는 알고리즘 구현</p>
     </div>
   </div>
+  <el-dialog title="졸업 가능?" :visible.sync="project1Visible">
+  </el-dialog>
+  <!-- project1 끝 -->
 
-  <div class="tl-item">
-    <div class="tl-bg" style="background-image: url(../../static/img/template01_03.png)"></div>
+  <!-- project2 시작 -->
+  <div class="tl-item" @click="project2Visible=true">
+    <div class="tl-bg" style="background-image: url(../../static/img/template01_07.png)"></div>
     <div class="tl-year">
       <p class="f2 heading--sanSerif">HAPPY HOUSE</p>
     </div>
     <div class="tl-content">
-      <h1 class="f3 text--accent ttu">Phasellus mauris elit</h1>
-      <p>Mauris cursus magna at libero lobortis tempor. Suspendisse potenti. Aliquam interdum vulputate neque sit amet varius. Maecenas ac pulvinar nisi. Fusce vitae nunc ultrices, tristique dolor at, porttitor dolor. Etiam id cursus arcu, in dapibus nibh. Pellentesque non porta leo. Nulla eros odio, egestas quis efficitur vel, pretium sed.</p>
+      <h1 class="f3 text--accent ttu">주택 실거래가 내역 제공 서비스</h1>
+      <p>공공데이터를 기반으로 주택 거래 내역을 제공하는 서비스입니다.
+        웹크롤링을 이용한 부동산 관련 뉴스와 관심지역 설정 등 부가서비스를 제공합니다.</p>
+      <p>개발 기간 : 2020.05 ~ 2020.07</p>
+      <p>개발 환경 : Vue.js, SpringBoot, MySQL</p>
+      <p>역할 : 웹 디자인, 주요 서비스 프론트엔드 백엔드 구현</p>
     </div>
   </div>
+  <el-dialog title="HAPPY HOUSE" :visible.sync="project2Visible">
+    <div class="row-fluid">
+      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+        <div class="short-div" style="height:350px">
+          <img :src="project2MainImage" style="height:98%; width:97%; padding:1%">
+        </div>
+        <div class="short-div" style="height:140px; text-align:center">
+          <img :src="project2subImage1" style="height:80%;cursor:pointer" @click="changeImage(project2subImage1)">
+          <img :src="project2subImage2" style="height:80%;cursor:pointer" @click="changeImage(project2subImage2)">
+          <img :src="project2subImage3" style="height:80%;cursor:pointer" @click="changeImage(project2subImage3)">
+          <img :src="project2subImage4" style="height:80%;cursor:pointer" @click="changeImage(project2subImage4)">
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="height:490px">
+        <p>프로젝트명 : HAPPY HOUSE</p>
+        <p>개발 인원 : 2</p>
+        <p>개발 기간 : 2020.06 ~ 2020.07</p>
+        <p>개발 환경 : Vue.js SpringBoot, MySQL</p>
+        <p>역할 : 프론트 엔드 전체적인 디자인 및 주요기능 구현</p>
+        <p>git : http://www.github.com/cl08</p>
+        <p>개요 : 공공데이터를 기반으로 주택 거래 내역을 제공하는 서비스입니다.
+        웹크롤링을 이용한 부동산 관련 뉴스와 관심지역 설정 등 부가서비스를 제공합니다.</p>
+        <p>기술 스택 : Vue-CLI, Node.js, Java, SpringBoot, RESTful API, MyBtis, Git, MySQL</p>
+      </div>
+    </div>
+  </el-dialog>
+  <!-- project2 끝 -->
 
-  <div class="tl-item">
+  <!-- project3 시작 -->
+  <div class="tl-item" @click="project3Visible=true">
     <div class="tl-bg" style="background-image: url(../../static/img/template01_04.png)"></div>  
     <div class="tl-year">
       <p class="f2 heading--sanSerif">DEVLOG</p>
     </div>
     <div class="tl-content">
-      <h1 class="f3 text--accent ttu">Mauris vitae nunc elem</h1>
-      <p>Suspendisse ac mi at dolor sodales faucibus. Nunc sagittis ornare purus non euismod. Donec vestibulum efficitur tortor, eget efficitur enim facilisis consequat. Vivamus laoreet laoreet elit. Ut ut varius metus, bibendum imperdiet ex. Curabitur diam quam, blandit at risus nec, pulvinar porttitor lorem. Pellentesque dolor elit.</p>
+      <h1 class="f3 text--accent ttu">개발자를 위한 포트폴리오용 블로그</h1>
+      <p>사용자가 작성한 포스트를 데이터화하여 다양한 템플릿의 포트폴리오로 제공하는 블로그 서비스입니다.</p>
+      <p>개발 기간 : 2020.07 ~ 진행중</p>
+      <p>개발 환경 : Vue.js SpringBoot MariaDB</p>
+      <p>역할 : 프론트엔드</p>
     </div>
   </div>
+  <el-dialog title="DEVLOG" :visible.sync="project3Visible">
+
+  </el-dialog>
+  <!-- project3 끝 -->
 </section>
 
 </template>
 
 <script>
 export default {
+  data(){
+    return{
+      aboutmeVisible: false,
+      project1Visible: false,
+      project2Visible: false,
+      project3Visible: false,
+      project2MainImage: "../../static/img/template01_05.png",
+      project2subImage1: "../../static/img/template01_05.png",
+      project2subImage2: "../../static/img/template01_06.png",
+      project2subImage3: "../../static/img/template01_07.png",
+      project2subImage4: "../../static/img/template01_08.png",
+    }
+  },
   mounted(){
     $(".main-header").css('display','none')
     $(".main-footer"). css('display','none')
   },
   methods:{
-    openDetail(){
-
+    changeImage(src){
+      console.log(src)
+      this.project2MainImage = src;
     }
   }
 }
@@ -182,6 +253,11 @@ export default {
   transition: filter 0.5s ease;
   filter: grayscale(100%);
 }
-
-
 </style>>
+<style>
+.el-dialog{
+  width: 90% !important;
+  height: 80% !important;
+  margin-top: 50px !important;
+}
+</style>
