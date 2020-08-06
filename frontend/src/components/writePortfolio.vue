@@ -26,16 +26,17 @@
 									<dd><el-input v-model="email" style="width: 40%;"></el-input></dd>
                   <dt>GIT 주소</dt>
 									<dd>
-                    <el-input v-model="url" style="width: 70%;">
+                    <el-input v-model="giturl" style="width: 70%;">
                       <template slot="prepend">https://</template>
                     </el-input>
                   </dd>
 								</dl>
 
                 <!-- 왼쪽 프로젝트 선택 부분 -->
-                
+                <!-- <div><p id="titleid">프로젝트 선택</p></div> -->
                 <section class="selectProject">
                   <el-transfer
+                    style="margin-bottom: 30px"
                     :titles="['내 프로젝트', '선택된 프로젝트']"
                     filterable
                     :filter-method="filterMethod"
@@ -48,8 +49,10 @@
                 <!-- 왼쪽 프로젝트 선택 부분 끝-->
                 
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 -->
-                <!-- <section class="showProject">
-                  <div class="tocenter" style="padding: 10px 0px 0px 10px">
+                <!-- {{projectInfoList}}<br><br>
+                프로젝트 사이즈 : {{projectInfoList.length}}<br><br> -->
+                <section v-if="projectInfoList.length>0" class="showProject">
+                  <div class="tocenter" style="padding: 10px">
                     <div style="margin-bottom:15px; font-size:15px"><b>프로젝트 정보</b></div>
                     <div class="row pjt-margin">
                       <div class="col-sm-4">
@@ -118,11 +121,12 @@
                       </div>
                     </div>
                   </div>
-                  
-                </section> -->
+                </section>
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
-                
-                <section class="selectStacks">
+                </div>
+                <div>
+                <!-- <div><p id="titleid">기술스택 선택</p></div> -->
+                <div class="selectStacks">
                 <!-- 왼쪽 기술스택 선택 부분 -->
                 <el-transfer
                   :titles="['내 기술스택', '선택된 기술스택']"
@@ -134,87 +138,78 @@
                   :data="stackList">
                 </el-transfer>
                 <!-- 왼쪽 기술스택 선택 부분 끝-->
-                </section>
+                </div>
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 -->
-                <!-- <section class="showStacks">
-                  <div class="tocenter" style="padding: 10px 0px 0px 10px">
-                    <div style="margin-bottom:15px; font-size:15px"><b>프로젝트 정보</b></div>
+                <!-- {{projectInfoList}}<br><br>
+                프로젝트 사이즈 : {{projectInfoList.length}}<br><br> -->
+                <div v-if="stackInfoList.length>0" class="showProject">
+                  <div class="tocenter" style="padding: 10px">
+                    <div style="margin-bottom:15px; font-size:15px"><b>기술스택 정보</b></div>
+                    <div style="margin-bottom:15px; text-align:center"><img :src=stackInfoList[0].stack_img_url width="200px"/></div>
                     <div class="row pjt-margin">
                       <div class="col-sm-4">
-                      <p class="pjt-title">제목</p>
+                      <p class="pjt-title">기술스택</p>
                       </div>
                       <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].title}}</p>
-                      </div>
-                    </div>
-                    <div class="row pjt-margin">
-                      <div class="col-sm-4">
-                      <p class="pjt-title">개요</p>
-                      </div>
-                      <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].summary}}</p>
+                      <p class="pjt-content">{{stackInfoList[0].stack}}</p>
                       </div>
                     </div>
                     <div class="row pjt-margin">
+                      <a href="#">
                       <div class="col-sm-4">
-                      <p class="pjt-title">기간</p>
+                      <p class="pjt-title">활용 1)</p>
                       </div>
                       <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].start_date}} ~ <br>{{projectInfoList[0].finish_date}}</p>
+                      <p class="pjt-content">abc프로젝트</p>
                       </div>
+                      </a>
                     </div>
                     <div class="row pjt-margin">
+                      <a href="#">
                       <div class="col-sm-4">
-                      <p class="pjt-title">스택</p>
+                      <p class="pjt-title">활용 2)</p>
                       </div>
                       <div class="col-sm-8">
-                      <div v-for="(stack,index) in stack" :key="index">
-                        <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
+                      <p class="pjt-content">def프로젝트</p>
                       </div>
-                      </div>
-                    </div>
-                    <div class="row pjt-margin">
-                      <div class="col-sm-4">
-                      <p class="pjt-title">역할</p>
-                      </div>
-                      <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].role}}</p>
-                      </div>
-                    </div>
-                    <div class="row" v-if="projectInfoList[0].github_url">
-                      <div class="col-sm-4">
-                      <p class="pjt-title">Github</p>
-                      </div>
-                      <div class="col-sm-8">
-                      <p class="pjt-content"><a href="#" @click="goUrl(projectInfoList[0].github_url)">{{projectInfoList[0].github_url}}</a></p>
-                      </div>
-                    </div>
-                    <div class="row" v-if="projectInfoList[0].etc_url">
-                      <div class="col-sm-4">
-                      <p class="pjt-title">참고 Url</p>
-                      </div>
-                      <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].etc_url}}</p>
-                      </div>
-                    </div>
-                    <div class="row" v-if="projectInfoList[0].rep_url">
-                      <div class="col-sm-4">
-                      <p class="pjt-title">참조 Url</p>
-                      </div>
-                      <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].rep_url}}</p>
-                      </div>
+                      </a>
                     </div>
                   </div>
-                </section> -->
+                </div>
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
+              </div>
+              <hr>
+              <br>
+              <div class="col-xs-12 col-sm-12" style="padding:0px">
+                <hr>
+                <div style="margin-bottom:15px; font-size:20px"><b>포트폴리오 정보 입력</b></div>
+								<dl class="dl-horizontal-profile">
+                  <dt>TITLE</dt>
+                  <dd><el-input v-model="portfolioTitle" style="width: 70%;"></el-input></dd>
+                  <dt>CONTENT</dt>
+									<dd><el-input v-model="portfolioContent" style="width: 70%;"></el-input></dd>
+                  <!-- <dt>POSITION</dt>
+									<dd><el-input v-model="portfolioRole" style="width: 70%;"></el-input></dd> -->
+                  <dt>공개 여부</dt>
+                  <dd>
+                    <el-radio-group v-model="portfolioDisclosure">
+                      <el-radio-button label="전체공개"></el-radio-button>
+                      <el-radio-button label="이웃공개"></el-radio-button>
+                      <el-radio-button label="비공개" ></el-radio-button>
+                    </el-radio-group>
+                  </dd>
+								</dl>
+              </div>
+              <hr>
+              <el-button @click="makePortfolio" style="float:right; margin-bottom: 20px">프로젝트 생성</el-button>
 
-                <!-- 
-                <div class="selectTemplate">
-                  템플릿 선택
-                </div> -->
-            	</div>
-              <el-button :plain="true" @click="makePortfolio">생성</el-button>
+              
+              <div class="one">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                <div class="two">BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+                  <div class="three">CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+                  </div>
+                </div>
+              </div>
 						</div> 
           </div>
           <!--/myCarousel-->
@@ -224,9 +219,6 @@
     <!-- </div> -->
 	</transition>
 </template>
-
- 
-
 <script>
 import http from '../util/http-common'
 import { mapState } from 'vuex'
@@ -239,6 +231,13 @@ export default {
   },
   data: () => {
     return {
+      // 포트폴리오 기본정보
+      portfolioContent:'',
+      portfolioTitle:'',
+      portfolioSummary:'summary',
+      // portfolioRole:'',
+      portfolioDisclosure: '',
+      portfolioSeq:'',
       // 개인정보
       seq: '',
       name: '',
@@ -247,6 +246,7 @@ export default {
       birth: '',
       giturl: '',
       imageUrl: '',
+      temp:[],
       // 플젝정보
       projectList: [],
       includedProject: [],
@@ -272,9 +272,39 @@ export default {
     this.birth = this.userInfo.birthday,
     this.giturl = this.userInfo.github_url,
     this.imageUrl = this.userInfo.profile_img_url
-    // ,$('span').on('click', evt => {
+    // ,$(".el-tab-pane").click(function(event){
+    //   var targetElement = $(event.target);
+    //   if(targetElement.is(".el-tab-pane")){
+    //     alert("고침");
+    //   }
+    // });
+
+    // divs.forEach(function(div) {
+      //   div.addEventListener('click', logEvent, {
+        //     capture: true // default 값은 false입니다.
+    //   });
+    // });
+
+    // var spans = document.querySelectorAll('span');
+    // spans.forEach(function(span) {
+    //   span.addEventListener('click', logEvent);
+    // });
+
+    // function logEvent(event) {
+    //   event.stopPropagation();
+    //   console.log(event.currentTarget.className); // three
+    // }
+
+
+    //  ,$('.el-tab-pane').on('click', evt => {
     //   alert("클릭됨!!!");
     // })
+    // var span = document.querySelector('.el-tab-pane');
+    // span.addEventListener('click', alertspan);
+    // function alertspan(event){
+    //   // console.log(event);
+    //   alert("된다");
+    // }
   },
   methods: {
     filterMethod(query, item) {
@@ -288,7 +318,7 @@ export default {
         for(let i=0; i<data.length; i++){
           this.projectList.push({
           label: data[i].title,
-          key:i,
+          key:data[i].seq,
           initial: data[i].seq
           })
         }
@@ -296,12 +326,12 @@ export default {
     },
     getStackList(seq){
       http
-      .post('project/blog', { seq_user:seq , seq_blog:seq, offset:0, limit:99999} )
+      .get('/stack')
       .then(({ data }) => {
         this.stackInfoList=data;
         for(let i=0; i<data.length; i++){
           this.stackList.push({
-          label: data[i].title,
+          label: data[i].stack,
           key:i,
           initial: data[i].seq
           })
@@ -309,28 +339,62 @@ export default {
       })
     },
     makePortfolio() {
-      // 이미지 변경
+      // alert(this.includedStack);
+      if(this.portfolioDisclosure === "전체공개")
+        this.portfolioDisclosure = 1
+      else if(this.portfolioDisclosure === "이웃공개")
+        this.portfolioDisclosure = 2
+      else
+        this.portfolioDisclosure = 3
       http
-      .post('portfoliopjt', {
-        
+      .post('portfolio', {
+        content: this.portfolioContent,
+        disclosure: this.portfolioDisclosure,
+        github_url: this.giturl,
+        img_url: this.imageUrl,
+        name: this.name,
+        profile_img_url: this.imageUrl,
+        seq_blog: this.seq,
+        title: this.portfolioTitle
       })
       .then(({ data }) => {
+        this.portfolioSeq=data;
+        http
+        .post('portfolio', {
+          seq_post_portfolio: this.portfolioSeq,
+          seq_post_project: this.includedProject
+        })
+        .then(({ data }) => {
+          console.log(this.portfolioSeq+"번 portfolio에 "+  this.includedProject + "번 프로젝트 입력 성공!")
+        })
+        .catch((error)=>{
+          console.log(error.response.status)
+        })
+        for(let i=0; i<this.includedStack.length; i++){
+          http
+          .post('projectstack', {
+            seq_post_project: this.includedProject,
+            stack: this.stackInfoList[this.includedStack[i]].stack,
+            stack_img_url: this.stackInfoList[this.includedStack[i]].stack_img_url
+          })
+          .then(({ data }) => {
+            console.log(this.portfolioSeq+"번 portfolio에 "+  this.stackInfoList[this.includedStack[i]].stack + " 기술스택 입력 성공!")
+          })
+          .catch((error)=>{
+            console.log(error.response.status)
+          })
+        }
         this.$message({
-          type: 'success',
-          message: '회원 가입이 완료되었습니다.'
+            type: 'success',
+            message: '포트폴리오 생성 완료.'
         });
         this.$router.push('/blog')
       })
       .catch((error) => {
         console.log(error.response.status)
-        if(error.response.status=='404'){
-          this.$message({
-            type: 'warning',
-            message: '이미 존재하는 아이디입니다.'
-          });
-        }
       })
     },
+    
     validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
