@@ -1,66 +1,67 @@
 <template>
   <transition name="el-zoom-in-top">
     <div class="content-wrapper" style="background: white;">
-        <!-- start container-movie : 블로그 배너-->
-              <div class="container-movie" style="top:65px;">
-                <!-- start profile -->
-                <div class="details-profile" >
-                  <div class="title1" style="display:inline">
-                    <!-- input length 바꾸게 하는것 -->
-                    <input type="text" style="font-size:40px;" id="title" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog" readonly />
-                    <br>
-                    <input type="text" style="font-size:15px;" id="detail" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog" readonly />
-                  </div>
-                  
-                  <i class="ti-pencil-alt" v-if="this.$store.state.settingButtonVisible" @click="alterBlog" style="cursor:pointer;"></i>
-                  
-                  <div class="title2">
-                    by {{blogOwnerInfo.nickname}}
-                    <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
-                    <a href="#"><img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" /></a>
-                    <!-- <span>Web Designer</span> -->
-                  </div>
-                </div>
-                <div class="description-profile">
-                  <div class="column2">
-                    <div class="row"> 
-                      <div class="col-xs-12 col-sm-4 emphasis">
-                        <h2><strong>{{blogOwnerNumOfProject}}</strong></h2>
-                        <p> <small>Projects</small> </p>
-                      </div>
-                      <div class="col-xs-12 col-sm-4 emphasis">
-                        <h2><strong>{{blogOwnerNumOfPost}}</strong></h2>
-                        <p> <small>Post</small> </p>
-                      </div>
-                      <div class="col-sm-4 emphasis" style="cursor:pointer;">
-                        <h2><strong @click="follower">{{blogOwnerNumOfNeighbor}}</strong></h2>
-                        <p> <small @click="follower" v-bind="followerpage">Follower</small> </p>
-                        <button style="margin=0px;" @click="subscribe">구독</button>
-                      </div>
-                    </div>
-                  </div>
+      <!-- start container-movie : 블로그 배너-->
+      <div class="container-movie" style="top:65px;">
+        <!-- start profile -->
+        <div class="details-profile" >
+          <div class="title1" style="display:inline">
+            <!-- input length 바꾸게 하는것 -->
+            <input type="text" style="font-size:40px;" id="title" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog" readonly />
+            <br>
+            <input type="text" style="font-size:15px;" id="detail" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog" readonly />
+          </div>
                 
-                <span style="margin-left:60px;"></span>  
-                <!-- 블로그 태그 -->
-                <span class = "tag" v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="margin-right:20px;">
-                  #{{tag.tag}}
-                </span>
-
-                  <div class="column4" v-if="this.$store.state.isLogin">
-                  <router-link to="writePost">
-                  <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
-                  </router-link>
-                  <span id="setting" @click="set">관리<i class="ti-settings" style="display:inline"></i></span>
-                  </div>
-                </div>
-                <!-- end profile -->
-              </div>
-              <!-- end container-movie -->
-        <!-- start box -->
-        <div class="box">
-          <blog-content v-if="followerpage===false"></blog-content>
-          <follower v-if="followerpage"></follower>
+          <i class="ti-pencil-alt" v-if="this.$store.state.settingButtonVisible" @click="alterBlog" style="cursor:pointer;"></i>
+                
+          <div class="title2">
+            by {{blogOwnerInfo.nickname}}
+            <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
+            <a href="#"><img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" /></a>
+            <!-- <span>Web Designer</span> -->
+          </div>
         </div>
+        <div class="description-profile">
+          <div class="column2">
+            <div class="row"> 
+              <div class="col-xs-12 col-sm-4 emphasis">
+                <h2><strong>{{blogOwnerNumOfProject}}</strong></h2>
+                <p> <small>Projects</small> </p>
+              </div>
+              <div class="col-xs-12 col-sm-4 emphasis">
+                <h2><strong>{{blogOwnerNumOfPost}}</strong></h2>
+                <p> <small>Post</small> </p>
+              </div>
+              <div class="col-sm-4 emphasis" style="cursor:pointer;">
+                <h2><strong @click="follower">{{blogOwnerNumOfNeighbor}}</strong></h2>
+                <p> <small @click="follower" v-bind="followerpage">Follower</small>
+                  <!-- <i class="material-icons" @click="subscribe">add_circle_outline</i> -->
+                </p>
+              </div>
+            </div>
+          </div>
+              
+          <span style="margin-left:60px;"></span>  
+          <!-- 블로그 태그 -->
+          <span class = "tag" v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="margin-right:20px;">
+            #{{tag.tag}}
+          </span>
+
+          <div class="column4" v-if="this.$store.state.isLogin">
+            <router-link to="writePost">
+              <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
+            </router-link>
+              <span id="setting" @click="set">관리<i class="ti-settings" style="display:inline"></i></span>
+          </div>
+        </div>
+        <!-- end profile -->
+      </div>
+      <!-- end container-movie -->
+      <!-- start box -->
+      <div class="box">
+        <blog-content v-if="followerpage===false"></blog-content>
+        <follower v-if="followerpage"></follower>
+      </div>
     </div>
   </transition>
 </template>
