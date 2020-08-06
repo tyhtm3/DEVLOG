@@ -69,7 +69,7 @@ export default new Vuex.Store({
         // context.commit('mutateUserInfo', data)
         context.commit('mutateLoginFormVisible', false)
         http
-        .get('/user/me')
+        .get('/user/me',{headers : {'Authorization' : data,}})
         .then(({data}) =>{
             // console.log(data)
             context.commit('mutateUserInfo',data)
