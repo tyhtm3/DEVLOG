@@ -17,7 +17,7 @@
                   <dd>
                     <el-input v-model="id" style="width: 40%;"></el-input>
                     <el-upload
-                    class="avatar-uploader"
+                    class="avatar-uploader2"
                     action="https://jsonplaceholder.typicode.com/posts/"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
@@ -171,7 +171,7 @@ import http from '../util/http-common'
 </script>
 
 <style>
-  .avatar-uploader .el-upload {
+  .avatar-uploader2 .el-upload {
     top: 90px;
     left: 500px;
     border: 1px dashed #d9d9d9;
@@ -180,7 +180,7 @@ import http from '../util/http-common'
     position: absolute;
     overflow: hidden;
   }
-  .avatar-uploader .el-upload:hover {
+  .avatar-uploader2 .el-upload:hover {
     border-color: #409EFF;
   }
   .avatar-uploader-icon {

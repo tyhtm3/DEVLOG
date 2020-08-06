@@ -429,7 +429,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   .tocenter{
     vertical-align: middle;    
   }
