@@ -272,12 +272,12 @@ export default {
     this.birth = this.userInfo.birthday,
     this.giturl = this.userInfo.github_url,
     this.imageUrl = this.userInfo.profile_img_url
-    ,$(".el-tab-pane").click(function(event){
-      var targetElement = $(event.target);
-      if(targetElement.is(".el-tab-pane")){
-        alert("고침");
-      }
-    });
+    // ,$(".el-tab-pane").click(function(event){
+    //   var targetElement = $(event.target);
+    //   if(targetElement.is(".el-tab-pane")){
+    //     alert("고침");
+    //   }
+    // });
 
     // divs.forEach(function(div) {
       //   div.addEventListener('click', logEvent, {
