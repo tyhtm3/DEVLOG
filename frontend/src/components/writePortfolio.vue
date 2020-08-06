@@ -6,6 +6,10 @@
           <div class="box-body" style="align:center; min-height:400px; max-width:800px; margin:auto; padding : 0px;">
 						<div class="col-sm-12" style="padding:0px">
 							<div class="col-xs-12 col-sm-12" style="padding:0px">
+                 <hr>
+                  <div style="margin-bottom:15px; font-size:20px;"><b>개인정보 입력</b></div>
+                  <!-- <div style="margin-bottom:15px; font-size:20px; text-align:center"><b>개인정보 입력</b></div> -->
+                  <hr>
 								<dl class="dl-horizontal-profile">
 									<dt>이름</dt>
                   <dd>
@@ -31,7 +35,14 @@
                     </el-input>
                   </dd>
 								</dl>
-
+                </div>
+                 <div class="col-xs-12 col-sm-12" style="padding:0px">
+                  <hr>
+                  <div style="margin-bottom:15px; font-size:20px"><b>프로젝트 정보 입력</b></div>
+                  <!-- <div style="margin-bottom:15px; font-size:20px; text-align:center"><b>프로젝트 정보 입력</b></div> -->
+                  <hr>
+                </div>
+                <div>
                 <!-- 왼쪽 프로젝트 선택 부분 -->
                 <!-- <div><p id="titleid">프로젝트 선택</p></div> -->
                 <section class="selectProject">
@@ -47,7 +58,6 @@
                   </el-transfer>
                 </section>
                 <!-- 왼쪽 프로젝트 선택 부분 끝-->
-                
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 -->
                 <!-- {{projectInfoList}}<br><br>
                 프로젝트 사이즈 : {{projectInfoList.length}}<br><br> -->
@@ -124,6 +134,12 @@
                 </section>
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
                 </div>
+                 <div class="col-xs-12 col-sm-12" style="padding:0px">
+                  <hr>
+                  <div style="margin-bottom:15px; font-size:20px"><b>기술스택 정보 입력</b></div>
+                  <!-- <div style="margin-bottom:15px; font-size:20px; text-align:center"><b>기술스택 정보 입력</b></div> -->
+                  <hr>
+                </div>
                 <div>
                 <!-- <div><p id="titleid">기술스택 선택</p></div> -->
                 <div class="selectStacks">
@@ -183,6 +199,8 @@
               <div class="col-xs-12 col-sm-12" style="padding:0px">
                 <hr>
                 <div style="margin-bottom:15px; font-size:20px"><b>포트폴리오 정보 입력</b></div>
+                <!-- <div style="margin-bottom:15px; font-size:20px; text-align:center"><b>포트폴리오 정보 입력</b></div> -->
+                <hr>
 								<dl class="dl-horizontal-profile">
                   <dt>TITLE</dt>
                   <dd><el-input v-model="portfolioTitle" style="width: 70%;"></el-input></dd>
@@ -199,9 +217,9 @@
                     </el-radio-group>
                   </dd>
 								</dl>
+                <hr>
               </div>
-              <hr>
-              <el-button @click="makePortfolio" style="float:right; margin-bottom: 20px">프로젝트 생성</el-button>
+              <el-button @click="makePortfolio" style="float:right; margin-bottom: 20px">포트폴리오 생성</el-button>
 
               
               <!-- <div class="one">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -434,7 +452,7 @@ export default {
     vertical-align: middle;    
   }
   .avatar-uploader .el-upload {
-    top: 0px;
+    top: 110px;
     left: 70%;
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
