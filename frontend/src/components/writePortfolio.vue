@@ -364,6 +364,7 @@ export default {
         this.portfolioDisclosure = 2
       else
         this.portfolioDisclosure = 3
+      // alert(this.includedProject);
       http
       .post('portfolio', {
         content: this.portfolioContent,
@@ -378,14 +379,16 @@ export default {
       .then(({ data }) => {
         this.portfolioSeq=data;
         http
-        .post('portfolio', {
+        .post('portfoliopjt', {
           seq_post_portfolio: this.portfolioSeq,
           seq_post_project: this.includedProject
         })
         .then(({ data }) => {
+          // alert(this.portfolioSeq+"번 portfolio에 "+  this.includedProject + "번 프로젝트 입력 성공!")
           console.log(this.portfolioSeq+"번 portfolio에 "+  this.includedProject + "번 프로젝트 입력 성공!")
         })
         .catch((error)=>{
+          // alert(error.response.status);
           console.log(error.response.status)
         })
         for(let i=0; i<this.includedStack.length; i++){
