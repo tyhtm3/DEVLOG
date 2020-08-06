@@ -6,19 +6,6 @@ Vue.use(Vuex)
 
 import http from './util/http-common'
 
-// const state = {
-//   token: null
-// }
-
-// const mutations = {
-//   SET_TOKEN (state, token) {
-//     state.token = token
-//   },
-//   REMOVE_TOKEN (state) {
-//     state.token = null
-//   }
-// }
-
 export default new Vuex.Store({
   plugins: [
     createPersistedState()
@@ -63,19 +50,12 @@ export default new Vuex.Store({
         console.log('data : ' + data);
         context.commit('mutateIsLogin', true)
         context.commit('SET_TOKEN',data)
-        localStorage.setItem('token',data)
-        console.log('set_token : ' + localStorage.getItem('token'))
-        // localStorage.setItem('token',data) 
-        // context.commit('mutateUserInfo', data)
         context.commit('mutateLoginFormVisible', false)
         http
         .get('/user/me',{headers : {'Authorization' : data,}})
         .then(({data}) =>{
             // console.log(data)
             context.commit('mutateUserInfo',data)
-            context.commit('SET_TOKEN',localStorage.getItem('token'))
-            console.log(data)
-            console.log(this.state.userInfo.seq)
         });
       })
       .catch((error) =>  {
