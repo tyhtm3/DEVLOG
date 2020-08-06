@@ -104,7 +104,7 @@
                 this.tag = data;
          })
          // 좋아요 여부 불러오기
-        http.get(`postlike/${seq}/${this.seq_user}`)
+        http.get(`postlike/${seq}`)
                 .then(({data}) => {
                 if(data.length==0){
                   this.isLike=false
@@ -115,7 +115,7 @@
       },
        // 좋아요
       like(){
-        http.post('postlike/',{seq_post:this.seq, seq_user:this.seq_user})
+        http.post('postlike/',{seq_post:this.seq})
                 .then(({data}) => {
                 this.post.like_count+=1
                 this.isLike=true
@@ -123,7 +123,7 @@
       },
       // 좋아요 취소
       cancelLike(){
-        http.get(`postlike/${this.seq}/${this.seq_user}`)
+        http.get(`postlike/${this.seq}`)
                 .then(({data}) => {
                 http.delete(`postlike/${data.seq}`).then(({data})=>{
                   this.post.like_count-=1
