@@ -17,7 +17,8 @@
             <div class="search">
               <input type="text" v-model="search" placeholder="search follower" /> <i class="fa fa-search"></i> </div>
             <ul style="text-align:center" class="list" >
-              <li @click="selected(index) "style="cursor:pointer" class="clearfix" v-for="(neighbor, index) in requestneighborinfoList" :key="index" v-if="neighbor.name.includes(search)" >
+              <li @click="selected(index)" style="cursor:pointer" class="clearfix" v-for="(neighbor, index) in requestneighborinfoList" :key="index">
+              <!-- <li @click="selected(index)" style="cursor:pointer" class="clearfix" v-for="(neighbor, index) in requestneighborinfoList" :key="index" v-if="neighbor.name.includes(search)"> -->
                 <img v-if="neighbor.profile_img_url" :src="neighbor.profile_img_url" alt="avatar" />
                 <img v-else src="upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" alt="avatar" />
                 <div class="about">

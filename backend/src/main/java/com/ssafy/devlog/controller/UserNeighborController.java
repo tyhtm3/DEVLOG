@@ -37,11 +37,19 @@ public class UserNeighborController {
 	@Autowired
 	private JwtService jwtService;
 	
-	@ApiOperation(value = "유저의 모든 이웃을 반환한다.", response = List.class)
+	@ApiOperation(value = "자신의 모든 이웃을 반환한다.", response = List.class)
 	@GetMapping
-	public ResponseEntity<List<UserNeighbor>> selectAllUserNeighbor() throws Exception {
-		logger.debug("selectAllUserNeighbor - 호출");
+	public ResponseEntity<List<UserNeighbor>> selectMyNeighbor() throws Exception {
+		logger.debug("selectMyNeighbor - 호출");
 		int seq_user = jwtService.getSeq();
+		return new ResponseEntity<List<UserNeighbor>>(userNeighborService.selectAllUserNeighbor(seq_user),
+				HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "유저의 모든 이웃을 반환한다.", response = List.class)
+	@GetMapping("/{seq_user}")
+	public ResponseEntity<List<UserNeighbor>> selectAllUserNeighbor(@PathVariable int seq_user) throws Exception {
+		logger.debug("selectAllUserNeighbor - 호출");
 		return new ResponseEntity<List<UserNeighbor>>(userNeighborService.selectAllUserNeighbor(seq_user),
 				HttpStatus.OK);
 	}

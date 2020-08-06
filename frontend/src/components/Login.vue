@@ -8,7 +8,7 @@
 				<input v-model="id" id="id" placeholder="id" type="text"/>
 				<input v-model="password" type="password" id="password" placeholder="password"/>
 				<button class="normal" @click="login">login</button><p/>
-				<button class="kakao" @click="login">kakao</button><button class="naver" @click="login">naver</button><p/>
+				<button class="kakao" @click="login">kakao</button><button class="naver" @click="naverLogin">naver</button><p/>
 				<!-- <button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button> -->
 				<p class="message">Not registered?
 					<router-link to="/signup">
@@ -30,8 +30,18 @@ export default {
 		return {
 			id: '',
 			password: '',
+			// naver
+			CLIENT_ID: 'RSKBTL31UOSpdlckpmTt',
+      		redirectURI: 'http://localhost:8090/devlog/api/user/naver',
+     		state: 123,
+     		naverLoginURL: 'https://nid.naver.com/oauth2.0/authorize?response_type=code'
 		}
 	},
+	created () {
+    this.naverLoginURL += '&client_id=' + this.CLIENT_ID
+    this.naverLoginURL += '&redirect_uri=' + this.redirectURI
+    this.naverLoginURL += '&state=' + this.state
+  	},
 	methods: {
 		loginFormClose(){
 			this.$store.state.loginFormVisible = false
@@ -43,6 +53,9 @@ export default {
 				this.$message.warning('비밀번호를 입력해주세요')
 			else
 				this.$store.dispatch('login', {id: this.id, password: this.password})
+		},
+		naverLogin(){
+			window.open(this.naverLoginURL, '_blank');
 		}
 	},
 }

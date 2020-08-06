@@ -84,8 +84,24 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "특정 회원의 정보를 반환한다.", response = List.class)
-	@GetMapping
-	public ResponseEntity<User> selectUserBySeq() throws Exception {
+	@GetMapping("/{seq}")
+	public ResponseEntity<User> selectUserBySeq(@PathVariable int seq) throws Exception {
+		logger.debug("selectUserBySeq - 호출");
+		System.out.println(seq);
+		return new ResponseEntity<User>(userService.selectUserBySeq(seq), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "특정 회원의 정보를 반환한다.(Id로 검색)", response = List.class)
+	@GetMapping("id/{seq}")
+	public ResponseEntity<User> selectUserById(@RequestParam String id) throws Exception {
+		logger.debug("selectUserBySeq - 호출");
+		return new ResponseEntity<User>(userService.selectUserById(id), HttpStatus.OK);
+	}
+	
+	
+	@ApiOperation(value = "내 정보를 반환한다.", response = List.class)
+	@GetMapping("/me")
+	public ResponseEntity<User> selectMyInfo() throws Exception {
 		logger.debug("selectUserBySeq - 호출");
 		int seq = jwtService.getSeq();
 		return new ResponseEntity<User>(userService.selectUserBySeq(seq), HttpStatus.OK);
