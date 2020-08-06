@@ -1,15 +1,8 @@
 <template>
   <transition name="el-zoom-in-top">
     <div class="content-wrapper" style="background: white;">
-      <!-- start Main content -->
-      <section class="content" >
-        <!-- start box -->
-        <div class="box">
-          <!-- start box-body -->
-          <div class="box-body" >
-
         <!-- start container-movie : 블로그 배너-->
-              <div class="container-movie">
+              <div class="container-movie" style="top:65px;">
                 <!-- start profile -->
                 <div class="details-profile" >
                   <div class="title1" style="display:inline">
@@ -63,15 +56,11 @@
                 <!-- end profile -->
               </div>
               <!-- end container-movie -->
-                 
-         
-          </div>
-          <!-- end box-body -->
+        <!-- start box -->
+        <div class="box">
           <blog-content v-if="followerpage===false"></blog-content>
           <follower v-if="followerpage"></follower>
-        </div> 
-      </section>
-      <!-- end Main content -->
+        </div>
     </div>
   </transition>
 </template>
