@@ -53,6 +53,7 @@ import PostDetail from './pages/PostDetail.vue'
 import PortfolioDetail from './pages/PortfolioDetail.vue'
 import NotFound from './pages/error/404.vue'
 import NotFoundSecond from './pages/error/500.vue'
+import Template01 from './pages/Template01.vue'
 
 // Routes
 const routes = [
@@ -120,15 +121,16 @@ const routes = [
         path: '/404',
         name: '404-eror',
         component: NotFound
-      }, {
+      },
+      {
         path: '/500',
         name: '500',
         component: NotFoundSecond
       },
       {
-        path: '*',
-        name: '404',
-        component: NotFound
+        path: '/template01',
+        name: 'template01',
+        component: Template01
       },
 
 
@@ -313,7 +315,12 @@ const routes = [
         path: '/chart/chart-map',
         name: 'chart-map',
         component: ChartMap
-      }
+      },
+      {
+        path: '*',
+        name: '404',
+        component: NotFound
+      },
     ]
 
   }
