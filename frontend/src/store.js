@@ -29,8 +29,8 @@ export default new Vuex.Store({
     isLogin: false,
     userInfo: {
       seq:0,
-      token2:null,
-    }
+    },
+    token : null,
   },
   getters: {
     userInfo: state => state,
@@ -45,9 +45,8 @@ export default new Vuex.Store({
     mutateUserInfo(state, userInfo){
       state.userInfo = userInfo
     },
-    SET_TOKEN (state, token2) {
-          state.userInfo.token2 = token2
-          localStorage.setItem('token2',token2)
+    SET_TOKEN (state, token) {
+          state.token = token
         },
     // REMOVE_TOKEN (state) {
     //       state.token = null
@@ -61,9 +60,11 @@ export default new Vuex.Store({
         password: password
       })
       .then(({data}) => {
-        console.log(data);
+        console.log('data : ' + data);
         context.commit('mutateIsLogin', true)
         context.commit('SET_TOKEN',data)
+        localStorage.setItem('token',data)
+        console.log('set_token : ' + localStorage.getItem('token'))
         // localStorage.setItem('token',data) 
         // context.commit('mutateUserInfo', data)
         context.commit('mutateLoginFormVisible', false)
@@ -71,10 +72,9 @@ export default new Vuex.Store({
         .get('/user/me')
         .then(({data}) =>{
             // console.log(data)
-            
             context.commit('mutateUserInfo',data)
-            context.commit('SET_TOKEN',localStorage.getItem('token2')) 
-            console.log(this.state.userInfo.token2)
+            context.commit('SET_TOKEN',localStorage.getItem('token'))
+            console.log(data)
             console.log(this.state.userInfo.seq)
         });
       })

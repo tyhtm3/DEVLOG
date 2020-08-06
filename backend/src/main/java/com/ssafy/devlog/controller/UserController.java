@@ -104,7 +104,6 @@ public class UserController {
 	public ResponseEntity<User> selectMyInfo() throws Exception {
 		logger.debug("selectUserBySeq - 호출");
 		int seq = jwtService.getSeq();
-		System.out.println(seq);
 		return new ResponseEntity<User>(userService.selectUserBySeq(seq), HttpStatus.OK);
 	}
 

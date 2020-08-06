@@ -149,7 +149,6 @@ export default {
   created(){
     this.getTags();
     http.post('/project/feed', {
-      seq_user: 0,
       disclosure: 1,
       offset: 0,
       limit: 10

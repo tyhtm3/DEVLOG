@@ -103,9 +103,7 @@ public class PostController {
 	@ApiOperation(value = "피드에서 한 페이지의 포스트 반환. (ex. { seq_user:1 , disclosure:1, offset:0, limit:6, tag:['python']  } )", response = List.class)
 	@PostMapping(value = "/feed")
 	public ResponseEntity<List<Post>> selectPostByFeed(@RequestBody Map<String, Object> params) throws Exception {
-		int seq_user = 0;
-		if ((Object) jwtService.getSeq() != null)
-			seq_user = jwtService.getSeq();
+		int seq_user = jwtService.getSeq();
 		logger.debug("selectPostByFeed - 호출");
 		return new ResponseEntity<List<Post>>(postService.selectPostByFeed(seq_user, (int) params.get("disclosure"),
 				(int) params.get("offset"), (int) params.get("limit"), (List<String>) params.get("tag")),
@@ -117,9 +115,7 @@ public class PostController {
 	@GetMapping(value = "/blog/{seq_blog}")
 	public ResponseEntity<Integer> selectPostCntByBlog(@PathVariable int seq_blog) throws Exception {
 		logger.debug("selectPostCntByBlog - 호출");
-		int seq_user = 0;
-		if ((Object) jwtService.getSeq() != null)
-			seq_user = jwtService.getSeq();
+		int seq_user = jwtService.getSeq();
 		return new ResponseEntity<Integer>(postService.selectPostCntByBlog(seq_user, seq_blog), HttpStatus.OK);
 	}
 
@@ -128,9 +124,7 @@ public class PostController {
 	@PostMapping(value = "/blog")
 	public ResponseEntity<List<Post>> selectPostByBlog(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("selectPostByBlog - 호출");
-		int seq_user = 0;
-		if((Object)jwtService.getSeq()!=null) 
-			seq_user = jwtService.getSeq();
+		int seq_user = jwtService.getSeq();
 		return new ResponseEntity<List<Post>>(postService.selectPostByBlog(seq_user,(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}
 

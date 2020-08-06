@@ -102,9 +102,7 @@ public class ProjectController {
 		
 	public ResponseEntity<List<Project>> selectProjectByFeed(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("selectProjectByFeed - 호출");
-		int seq_user = 0;
-		if((Object)jwtService.getSeq()!=null) 
-			seq_user = jwtService.getSeq();
+		int seq_user = jwtService.getSeq();
 			
 		return new ResponseEntity<List<Project>>(projectService.selectProjectByFeed(seq_user,(int)params.get("disclosure"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}
@@ -114,9 +112,7 @@ public class ProjectController {
 	@GetMapping(value = "/blog/{seq_blog}")
 	public ResponseEntity<Integer> selectProjectCntByBlog(@PathVariable int seq_blog) throws Exception{
 		logger.debug("selectProjectCntByBlog - 호출");
-		int seq_user = 0;
-		if((Object)jwtService.getSeq()!=null) 
-			seq_user = jwtService.getSeq();
+		int seq_user = jwtService.getSeq();
 		return new ResponseEntity<Integer>(projectService.selectProjectCntByBlog(seq_user,seq_blog), HttpStatus.OK);
 	}
 	
@@ -125,9 +121,7 @@ public class ProjectController {
 	@PostMapping(value = "/blog")
 	public ResponseEntity<List<Project>> selectProjectByBlog(@RequestBody Map<String, Object> params) throws Exception{
 		logger.debug("selectProjectByBlog - 호출");
-		int seq_user = 0;
-		if((Object)jwtService.getSeq()!=null) 
-			seq_user = jwtService.getSeq();
+		int seq_user = jwtService.getSeq();
 		return new ResponseEntity<List<Project>>(projectService.selectProjectByBlog(seq_user,(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}
 	
