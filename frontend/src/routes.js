@@ -48,7 +48,8 @@ import SignUp from './pages/SignUp.vue'
 import MyInfo from './pages/MyInfo.vue'
 import FindPassword from './pages/FindPassword'
 import WritePost from './pages/WritePost.vue'
-// import WritePortfolio from './pages/WritePortfolio.vue'
+// import WritePortfolio1 from './pages/WritePortfolio1.vue'
+// import WritePortfolio from './pages/WritePortfolio2.vue'
 // import Follower from './pages/Follower.vue'
 import ProjectDetail from './pages/ProjectDetail.vue'
 import PostDetail from './pages/PostDetail.vue'
@@ -119,8 +120,13 @@ const routes = [
         component: WritePost
       },
       // {
-      //   path: '/writeportfolio',
-      //   name: 'write-portfolio',
+      //   path: '/writeportfolio1',
+      //   name: 'write-portfolio1',
+      //   component: WritePortfolio
+      // },
+      // {
+      //   path: '/writeportfolio2',
+      //   name: 'write-portfolio2',
       //   component: WritePortfolio
       // },
       // {

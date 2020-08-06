@@ -31,23 +31,191 @@
                     </el-input>
                   </dd>
 								</dl>
+
+                <!-- 왼쪽 프로젝트 선택 부분 -->
+                
+                <section class="selectProject">
+                  <el-transfer
+                    :titles="['내 프로젝트', '선택된 프로젝트']"
+                    filterable
+                    :filter-method="filterMethod"
+                    filter-placeholder="프로젝트 검색"
+                    v-model="includedProject"
+                    :button-texts="['','']"
+                    :data="projectList">
+                  </el-transfer>
+                </section>
+                <!-- 왼쪽 프로젝트 선택 부분 끝-->
+                
+                <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 -->
+                <!-- <section class="showProject">
+                  <div class="tocenter" style="padding: 10px 0px 0px 10px">
+                    <div style="margin-bottom:15px; font-size:15px"><b>프로젝트 정보</b></div>
+                    <div class="row pjt-margin">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">제목</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].title}}</p>
+                      </div>
+                    </div>
+                    <div class="row pjt-margin">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">개요</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].summary}}</p>
+                      </div>
+                    </div>
+                    <div class="row pjt-margin">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">기간</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].start_date}} ~ <br>{{projectInfoList[0].finish_date}}</p>
+                      </div>
+                    </div>
+                    <div class="row pjt-margin">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">스택</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <div v-for="(stack,index) in stack" :key="index">
+                        <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
+                      </div>
+                      </div>
+                    </div>
+                    <div class="row pjt-margin">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">역할</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].role}}</p>
+                      </div>
+                    </div>
+                    <div class="row" v-if="projectInfoList[0].github_url">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">Github</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content"><a href="#" @click="goUrl(projectInfoList[0].github_url)">{{projectInfoList[0].github_url}}</a></p>
+                      </div>
+                    </div>
+                    <div class="row" v-if="projectInfoList[0].etc_url">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">참고 Url</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].etc_url}}</p>
+                      </div>
+                    </div>
+                    <div class="row" v-if="projectInfoList[0].rep_url">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">참조 Url</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].rep_url}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </section> -->
+                <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
+                
+                <section class="selectStacks">
+                <!-- 왼쪽 기술스택 선택 부분 -->
                 <el-transfer
-                  :titles="['내 프로젝트', '선택된 프로젝트']"
+                  :titles="['내 기술스택', '선택된 기술스택']"
                   filterable
                   :filter-method="filterMethod"
-                  filter-placeholder="프로젝트 검색"
-                  v-model="value"
-                  :data="data">
+                  filter-placeholder="기술스택 검색"
+                  v-model="includedStack"
+                  :button-texts="['','']"
+                  :data="stackList">
                 </el-transfer>
+                <!-- 왼쪽 기술스택 선택 부분 끝-->
+                </section>
+                <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 -->
+                <!-- <section class="showStacks">
+                  <div class="tocenter" style="padding: 10px 0px 0px 10px">
+                    <div style="margin-bottom:15px; font-size:15px"><b>프로젝트 정보</b></div>
+                    <div class="row pjt-margin">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">제목</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].title}}</p>
+                      </div>
+                    </div>
+                    <div class="row pjt-margin">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">개요</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].summary}}</p>
+                      </div>
+                    </div>
+                    <div class="row pjt-margin">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">기간</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].start_date}} ~ <br>{{projectInfoList[0].finish_date}}</p>
+                      </div>
+                    </div>
+                    <div class="row pjt-margin">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">스택</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <div v-for="(stack,index) in stack" :key="index">
+                        <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
+                      </div>
+                      </div>
+                    </div>
+                    <div class="row pjt-margin">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">역할</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].role}}</p>
+                      </div>
+                    </div>
+                    <div class="row" v-if="projectInfoList[0].github_url">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">Github</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content"><a href="#" @click="goUrl(projectInfoList[0].github_url)">{{projectInfoList[0].github_url}}</a></p>
+                      </div>
+                    </div>
+                    <div class="row" v-if="projectInfoList[0].etc_url">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">참고 Url</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].etc_url}}</p>
+                      </div>
+                    </div>
+                    <div class="row" v-if="projectInfoList[0].rep_url">
+                      <div class="col-sm-4">
+                      <p class="pjt-title">참조 Url</p>
+                      </div>
+                      <div class="col-sm-8">
+                      <p class="pjt-content">{{projectInfoList[0].rep_url}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </section> -->
+                <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
+
+                <!-- 
+                <div class="selectTemplate">
+                  템플릿 선택
+                </div> -->
             	</div>
-              <el-button :plain="true" @click="modify">수정</el-button>
-              <el-button :plain="true" @click="signout">탈퇴</el-button>
-						</div>  
-            <div>
-            {{projectList}}<br>
-            둘다보이기<br>
-            {{data}}
-            </div>
+              <el-button :plain="true" @click="makePortfolio">생성</el-button>
+						</div> 
           </div>
           <!--/myCarousel-->
         </div>
@@ -57,9 +225,12 @@
 	</transition>
 </template>
 
+ 
+
 <script>
 import http from '../util/http-common'
 import { mapState } from 'vuex'
+import projectListVue from './projectList.vue'
 export default {
   components: {
   },
@@ -67,37 +238,8 @@ export default {
     ...mapState(['userInfo']),
   },
   data: () => {
-    const generateData = _ => {
-      const data = [];
-      const states = ['California', 'Illinois', 'Maryland', 'Texas', 'Florida', 'Colorado', 'Connecticut '];
-      const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
-      // http
-      // .post('project/blog', { seq_user:_input , seq_blog:_input, offset:0, limit:100} )
-      // .then(({ data }) => {
-      //   alert(data[0].title)
-      //     // states.push('ABC');
-      //     // alert("안에서 " + states);
-      // })
-      // alert("출력" + _input);
-      alert("불러옴");
-      states.forEach((city, index) => {
-          data.push({
-            label: city,
-            key: index,
-            initial: initials[index]
-          });
-      });
-      return data;
-    };
-    // const fromDB = _input => {
-    //   http
-    //   .post('project/blog', { seq_user:_input , seq_blog:_input, offset:0, limit:100} )
-    //   .then(({ data }) => {
-    //   // alert(data[0].title);
-    //   return data;
-    //   })
-    // };
     return {
+      // 개인정보
       seq: '',
       name: '',
       email: '',
@@ -105,20 +247,23 @@ export default {
       birth: '',
       giturl: '',
       imageUrl: '',
-      data: generateData(),
-      value: [],
-      filterMethod(query, item) {
-        return item.initial.toLowerCase().indexOf(query.toLowerCase()) > -1;
-      },
+      // 플젝정보
       projectList: [],
+      includedProject: [],
+      projectInfoList:[],
+      // 스택정보
+      stackList: [],
+      includedStack: [],
+      stackInfoList:[],
     }
   },
   created() {
     this.$store.state.loginFormVisible = false;
-    // this.generateData();
-    // this.getProjectInfo();
-    this.data.push(this.generateData()[0]);
+    this.getProjectList(this.userInfo.seq);
+    this.getStackList(this.userInfo.seq);
   },
+  // watch(){
+  // },
   mounted() {
     this.seq = this.userInfo.seq,
     this.name = this.userInfo.name,
@@ -127,71 +272,72 @@ export default {
     this.birth = this.userInfo.birthday,
     this.giturl = this.userInfo.github_url,
     this.imageUrl = this.userInfo.profile_img_url
+    // ,$('span').on('click', evt => {
+    //   alert("클릭됨!!!");
+    // })
   },
   methods: {
-    // getProjectInfo(){
-    //   http
-    //   .post('project/blog', { seq_user:this.userInfo.seq , seq_blog:this.userInfo.seq, offset:0, limit:100} )
-    //   .then(({ data }) => {
-    //       this.projectList = data;
-    //   })
-    // },
-    generateData(){
-      // alert("함수들어옴")
-      http.post('project/blog', { seq_user:4, seq_blog:4, offset:0, limit:6 } )
-      .then(({ data }) => {
-          this.projectList = data;
-          // alert(data)
-      })  
-      return data;
+    filterMethod(query, item) {
+        return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
     },
-    
-    // generateData(){
-    //   alert("들어옴")
-    //   http.post('project/blog', { seq_user:4, seq_blog:4, offset:0, limit:6 } )
-    //   .then(({ data }) => {
-    //       this.projectList = data;
-    //       alert(data)
-    //   })  
-    // },
-    
-    // generateData(){
-    //   let data = [];
-    //   let projectSeq = ['CA'];
-    //   let temp=[];
-    //   // let projects=['California'];  
-    //   http
-    //   .post('project/blog', { seq_user:4 , seq_blog:4, offset:0, limit:100} )
-    //   .then(({ data }) => {
-    //       temp = data;
-    //       // alert(temp[0].seq);
-    //       alert(data.size);
-    //   })
-    //   projects.forEach((project, index) => {
-    //     data.push({
-    //       label: project,
-    //       key: index,
-    //       initial: projectSeq[index]
-    //     });
-    //   });
-    //   return data;
-    // },
-    modify() {
-      this.$store.dispatch('modify', {
-      password: this.password,
-      name: this.name,
-      nickname: this.nickname,
-      email: this.email,
-      tel: this.tel,
-      birth: this.birth,
-      url: this.url,
-      imageUrl: this.imageUrl
+    getProjectList(seq){
+      http
+      .post('project/blog', { seq_user:seq , seq_blog:seq, offset:0, limit:99999} )
+      .then(({ data }) => {
+        this.projectInfoList=data;
+        for(let i=0; i<data.length; i++){
+          this.projectList.push({
+          label: data[i].title,
+          key:i,
+          initial: data[i].seq
+          })
+        }
+      })
+    },
+    getStackList(seq){
+      http
+      .post('project/blog', { seq_user:seq , seq_blog:seq, offset:0, limit:99999} )
+      .then(({ data }) => {
+        this.stackInfoList=data;
+        for(let i=0; i<data.length; i++){
+          this.stackList.push({
+          label: data[i].title,
+          key:i,
+          initial: data[i].seq
+          })
+        }
+      })
+    },
+    makePortfolio() {
+      // 이미지 변경
+      http
+      .post('portfoliopjt', {
+        
+      })
+      .then(({ data }) => {
+        this.$message({
+          type: 'success',
+          message: '회원 가입이 완료되었습니다.'
+        });
+        this.$router.push('/blog')
+      })
+      .catch((error) => {
+        console.log(error.response.status)
+        if(error.response.status=='404'){
+          this.$message({
+            type: 'warning',
+            message: '이미 존재하는 아이디입니다.'
+          });
+        }
       })
     },
     validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     },
+    
+    // 올려도 안올라감 url 바꿔야됨
+    // 회원정보 수정전용
     handleAvatarSuccess(res, file) {
       var frm = new FormData();
       frm.append("upload_file", file.raw);
@@ -220,6 +366,9 @@ export default {
 </script>
 
 <style>
+  .tocenter{
+    vertical-align: middle;    
+  }
   .avatar-uploader .el-upload {
     top: 0px;
     left: 70%;
@@ -247,5 +396,55 @@ export default {
   .avatar-uploader-icon {
     transform: translate(0%, 40%);
   }
- 
+  .el-transfer{
+    width: auto;
+    float: left;
+    /* background-color: red; */
+  }
+  /* .nextToTransfer{
+  } */
+  /* .el-checkbox__label:hover{
+    color: red;
+  }
+  */
+  /* .el-transfer-panel__header{
+    padding-left: 10px !important;
+  }
+  .el-transfer-panel__item{
+    padding-left: 10px !important;
+  } */
+  .el-transfer__buttons{  
+    padding: 0px 5px !important;
+    /* background-color: green; */
+  }
+  botton.el-button.el-button--primary.is-disabled.el-transfer__button.is-with-texts{
+    padding: 5px;
+  }
+  .showProject{
+    /* display:block; */
+    margin-left:20px;
+    float: left;
+    background-color: #d5cbe42a;
+    min-width: 275px;
+    min-height: 300px;
+    border-radius: 6px;
+  }
+  .showStacks{
+    /* display:block; */
+    margin-left:20px;
+    float: left;
+    background-color: #d5cbe42a;
+    min-width: 275px;
+    min-height: 300px;
+    border-radius: 6px;
+  }
+  .stacks{
+    display:inline-block;
+    margin-top:10px;
+    margin-bottom:10px;
+    min-width: 93%;
+    min-height: 300px;
+    /* background-color: #d5cbe42a; */
+    border-radius: 6px;
+  }
 </style>
