@@ -33,7 +33,9 @@ export default {
 			// naver
 			CLIENT_ID: 'RSKBTL31UOSpdlckpmTt',
       		redirectURI: 'http://localhost:8090/devlog/api/user/naver',
-     		state: 123,
+			state: 123, 
+			/* state : 사이트 간 요청 위조 공격을 방지하기 위해 애플리케이션에서 생성한 상태 토큰값으로
+			 URL 인코딩을 적용한 값을 사용해야한다는데 뭔지 모르겠으므로 일단 123으로 지정 */
      		naverLoginURL: 'https://nid.naver.com/oauth2.0/authorize?response_type=code'
 		}
 	},
@@ -55,7 +57,13 @@ export default {
 				this.$store.dispatch('login', {id: this.id, password: this.password})
 		},
 		naverLogin(){
-			window.open(this.naverLoginURL, '_blank');
+			//window.open(this.naverLoginURL, '_blank');
+			var popup = window.open(this.naverLoginURL,'window_name','width=430,height=500,left=500,right=500,location=no,status=no,scrollbars=yes');
+			
+			//popup.close();
+		},
+		myFunc(){
+			alert("YA")
 		}
 	},
 }
