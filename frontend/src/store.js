@@ -6,18 +6,18 @@ Vue.use(Vuex)
 
 import http from './util/http-common'
 
-const state = {
-  token: null
-}
+// const state = {
+//   token: null
+// }
 
-const mutations = {
-  SET_TOKEN (state, token) {
-    state.token = token
-  },
-  REMOVE_TOKEN (state) {
-    state.token = null
-  }
-}
+// const mutations = {
+//   SET_TOKEN (state, token) {
+//     state.token = token
+//   },
+//   REMOVE_TOKEN (state) {
+//     state.token = null
+//   }
+// }
 
 export default new Vuex.Store({
   plugins: [
@@ -29,6 +29,7 @@ export default new Vuex.Store({
     isLogin: false,
     userInfo: {
       seq:0,
+      token2:null,
     }
   },
   getters: {
@@ -44,6 +45,13 @@ export default new Vuex.Store({
     mutateUserInfo(state, userInfo){
       state.userInfo = userInfo
     },
+    SET_TOKEN (state, token2) {
+          state.userInfo.token2 = token2
+          localStorage.setItem('token2',token2)
+        },
+    // REMOVE_TOKEN (state) {
+    //       state.token = null
+    // }
   },
   actions: {
     login(context, {id, password, url}){
@@ -55,8 +63,20 @@ export default new Vuex.Store({
       .then(({data}) => {
         console.log(data);
         context.commit('mutateIsLogin', true)
-        context.commit('mutateUserInfo', data)
+        context.commit('SET_TOKEN',data)
+        // localStorage.setItem('token',data) 
+        // context.commit('mutateUserInfo', data)
         context.commit('mutateLoginFormVisible', false)
+        http
+        .get('/user/me')
+        .then(({data}) =>{
+            // console.log(data)
+            
+            context.commit('mutateUserInfo',data)
+            context.commit('SET_TOKEN',localStorage.getItem('token2')) 
+            console.log(this.state.userInfo.token2)
+            console.log(this.state.userInfo.seq)
+        });
       })
       .catch((error) =>  {
         if(error.response.status == '404')
@@ -66,6 +86,7 @@ export default new Vuex.Store({
         else
             alert('로그인 도중 에러가 발생했습니다.')
       });
+      
     },
   }
 })

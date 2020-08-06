@@ -79,7 +79,7 @@
           alterTitleFlag: false,
           // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
           seq_blog: this.$store.state.userInfo.seq,
-          seq_user: this.$store.state.userInfo.seq,
+          token2 : this.$store.state.userInfo.token2,
           blogInfo:[],
           blogOwnerInfo:[],
           blogOwnerNumOfProject:'',
@@ -118,11 +118,11 @@
             .then(({ data }) => {
               this.blogOwnerInfo=data;
             });
-            http.get('project/blog/'+this.seq_user+'/'+this.seq_blog)
+            http.get('project/blog/'+this.seq_blog)
             .then(({ data }) => {
                 this.blogOwnerNumOfProject = data;
             });
-            http.get('post/blog/'+this.seq_user+'/'+this.seq_blog)
+            http.get('post/blog/'+this.seq_blog)
             .then(({ data }) => {
                 this.blogOwnerNumOfPost = data;
             });
@@ -147,10 +147,13 @@
         else{
           this.$message({
               type: 'info',
-              message: '관리모드가 활성화 되었습니다.'
+              message: '관리모드가 활성화 되었습니다.',
           });
           $('#setting').css('color', 'black');
           this.$store.state.settingButtonVisible = true;
+          // console.log(this.seq_user);
+          console.log(this.token2);
+          console.log(this.seq_blog);
         }
       },
       follower(){

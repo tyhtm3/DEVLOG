@@ -137,7 +137,7 @@ export default {
       seq_user: this.$store.state.userInfo.seq,
       postList: [],
       projectList: [],
-      projectComment: [],
+      projectComment: [], 
       postComment: [],
       postTag: [],
       tags: [],
@@ -177,13 +177,13 @@ export default {
     getTags(){
       if(this.seq_user==''){
         // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
-        http.get('usertag')
+        http.get('usertag/feed')
         .then(({data}) => {
           this.tags=data;
         });
       }
       else{
-        http.get('usertag/'+this.seq_user)
+        http.get('usertag/')
         .then(({data}) => {
           this.tags=data;
         });

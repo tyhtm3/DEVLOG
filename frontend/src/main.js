@@ -51,11 +51,11 @@ var router = new VueRouter({
 })
 
 // Check local storage to handle refreshes
-if (window.localStorage) {
-  if (store.state.token !== window.localStorage.getItem('token')) {
-    store.commit('SET_TOKEN', window.localStorage.getItem('token'))
-  }
-}
+// if (window.localStorage) {
+//   if (store.state.token !== window.localStorage.getItem('token')) {
+//     store.commit('SET_TOKEN', window.localStorage.getItem('token'))
+//   }
+// }
 
 // Some middleware to help us ensure the user is authenticated.
 
