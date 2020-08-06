@@ -38,7 +38,7 @@
 									<dd><el-input v-model="userInfo.email" style="width: 70%;"></el-input></dd>
 									<dt>연락처</dt>
                   <dd><el-input v-model="userInfo.tel" style="width: 70%;"></el-input></dd>
-                  <dt>생년원일</dt>
+                  <dt>생년월일</dt>
                   <dd><el-date-picker v-model="userInfo.birthday" type="date"></el-date-picker></dd>
                   <dt>url</dt>
 									<dd>
