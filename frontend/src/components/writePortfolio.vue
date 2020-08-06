@@ -33,9 +33,10 @@
 								</dl>
 
                 <!-- 왼쪽 프로젝트 선택 부분 -->
-                
+                <!-- <div><p id="titleid">프로젝트 선택</p></div> -->
                 <section class="selectProject">
                   <el-transfer
+                    style="margin-bottom: 30px"
                     :titles="['내 프로젝트', '선택된 프로젝트']"
                     filterable
                     :filter-method="filterMethod"
@@ -48,8 +49,10 @@
                 <!-- 왼쪽 프로젝트 선택 부분 끝-->
                 
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 -->
-                <!-- <section class="showProject">
-                  <div class="tocenter" style="padding: 10px 0px 0px 10px">
+                <!-- {{projectInfoList}}<br><br>
+                프로젝트 사이즈 : {{projectInfoList.length}}<br><br> -->
+                <section v-if="projectInfoList.length>0" class="showProject">
+                  <div class="tocenter" style="padding: 10px">
                     <div style="margin-bottom:15px; font-size:15px"><b>프로젝트 정보</b></div>
                     <div class="row pjt-margin">
                       <div class="col-sm-4">
@@ -118,10 +121,11 @@
                       </div>
                     </div>
                   </div>
-                  
-                </section> -->
+                </section>
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
                 
+                
+                <!-- <div><p id="titleid">기술스택 선택</p></div> -->
                 <section class="selectStacks">
                 <!-- 왼쪽 기술스택 선택 부분 -->
                 <el-transfer
@@ -136,85 +140,49 @@
                 <!-- 왼쪽 기술스택 선택 부분 끝-->
                 </section>
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 -->
-                <!-- <section class="showStacks">
-                  <div class="tocenter" style="padding: 10px 0px 0px 10px">
-                    <div style="margin-bottom:15px; font-size:15px"><b>프로젝트 정보</b></div>
+                <!-- {{projectInfoList}}<br><br>
+                프로젝트 사이즈 : {{projectInfoList.length}}<br><br> -->
+                <section v-if="projectInfoList.length>0" class="showProject">
+                  <div class="tocenter" style="padding: 10px">
+                    <div style="margin-bottom:15px; font-size:15px"><b>기술스택 정보</b></div>
+                    <div style="margin-bottom:15px; text-align:center"><img :src=stackInfoList[0].stack_img_url width="200px"/></div>
                     <div class="row pjt-margin">
                       <div class="col-sm-4">
-                      <p class="pjt-title">제목</p>
+                      <p class="pjt-title">기술스택</p>
                       </div>
                       <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].title}}</p>
-                      </div>
-                    </div>
-                    <div class="row pjt-margin">
-                      <div class="col-sm-4">
-                      <p class="pjt-title">개요</p>
-                      </div>
-                      <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].summary}}</p>
+                      <p class="pjt-content">{{stackInfoList[0].stack}}</p>
                       </div>
                     </div>
                     <div class="row pjt-margin">
+                      <a href="#">
                       <div class="col-sm-4">
-                      <p class="pjt-title">기간</p>
+                      <p class="pjt-title">활용 1)</p>
                       </div>
                       <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].start_date}} ~ <br>{{projectInfoList[0].finish_date}}</p>
+                      <p class="pjt-content">abc프로젝트</p>
                       </div>
+                      </a>
                     </div>
                     <div class="row pjt-margin">
+                      <a href="#">
                       <div class="col-sm-4">
-                      <p class="pjt-title">스택</p>
+                      <p class="pjt-title">활용 2)</p>
                       </div>
                       <div class="col-sm-8">
-                      <div v-for="(stack,index) in stack" :key="index">
-                        <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
+                      <p class="pjt-content">def프로젝트</p>
                       </div>
-                      </div>
-                    </div>
-                    <div class="row pjt-margin">
-                      <div class="col-sm-4">
-                      <p class="pjt-title">역할</p>
-                      </div>
-                      <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].role}}</p>
-                      </div>
-                    </div>
-                    <div class="row" v-if="projectInfoList[0].github_url">
-                      <div class="col-sm-4">
-                      <p class="pjt-title">Github</p>
-                      </div>
-                      <div class="col-sm-8">
-                      <p class="pjt-content"><a href="#" @click="goUrl(projectInfoList[0].github_url)">{{projectInfoList[0].github_url}}</a></p>
-                      </div>
-                    </div>
-                    <div class="row" v-if="projectInfoList[0].etc_url">
-                      <div class="col-sm-4">
-                      <p class="pjt-title">참고 Url</p>
-                      </div>
-                      <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].etc_url}}</p>
-                      </div>
-                    </div>
-                    <div class="row" v-if="projectInfoList[0].rep_url">
-                      <div class="col-sm-4">
-                      <p class="pjt-title">참조 Url</p>
-                      </div>
-                      <div class="col-sm-8">
-                      <p class="pjt-content">{{projectInfoList[0].rep_url}}</p>
-                      </div>
+                      </a>
                     </div>
                   </div>
-                </section> -->
+                </section>
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
-
                 <!-- 
                 <div class="selectTemplate">
                   템플릿 선택
                 </div> -->
             	</div>
-              <el-button :plain="true" @click="makePortfolio">생성</el-button>
+              <el-button @click="makePortfolio" style="float:right">프로젝트 생성</el-button>
 						</div> 
           </div>
           <!--/myCarousel-->
@@ -288,7 +256,7 @@ export default {
         for(let i=0; i<data.length; i++){
           this.projectList.push({
           label: data[i].title,
-          key:i,
+          key:data[i].seq,
           initial: data[i].seq
           })
         }
@@ -296,41 +264,44 @@ export default {
     },
     getStackList(seq){
       http
-      .post('project/blog', { seq_user:seq , seq_blog:seq, offset:0, limit:99999} )
+      .get('/stack')
       .then(({ data }) => {
         this.stackInfoList=data;
         for(let i=0; i<data.length; i++){
           this.stackList.push({
-          label: data[i].title,
-          key:i,
+          label: data[i].stack,
+          key:data[i].seq,
           initial: data[i].seq
           })
         }
       })
     },
     makePortfolio() {
-      // 이미지 변경
-      http
-      .post('portfoliopjt', {
-        
-      })
-      .then(({ data }) => {
-        this.$message({
-          type: 'success',
-          message: '회원 가입이 완료되었습니다.'
-        });
-        this.$router.push('/blog')
-      })
-      .catch((error) => {
-        console.log(error.response.status)
-        if(error.response.status=='404'){
-          this.$message({
-            type: 'warning',
-            message: '이미 존재하는 아이디입니다.'
-          });
-        }
-      })
+      // 이미지 변경(추후구현예정)
+
+      alert(this.includedStack);
+
+      // http
+      // .post('portfoliopjt', {
+      // })
+      // .then(({ data }) => {
+      //   this.$message({
+      //     type: 'success',
+      //     message: '회원 가입이 완료되었습니다.'
+      //   });
+      //   this.$router.push('/blog')
+      // })
+      // .catch((error) => {
+      //   console.log(error.response.status)
+      //   if(error.response.status=='404'){
+      //     this.$message({
+      //       type: 'warning',
+      //       message: '이미 존재하는 아이디입니다.'
+      //     });
+      //   }
+      // })
     },
+    
     validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
