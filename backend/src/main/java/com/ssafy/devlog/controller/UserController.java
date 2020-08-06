@@ -87,7 +87,7 @@ public class UserController {
 	@GetMapping("/{seq}")
 	public ResponseEntity<User> selectUserBySeq(@PathVariable int seq) throws Exception {
 		logger.debug("selectUserBySeq - 호출");
-		System.out.println(seq);
+//		System.out.println(seq);
 		return new ResponseEntity<User>(userService.selectUserBySeq(seq), HttpStatus.OK);
 	}
 	
