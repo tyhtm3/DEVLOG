@@ -123,10 +123,10 @@
                   </div>
                 </section>
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
-                
-                
+                </div>
+                <div>
                 <!-- <div><p id="titleid">기술스택 선택</p></div> -->
-                <section class="selectStacks">
+                <div class="selectStacks">
                 <!-- 왼쪽 기술스택 선택 부분 -->
                 <el-transfer
                   :titles="['내 기술스택', '선택된 기술스택']"
@@ -138,11 +138,11 @@
                   :data="stackList">
                 </el-transfer>
                 <!-- 왼쪽 기술스택 선택 부분 끝-->
-                </section>
+                </div>
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 -->
                 <!-- {{projectInfoList}}<br><br>
                 프로젝트 사이즈 : {{projectInfoList.length}}<br><br> -->
-                <section v-if="projectInfoList.length>0" class="showProject">
+                <div v-if="projectInfoList.length>0" class="showProject">
                   <div class="tocenter" style="padding: 10px">
                     <div style="margin-bottom:15px; font-size:15px"><b>기술스택 정보</b></div>
                     <div style="margin-bottom:15px; text-align:center"><img :src=stackInfoList[0].stack_img_url width="200px"/></div>
@@ -175,14 +175,37 @@
                       </a>
                     </div>
                   </div>
-                </section>
+                </div>
                 <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
                 <!-- 
                 <div class="selectTemplate">
                   템플릿 선택
                 </div> -->
-            	</div>
-              <el-button @click="makePortfolio" style="float:right">프로젝트 생성</el-button>
+              </div>
+              <hr>
+              <br>
+              <div class="col-xs-12 col-sm-12" style="padding:0px">
+                <hr>
+                <div style="margin-bottom:15px; font-size:20px"><b>포트폴리오 정보 입력</b></div>
+								<dl class="dl-horizontal-profile">
+                  <dt>TITLE</dt>
+                  <dd><el-input v-model="portfolioTitle" style="width: 70%;"></el-input></dd>
+                  <dt>SUMMARY</dt>
+									<dd><el-input v-model="portfolioSummary" style="width: 70%;"></el-input></dd>
+                  <dt>POSITION</dt>
+									<dd><el-input v-model="portfolioRole" style="width: 70%;"></el-input></dd>
+                  <dt>공개 여부</dt>
+                  <dd>
+                    <el-radio-group v-model="portfolioDisclosure">
+                      <el-radio-button label="전체공개"></el-radio-button>
+                      <el-radio-button label="이웃공개"></el-radio-button>
+                      <el-radio-button label="비공개" ></el-radio-button>
+                    </el-radio-group>
+                  </dd>
+								</dl>
+              </div>
+              <hr>
+              <el-button @click="makePortfolio" style="float:right; margin-bottom: 20px">프로젝트 생성</el-button>
 						</div> 
           </div>
           <!--/myCarousel-->
@@ -207,6 +230,12 @@ export default {
   },
   data: () => {
     return {
+      // 포트폴리오 기본정보
+      portfolioContent:'content',
+      portfolioTitle:'',
+      portfolioSummary:'',
+      portfolioRole:'',
+      portfolioDisclosure: '',
       // 개인정보
       seq: '',
       name: '',
@@ -277,10 +306,15 @@ export default {
       })
     },
     makePortfolio() {
-      // 이미지 변경(추후구현예정)
+      // alert(this.includedStack);
+      if(this.portfolioDisclosure === "전체공개")
+        this.portfolioDisclosure = 1
+      else if(this.portfolioDisclosure === "이웃공개")
+        this.portfolioDisclosure = 2
+      else
+        this.portfolioDisclosure = 3
 
-      alert(this.includedStack);
-
+      alert(this.portfolioDisclosure)
       // http
       // .post('portfoliopjt', {
       // })
