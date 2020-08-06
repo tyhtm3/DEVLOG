@@ -35,9 +35,7 @@ export default new Vuex.Store({
     SET_TOKEN (state, token) {
           state.token = token
         },
-    // REMOVE_TOKEN (state) {
-    //       state.token = null
-    // }
+
   },
   actions: {
     login(context, {id, password, url}){
@@ -47,14 +45,12 @@ export default new Vuex.Store({
         password: password
       })
       .then(({data}) => {
-        console.log('data : ' + data);
         context.commit('mutateIsLogin', true)
         context.commit('SET_TOKEN',data)
         context.commit('mutateLoginFormVisible', false)
         http
         .get('/user/me',{headers : {'Authorization' : data,}})
         .then(({data}) =>{
-            // console.log(data)
             context.commit('mutateUserInfo',data)
         });
       })
