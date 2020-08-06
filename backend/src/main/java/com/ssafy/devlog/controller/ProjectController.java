@@ -50,22 +50,23 @@ public class ProjectController {
 	}
 	
 	@ApiOperation(value = "새로운  프로젝트 입력 ( seq_blog, title, disclosure, summary, start_date, role ) 필수  ", response = String.class)
-	@PostMapping
-	public ResponseEntity<Integer> insertProject(@RequestBody Project project) {
-		
-		logger.debug("insertProject - 호출");
-		
-		// insertPost 이후 Project 객체에 seq 받아오기 위한 작업
-		Project pjt = new Project();
-		pjt = project;
-		pjt.setSeq_blog(jwtService.getSeq());
-		projectService.insertPost(pjt);
-		
-		if (projectService.insertPostProject(pjt)==1) {
-			return new ResponseEntity<Integer>(pjt.getSeq(), HttpStatus.OK);
-		}
-		return new ResponseEntity<Integer>(0, HttpStatus.NO_CONTENT);
-	}
+    @PostMapping
+    public ResponseEntity<Integer> insertProject(@RequestBody Project project) {
+
+        logger.debug("insertProject - 호출");
+
+        // insertPost 이후 Project 객체에 seq 받아오기 위한 작업
+        Project pjt = new Project();
+        pjt = project;
+        pjt.setSeq_blog(jwtService.getSeq());
+        projectService.insertPost(pjt);
+
+        if (projectService.insertPostProject(pjt)==1) {
+            return new ResponseEntity<Integer>(pjt.getSeq(), HttpStatus.OK);
+        }
+        return new ResponseEntity<Integer>(0, HttpStatus.NO_CONTENT);
+    }
+
 
 	@ApiOperation(value = " 프로젝트 수정", response = String.class)
 	@PutMapping

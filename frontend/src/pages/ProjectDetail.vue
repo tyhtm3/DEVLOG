@@ -277,3 +277,8 @@ a:hover { color: black; text-decoration: bold;}
   line-height:30px;
 }
 </style>
+<style>
+.ql-editor{
+  min-height: 100px;
+}
+</style>
