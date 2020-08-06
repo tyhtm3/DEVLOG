@@ -507,7 +507,7 @@ export default {
     margin-left:20px;
     float: left;
     background-color: #d5cbe42a;
-    min-width: 275px;
+    width: 275px;
     min-height: 300px;
     border-radius: 6px;
   }
@@ -516,7 +516,7 @@ export default {
     margin-left:20px;
     float: left;
     background-color: #d5cbe42a;
-    min-width: 275px;
+    width: 275px;
     min-height: 300px;
     border-radius: 6px;
   }
