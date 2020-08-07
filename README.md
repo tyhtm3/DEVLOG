@@ -20,8 +20,6 @@ SSAFY 3기 공통 프로젝트
 ## 주요기능 및 스크린샷 
 ![image](./meeting log/res/devlog.gif)
 
-![image](./meetinglog/res/devlog.gif)
-
 메인 화면  : 다른 사용자들의 프로젝트 / 포스트 내역이 최신순으로 나옴, 로그인 시 이웃들의 글만 필터링 가능
 블로그 화면 : Project/Portfolio/etc 로 나누어 포스팅 할 수 있음
 프로젝트 작성 : 간단한 양식에 맞게 정보를 입력 한뒤 추가 정보를 자유롭게 작성
@@ -51,9 +49,9 @@ SSAFY 3기 공통 프로젝트
 - @vue/cli 4.4.6
 - bootstrap 3.3.7
 - element-ui 2.0.2
- - SpringBoot 2.3.1.RELEASE
--  AWS EC2
--  Nginx 1.14.0
+- SpringBoot 2.3.1.RELEASE
+- AWS EC2
+- Nginx 1.14.0
 - MariaDB 10.5.4
 
 ## 저작권 및 사용권 정보
