@@ -17,6 +17,15 @@
 		where seq_post = #{seq_post}
 	</select>
 	
+	<!-- 이웃이 쓴 댓긃 불러오기 //seq_user : 이웃  seq -->
+	<select id="selectAllPostCommentByNeighbor" resultType="PostComment">
+		select *
+		from post_comment
+		where seq_user = #{seq_user} and seq_post in (select seq_post
+													 from post
+													 where seq_blog = #{seq_blog})
+	</select>
+	
 	<!-- 포스트 댓글 입력   -->
 	<insert id="insertPostComment">
 		insert into post_comment( seq_post, seq_user,content)
@@ -35,6 +44,7 @@
 		delete from post_comment
 		where 	seq = #{seq}
 	</delete>
+	
 	
 </mapper>
 

@@ -23,12 +23,21 @@
 		id = #{id}
 	</select>
 
+	<!-- 회원 상세 조회(social ID) -->
+	<select id="selectUserBySocialId" resultType="User">
+		select *
+		from user
+		where
+		social_id = #{social_id}
+	</select>
+
+
 	<!-- 회원 가입 -->
 	<insert id="insertUser">
 		insert into user(
-		seq,id,password,email,nickname,name,tel,profile_img_url,github_url,birthday
+		seq,id,password,email,nickname,name,tel,profile_img_url,github_url,birthday,social_id,social
 		) values (
-		#{seq},#{id},#{password},#{email},#{nickname},#{name},#{tel},#{profile_img_url},#{github_url},#{birthday}
+		#{seq},#{id},#{password},#{email},#{nickname},#{name},#{tel},#{profile_img_url},#{github_url},#{birthday},#{social_id},#{social}
 		)
 	</insert>
 

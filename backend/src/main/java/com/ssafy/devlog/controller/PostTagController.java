@@ -1,6 +1,7 @@
 package com.ssafy.devlog.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,26 +42,20 @@ public class PostTagController {
 		return new ResponseEntity<List<PostTag>>(postTagService.selectAllPostTag(seq_post), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "포스트의 태그를 추가한다. //중복 입력시 401", response = String.class)
+	@ApiOperation(value = "포스트의 태그를 등록하거나 수정한다. (ex. { seq_post:1 , tag:['python','c++']  } )", response = String.class)
 	@PostMapping
-	public ResponseEntity<String> insertPostTag(@RequestBody PostTag postTag) throws Exception {
-		logger.debug("inserPostTag - 호출");
-		PostTag check = postTagService.selectPostTagByPostAndTag(postTag);
-		if (check != null)
-			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
-		else if(postTagService.insertPostTag(postTag)==1) {
+	public ResponseEntity<String> updatePostTag(@RequestBody Map<String, Object> params) throws Exception {
+		logger.debug("updatePostTag - 호출");
+		List<String> tag = (List<String>)params.get("tag");
+		int seq_post = (int)params.get("seq_post");
+		postTagService.deletePostTag(seq_post);
+		if(tag==null)
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		else if(postTagService.insertPostTag(seq_post,tag)!=0)
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		else 
+			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
+		
 	}
 	
-	@ApiOperation(value = "포스트의 태그를 삭제한다.", response = String.class)
-	@DeleteMapping(value = "/{seq}")
-	public ResponseEntity<String> deletePostTag(@PathVariable int seq) throws Exception {
-		logger.debug("deletePostTag - 호출");
-		if(postTagService.deletePostTag(seq)==1) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
-	}
 }

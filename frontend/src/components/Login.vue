@@ -8,7 +8,7 @@
 				<input v-model="id" id="id" placeholder="id" type="text"/>
 				<input v-model="password" type="password" id="password" placeholder="password"/>
 				<button class="normal" @click="login">login</button><p/>
-				<button class="kakao" @click="login">kakao</button><button class="naver" @click="login">naver</button><p/>
+				<button class="kakao" @click="login">kakao</button><button class="naver" @click="naverLogin">naver</button><p/>
 				<!-- <button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button> -->
 				<p class="message">Not registered?
 					<router-link to="/signup">
@@ -30,19 +30,40 @@ export default {
 		return {
 			id: '',
 			password: '',
+			// naver
+			CLIENT_ID: 'RSKBTL31UOSpdlckpmTt',
+      		redirectURI: 'http://localhost:8090/devlog/api/user/naver',
+			state: 123, 
+			/* state : 사이트 간 요청 위조 공격을 방지하기 위해 애플리케이션에서 생성한 상태 토큰값으로
+			 URL 인코딩을 적용한 값을 사용해야한다는데 뭔지 모르겠으므로 일단 123으로 지정 */
+     		naverLoginURL: 'https://nid.naver.com/oauth2.0/authorize?response_type=code'
 		}
 	},
+	created () {
+    this.naverLoginURL += '&client_id=' + this.CLIENT_ID
+    this.naverLoginURL += '&redirect_uri=' + this.redirectURI
+    this.naverLoginURL += '&state=' + this.state
+  	},
 	methods: {
 		loginFormClose(){
 			this.$store.state.loginFormVisible = false
 		},
 		login() {
 			if(this.id==='')
-				alert('아이디를 입력해주세요.')
+				this.$message.warning('아이디를 입력해주세요')
 			else if(this.password==='')
-				alert('비밀번호를 입력해주세요.')
+				this.$message.warning('비밀번호를 입력해주세요')
 			else
 				this.$store.dispatch('login', {id: this.id, password: this.password})
+		},
+		naverLogin(){
+			//window.open(this.naverLoginURL, '_blank');
+			var popup = window.open(this.naverLoginURL,'window_name','width=430,height=500,left=500,right=500,location=no,status=no,scrollbars=yes');
+			
+			//popup.close();
+		},
+		myFunc(){
+			alert("YA")
 		}
 	},
 }

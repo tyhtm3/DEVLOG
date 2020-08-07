@@ -17,7 +17,7 @@
                   <dd>
                     <el-input v-model="id" style="width: 40%;"></el-input>
                     <el-upload
-                    class="avatar-uploader"
+                    class="avatar-uploader2"
                     action="https://jsonplaceholder.typicode.com/posts/"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
@@ -83,31 +83,47 @@ import http from '../util/http-common'
     methods: {
       signup() {
         if(this.id==='')
-          alert('아이디를 입력해 주세요.')
+          this.$message.warning('아이디를 입력해 주세요.')
         else if(this.password==='')
-          alert('비밀번호를 입력해 주세요.')
+          this.$message.warning('비밀번호를 입력해 주세요.')
         else if(this.confirm==='')
-          alert('비밀번호를 한번 더 입력해 주세요.')
+          this.$message.warning('비밀번호를 한번 더 입력해 주세요.')
         else if(this.password!==this.confirm)
-          alert('비밀번호가 일치하지 않습니다.')
+          this.$message.error('비밀번호가 일치하지 않습니다.')
         else if(this.name==='')
-          alert('이름을 입력해 주세요.')
+          this.$message.warning('이름을 입력해 주세요.')
         else if(this.email==='')
-          alert('이메일을 입력해주세요.')
+          this.$message.warning('이메일을 입력해주세요.')
         else if (!this.validEmail(this.email))
-          alert("이메일 형식을 확인해 주세요")
+          this.$message.error("이메일 형식을 확인해 주세요")
         else{
-
-          this.$store.dispatch('signup', {
+          http
+          .post('/user', {
             id: this.id,
             password: this.password,
             name: this.name,
             nickname: this.nickname,
             email: this.email,
             tel: this.tel,
-            birth: this.date_to_str(this.birth),
-            url: this.url,
-            imageUrl: this.imageUrl
+            birthday: this.date_to_str(this.birth),
+            github_url: this.url,
+            profile_img_url: this.imageUrl
+          })
+          .then(({ data }) => {
+            this.$message({
+              type: 'success',
+              message: '회원 가입이 완료되었습니다.'
+            });
+            this.$router.push('/blog')
+          })
+          .catch((error) => {
+            console.log(error.response.status)
+            if(error.response.status=='404'){
+              this.$message({
+                type: 'warning',
+                message: '이미 존재하는 아이디입니다.'
+              });
+            }
           })
         }
       },
@@ -123,13 +139,7 @@ import http from '../util/http-common'
         if(month<10) month = '0' + month;
         var date = format.getDate();
         if(date<10) date = '0' + date;
-        var hour = format.getHours();
-        if(hour<10) hour = '0' + hour;
-        var min = format.getMinutes();
-        if(min<10) min = '0' + min;
-        var sec = format.getSeconds();
-        if(sec<10) sec = '0' + sec;
-        return year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;}
+        return year + "-" + month + "-" + date}
       },
      handleAvatarSuccess(res, file) {
       var frm = new FormData();
@@ -161,7 +171,7 @@ import http from '../util/http-common'
 </script>
 
 <style>
-  .avatar-uploader .el-upload {
+  .avatar-uploader2 .el-upload {
     top: 90px;
     left: 500px;
     border: 1px dashed #d9d9d9;
@@ -170,7 +180,7 @@ import http from '../util/http-common'
     position: absolute;
     overflow: hidden;
   }
-  .avatar-uploader .el-upload:hover {
+  .avatar-uploader2 .el-upload:hover {
     border-color: #409EFF;
   }
   .avatar-uploader-icon {
@@ -178,7 +188,7 @@ import http from '../util/http-common'
     color: #8c939d;
     width: 168px;
     height: 168px;
-    line-height: 168px;
+    line-height: 34px;
     text-align: center;
   }
   .avatar {

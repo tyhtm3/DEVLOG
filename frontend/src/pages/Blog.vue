@@ -1,81 +1,85 @@
 <template>
   <transition name="el-zoom-in-top">
-    <div class="content-wrapper">
-      <!-- start Main content -->
-      <section class="content">
-        <!-- start box -->
-        <div class="box">
-          <!-- start box-body -->
-          <div class="box-body" style="min-height:400px;">
-            <!-- start movie-card -->
-            <div class="movie-card">
-              <!-- start container-movie -->
-              <div class="container-movie">
-                <!-- start profile -->
-                <div class="details-profile">
-                  <div class="title1" style="display:inline">
-                    
-                    <input type="text" id="title" value="명묭이의 코딩일기" disabled>
-                  </div>
-                  <i class="ti-pencil-alt" v-if="this.$store.state.settingButtonVisible" @click="alterTitle" style="cursor:pointer;"></i>
-                  <div class="title2">
-                    by {{blogOwnerInfo.nickname}}
-                    <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
-                    <a href="#"><img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" /></a>
-                    <!-- <span>Web Designer</span> -->
-                  </div>
-                </div>
-                <div class="description-profile">
-                  <div class="column2">
-                    <div class="row"> 
-                      <div class="col-xs-12 col-sm-4 emphasis">
-                        <h2><strong>{{blogOwnerNumOfProject}}</strong></h2>
-                        <p> <small>Projects</small> </p>
-                      </div>
-                      <div class="col-xs-12 col-sm-4 emphasis">
-                        <h2><strong>{{blogOwnerNumOfPost}}</strong></h2>
-                        <p> <small>Post</small> </p>
-                      </div>
-                      <div class="col-sm-4 emphasis" style="cursor:pointer;">
-                        <h2><strong @click="follower">{{blogOwnerNumOfNeighbor}}</strong></h2>
-                        <p> <small @click="follower">Follower</small> </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="column4" v-if="this.$store.state.isLogin">
-                  <router-link to="writePost">
-                  <span>글 작성<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
-                  </router-link>
-                  <span id="setting" @click="set">설정<i class="ti-settings" style="display:inline"></i></span>
-                  </div>
-                </div>
-                <!-- end profile -->
-              </div>
-              <!-- end container-movie -->
-            </div>
-            <!-- end movie card -->
+    <div class="content-wrapper" style="background: white;">
+      <!-- start container-movie : 블로그 배너-->
+      <div class="container-movie" style="top:65px;">
+        <!-- start profile -->
+        <div class="details-profile" >
+          <div class="title1" style="display:inline">
+            <!-- input length 바꾸게 하는것 -->
+            <input type="text" style="font-size:40px;" id="title" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog" readonly />
+            <br>
+            <input type="text" style="font-size:15px;" id="detail" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog" readonly />
           </div>
-          <!-- end box-body -->
-          <blog-content></blog-content>
+                
+          <i class="ti-pencil-alt" v-if="this.$store.state.settingButtonVisible" @click="alterBlog" style="cursor:pointer;"></i>
+                
+          <div class="title2">
+            by {{blogOwnerInfo.nickname}}
+            <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
+            <a href="#"><img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" /></a>
+            <!-- <span>Web Designer</span> -->
+          </div>
         </div>
-      </section>
-      <!-- end Main content -->
+        <div class="description-profile">
+          <div class="column2">
+            <div class="row"> 
+              <div class="col-xs-12 col-sm-4 emphasis">
+                <h2><strong>{{blogOwnerNumOfProject}}</strong></h2>
+                <p> <small>Projects</small> </p>
+              </div>
+              <div class="col-xs-12 col-sm-4 emphasis">
+                <h2><strong>{{blogOwnerNumOfPost}}</strong></h2>
+                <p> <small>Post</small> </p>
+              </div>
+              <div class="col-sm-4 emphasis" style="cursor:pointer;" @click="follower">
+                <h2><strong >{{blogOwnerNumOfNeighbor}}</strong></h2>
+                <p> <small v-bind="followerpage">Follower</small>
+                  <!-- <i class="material-icons" @click="subscribe">add_circle_outline</i> -->
+                </p>
+              </div>
+            </div>
+          </div>
+              
+          <span style="margin-left:60px;"></span>  
+          <!-- 블로그 태그 -->
+          <span class = "tag" v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="margin-right:20px;">
+            #{{tag.tag}}
+          </span>
+
+          <div class="column4" v-if="this.$store.state.isLogin">
+            <router-link to="writePost">
+              <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
+            </router-link>
+              <span id="setting" @click="set">관리<i class="ti-settings" style="display:inline"></i></span>
+          </div>
+        </div>
+        <!-- end profile -->
+      </div>
+      <!-- end container-movie -->
+      <!-- start box -->
+      <div class="box">
+        <blog-content v-if="followerpage===false"></blog-content>
+        <follower v-if="followerpage"></follower>
+      </div>
     </div>
   </transition>
 </template>
 <script>
   import blogContent from '../components/blogContent'
+  import follower from '../components/follower'
   import http from '../util/http-common'
   export default {
     components: {
-     'blog-content': blogContent
+     'blog-content': blogContent,
+     'follower': follower,
     },
     data: function () {
         return { 
           alterTitleFlag: false,
           // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
           seq_blog: this.$store.state.userInfo.seq,
-          seq_user: this.$store.state.userInfo.seq,
+          token : this.$store.state.token,
           blogInfo:[],
           blogOwnerInfo:[],
           blogOwnerNumOfProject:'',
@@ -83,6 +87,7 @@
           blogOwnerNumOfNeighbor:'',
           blogOwnerMainTags:[],
           tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
+          followerpage: false,
         }
     },
     created(){	 
@@ -91,8 +96,9 @@
     mounted(){
       var value = $('#title').val();
       $('.title1').append('<div id="virtual_dom" style="display:inline;">' + value + '</div>');
-      var inputWidth =  $('#virtual_dom').width() + 10;
+      var inputWidth =  $('#virtual_dom').width() + 400;
       $('#title').css('width', inputWidth); 
+      $('#detail').css('width', inputWidth-200); 
       $('#virtual_dom').remove();
 
       $('#title').on('keydown', function(e){
@@ -113,11 +119,11 @@
             .then(({ data }) => {
               this.blogOwnerInfo=data;
             });
-            http.get('project/blog/'+this.seq_user+'/'+this.seq_blog)
+            http.get('project/blog/'+this.seq_blog)
             .then(({ data }) => {
                 this.blogOwnerNumOfProject = data;
             });
-            http.get('post/blog/'+this.seq_user+'/'+this.seq_blog)
+            http.get('post/blog/'+this.seq_blog)
             .then(({ data }) => {
                 this.blogOwnerNumOfPost = data;
             });
@@ -128,29 +134,71 @@
             http.get('blogtag/'+this.seq_blog)
             .then(({ data }) => {
                 this.blogOwnerMainTags = data;
-                // alert( this.blogOwnerMainTags);
             });
       },
       set(){
         if(this.$store.state.settingButtonVisible){
+          this.$message({
+              type: 'info',
+              message: '관리모드가 비활성화 되었습니다.'
+          });
           $('#setting').css('color','#B1B0AC');
           this.$store.state.settingButtonVisible = false;
         }
         else{
+          this.$message({
+              type: 'info',
+              message: '관리모드가 활성화 되었습니다.',
+          });
           $('#setting').css('color', 'black');
           this.$store.state.settingButtonVisible = true;
+          // console.log(this.seq_user);
+          console.log(this.token);
+          console.log(this.seq_blog);
         }
       },
       follower(){
-        alert("이웃관리 페이지로 이동")
+        // this.$router.push('/follower')
+        this.followerpage =!this.followerpage
       },
-      alterTitle(){
-        $('#title').attr('disabled', false);
+      updateBlog(){
+        http.put('blog',this.blogInfo)
+            .then(({ data }) => {
+              if(data=="success"){
+              this.$message({
+              type: 'info',
+              message: '블로그 정보 수정이 완료되었습니다.'
+              }); }
+              else{
+              this.$message({
+              type: 'danger',
+              message: '블로그 정보 수정에 실패하였습니다.'
+              });
+              }
+        });
+      },
+      alterBlog(){
+        $('#title').attr('readonly', false);
         $('#title').focus();
         $('#title').keypress(function (e) {
-          if(e.which == 13)
-            $('#title').attr('disabled', true);
+          if(e.which == 13){
+            $('#title').attr('readonly', true);
+          }
         })
+        $('#detail').attr('readonly', false);
+        $('#detail').focus();
+        $('#detail').keypress(function (e) {
+          if(e.which == 13){
+            $('#detail').attr('readonly', true);
+          }
+        })
+      },
+      // 팔로우 페이지 이웃리스트에 추가해야하는데..
+      subscribe() {
+        http.post('userneighbor/' + this.seq_blog)
+        .then(({ data }) => {
+            this.neighborList.push(data)
+          });
       }
     }
   }
@@ -163,7 +211,7 @@
   .column4 span{
     cursor: pointer;
   }
-  #title{
+  #title, #detail{
     padding: 0px;
     border: none;
     background: transparent;

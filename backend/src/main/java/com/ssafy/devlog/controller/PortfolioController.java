@@ -44,21 +44,21 @@ public class PortfolioController {
 		
 	}
 	
-	@ApiOperation(value = "새로운  포트폴리오 입력 ( seq_blog, title, disclosure, summary, start_date, role ) 필수  ", response = String.class)
+	@ApiOperation(value = "새로운  포트폴리오 입력 ( seq_blog, title, disclosure ) 필수  ", response = String.class)
 	@PostMapping
-	public ResponseEntity<String> insertPortfolio(@RequestBody Portfolio portfolio) {
+	public ResponseEntity<Integer> insertPortfolio(@RequestBody Portfolio portfolio) {
 		
 		logger.debug("insertPortfolio - 호출");
 		
 		// insertPortfolio 이후 portfolioBasic 객체에 seq 받아오기 위한 작업
-		Portfolio pf = new Portfolio();
-		pf = portfolio;
+		Portfolio pf = portfolio;
 		portfolioService.insertPost(pf);
+		int seq_post_portfolio = pf.getSeq();
 		
 		if (portfolioService.insertPostPortfolio(pf)==1) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			return new ResponseEntity<Integer>(seq_post_portfolio, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Integer>(204, HttpStatus.NO_CONTENT);
 	}
 
 	@ApiOperation(value = " 포트폴리오 수정", response = String.class)

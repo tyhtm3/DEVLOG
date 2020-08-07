@@ -16,6 +16,7 @@
 		<if test="seq_user == 0">
 		 	and disclosure=1 
 		</if>
+		and <![CDATA[regtime <= now()]]>
 		ORDER BY regtime desc
 		LIMIT #{limit} OFFSET #{offset} 
 	</select>

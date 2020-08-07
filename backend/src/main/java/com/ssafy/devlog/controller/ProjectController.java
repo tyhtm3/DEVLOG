@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.Project;
+import com.ssafy.devlog.service.JwtService;
 import com.ssafy.devlog.service.ProjectService;
 
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +36,8 @@ public class ProjectController {
 	
 	@Autowired
 	private ProjectService projectService;
+	@Autowired
+	private JwtService jwtService;
 	
 
 	/* basic project crud */
@@ -47,26 +50,29 @@ public class ProjectController {
 	}
 	
 	@ApiOperation(value = "새로운  프로젝트 입력 ( seq_blog, title, disclosure, summary, start_date, role ) 필수  ", response = String.class)
-	@PostMapping
-	public ResponseEntity<String> insertProject(@RequestBody Project project) {
-		
-		logger.debug("insertProject - 호출");
-		
-		// insertPost 이후 Project 객체에 seq 받아오기 위한 작업
-		Project pjt = new Project();
-		pjt = project;
-		projectService.insertPost(pjt);
-		
-		if (projectService.insertPostProject(pjt)==1) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
-	}
+    @PostMapping
+    public ResponseEntity<Integer> insertProject(@RequestBody Project project) {
+
+        logger.debug("insertProject - 호출");
+
+        // insertPost 이후 Project 객체에 seq 받아오기 위한 작업
+        Project pjt = new Project();
+        pjt = project;
+        pjt.setSeq_blog(jwtService.getSeq());
+        projectService.insertPost(pjt);
+
+        if (projectService.insertPostProject(pjt)==1) {
+            return new ResponseEntity<Integer>(pjt.getSeq(), HttpStatus.OK);
+        }
+        return new ResponseEntity<Integer>(0, HttpStatus.NO_CONTENT);
+    }
+
 
 	@ApiOperation(value = " 프로젝트 수정", response = String.class)
 	@PutMapping
 	public ResponseEntity<String> updateProject(@RequestBody Project project) {
 		logger.debug("updateProject - 호출");
+		project.setSeq_blog(jwtService.getSeq());
 		if (projectService.updatePost(project)==1&&projectService.updatePostProject(project)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -94,16 +100,20 @@ public class ProjectController {
 	// show feed
 	@ApiOperation(value = "피드에서 최신순으로 6개의 프로젝트 반환. (ex. { seq_user:1 , disclosure:1, tag:['python']  } )", response = List.class)
 	@PostMapping(value = "/feed")
+		
 	public ResponseEntity<List<Project>> selectProjectByFeed(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("selectProjectByFeed - 호출");
-		return new ResponseEntity<List<Project>>(projectService.selectProjectByFeed((int)params.get("seq_user"),(int)params.get("disclosure"),(List<String>)params.get("tag")), HttpStatus.OK);
+		int seq_user = jwtService.getSeq();
+			
+		return new ResponseEntity<List<Project>>(projectService.selectProjectByFeed(seq_user,(int)params.get("disclosure"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}
 	
 	// show blog
 	@ApiOperation(value = "블로그 메인에서 모든 프로젝트의 개수 반환. (ex.  { seq_user:0 , seq_blog:1 })", response = List.class)    
-	@GetMapping(value = "/blog/{seq_user}/{seq_blog}")
-	public ResponseEntity<Integer> selectProjectCntByBlog(@PathVariable int seq_user,@PathVariable int seq_blog) throws Exception{
+	@GetMapping(value = "/blog/{seq_blog}")
+	public ResponseEntity<Integer> selectProjectCntByBlog(@PathVariable int seq_blog) throws Exception{
 		logger.debug("selectProjectCntByBlog - 호출");
+		int seq_user = jwtService.getSeq();
 		return new ResponseEntity<Integer>(projectService.selectProjectCntByBlog(seq_user,seq_blog), HttpStatus.OK);
 	}
 	
@@ -112,7 +122,8 @@ public class ProjectController {
 	@PostMapping(value = "/blog")
 	public ResponseEntity<List<Project>> selectProjectByBlog(@RequestBody Map<String, Object> params) throws Exception{
 		logger.debug("selectProjectByBlog - 호출");
-		return new ResponseEntity<List<Project>>(projectService.selectProjectByBlog((int)params.get("seq_user"),(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
+		int seq_user = jwtService.getSeq();
+		return new ResponseEntity<List<Project>>(projectService.selectProjectByBlog(seq_user,(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
 	}
 	
 	

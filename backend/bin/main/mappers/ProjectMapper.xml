@@ -29,6 +29,7 @@
         	</foreach>
 			)
 		</if>
+		and <![CDATA[regtime <= now()]]>
 		ORDER BY regtime desc
 		LIMIT 6
 	</select>
@@ -47,6 +48,7 @@
 		<if test="seq_user == 0">
 		 	and disclosure=1 
 		</if>
+		and <![CDATA[regtime <= now()]]>
 	</select>
 	
 	
@@ -72,6 +74,7 @@
         	</foreach>
 			)
 		</if>
+		and <![CDATA[regtime <= now()]]>
 		ORDER BY regtime desc
 		LIMIT #{limit} OFFSET #{offset} 
 	</select>
