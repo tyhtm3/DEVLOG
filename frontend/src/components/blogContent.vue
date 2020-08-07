@@ -9,7 +9,8 @@
             <li class="" data-wow-delay="0.2s" style="width:33%"><a href="#portfolio" role="tab" data-toggle="tab" aria-expanded="false" @click="curpage=2"><h2><strong>Portfolio</strong></h2></a></li>
             <li class="" data-wow-delay="0.4s" style="width:33%"><a href="#post" role="tab" data-toggle="tab" aria-expanded="false" @click="curpage=1"><h2><strong>etc</strong></h2></a></li>
           </ul>
-
+          <!-- 테스트하고있는데테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나 보이나 안보이나<br>
+          {{this.$parent.seq_blog}} -->
           <div class="tab-content">
             <!-- <div v-if="curpage == 0" role="tabpanel" class="tab-pane fade active in" id="project"> -->
             <!-- TAB PANEL ITEM-->
@@ -43,6 +44,7 @@
   import projectList from './projectList.vue'
   import postList from './postList.vue'
   import portfolioList from './portfolioList.vue'
+import { mapState } from 'vuex'
   export default {
     name: 'blog-content',
     components: {
@@ -52,6 +54,7 @@
     },
     data: function () {
         return { 
+            seq_blog: '',
             loginFormVisible: false,
             form: {
                 name: '',
@@ -86,6 +89,7 @@
           // alert(this.curpage);
         });
       });
+      this.seq_blog=this.$parent.seq_blog;
     },
     methods:{
       
