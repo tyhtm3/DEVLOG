@@ -57,7 +57,6 @@ public class PostCommentController {
 			throws Exception {
 		logger.debug("selectAllPostCommentByNeighbor - 호출");
 		int seq_blog = jwtService.getSeq();
-		System.out.println(seq_user+ " " + seq_blog);
 		return new ResponseEntity<List<PostComment>>(postCommentService.selectAllPostCommentByNeighbor(seq_user,seq_blog),
 				HttpStatus.OK);
 	}

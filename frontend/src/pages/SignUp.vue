@@ -17,7 +17,7 @@
                   <dd>
                     <el-input v-model="id" style="width: 40%;"></el-input>
                     <el-upload
-                    class="avatar-uploader"
+                    class="avatar-uploader2"
                     action="https://jsonplaceholder.typicode.com/posts/"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
@@ -139,13 +139,7 @@ import http from '../util/http-common'
         if(month<10) month = '0' + month;
         var date = format.getDate();
         if(date<10) date = '0' + date;
-        var hour = format.getHours();
-        if(hour<10) hour = '0' + hour;
-        var min = format.getMinutes();
-        if(min<10) min = '0' + min;
-        var sec = format.getSeconds();
-        if(sec<10) sec = '0' + sec;
-        return year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;}
+        return year + "-" + month + "-" + date}
       },
      handleAvatarSuccess(res, file) {
       var frm = new FormData();
@@ -177,7 +171,7 @@ import http from '../util/http-common'
 </script>
 
 <style>
-  .avatar-uploader .el-upload {
+  .avatar-uploader2 .el-upload {
     top: 90px;
     left: 500px;
     border: 1px dashed #d9d9d9;
@@ -186,7 +180,7 @@ import http from '../util/http-common'
     position: absolute;
     overflow: hidden;
   }
-  .avatar-uploader .el-upload:hover {
+  .avatar-uploader2 .el-upload:hover {
     border-color: #409EFF;
   }
   .avatar-uploader-icon {

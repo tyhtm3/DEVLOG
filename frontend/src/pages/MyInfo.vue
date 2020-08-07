@@ -115,7 +115,6 @@ export default {
       else{
         http
         .put('/user', {
-          seq: this.userInfo.seq,
           id: this.userInfo.id,
           password: this.password,
           name: this.userInfo.name,
@@ -152,7 +151,7 @@ export default {
       })
       .then(() => {
         http
-        .delete('/user/'+this.$store.state.userInfo.seq)
+        .delete('/user/')
         .then(({ data }) => {
           this.$store.commit('mutateIsLogin', false)
           this.$message({
