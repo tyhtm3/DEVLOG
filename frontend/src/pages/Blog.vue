@@ -32,9 +32,9 @@
                 <h2><strong>{{blogOwnerNumOfPost}}</strong></h2>
                 <p> <small>Post</small> </p>
               </div>
-              <div class="col-sm-4 emphasis" style="cursor:pointer;">
-                <h2><strong @click="follower">{{blogOwnerNumOfNeighbor}}</strong></h2>
-                <p> <small @click="follower" v-bind="followerpage">Follower</small>
+              <div class="col-sm-4 emphasis" style="cursor:pointer;" @click="follower">
+                <h2><strong >{{blogOwnerNumOfNeighbor}}</strong></h2>
+                <p> <small v-bind="followerpage">Follower</small>
                   <!-- <i class="material-icons" @click="subscribe">add_circle_outline</i> -->
                 </p>
               </div>
