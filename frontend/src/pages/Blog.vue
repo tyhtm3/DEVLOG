@@ -59,7 +59,8 @@
       <!-- end container-movie -->
       <!-- start box -->
       <div class="box">
-        <blog-content v-if="followerpage===false"></blog-content>
+        <blog-content v-if="followerpage===false" :seq_blog="seq_blog"></blog-content>
+                <!-- <blog-content v-if="followerpage===false" :seq_blog="this.$route.params.id"></blog-content> -->
         <follower v-if="followerpage"></follower>
       </div>
     </div>
@@ -69,17 +70,22 @@
   import blogContent from '../components/blogContent'
   import follower from '../components/follower'
   import http from '../util/http-common'
+  import { mapState } from 'vuex'
   export default {
     components: {
      'blog-content': blogContent,
      'follower': follower,
+    }, 
+    computed: {
+    ...mapState(['userInfo']),
     },
-    data: function () {
+    data: () => {
         return { 
           alterTitleFlag: false,
-          // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
-          seq_blog: this.$store.state.userInfo.seq,
-          token : this.$store.state.token,
+          seq_blog: '',
+          blogOwnerId: '',
+          //this.$store.state.userInfo.seq
+          // token : this.$store.state.token,
           blogInfo:[],
           blogOwnerInfo:[],
           blogOwnerNumOfProject:'',
@@ -91,7 +97,8 @@
         }
     },
     created(){	 
-      this.getBlogInfo();
+      this.blogOwnerId= this.$route.params.id;
+      this.getBlogOwnerInfo();
     },
     mounted(){
       var value = $('#title').val();
@@ -110,14 +117,19 @@
       })
     },
     methods:{
+      getBlogOwnerInfo(){
+         http.get('user/id/{seq}?id='+this.blogOwnerId)
+        .then(({data})=>{
+          this.blogOwnerInfo=data;
+          this.seq_blog = this.blogOwnerInfo.seq;
+          this.getBlogInfo();
+        });
+
+      },
       getBlogInfo(){
             http.get('blog/'+this.seq_blog)
             .then(({ data }) => {
               this.blogInfo=data;
-            });
-            http.get('user/'+this.seq_blog)
-            .then(({ data }) => {
-              this.blogOwnerInfo=data;
             });
             http.get('project/blog/'+this.seq_blog)
             .then(({ data }) => {
