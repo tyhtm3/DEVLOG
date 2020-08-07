@@ -19,7 +19,7 @@
                         </div>
                         <div class="video-text">
                             <!-- {{project}} -->
-                            <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{project.title}}{{project.seq}}</h2>
+                            <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{project.title}}<!--{{project.seq}}--></h2>
                             <p class="content-3line" style="color:black;">{{project.summary}}</p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 

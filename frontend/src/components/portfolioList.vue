@@ -11,7 +11,7 @@
                         <input class="delete-box" :id=portfolio.seq type="checkbox" :value=portfolio.seq v-model="deleteList" />
                         <label :for=portfolio.seq></label>
                     </span>
-                    <div class="well-media" @click="goDetail(portfolio.seq)" style="cursor:pointer;">
+                    <div class="well-media" @click="selectDialogVisible=true;" style="cursor:pointer;">
                         <div class="vendor">
                             <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
@@ -29,6 +29,20 @@
                             <!-- <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span>  -->
                         </div>
                     </div>
+                    <!-- 템플릿 선택 dialog 시작 -->
+                    <el-dialog
+                    title="select template"
+                    :visible.sync="selectDialogVisible"
+                    width="40%"
+                    center>
+                    <div style="text-align:center">
+                        <!-- <div class="wrap"> -->
+                            <button class="fill" @click="goTemplate00(portfolio.seq)">resume</button>
+                            <button class="fill" @click="goTemplate01">4 cards</button>
+                        <!-- </div> -->
+                    </div>
+                    </el-dialog>
+                    <!-- 템플릿 선택 dialog 끝 -->
                 </div>
             </div>
         </section>
@@ -49,15 +63,23 @@
             comment: [],
             counter: 0,
             deleteList: [],
-            deleteSuccess: true
+            deleteSuccess: true,
+            selectDialogVisible: false
         }
     },
     created(){	 
       this.getportfolioList();
     },
     methods:{
-        goDetail(seq){
+        goTemplate00(seq){
             this.$router.push(`/blog/portfolio/${seq}`)
+        },
+        goTemplate01(seq){
+            this.$router.push(`/template01`)
+        },
+        goTemplate02(seq){
+        },
+        goTemplate04(seq){
         },
         removeTag(text){
         text = text.replace(/<br\/>/ig, "\n");
@@ -214,4 +236,118 @@ input[type="checkbox"]:checked + label:before {
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
 </style>
+<style lang="scss" scoped>
+
+
+
+.fill:hover,
+.fill:focus {
+  box-shadow: inset 0 0 0 2em var(--hover);
+}
+
+// Animate the size, outside
+.pulse:hover,
+.pulse:focus {
+  animation: pulse 1s;
+  box-shadow: 0 0 0 2em rgba(#fff, 0);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--hover);
+  }
+}
+
+// Stack multiple shadows, one from the left, the other from the right
+.close:hover,
+.close:focus {
+  box-shadow: inset -3.5em 0 0 0 var(--hover), inset 3.5em 0 0 0 var(--hover);
+}
+
+// Size can also be negative; see how it's smaller than the element
+.raise:hover,
+.raise:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
+}
+
+// Animating from the bottom
+.up:hover,
+.up:focus {
+  box-shadow: inset 0 -3.25em 0 0 var(--hover);
+}
+
+// And from the left
+.slide:hover,
+.slide:focus {
+  box-shadow: inset 6.5em 0 0 0 var(--hover);
+}
+
+// Multiple shadows, one on the outside, another on the inside
+.offset {
+  box-shadow: 0.3em 0.3em 0 0 var(--color), inset 0.3em 0.3em 0 0 var(--color);
+
+  &:hover,
+  &:focus {
+    box-shadow: 0 0 0 0 var(--hover), inset 6em 3.5em 0 0 var(--hover);
+  }
+}
+
+//=== Set button colors
+// If you wonder why use Sass vars or CSS custom properties...
+// Make a map with the class names and matching colors
+$colors: (
+  fill: gray,
+  pulse: #ef6eae,
+  close: #ff7f82,
+  raise: #ffa260,
+  up: #e4cb58,
+  slide: #8fc866,
+  offset: #19bc8b
+);
+
+// Sass variables compile to a static string; CSS variables are dynamic and inherited
+// Loop through the map and set CSS custom properties using Sass variables
+@each $button, $color in $colors {
+  .#{$button} {
+    --color: #{$color};
+    --hover: #{adjust-hue($color, 45deg)};
+  }
+}
+
+// Now every button will have different colors as set above. We get to use the same structure, only changing the custom properties.
+button {
+  color: var(--color);
+  transition: 0.25s;
+
+  &:hover,
+  &:focus {
+    border-color: var(--hover);
+    color: #fff;
+  }
+}
+
+
+// Basic button styles
+button {
+  background: none;
+  border: 2px solid;
+  font: inherit;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 1em 2em;
+}
+
+// h1 {
+//   font-weight: 400;
+// }
+
+// code {
+//   color: #e4cb58;
+//   font: inherit;
+// }
+
+</style>
+

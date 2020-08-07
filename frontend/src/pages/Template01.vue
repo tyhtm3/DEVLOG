@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <el-dialog title="About Me" :visible.sync="aboutmeVisible">
+  <el-dialog class="template01detail" title="About Me" :visible.sync="aboutmeVisible">
     <img src="../../static/img/template01_09.jpg" style="position:absolute; top:0; left:0; height:100%; width:100%;">
   </el-dialog>
   <!-- about me 끝 -->
@@ -40,7 +40,7 @@
       <p>역할 : 인터페이스 및 졸업 여부를 계산하는 알고리즘 구현</p>
     </div>
   </div>
-  <el-dialog title="졸업 가능?" :visible.sync="project1Visible">
+  <el-dialog class="template01detail" title="졸업 가능?" :visible.sync="project1Visible">
   </el-dialog>
   <!-- project1 끝 -->
 
@@ -59,7 +59,7 @@
       <p>역할 : 웹 디자인, 주요 서비스 프론트엔드 백엔드 구현</p>
     </div>
   </div>
-  <el-dialog title="HAPPY HOUSE" :visible.sync="project2Visible">
+  <el-dialog class="template01detail" title="HAPPY HOUSE" :visible.sync="project2Visible">
     <div class="row-fluid">
       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
         <div class="short-div" style="height:350px">
@@ -101,7 +101,7 @@
       <p>역할 : 프론트엔드</p>
     </div>
   </div>
-  <el-dialog title="DEVLOG" :visible.sync="project3Visible">
+  <el-dialog class="template01detail" title="DEVLOG" :visible.sync="project3Visible">
 
   </el-dialog>
   <!-- project3 끝 -->
@@ -255,7 +255,7 @@ export default {
 }
 </style>>
 <style>
-.el-dialog{
+.template01detail .el-dialog{
   width: 90% !important;
   height: 80% !important;
   margin-top: 50px !important;
