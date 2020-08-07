@@ -78,7 +78,7 @@ const routes = [
         component: Main
       },
       {
-        path: '/blog/:seq',
+        path: '/blog/:id',
         name: 'blog',
         component: Blog
       },

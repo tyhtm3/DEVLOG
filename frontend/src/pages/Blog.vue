@@ -82,6 +82,7 @@
         return { 
           alterTitleFlag: false,
           seq_blog: '',
+          blogOwnerId: '',
           //this.$store.state.userInfo.seq
           // token : this.$store.state.token,
           blogInfo:[],
@@ -95,8 +96,8 @@
         }
     },
     created(){	 
-      this.seq_blog= this.$route.params.seq
-      this.getBlogInfo();
+      this.blogOwnerId= this.$route.params.id;
+      this.getBlogOwnerInfo();
     },
     mounted(){
       var value = $('#title').val();
@@ -115,15 +116,24 @@
       })
     },
     methods:{
+      getBlogOwnerInfo(){
+         http.get('user/id/{seq}?id='+this.blogOwnerId)
+        .then(({data})=>{
+          this.blogOwnerInfo=data;
+          this.seq_blog = this.blogOwnerInfo.seq;
+          this.getBlogInfo();
+        });
+
+      },
       getBlogInfo(){
             http.get('blog/'+this.seq_blog)
             .then(({ data }) => {
               this.blogInfo=data;
             });
-            http.get('user/'+this.seq_blog)
-            .then(({ data }) => {
-              this.blogOwnerInfo=data;
-            });
+            // http.get('user/'+this.seq_blog)
+            // .then(({ data }) => {
+            //   this.blogOwnerInfo=data;
+            // });
             http.get('project/blog/'+this.seq_blog)
             .then(({ data }) => {
                 this.blogOwnerNumOfProject = data;
