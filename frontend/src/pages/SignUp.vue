@@ -105,7 +105,7 @@ import http from '../util/http-common'
             nickname: this.nickname,
             email: this.email,
             tel: this.tel,
-            birthday: this.birth,
+            birthday: this.date_to_str(this.birth),
             github_url: this.url,
             profile_img_url: this.imageUrl
           })
