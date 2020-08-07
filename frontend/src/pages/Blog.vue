@@ -60,6 +60,7 @@
       <!-- start box -->
       <div class="box">
         <blog-content v-if="followerpage===false" :seq_blog="seq_blog"></blog-content>
+                <!-- <blog-content v-if="followerpage===false" :seq_blog="this.$route.params.id"></blog-content> -->
         <follower v-if="followerpage"></follower>
       </div>
     </div>
@@ -130,10 +131,6 @@
             .then(({ data }) => {
               this.blogInfo=data;
             });
-            // http.get('user/'+this.seq_blog)
-            // .then(({ data }) => {
-            //   this.blogOwnerInfo=data;
-            // });
             http.get('project/blog/'+this.seq_blog)
             .then(({ data }) => {
                 this.blogOwnerNumOfProject = data;

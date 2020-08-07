@@ -11,23 +11,35 @@
           </ul>
           <!-- 테스트하고있는데테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나테스트하고있는데 보이나 안보이나 보이나 안보이나<br>
           {{this.$parent.seq_blog}} -->
+          <!-- {{this.$parent.seq_blog}} -->
+          <!-- <button @click="loadComponent">loadComponent</button> -->
           <div class="tab-content">
             <!-- <div v-if="curpage == 0" role="tabpanel" class="tab-pane fade active in" id="project"> -->
             <!-- TAB PANEL ITEM-->
+            
+            <!-- 1: {{this.$parent.seq_blog}} -->
+            
             <div role="tabpanel" class="tab-pane fade active in" id="project">
               <project-list></project-list>
+                            <!-- <project-list :seq_blog="this.seq_blog"  v-if="loadit"></project-list> -->
             </div>
             <!--/ TAB PANEL ITEM -->
 
             <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade" id="portfolio">
               <portfolio-list></portfolio-list>
+              <!-- <portfolio-list :seq_blog="this.seq_blog"  v-if="loadit"></portfolio-list> -->
             </div>
             <!--/ TAB PANEL ITEM -->
 
             <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade" id="post">
               <post-list></post-list>
+              <!--               
+              <keep-alive>
+                <component v-bind:is="post-list"></component>
+              </keep-alive> -->
+              <!-- <post-list :seq_blog="this.seq_blog"  v-if="loadit"></post-list> -->
             </div>
             <!--/ TAB PANEL ITEM -->
 
@@ -44,7 +56,7 @@
   import projectList from './projectList.vue'
   import postList from './postList.vue'
   import portfolioList from './portfolioList.vue'
-import { mapState } from 'vuex'
+  // import { mapState } from 'vuex'
   export default {
     name: 'blog-content',
     components: {
@@ -52,6 +64,9 @@ import { mapState } from 'vuex'
       'post-list': postList,
       'portfolio-list': portfolioList
     },
+    // computed: {
+    // ...mapState(['userInfo']),
+    // },
     data: function () {
         return { 
             seq_blog: '',
@@ -68,6 +83,7 @@ import { mapState } from 'vuex'
             },
             formLabelWidth: '120px',
             curpage:'0'
+            // ,loadit:true
         }
     },
     created(){
@@ -90,9 +106,21 @@ import { mapState } from 'vuex'
         });
       });
       this.seq_blog=this.$parent.seq_blog;
+      // this.seq_user=this.userInfo.seq;
+      // if(this.seq_blog!=''){
+      //   alert("블로그번호: " + this.seq_blog +  " / 유저번호: " + this.seq_user);
+      //   this.loadit=true;
+      // }else{
+      //   alert("또 빈값");
+      //   this.loadit=false;
+      // }
+
+      
     },
     methods:{
-      
+      // loadComponent(){
+      //   this.loadit=true;
+      // }
       // $(“#myTab li:eq(2) a”).tab(“show“);   // 3번째 탭
     },
   }
