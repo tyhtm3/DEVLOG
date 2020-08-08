@@ -84,7 +84,7 @@ const routes = [
         component: Naver
       },
       {
-        path: '/blog',
+        path: '/blog/:id',
         name: 'blog',
         component: Blog
       },

@@ -3,6 +3,7 @@
         <section class="content"  style="padding-top:30px">
         <!-- 포스트 출력 -->
             <div class="delete" @click="deletePost" v-show="this.$store.state.settingButtonVisible">
+            <!-- 2: {{this.$parent.seq_blog}} -->
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
@@ -45,16 +46,23 @@
 import http from '../util/http-common'
 import InfiniteLoading from 'vue-infinite-loading'
 import store from '../store'
+// import { mapState } from 'vuex'
+// import store from '../store'
 export default {
     name: 'postList',
     components: {
         InfiniteLoading
     },
+    // computed: {
+    // ...mapState(['userInfo']),
+    // },
     data(){
         return{
             // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정
             seq_blog: this.$store.state.userInfo.seq,
             seq_user: this.$store.state.userInfo.seq,
+            // seq_blog:'',
+            // seq_user:'',
             postList: [],
             comment: [],
             tag:[],
@@ -70,6 +78,11 @@ export default {
     },
     created(){	 
       this.getpostList();
+    // created(){
+    //     this.seq_blog=this.$parent.seq_blog;
+    //     this.seq_user = this.userInfo.seq;
+    //   alert(this.seq_blog + " " + this.seq_user)
+    //     this.getpostList();
     },
     methods:{
         removeTag(text){
@@ -88,6 +101,13 @@ export default {
                 this.postList = data;
                 this.getpostCommentTag(data)}
             })
+            //   alert("블로그번호: " + this.seq_blog +  " / 유저번호: " + this.seq_user);
+            // http.post('post/blog', { seq_blog:this.seq_blog, offset:0, limit:this.page})
+            // .then(({ data }) => {
+            //     if(data.length){
+            //     this.postList = data;
+            //     this.getpostCommentTag(data)}
+            // })
         },
         // 인피니트로딩
         infiniteHandler($state){

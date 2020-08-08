@@ -25,7 +25,7 @@
 											</router-link>
 										</li>
 										<li> <i class="ti-home"></i>
-											<router-link to="/blog">
+											<router-link :to="{ name: 'blog', params: { id: this.userInfo.id }}">
 												<h3 style="margin-top: 9px;">내 블로그<span class="text-yellow fontello-record"></span></h3>
 												<p></p>
 											</router-link>
@@ -54,30 +54,48 @@
 import Login from '../../components/Login.vue'
 import router from '../../routes'
 import http from '../../util/http-common'
-import store from '../../store'
+// import store from '../../store'
+import { mapState } from 'vuex'
 export default {
 	name: 'DashboardHeader',
 	components: {
 		Login
 	},
-  methods: {
-    loginFormOpen(){
-     this.$store.state.loginFormVisible = true;
-		},
-		logout(){
-		 this.$store.state.isLogin = false
-		 this.$store.state.userInfo = {seq:0}
-		 this.$message.success('로그아웃 되었습니다.');
-		 localStorage.clear();
-		},
-		test(){
-			console.log(this.$store.state.userInfo)
-			http
-			.get('/user')
-			.then(({data}) => {
-				console.log(data)
-      })
+	computed: {
+		...mapState(['userInfo']),
+	},
+	data: ()=>{
+		return{
+			basicurl: '/blog/',
+			blogurl:'',
+			url:'',
 		}
-  },
+	},
+	mounted() {
+		this.blogurl = this.userInfo.seq
+		this.url=this.basicurl+this.blogurl;
+		alert(this.url);
+	},
+	methods: {
+		loginFormOpen(){
+		this.$store.state.loginFormVisible = true;
+	},
+    created(){	 
+	},
+	logout(){
+	this.$store.state.isLogin = false
+	this.$store.state.userInfo = {seq:0}
+	this.$message.success('로그아웃 되었습니다.');
+	localStorage.clear();
+	},
+	test(){
+		console.log(this.$store.state.userInfo)
+		http
+		.get('/user')
+		.then(({data}) => {
+			console.log(data)
+		})
+	}
+	},
 }
 </script>
