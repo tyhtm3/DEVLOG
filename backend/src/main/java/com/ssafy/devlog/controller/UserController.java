@@ -251,11 +251,10 @@ public class UserController {
 				 * email:tab1200@naver.com
 				 * profile_img_url : https://ssl.pstatic.net/static/pwe/address/img_profile.png*/
 				
-				User user = new User();
-				user = userService.selectUserBySocialId(id);
-				
+				User user = userService.selectUserBySocialId(id);
 				// 첫 로그인시 회원가입 및 블로그 생성
 				if(user==null){
+					user = new User();
 					user.setSocial_id(id);
 					user.setSocial("Naver");
 					user.setId(email);
@@ -283,7 +282,7 @@ public class UserController {
 		}
 	
 		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(URI.create("http://localhost:8080/jwt?"+jwt));
+		headers.setLocation(URI.create("http://localhost:8080/#/naver/"+jwt));
 		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
 		
 	}

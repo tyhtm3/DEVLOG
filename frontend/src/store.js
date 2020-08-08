@@ -64,5 +64,17 @@ export default new Vuex.Store({
       });
       
     },
+    naverLogin(context, token){
+      context.commit('mutateIsLogin', true)
+      context.commit('SET_TOKEN',token)
+      context.commit('mutateLoginFormVisible', false)
+      http
+      .get('/user/me',{headers : {'Authorization' : token,}})
+      .then(({data}) =>{
+          context.commit('mutateUserInfo',data)
+      });
+      
+    }
+
   }
 })

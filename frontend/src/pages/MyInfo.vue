@@ -15,14 +15,14 @@
 								<dl class="dl-horizontal-profile">
 									<dt>*아이디</dt>
                   <dd>
-                    <el-input v-model="userInfo.id" style="width: 40%;" disabled></el-input>
+                    <el-input v-model="id" style="width: 40%;" disabled></el-input>
                     <el-upload
                     class="avatar-uploader"
                     action="https://jsonplaceholder.typicode.com/posts/"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    <img v-if="profile_img_url" :src="profile_img_url" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                   </dd>
@@ -31,18 +31,18 @@
 									<dt>*비밀번호 확인</dt>
                   <dd><el-input v-model="confirm" type="password" style="width: 40%;"></el-input></dd>
 									<dt>*이름</dt>
-                  <dd><el-input v-model="userInfo.name" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="name" style="width: 70%;"></el-input></dd>
 									<dt>닉네임</dt>
-                  <dd><el-input v-model="userInfo.nickname" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="nickname" style="width: 70%;"></el-input></dd>
                   <dt>*이메일</dt>
-									<dd><el-input v-model="userInfo.email" style="width: 70%;"></el-input></dd>
+									<dd><el-input v-model="email" style="width: 70%;"></el-input></dd>
 									<dt>연락처</dt>
-                  <dd><el-input v-model="userInfo.tel" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="tel" style="width: 70%;"></el-input></dd>
                   <dt>생년월일</dt>
-                  <dd><el-date-picker v-model="userInfo.birthday" type="date"></el-date-picker></dd>
+                  <dd><el-date-picker v-model="birthday" type="date"></el-date-picker></dd>
                   <dt>url</dt>
 									<dd>
-                    <el-input v-model="userInfo.github_url" style="width: 70%;">
+                    <el-input v-model="github_url" style="width: 70%;">
                       <template slot="prepend">https://</template>
                     </el-input>
                   </dd>
@@ -69,14 +69,28 @@ export default {
   },
   data: () => {
     return {
-      imageUrl: '',
       password: '',
-      confirm: ''
+      confirm: '',
+      id: '',
+      name: '',
+      nickname: '',
+      email:'',
+      tel: '',
+      birthday: '',
+      github_url: '',
+      profile_img_url: ''
     }
   },
   created() {
     this.$store.state.loginFormVisible = false;
-    this.imageUrl = this.userInfo.profile_img_url
+    this.id=  this.userInfo.id
+    this.name = this.userInfo.name
+    this.nickname=  this.userInfo.nickname
+    this.email=  this.userInfo.email
+    this.tel=  this.userInfo.tel
+    this.birthday=  this.userInfo.birthday
+    this.github_url=  this.userInfo.github_url
+    this.profile_img_url=  this.userInfo.profile_img_url
   },
   mounted() {
   },
@@ -100,32 +114,45 @@ export default {
           message: '비밀번호가 일치하지 않습니다.'
         })
       }
-      else if(this.userInfo.name===''){
+      else if(this.name===''){
           this.$message({
           type: 'warning',
           message: '이름을 입력해 주세요.'
         })
       }
-      else if (!this.validEmail(this.userInfo.email)){
+      else if (!this.validEmail(this.email)){
           this.$message({
           type: 'error',
-          message: '이메일 형식을 확인해 주세요 입력해 주세요.'
+          message: '이메일 형식을 확인해 주세요.'
         })
       }
       else{
         http
         .put('/user', {
-          id: this.userInfo.id,
+          id: this.id,
           password: this.password,
-          name: this.userInfo.name,
-          nickname: this.userInfo.nickname,
-          email: this.userInfo.email,
-          tel: this.userInfo.tel,
-          birthday: this.userInfo.birthday,
-          github_url: this.userInfo.github_url,
-          profile_img_url: this.imageUrl
+          name: this.name,
+          nickname: this.nickname,
+          email: this.email,
+          tel: this.tel,
+          birthday: this.birthday,
+          github_url: this.github_url,
+          profile_img_url: this.profile_img_url
         })
         .then(({ data }) => {
+          // 
+          this.$store.commit('mutateUserInfo', {
+          seq: this.$store.state.userInfo.seq,
+          id: this.id,
+          password: this.password,
+          name: this.name,
+          nickname: this.nickname,
+          email: this.email,
+          tel: this.tel,
+          birthday: this.birthday,
+          github_url: this.github_url,
+          profile_img_url: this.profile_img_url
+          })
           this.$message({
             type: 'success',
             message: '정보가 수정되었습니다.'
@@ -174,7 +201,7 @@ export default {
             'Content-Type': 'multipart/form-data'
           }})
         .then(({data}) => {
-          this.imageUrl = 'http://'.concat(data)
+          this.profile_img_url = 'http://'.concat(data)
       })
     },
     beforeAvatarUpload(file) {
