@@ -46,8 +46,6 @@
 import http from '../util/http-common'
 import InfiniteLoading from 'vue-infinite-loading'
 import store from '../store'
-// import { mapState } from 'vuex'
-// import store from '../store'
 export default {
     name: 'postList',
     components: {

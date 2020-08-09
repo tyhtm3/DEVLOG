@@ -48,7 +48,7 @@
           </span>
 
           <div class="column4" v-if= "getIsLogin" >
-            <router-link to="writePost">
+            <router-link to="../writePost">
               <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
             </router-link>
               <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>
@@ -81,11 +81,6 @@ export default {
       'getUserInfo',
       'getIsAdminMode',
       'getIsLogin'
-    ]),
-    ...mapMutations([
-      'setUserInfo',
-      'setIsAdminMode',
-      'setIsLogin'
     ])
   },
   data: () => {
@@ -124,6 +119,11 @@ export default {
     })
   },
   methods:{
+    ...mapMutations([
+      'setUserInfo',
+      'setIsAdminMode',
+      'setIsLogin'
+    ]),
     getBlogOwnerInfo(){
         http.get('user/id/{seq}?id='+this.blogOwnerId)
       .then(({data})=>{
@@ -162,7 +162,7 @@ export default {
           message: '관리모드가 비활성화 되었습니다.'
         });
         $('#setting').css('color','#B1B0AC');
-        this.$store.commit('setIsAdminMode', false)
+        this.commit('setIsAdminMode', false)
       }
       else{
         this.$message({
@@ -170,7 +170,7 @@ export default {
           message: '관리모드가 활성화 되었습니다.',
         });
         $('#setting').css('color', 'black');
-        this.$store.commit('setIsAdminMode', true)
+        this.commit('setIsAdminMode', true)
       }
     },
     follower(){

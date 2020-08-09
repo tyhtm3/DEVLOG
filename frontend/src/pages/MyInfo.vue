@@ -15,14 +15,14 @@
 								<dl class="dl-horizontal-profile">
 									<dt>*아이디</dt>
                   <dd>
-                    <el-input v-model="getUserInfo.id" style="width: 40%;" disabled></el-input>
+                    <el-input v-model="userInfo.id" style="width: 40%;" disabled></el-input>
                     <el-upload
                     class="avatar-uploader2"
                     action="https://jsonplaceholder.typicode.com/posts/"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
-                    <img v-if="getUserInfo.profile_img_url" :src="getUserInfo.profile_img_url" class="avatar">
+                    <img v-if="userInfo.profile_img_url" :src="userInfo.profile_img_url" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                   </dd>
@@ -31,18 +31,18 @@
 									<dt>*비밀번호 확인</dt>
                   <dd><el-input v-model="confirm" type="password" style="width: 40%;"></el-input></dd>
 									<dt>*이름</dt>
-                  <dd><el-input v-model="getUserInfo.name" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="userInfo.name" style="width: 70%;"></el-input></dd>
 									<dt>닉네임</dt>
-                  <dd><el-input v-model="getUserInfo.nickname" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="userInfo.nickname" style="width: 70%;"></el-input></dd>
                   <dt>*이메일</dt>
-									<dd><el-input v-model="getUserInfo.email" style="width: 70%;"></el-input></dd>
+									<dd><el-input v-model="userInfo.email" style="width: 70%;"></el-input></dd>
 									<dt>연락처</dt>
-                  <dd><el-input v-model="getUserInfo.tel" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="userInfo.tel" style="width: 70%;"></el-input></dd>
                   <dt>생년월일</dt>
-                  <dd><el-date-picker v-model="getUserInfo.birthday" type="date"></el-date-picker></dd>
+                  <dd><el-date-picker v-model="userInfo.birthday" type="date"></el-date-picker></dd>
                   <dt>url</dt>
 									<dd>
-                    <el-input v-model="getUserInfo.github_url" style="width: 70%;">
+                    <el-input v-model="userInfo.github_url" style="width: 70%;">
                       <template slot="prepend">https://</template>
                     </el-input>
                   </dd>
@@ -66,36 +66,17 @@ export default {
   components: {
   },
   computed: {
-    ...mapGetters(['getUserInfo']),
-    ...mapMutations(['setLoginFormVisible'])
+    ...mapGetters(['getUserInfo'])
   },
   data: () => {
     return {
+      userInfo: {},
       password: '',
-      confirm: '',
-      id: '',
-      name: '',
-      nickname: '',
-      email:'',
-      tel: '',
-      birthday: '',
-      github_url: '',
-      profile_img_url: ''
+      confirm: ''
     }
   },
-  created() {
-    this.$store.state.loginFormVisible = false;
-    this.id=  this.userInfo.id
-    this.name = this.userInfo.name
-    this.nickname=  this.userInfo.nickname
-    this.email=  this.userInfo.email
-    this.tel=  this.userInfo.tel
-    this.birthday=  this.userInfo.birthday
-    this.github_url=  this.userInfo.github_url
-    this.profile_img_url=  this.userInfo.profile_img_url
-  },
   mounted() {
-    this.$store.commit('setLoginFormVisible', false)
+    this.userInfo = this.getUserInfo
   },
   methods: {
     modify() {
@@ -117,13 +98,13 @@ export default {
           message: '비밀번호가 일치하지 않습니다.'
         })
       }
-      else if(this.name===''){
+      else if(this.userInfo.name===''){
           this.$message({
           type: 'warning',
           message: '이름을 입력해 주세요.'
         })
       }
-      else if (!this.validEmail(this.email)){
+      else if (!this.validEmail(this.userInfo.email)){
           this.$message({
           type: 'error',
           message: '이메일 형식을 확인해 주세요.'
@@ -132,43 +113,29 @@ export default {
       else{
         http
         .put('/user', {
-          id: this.id,
+          id: this.userInfo.id,
           password: this.password,
-          name: this.name,
-          nickname: this.nickname,
-          email: this.email,
-          tel: this.tel,
-          birthday: this.birthday,
-          github_url: this.github_url,
-          profile_img_url: this.profile_img_url
+          name: this.userInfo.name,
+          nickname: this.userInfo.nickname,
+          email: this.userInfo.email,
+          tel: this.userInfo.tel,
+          birthday: this.userInfo.birthday,
+          github_url: this.userInfo.github_url,
+          profile_img_url: this.userInfo.profile_img_url
         })
         .then(({ data }) => {
-          // 
-          this.$store.commit('mutateUserInfo', {
-          seq: this.$store.state.userInfo.seq,
-          id: this.id,
-          password: this.password,
-          name: this.name,
-          nickname: this.nickname,
-          email: this.email,
-          tel: this.tel,
-          birthday: this.birthday,
-          github_url: this.github_url,
-          profile_img_url: this.profile_img_url
-          })
+          this.$store.commit('setUserInfo', this.userInfo)
           this.$message({
             type: 'success',
             message: '정보가 수정되었습니다.'
           })
-          this.$router.push('/blog')
+          this.$router.push('/')
         })
         .catch((error) => {
-          if(error.response.status=='404'){
-            this.$message({
-              type: 'error',
-              message: '정보 수정 도중 발생했습니다.'
-            })
-          }
+          this.$message({
+            type: 'error',
+            message: '정보 수정 도중 발생했습니다.'
+          })
         })
       }
     },
@@ -183,7 +150,7 @@ export default {
         http
         .delete('/user/')
         .then(({ data }) => {
-          this.$store.commit('mutateIsLogin', false)
+          this.commit('setIsLogin', false)
           this.$message({
             type: 'success',
             message: '탈퇴가 완료되었습니다.'

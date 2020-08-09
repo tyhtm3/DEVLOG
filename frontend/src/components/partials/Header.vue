@@ -20,12 +20,12 @@
 									<ul class="menu">
 										<li> <i class="ti-user"></i>
 											<router-link to="/myinfo">
-												<h3 style="margin-top: 9px;">{{ this.$store.state.userInfo.name }}<span class="text-green fontello-record"></span></h3>
+												<h3 style="margin-top: 9px;">{{ this.getUserInfo.name }}<span class="text-green fontello-record"></span></h3>
 												<p></p>
 											</router-link>
 										</li>
 										<li> <i class="ti-home"></i>
-											<router-link :to="{ name: 'blog', params: { id: this.userInfo.id }}">
+											<router-link :to="{ name: 'blog', params: { id: this.getUserInfo.id }}">
 												<h3 style="margin-top: 9px;">내 블로그<span class="text-yellow fontello-record"></span></h3>
 												<p></p>
 											</router-link>
@@ -44,7 +44,7 @@
 				<span v-else>
 					<el-button :plain="true" @click="loginFormOpen">로그인</el-button>
 				</span>
-        <Login v-if="this.$store.state.loginFormVisible"></Login>
+        <login v-if="this.getLoginFormVisible"></login>
       </div>
     </nav>
     
@@ -54,15 +54,17 @@
 import Login from '../../components/Login.vue'
 import router from '../../routes'
 import http from '../../util/http-common'
-// import store from '../../store'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
-	name: 'DashboardHeader',
+	name: 'Header',
 	components: {
 		Login
 	},
 	computed: {
-		...mapState(['userInfo']),
+		...mapGetters([
+			'getUserInfo',
+			'getLoginFormVisible'
+		])
 	},
 	data: ()=>{
 		return{
@@ -72,30 +74,20 @@ export default {
 		}
 	},
 	mounted() {
-		// this.blogurl = this.userInfo.seq
-		// this.url=this.basicurl+this.blogurl;
+		this.blogurl = this.getUserInfo.seq
+		this.url=this.basicurl+this.blogurl
 		// alert(this.url);
 	},
 	methods: {
 		loginFormOpen(){
-		this.$store.state.loginFormVisible = true;
-	},
-    created(){	 
-	},
-	logout(){
-	this.$store.state.isLogin = false
-	this.$store.state.userInfo = {seq:0}
-	this.$message.success('로그아웃 되었습니다.');
-	localStorage.clear();
-	},
-	test(){
-		console.log(this.$store.state.userInfo)
-		http
-		.get('/user')
-		.then(({data}) => {
-			console.log(data)
-		})
-	}
+			this.$store.commit('setLoginFormVisible', true)
+		},
+		logout(){
+			this.$store.commit('setIsLogin', false)
+			this.$store.commit('setUserInfo', {seq:0})
+			this.$message.success('로그아웃 되었습니다.');
+			localStorage.clear();
+		}
 	},
 }
 </script>
