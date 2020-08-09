@@ -149,7 +149,6 @@
           tag: [],
           stack: [],
           seq_user: this.$store.state.userInfo.seq,
-
         }
     },
     created(){

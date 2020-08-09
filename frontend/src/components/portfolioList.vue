@@ -2,12 +2,12 @@
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 포스트출력 -->
-            <div class="delete" @click="deletePortfolio" v-show="this.$store.state.settingButtonVisible">
+            <div class="delete" @click="deletePortfolio" v-show="adminMode">
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
                 <div class="col-md-4" v-for="(portfolio,index) in portfolioList" :key="index">
-                    <span v-show="$store.state.settingButtonVisible">
+                    <span v-show="adminMode">
                         <input class="delete-box" :id=portfolio.seq type="checkbox" :value=portfolio.seq v-model="deleteList" />
                         <label :for=portfolio.seq></label>
                     </span>
@@ -53,22 +53,27 @@
   export default {
     name: 'portfolioList',
     data(){
-        return{
-            // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
-            seq_blog: this.$store.state.userInfo.seq,
-            seq_user: this.$store.state.userInfo.seq,
-            offset:0,
-            limit:10,
-            portfolioList: [],
-            comment: [],
-            counter: 0,
-            deleteList: [],
-            deleteSuccess: true,
-            selectDialogVisible: false
-        }
+      return{
+        // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
+        seq_blog: this.$store.state.userInfo.seq,
+        seq_user: this.$store.state.userInfo.seq,
+        offset:0,
+        limit:10,
+        portfolioList: [],
+        comment: [],
+        counter: 0,
+        deleteList: [],
+        deleteSuccess: true,
+        selectDialogVisible: false
+      }
     },
     created(){	 
       this.getportfolioList();
+    },
+    computed: {
+      adminMode() {
+        return this.$store.getters.getIsAdminMode
+      }
     },
     methods:{
         goTemplate00(seq){

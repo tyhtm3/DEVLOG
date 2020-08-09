@@ -58,12 +58,12 @@
                       <h2 style="font-weight: bold; margin-bottom:5px;" @click="goDetailProject(project.seq)">{{ project.title }}</h2>
                     </div>
                     <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" > 
-                      <span class="tag">#SpringBoot</span>
-                      <span class="tag">#Vue.js</span>
-                      <span class="tag">#css</span>
+                      <span v-for="(tag, index) in projectTag[index]" :key="index">
+                        <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                      </span>
 
-                      <span class="tag-copy"><i class="ti-heart"></i> {{project.like_count}} </span>
-                      <span class="tag-copy"><i class="ti-comment-alt"></i> {{projectComment[index]}} </span>
+                      <span class="tag-copy"><i class="ti-comment-alt"></i> {{ projectComment[index] }} </span>
+                      <span class="tag-copy"><i class="ti-heart"></i> {{ project.like_count }} </span>
                     </div>
                   </div>
                 </el-carousel-item>
@@ -99,7 +99,7 @@
                   <p class="content-3line">{{ removeTag(post.content) }}</p>
                   <hr>
                   <p class="pull-left">
-                    <span v-for="(tag,index) in postTag[index]" :key="index">
+                    <span v-for="(tag, index) in postTag[index]" :key="index">
                     <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
                     </span>
                   </p>
@@ -127,24 +127,12 @@
 <script>
 import http from '../util/http-common'
 import InfiniteLoading from 'vue-infinite-loading'
+import { mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
 export default {
   name: 'Main',
   components: {
       InfiniteLoading
-  },
-  data () {
-    return {
-      seq_user: this.$store.state.userInfo.seq,
-      postList: [],
-      projectList: [],
-      projectComment: [], 
-      postComment: [],
-      postTag: [],
-      tags: [],
-      // 페이지네이션
-      limit: 0,
-      page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3배수)
-    }
   },
   created(){
     this.getTags();
@@ -155,13 +143,7 @@ export default {
     })
     .then(({data}) => {
       this.projectList = data
-      for(var i=0; i<data.length; i++){
-        http
-        .get('postcomment/'+this.projectList[i].seq)
-        .then(({data}) => {
-            this.projectComment.push(data.length);
-        });
-      }
+      this.getprojectCommentTag(data)
     })
     http
     .post('/post/feed', {
@@ -172,21 +154,48 @@ export default {
       this.getpostCommentTag(data)
     })
   },
+  data () {
+    return {
+      seq_user: '', 
+      postList: [],
+      postComment: [],
+      postTag: [],
+      projectList: [],
+      projectComment: [],
+      projectTag: [],
+      tags: [],
+      // 페이지네이션
+      limit: 0,
+      page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3의 배수)
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'getUserInfo',
+      'getIsAdminMode',
+      'getIsLogin'
+    ]),
+    ...mapMutations([
+      'setUserInfo',
+      'setIsAdminMode',
+      'setIsLogin'
+    ])
+  },
   methods:{
     getTags(){
-      if(this.seq_user==''){
-        // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
-        http.get('usertag/feed')
-        .then(({data}) => {
-          this.tags=data;
-        });
-      }
-      else{
+      // if(this.seq_user==''){
+      //   // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
+      //   http.get('usertag/feed')
+      //   .then(({data}) => {
+      //     this.tags=data;
+      //   });
+      // }
+      // else{
         http.get('usertag/')
         .then(({data}) => {
           this.tags=data;
         });
-      }
+      // }
     },
     // 인피니트로딩
     infiniteHandler($state){
@@ -208,7 +217,22 @@ export default {
           }
         },1000)
       })
-    },   
+    },
+    // 프로젝트로부터 코멘트 개수와 태그 불러오기
+    getprojectCommentTag(data){
+      for(var i=0; i<data.length; i++){
+      // 코멘트
+        http.get('postcomment/count/'+data[i].seq)
+        .then(({data}) => {
+          this.projectComment.push(data);
+        });
+        // 태그
+        http.get('posttag/'+data[i].seq)
+        .then(({data}) => {
+          this.projectTag.push(data.slice(0,3));
+        });
+      }
+    },
     // 포스트로부터 코멘트 개수와 태그 불러오기
     getpostCommentTag(data){
       for(var i=0; i<data.length; i++){
@@ -222,7 +246,7 @@ export default {
         .then(({data}) => {
           this.postTag.push(data.slice(0,3));
         });
-      }   
+      }
     },
     removeTag(text){
       text = text.replace(/<br\/>/ig, "\n")

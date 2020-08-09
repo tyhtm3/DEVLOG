@@ -4,40 +4,55 @@ import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
-import http from './util/http-common'
-
 export default new Vuex.Store({
   plugins: [
     createPersistedState()
   ],
   state: {
-    loginFormVisible: false,
-    settingButtonVisible: false,
-    isLogin: false,
     userInfo: {
       seq:0,
     },
+    isLogin: false,
+    isAdminMode: false,
+    loginFormVisible: false,
     token : null,
   },
   getters: {
-    userInfo: state => state,
+    getUserInfo: function(state) {
+      return state.userInfo
+    },
+    getIsLogin: function(state) {
+      return state.isLogin
+    },
+    getIsAdminMode: function(state) {
+      return state.isAdminMode
+    },
+    getLoginFormVisible: function(state) {
+      return state.loginFormVisible
+    },
+    getToken: function(state) {
+      return state.token
+    }
   },
   mutations: {
-    mutateIsLogin(state, isLogin){
-      state.isLogin = isLogin
+    setUserInfo(state, payload) {
+      state.userInfo = payload
     },
-    mutateLoginFormVisible(state, loginFormVisible){
-      state.loginFormVisible = loginFormVisible
+    setIsLogin(state, payload) {
+      state.isLogin = payload
     },
-    mutateUserInfo(state, userInfo){
-      state.userInfo = userInfo
+    setIsAdminMode(state, payload) {
+      state.isAdminMode = payload
     },
-    SET_TOKEN (state, token) {
-          state.token = token
-        },
-
+    setLoginFormVisible(state, payload) {
+      state.loginFormVisible = payload
+    },
+    setToken (state, payload) {
+      state.token = payload
+    },
   },
   actions: {
+<<<<<<< HEAD
     login(context, {id, password, url}){
       http
       .post('/user/login', { 
@@ -76,5 +91,7 @@ export default new Vuex.Store({
       
     }
 
+=======
+>>>>>>> feature/FE-VuexStatementManagement
   }
 })

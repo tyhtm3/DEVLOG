@@ -2,13 +2,13 @@
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 포스트 출력 -->
-            <div class="delete" @click="deletePost" v-show="this.$store.state.settingButtonVisible">
+            <div class="delete" @click="deletePost" v-show="adminMode">
             <!-- 2: {{this.$parent.seq_blog}} -->
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
                 <div class="col-md-4" v-for="(post,index) in postList" :key="index">
-                    <span v-show="$store.state.settingButtonVisible">
+                    <span v-show="adminMode">
                         <input class="delete-box" :id=post.seq type="checkbox" :value=post.seq v-model="deleteList" />
                         <label :for=post.seq></label>
                     </span>
@@ -53,9 +53,6 @@ export default {
     components: {
         InfiniteLoading
     },
-    // computed: {
-    // ...mapState(['userInfo']),
-    // },
     data(){
         return{
             // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정
@@ -78,11 +75,11 @@ export default {
     },
     created(){	 
       this.getpostList();
-    // created(){
-    //     this.seq_blog=this.$parent.seq_blog;
-    //     this.seq_user = this.userInfo.seq;
-    //   alert(this.seq_blog + " " + this.seq_user)
-    //     this.getpostList();
+    },
+    computed: {
+        adminMode() {
+            return this.$store.getters.getIsAdminMode
+        }
     },
     methods:{
         removeTag(text){

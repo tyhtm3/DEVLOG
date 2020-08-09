@@ -72,9 +72,9 @@ export default {
 		}
 	},
 	mounted() {
-		this.blogurl = this.userInfo.seq
-		this.url=this.basicurl+this.blogurl;
-		alert(this.url);
+		// this.blogurl = this.userInfo.seq
+		// this.url=this.basicurl+this.blogurl;
+		// alert(this.url);
 	},
 	methods: {
 		loginFormOpen(){
