@@ -64,7 +64,8 @@ export default {
 					.get('/user/me',{headers : {'Authorization' : data,}})
 					.then(({data}) => {
 						this.$message.success('정상적으로 로그인되었습니다.')
-						this.$store.commit('setUserInfo',data)
+						console.log(data)
+						this.$store.commit('setUserInfo', data)
 					})
 					.catch((error) => {
 						this.$message.error('로그인 도중 오류가 발생했습니다.')
