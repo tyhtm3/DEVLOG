@@ -2,12 +2,12 @@
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 프로젝트 출력 -->
-            <div class="delete" @click="deleteProject" v-show="this.$store.state.settingButtonVisible">
+            <div class="delete" @click="deleteProject" v-show="adminMode">
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
                 <div class="col-md-4" v-for="(project,index) in projectList" :key="index">
-                    <span v-show="$store.state.settingButtonVisible">
+                    <span v-show="adminMode">
                         <input class="delete-box" :id=project.seq type="checkbox" :value=project.seq v-model="deleteList" />
                         <label :for=project.seq></label>
                     </span>
@@ -73,6 +73,11 @@
     },
     created(){	 
       this.getprojectList();
+    },
+    computed: {
+      adminMode() {
+        return this.$store.getters.getIsAdminMode
+      }
     },
     methods:{
         goDetail(seq){

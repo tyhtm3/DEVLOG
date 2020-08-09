@@ -15,14 +15,14 @@
 								<dl class="dl-horizontal-profile">
 									<dt>*아이디</dt>
                   <dd>
-                    <el-input v-model="userInfo.id" style="width: 40%;" disabled></el-input>
+                    <el-input v-model="getUserInfo.id" style="width: 40%;" disabled></el-input>
                     <el-upload
-                    class="avatar-uploader"
+                    class="avatar-uploader2"
                     action="https://jsonplaceholder.typicode.com/posts/"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    <img v-if="getUserInfo.profile_img_url" :src="getUserInfo.profile_img_url" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                   </dd>
@@ -31,18 +31,18 @@
 									<dt>*비밀번호 확인</dt>
                   <dd><el-input v-model="confirm" type="password" style="width: 40%;"></el-input></dd>
 									<dt>*이름</dt>
-                  <dd><el-input v-model="userInfo.name" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="getUserInfo.name" style="width: 70%;"></el-input></dd>
 									<dt>닉네임</dt>
-                  <dd><el-input v-model="userInfo.nickname" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="getUserInfo.nickname" style="width: 70%;"></el-input></dd>
                   <dt>*이메일</dt>
-									<dd><el-input v-model="userInfo.email" style="width: 70%;"></el-input></dd>
+									<dd><el-input v-model="getUserInfo.email" style="width: 70%;"></el-input></dd>
 									<dt>연락처</dt>
-                  <dd><el-input v-model="userInfo.tel" style="width: 70%;"></el-input></dd>
+                  <dd><el-input v-model="getUserInfo.tel" style="width: 70%;"></el-input></dd>
                   <dt>생년월일</dt>
-                  <dd><el-date-picker v-model="userInfo.birthday" type="date"></el-date-picker></dd>
+                  <dd><el-date-picker v-model="getUserInfo.birthday" type="date"></el-date-picker></dd>
                   <dt>url</dt>
 									<dd>
-                    <el-input v-model="userInfo.github_url" style="width: 70%;">
+                    <el-input v-model="getUserInfo.github_url" style="width: 70%;">
                       <template slot="prepend">https://</template>
                     </el-input>
                   </dd>
@@ -60,25 +60,23 @@
 
 <script>
 import http from '../util/http-common'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
 export default {
   components: {
   },
   computed: {
-    ...mapState(['userInfo']),
+    ...mapGetters(['getUserInfo']),
+    ...mapMutations(['setLoginFormVisible'])
   },
   data: () => {
     return {
-      imageUrl: '',
       password: '',
-      confirm: ''
+      conform: '',
     }
   },
-  created() {
-    this.$store.state.loginFormVisible = false;
-    this.imageUrl = this.userInfo.profile_img_url
-  },
   mounted() {
+    this.$store.commit('setLoginFormVisible', false)
   },
   methods: {
     modify() {
@@ -192,33 +190,3 @@ export default {
   },
 }
 </script>
-
-<style>
-  .avatar-uploader .el-upload {
-    top: 90px;
-    left: 500px;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: absolute;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 168px;
-    height: 168px;
-    line-height: 34px;
-    text-align: center;
-  }
-  .avatar {
-    width: 168px;
-    height: 168px;
-  }
-  .avatar-uploader-icon {
-    transform: translate(0%, 40%);
-  }
-</style>
