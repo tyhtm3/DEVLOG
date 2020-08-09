@@ -53,27 +53,28 @@
   export default {
     name: 'portfolioList',
     data(){
-      return{
-        // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
-        seq_blog: this.$store.state.userInfo.seq,
-        seq_user: this.$store.state.userInfo.seq,
-        offset:0,
-        limit:10,
-        portfolioList: [],
-        comment: [],
-        counter: 0,
-        deleteList: [],
-        deleteSuccess: true,
-        selectDialogVisible: false
-      }
+		return{
+			// 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
+			offset: 0,
+			limit: 10,
+			portfolioList: [],
+			comment: [],
+			counter: 0,
+			deleteList: [],
+			deleteSuccess: true,
+			selectDialogVisible: false
+		}
     },
-    created(){	 
-      this.getportfolioList();
+    created(){
+		this.getportfolioList();
     },
     computed: {
-      adminMode() {
-        return this.$store.getters.getIsAdminMode
-      }
+		adminMode() {
+    		return this.$store.getters.getIsAdminMode
+		},
+	  	visitBlogSeq() {
+			return this.$store.getters.getvisitBlogSeq 
+		}
     },
     methods:{
         goTemplate00(seq){
@@ -92,18 +93,18 @@
         return text
         },
         getportfolioList(){
-            // alert(data[0].title)
-            http.get('portfolio/blog/'+this.seq_user+'/'+this.seq_blog+'/'+this.offset+'/'+this.limit)
-            .then(({ data }) => {
-                this.portfolioList = data;
-                for(var i=0; i<this.portfolioList.length; i++){
-                    // console.log(this.portfolioList[i].seq);
-                    http.get('postcomment/'+this.portfolioList[i].seq)
-                     .then(({data}) => {
-                        // console.log(data.length);
-                        this.comment.push(data.length);
-                    });
-                }
+			http.get('user/id/{seq}?id='+this.$route.params.id)
+            .then(({data})=>{
+                http.get('portfolio/blog/'+data.seq+'/'+data.seq+'/'+this.offset+'/'+this.limit)
+				.then(({ data }) => {
+					this.portfolioList = data;
+					for(var i=0; i<this.portfolioList.length; i++){
+						http.get('postcomment/'+this.portfolioList[i].seq)
+						.then(({data}) => {
+							this.comment.push(data.length);
+						});
+					}
+				})
             })
         },
         deletePortfolio(){

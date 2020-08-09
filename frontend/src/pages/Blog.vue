@@ -34,7 +34,7 @@
               </div>
               <div class="col-sm-4 emphasis" style="cursor:pointer;" @click="follower">
                 <h2><strong >{{blogOwnerNumOfNeighbor}}</strong></h2>
-                <p> <small v-bind="followerpage">Follower</small>
+                <p> <small>Follower </small>
                   <!-- <i class="material-icons" @click="subscribe">add_circle_outline</i> -->
                 </p>
               </div>
@@ -57,10 +57,9 @@
         <!-- end profile -->
       </div>
       <!-- end container-movie -->
-      <!-- start box -->
       <div class="box">
-        <blog-content v-if="followerpage===false" :seq_blog="seq_blog"></blog-content>
-        <follower v-if="followerpage"></follower>
+        <blog-content v-if="!followerpage"></blog-content>
+        <follower v-else></follower>
       </div>
     </div>
   </transition>
@@ -83,25 +82,25 @@ export default {
     ])
   },
   data: () => {
-      return { 
-        alterTitleFlag: false,
-        seq_blog: '',
-        blogInfo:[],
-        blogOwnerId: '',
-        blogOwnerInfo:[],
-        blogOwnerNumOfProject:'',
-        blogOwnerNumOfPost:'',
-        blogOwnerNumOfNeighbor:'',
-        blogOwnerMainTags:[],
-        tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
-        followerpage: false,
-      }
+    return { 
+      alterTitleFlag: false,
+      seq_blog: '',
+      blogInfo:[],
+      blogOwnerId: '',
+      blogOwnerInfo:[],
+      blogOwnerNumOfProject:'',
+      blogOwnerNumOfPost:'',
+      blogOwnerNumOfNeighbor:'',
+      blogOwnerMainTags:[],
+      tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
+      followerpage: false,
+    }
   },
-  created(){	 
+  created() {
     this.blogOwnerId= this.$route.params.id;
     this.getBlogOwnerInfo();
   },
-  mounted(){
+  mounted() {
     var value = $('#title').val();
     $('.title1').append('<div id="virtual_dom" style="display:inline;">' + value + '</div>');
     var inputWidth =  $('#virtual_dom').width() + 400;
@@ -117,39 +116,38 @@ export default {
       $('#virtual_dom').remove();
     })
   },
-  methods:{
+  methods: {
     getBlogOwnerInfo(){
-        http.get('user/id/{seq}?id='+this.blogOwnerId)
+      http.get('user/id/{seq}?id='+this.blogOwnerId)
       .then(({data})=>{
         this.blogOwnerInfo=data;
         this.seq_blog = this.blogOwnerInfo.seq;
         this.getBlogInfo();
       });
-
     },
-    getBlogInfo(){
-          http.get('blog/'+this.seq_blog)
-          .then(({ data }) => {
-            this.blogInfo=data;
-          });
-          http.get('project/blog/'+this.seq_blog)
-          .then(({ data }) => {
-              this.blogOwnerNumOfProject = data;
-          });
-          http.get('post/blog/'+this.seq_blog)
-          .then(({ data }) => {
-              this.blogOwnerNumOfPost = data;
-          });
-          http.get('userneighbor/'+this.seq_blog)
-          .then(({ data }) => {
-              this.blogOwnerNumOfNeighbor = data.length;
-          });
-          http.get('blogtag/'+this.seq_blog)
-          .then(({ data }) => {
-              this.blogOwnerMainTags = data;
-          });
+    getBlogInfo() {
+      http.get('blog/'+this.seq_blog)
+      .then(({ data }) => {
+        this.blogInfo=data;
+      });
+      http.get('project/blog/'+this.seq_blog)
+      .then(({ data }) => {
+          this.blogOwnerNumOfProject = data;
+      });
+      http.get('post/blog/'+this.seq_blog)
+      .then(({ data }) => {
+          this.blogOwnerNumOfPost = data;
+      });
+      http.get('userneighbor/'+this.seq_blog)
+      .then(({ data }) => {
+          this.blogOwnerNumOfNeighbor = data.length;
+      });
+      http.get('blogtag/'+this.seq_blog)
+      .then(({ data }) => {
+          this.blogOwnerMainTags = data;
+      });
     },
-    toggleAdminMode(){
+    toggleAdminMode() {
       if(this.getIsAdminMode){
         this.$message({
           type: 'info',
@@ -167,7 +165,7 @@ export default {
         this.$store.commit('setIsAdminMode', true)
       }
     },
-    follower(){
+    follower() {
       this.followerpage =!this.followerpage
     },
     updateBlog(){
@@ -187,7 +185,7 @@ export default {
         }
       })
     },
-    alterBlog(){
+    alterBlog() {
       $('#title').attr('readonly', false);
       $('#title').focus();
       $('#title').keypress(function (e) {

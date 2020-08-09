@@ -47,9 +47,9 @@ export default new Vuex.Store({
     setLoginFormVisible(state, payload) {
       state.loginFormVisible = payload
     },
-    setToken (state, payload) {
+    setToken(state, payload) {
       state.token = payload
-    },
+    }
   },
   actions: {
   }
