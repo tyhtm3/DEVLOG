@@ -106,7 +106,7 @@ export default {
             type: 'success',
             message: '포스팅 완료.'
           });
-         this.$router.push('/blog')      
+         this.$router.push(`/blog/:id`)
         })
       })
     },

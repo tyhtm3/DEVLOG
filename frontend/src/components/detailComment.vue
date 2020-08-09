@@ -34,7 +34,7 @@
                       
                       <!-- 댓글 수정 클릭시 updateContent 정보가 담겨진 vue editor가 나타난다.-->
                       <div v-if="updateSeq==comment.seq" style="margin-top:20px;">
-                      <vue-editor v-model="updateContent" style="display:inline-block;width:100%;"></vue-editor><br><br>
+                      <vue-editor id="comment-editor" v-model="updateContent" style="display:inline-block;width:100%;"></vue-editor><br><br>
                       <el-button class="pull-right" @click="updateComment">Comment</el-button>
                       </div>
                       <p v-else v-html="comment.content" style="margin-left:0px;"></p>
@@ -130,8 +130,7 @@
   }
 </script>
 <style scoped>
-a:link { color: #B1B0AC; text-decoration: none;}
-a:visited { color: #B1B0AC;; text-decoration: none;}
-a:hover { color: black; text-decoration: bold;}
-
+span:link { color: #B1B0AC; text-decoration: none;}
+span:visited { color: #B1B0AC;; text-decoration: none;}
+span:hover { color: black; text-decoration: bold;}
 </style>
