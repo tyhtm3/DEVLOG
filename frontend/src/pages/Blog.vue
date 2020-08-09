@@ -70,7 +70,6 @@ import blogContent from '../components/blogContent'
 import follower from '../components/follower'
 import http from '../util/http-common'
 import { mapGetters } from 'vuex'
-import { mapMutations } from 'vuex'
 export default {
   components: {
     'blog-content': blogContent,
@@ -119,11 +118,6 @@ export default {
     })
   },
   methods:{
-    ...mapMutations([
-      'setUserInfo',
-      'setIsAdminMode',
-      'setIsLogin'
-    ]),
     getBlogOwnerInfo(){
         http.get('user/id/{seq}?id='+this.blogOwnerId)
       .then(({data})=>{
@@ -162,7 +156,7 @@ export default {
           message: '관리모드가 비활성화 되었습니다.'
         });
         $('#setting').css('color','#B1B0AC');
-        this.commit('setIsAdminMode', false)
+        this.$store.commit('setIsAdminMode', false)
       }
       else{
         this.$message({
@@ -170,7 +164,7 @@ export default {
           message: '관리모드가 활성화 되었습니다.',
         });
         $('#setting').css('color', 'black');
-        this.commit('setIsAdminMode', true)
+        this.$store.commit('setIsAdminMode', true)
       }
     },
     follower(){
