@@ -209,10 +209,8 @@
       deleteProject(seq){
         http.delete('portfolio/'+seq)
         .then(({data}) => {
-            if(data==="SUCCESS"){
-              alert('프로젝트가 삭제되었습니다.')
-              this.$router.push(`/blog:id`)
-            }
+            alert('프로젝트가 삭제되었습니다.')
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
          })
       },
       // 프로젝트 수정 미구현

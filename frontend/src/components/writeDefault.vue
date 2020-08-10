@@ -50,6 +50,7 @@
 
 <script>
 import { VueEditor } from 'vue2-editor'
+import { mapGetters } from 'vuex'
 import http from '../util/http-common'
 
 export default {
@@ -85,7 +86,7 @@ export default {
         this.postInfo.disclosure = 3
       http
       .post('./post', {      
-        seq_blog: this.$store.state.userInfo.seq,
+        seq_blog: this.$store.getters.getUserInfo.seq,
         title: this.postInfo.title,
         content: this.postInfo.content,
         disclosure: this.postInfo.disclosure,
@@ -106,7 +107,7 @@ export default {
             type: 'success',
             message: '포스팅 완료.'
           });
-         this.$router.push(`/blog/:id`)
+          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
         })
       })
     },

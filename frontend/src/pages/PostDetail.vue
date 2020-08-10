@@ -22,7 +22,7 @@
         </li>
         <li class="pull-right" v-if="post.seq_blog==seq_user">
           <span style="cursor:pointer">수정 </span>&nbsp;|&nbsp;
-          <span style="cursor:pointer" @click="deletePost(project.seq)"> 삭제</span>
+          <span style="cursor:pointer" @click="deletePost(post.seq)"> 삭제</span>
         </li>
       </ul>
       <!-- 헤더 끝 -->               
@@ -138,10 +138,8 @@
       deletePost(seq){
          http.delete('post/'+seq)
         .then(({data}) => {
-            if(data==="SUCCESS"){
-              this.$message.success('게시글이 삭제되었습니다.')
-              this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
-            }
+            this.$message.success('게시글이 삭제되었습니다.')
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
          })
       },
       // 포스트 수정 미구현
