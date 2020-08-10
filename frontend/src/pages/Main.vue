@@ -22,15 +22,17 @@
       <div class="box">
         <div class="box-body" style="min-height:400px;">
           <div class="col-sm-12">
-          
             <br><br><br>
 
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
+                        
+
               <!-- start tag search bar -->
               <!-- 미구현 목록
                   1. 태그 클릭시 기능 ??
                   2. 태그 입력시 추가되기
               --> 
+
               <div>
                 <span class="search" id="demo-2">
                   <input class="devin-search tag" type="search" style="font-size:15px;">
@@ -40,6 +42,12 @@
                 </span>
               </div>
               <!-- end tag search bar -->
+           
+
+              <!-- 로그인했을때 전체/이웃글 스위칭 버튼 (1:전체글보기/ 2:이웃글보기)-->
+              <el-tooltip  class="pull-right" v-if="seq_user>0" :content="disclosure?'전체 글 보기':'이웃 글 보기'" placement="right">
+              <el-switch @change="neighborSearch" v-model="disclosure" on-color="#13ce66" off-color="#ff4949" :on-value="2" :off-value="1"> </el-switch>
+              </el-tooltip>
 
               <br><br><br>
 
@@ -120,7 +128,9 @@
             </div>
             <!-- end post list -->          
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
-            <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+
+            <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+          
           </div>
         </div>
       </div>
@@ -151,6 +161,8 @@ export default {
       // 태그 검색
       searchTags: [],
       activeIndex: [],
+      // 이웃 검색
+      disclosure: false,
     }
   },
   created(){
@@ -158,7 +170,12 @@ export default {
     this.getPostandproject();
   },
   methods:{
-    // 태그로 검색하기
+    // 이웃 스위치 바꿀때마다 검색
+    neighborSearch(){
+      this.limit=0
+      this.getPostandproject();
+    },
+    // 태그 누를때마다 검색
     tagSearch(selected, tag){
 
       // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
@@ -175,15 +192,18 @@ export default {
     this.limit=0
     this.getPostandproject();
     },
-    // 페이징 전 프로젝트와 포스트를 불러오기
+    // 프로젝트와 포스트 검색 초기화
     getPostandproject(){
       this.projectComment= [] 
       this.postComment= []
       this.projectTag= []
       this.postTag= []
+      if(this.$refs.infiniteLoading){
+        this.$refs.infiniteLoading.stateChanger.reset(); 
+      }
       http.post('/project/feed', {
       seq_user:this.seq_user ,
-      disclosure: 1,
+      disclosure: this.disclosure?2:1,
       offset: 0,
       limit: 10,
       tag: this.searchTags.length==0?null:this.searchTags
@@ -195,7 +215,7 @@ export default {
     http
     .post('/post/feed', {
        seq_user:this.seq_user , 
-       disclosure:1, 
+       disclosure: this.disclosure?2:1, 
        offset:0, 
        limit:this.page ,
        tag: this.searchTags.length==0?null:this.searchTags
@@ -222,7 +242,7 @@ export default {
     },
     // 인피니트로딩
     infiniteHandler($state){
-      http.post('post/feed', {  seq_user:this.seq_user , disclosure:1, offset:this.limit+this.page, limit:this.page,tag: this.searchTags.length==0?null:this.searchTags })
+      http.post('post/feed', {  seq_user:this.seq_user , disclosure: this.disclosure?2:1, offset:this.limit+this.page, limit:this.page,tag: this.searchTags.length==0?null:this.searchTags })
       .then(({ data }) => {
         // 스크롤 페이징을 띄우기 위한 시간 1초
         setTimeout(()=>{

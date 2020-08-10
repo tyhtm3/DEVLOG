@@ -33,6 +33,6 @@
 </template>
 <script>
 export default {
-  name: 'NotFound'
+  name: 'NotFound',
 }
 </script>

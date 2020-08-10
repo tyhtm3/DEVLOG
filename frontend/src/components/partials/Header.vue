@@ -74,7 +74,7 @@ export default {
 	mounted() {
 		this.blogurl = this.userInfo.seq
 		this.url=this.basicurl+this.blogurl;
-		alert(this.url);
+		// alert(this.url);
 	},
 	methods: {
 		loginFormOpen(){

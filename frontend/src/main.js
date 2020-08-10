@@ -61,13 +61,13 @@ var router = new VueRouter({
 
 // Start out app!
 // eslint-disable-next-line no-new
-new Vue({
+let v = new Vue({
   el: '#app',
   router: router,
   store: store,
   render: h => h(App)
 })
-
+window.app = v; 
 require('bootstrap')
 // require('admin-lte')
 require('../node_modules/admin-lte/dist/js/app.min.js')
