@@ -8,7 +8,7 @@
 				<input v-model="id" id="id" placeholder="id" type="text"/>
 				<input v-model="password" type="password" id="password" placeholder="password"/>
 				<button class="normal" @click="login">login</button><p/>
-				<button class="kakao" @click="login">kakao</button><button class="naver" @click="naverLogin">naver</button><p/>
+				<button class="kakao" @click="kakaoLogin">kakao</button><button class="naver" @click="naverLogin">naver</button><p/>
 				<!-- <button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button> -->
 				<p class="message">Not registered?
 					<router-link to="/signup">
@@ -24,6 +24,7 @@
 		</div> 
 	</div>
 </template>
+
 <script>
 import http from '../util/http-common'
 export default {
@@ -39,6 +40,7 @@ export default {
 		}
 	},
 	created () {
+
     this.naverLoginURL += '&client_id=' + this.CLIENT_ID + '&redirect_uri=' + this.redirectURI + '&state=' + this.state
   	},
 	methods: {
@@ -85,6 +87,18 @@ export default {
 			window.open(this.naverLoginURL, '_blank');
 			//var popup = window.open(this.naverLoginURL,'window_name','width=430,height=500,left=500,right=500,location=no,status=no,scrollbars=yes');
 		},
+		kakaoLogin(){
+			Kakao.Auth.login({
+				success:this.kakaoLoginStore,
+			});
+		},
+		kakaoLoginStore(authObj){
+			this.$store.dispatch('kakaoLogin', {access_token : authObj.access_token})
+			this.$router.push('/')
+		},
+		myFunc(){
+			alert("YA")
+		}
 	},
 }
 
