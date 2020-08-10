@@ -3,7 +3,7 @@
         <div class="comment-nest">
               <div v-if="updateSeq==0">
               <div style="display:inline-block; height:100px;;width:100%;">
-              <vue-editor class="comment-editor" v-model="insertContent"></vue-editor>
+              <vue-editor class="comment-editor" v-model="insertContent" :placeholder="placeholderMessage"></vue-editor>
               </div>
               <br>
               <br>
@@ -51,10 +51,17 @@
 <script>
   import http from '../util/http-common'
   import { VueEditor } from 'vue2-editor'
+  import { mapGetters } from 'vuex'
   export default {
     components: {
       VueEditor,
     },
+    computed: {
+    ...mapGetters([
+      'getUserInfo',
+      'getIsLogin'
+    ])
+  },
     props: ['seq'],
     data: function () {
         return { 
@@ -64,7 +71,19 @@
           insertContent: '', // 댓글 입력 내용물
           updateContent: '', // 댓글 수정 내용물
           updateSeq: 0,
+          placeholderMessage:'댓글을 입력해주세요.'
         }
+    },
+    watch:{
+      getIsLogin: function(){
+        this.placeholderMessage='댓글을 입력해주세요.';
+        this.seq_user = this.$store.state.userInfo.seq;
+        // 유저정보는 왜 안들어가지?
+        // 이거 왜 실시간 반영 안되는거지
+      },
+      // seq_user:function(){
+      //   this.placeholderMessage='댓글을 입력해주세요.';
+      // }
     },
     mounted(){
       this.getComment(this.seq)
@@ -87,20 +106,40 @@
       },
       // 댓글 입력
       insertComment(){
-         http.post('postcomment',{content:this.insertContent,seq_post:this.seq,seq_user:this.seq_user})
-                .then(({data}) => {
-              //댓글 입력하고 리스트 업데이트
-               this.getComment(this.seq)
-         })
-         this.insertContent = ''
+        if(!this.getIsLogin){
+          this.$message({
+            type: 'error',
+            message: '댓글 작성 기능은 로그인 후 이용 가능합니다.'
+          })
+        }else if(this.insertContent==''){
+           this.$message({
+            type: 'error',
+            message: '메세지를 입력해주세요.'
+          })
+        }else{
+          http.post('postcomment',{content:this.insertContent,seq_post:this.seq,seq_user:this.seq_user})
+                  .then(({data}) => {
+                //댓글 입력하고 리스트 업데이트
+                this.getComment(this.seq)
+          })
+          this.insertContent = ''
+        }
+         
       },
       // 댓글 삭제
       deleteComment(seq){
-         http.delete('postcomment/'+seq)
+        this
+        .$confirm('삭제하시겠습니까?', {
+          confirmButtonText: '삭제',
+          cancelButtonText: '취소',
+          type: 'warning'
+        }).then(()=>{
+          http.delete('postcomment/'+seq)
                 .then(({data}) => {
               //댓글 삭제하고 리스트 업데이트
                this.getComment(this.seq)
          })
+        })
       },
       // 댓글 수정창
       showCommentEditor(seq,content){
