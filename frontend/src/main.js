@@ -43,7 +43,7 @@ import 'vuelayers/lib/style.css'
 // Routing logic
 var router = new VueRouter({
   routes: routes,
-  mode: 'hash',
+  mode: 'history',
   linkActiveClass: 'open active',
   scrollBehavior: function (to, from, savedPosition) {
     return savedPosition || { x: 0, y: 0 }

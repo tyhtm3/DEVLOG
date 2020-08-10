@@ -20,7 +20,10 @@
           <i v-else @click="like" class="material-icons">favorite_border</i>
           &nbsp;{{post.like_count}}
         </li>
-        <li class="pull-right" v-if="post.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deletePost(post.seq)"> &nbsp;삭제</a></li>
+        <li class="pull-right" v-if="post.seq_blog==seq_user">
+          <span style="cursor:pointer">수정 </span>&nbsp;|&nbsp;
+          <span style="cursor:pointer" @click="deletePost(post.seq)"> 삭제</span>
+        </li>
       </ul>
       <!-- 헤더 끝 -->               
       <div class="box">
@@ -33,7 +36,7 @@
                     <p class="post-content" style="margin-top:60px;" v-html="post.content"></p><hr> 
                   </div>
                 </div>
-                <!-- 프스트 태그 -->
+                <!-- 포스트 태그 -->
                 <p class="pull-left">
                   <span v-for="(tag, index) in tag" v-bind:key="index" class="tag">
                   #{{tag.tag}}
@@ -43,7 +46,7 @@
               </div>
             </div>
            
-           <!-- 댓글 리스트 -->
+            <!-- 댓글 리스트 -->
               <comment v-bind:seq="seq"></comment>
             <!-- 댓글 창 끝 -->
 
@@ -135,10 +138,8 @@
       deletePost(seq){
          http.delete('post/'+seq)
         .then(({data}) => {
-            if(data==="SUCCESS"){
-              this.$message.success('게시글이 삭제되었습니다.')
-              this.$router.push(`/blog`)
-            }
+            this.$message.success('게시글이 삭제되었습니다.')
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
          })
       },
       // 포스트 수정 미구현

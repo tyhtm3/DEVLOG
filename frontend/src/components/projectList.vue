@@ -2,12 +2,12 @@
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 프로젝트 출력 -->
-            <div class="delete" @click="deleteProject" v-show="this.$store.state.settingButtonVisible">
+            <div class="delete" @click="deleteProject" v-show="adminMode">
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
                 <div class="col-md-4" v-for="(project,index) in projectList" :key="index">
-                    <span v-show="$store.state.settingButtonVisible">
+                    <span v-show="adminMode">
                         <input class="delete-box" :id=project.seq type="checkbox" :value=project.seq v-model="deleteList" />
                         <label :for=project.seq></label>
                     </span>
@@ -58,9 +58,6 @@
     },
     data(){
         return{
-            // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
-            seq_blog: this.$store.state.userInfo.seq,
-            seq_user: this.$store.state.userInfo.seq,
             projectList: [],
             comment: [],
             tag:[],
@@ -71,8 +68,13 @@
             deleteSuccess: true
         }
     },
-    created(){	 
-      this.getprojectList();
+    created() {
+        this.getprojectList()
+    },
+    computed: {
+        adminMode() {
+            return this.$store.getters.getIsAdminMode
+        },
     },
     methods:{
         goDetail(seq){
@@ -80,30 +82,13 @@
         },
         // 페이지네이션 하기 전 처음 페이지에 뿌려줄 카드 불러오기
         getprojectList(){
-            http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:0, limit:this.page } )
-            .then(({ data }) => {
-                this.projectList = data;
-                this.getprojectCommentTag(data)
-            })
-        },
-        // 인피니트로딩
-        infiniteHandler($state){
-            http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:this.limit+this.page, limit:this.page })
-            .then(({ data }) => {
-                // 스크롤 페이징을 띄우기 위한 시간 1초
-                setTimeout(()=>{
-                    if(data.length){
-                        this.getprojectCommentTag(data)
-                        this.projectList = this.projectList.concat(data);
-                        $state.loaded()
-                        this.limit +=this.page
-                        if(this.projectList.length/this.page == 0){
-                            $state.complete();
-                        }
-                    }else{
-                        $state.complete();
-                    }
-                },1000)
+            http.get('user/id/'+this.$route.params.id)
+            .then(({data})=>{
+                http.post('project/blog', { seq_user:data.seq , seq_blog:data.seq, offset:0, limit:this.page } )
+                .then(({ data }) => {
+                    this.projectList = data;
+                    this.getprojectCommentTag(data)
+                })
             })
         },
         // 프로젝트로부터 코멘트 개수와 태그 불러오기
@@ -112,15 +97,39 @@
                 // 코멘트
                 http.get('postcomment/count/'+data[i].seq)
                 .then(({data}) => {
-                this.comment.push(data);
+                    this.comment.push(data);
                 });
                 // 태그
                 http.get('posttag/'+data[i].seq)
                 .then(({data}) => {
-                this.tag.push(data.slice(0,3));
+                    this.tag.push(data.slice(0,3));
                 });
             }   
         },
+        // 인피니트로딩
+        infiniteHandler($state){
+            http.get('user/id/'+this.$route.params.id)
+            .then(({data})=>{
+                http.post('project/blog', { seq_user:data.seq , seq_blog:data.seq, offset:this.limit+this.page, limit:this.page })
+                .then(({ data }) => {
+                    // 스크롤 페이징을 띄우기 위한 시간 1초
+                    setTimeout(()=>{
+                        if(data.length){
+                            this.getprojectCommentTag(data)
+                            this.projectList = this.projectList.concat(data);
+                            $state.loaded()
+                            this.limit +=this.page
+                            if(this.projectList.length/this.page == 0){
+                                $state.complete();
+                            }
+                        }else{
+                            $state.complete();
+                        }
+                    },1000)
+                })
+            })
+        },
+        
         deleteProject(){
              if(this.deleteList.length === 0){
                 this.$message({

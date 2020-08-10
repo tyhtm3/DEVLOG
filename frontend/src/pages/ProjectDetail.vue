@@ -20,7 +20,10 @@
           <i v-if="isLike" @click="cancelLike" class="material-icons">favorite</i>
           <i v-else @click="like" class="material-icons">favorite_border</i>
           &nbsp;{{project.like_count}}</li>
-        <li class="pull-right" v-if="project.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject()"> &nbsp;삭제</a></li>
+        <li class="pull-right" v-if="project.seq_blog==seq_user">
+          <span style="cursor:pointer">수정 </span>&nbsp;|&nbsp;
+          <span style="cursor:pointer" @click="deleteProject(project.seq)"> 삭제</span>
+        </li>
       </ul>
       <!-- 헤더 끝 -->               
       <div class="box">
@@ -149,7 +152,6 @@
           tag: [],
           stack: [],
           seq_user: this.$store.state.userInfo.seq,
-
         }
     },
     created(){
@@ -212,13 +214,11 @@
          })
       },
       // 프로젝트 삭제
-      deleteProject(){
-        http.delete('project/'+this.seq)
+      deleteProject(seq){
+        http.delete('project/'+seq)
         .then(({data}) => {
-            if(data==="SUCCESS"){
-              this.$message.success('프로젝트가 삭제되었습니다.')
-              this.$router.push(`/blog`)
-            }
+            this.$message.success('프로젝트가 삭제되었습니다.')
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
          })
       },
       // 프로젝트 수정 미구현
@@ -275,10 +275,5 @@ a:hover { color: black; text-decoration: bold;}
   font-size:14px;
   word-spacing: 2px;
   line-height:30px;
-}
-</style>
-<style>
-.ql-editor{
-  min-height: 100px;
 }
 </style>

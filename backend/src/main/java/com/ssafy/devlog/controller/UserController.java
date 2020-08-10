@@ -2,6 +2,7 @@ package com.ssafy.devlog.controller;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ssafy.devlog.dto.Blog;
 import com.ssafy.devlog.dto.User;
@@ -87,15 +89,14 @@ public class UserController {
 //		System.out.println(seq);
 		return new ResponseEntity<User>(userService.selectUserBySeq(seq), HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "특정 회원의 정보를 반환한다.(Id로 검색)", response = List.class)
-	@GetMapping("id/{seq}")
-	public ResponseEntity<User> selectUserById(@RequestParam String id) throws Exception {
-		logger.debug("selectUserBySeq - 호출");
+	@GetMapping("/id/{id}")
+	public ResponseEntity<User> selectUserById(@PathVariable String id) throws Exception {
+		logger.debug("selectUserByID - 호출");
 		return new ResponseEntity<User>(userService.selectUserById(id), HttpStatus.OK);
 	}
-	
-	
+
 	@ApiOperation(value = "내 정보를 반환한다.", response = List.class)
 	@GetMapping("/me")
 	public ResponseEntity<User> selectMyInfo() throws Exception {
@@ -204,17 +205,21 @@ public class UserController {
 			StringBuffer res = new StringBuffer();
 			
 				// 정상적으로 토큰을 가져오면 Gson 으로 JSON 파일을 파싱해준다.
-				
-				String id,nickName, email, profile_img_url,tmp;
+
+				String id, nickName, email, profile_img_url, tmp;
 				JsonParser parser = new JsonParser();
+
 				
 				// 파싱한 access_token 값으로 네이버에 유저 정보를 요청. 이 함수의 return 값은 id, email, nickname 등 유저정보들과 상태 코드 등.
+
 				tmp = getUserInfo(access_token);
 
 				JsonElement userInfoElement = parser.parse(tmp);
 				id = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("id").getAsString();
-				nickName = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("nickname").getAsString();
+				nickName = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("nickname")
+						.getAsString();
 				email = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("email").getAsString();
+
 				profile_img_url =  userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("profile_image").getAsString();
 			
 				/* id:99480180
@@ -235,17 +240,18 @@ public class UserController {
 					user.setEmail(email);
 					user.setProfile_img_url(profile_img_url);
 					userService.insertUser(user);
-					
+
 					user = userService.selectUserBySocialId(id);
 					Blog blog = new Blog();
 					blog.setSeq(user.getSeq());
 					blog.setBlog_name(user.getId() + "님의 블로그");
 					blog.setBlog_detail("블로그 소개를 입력해주세요");
 					blogService.insertBlog(blog);
-				}				
-				
-				// seq로  JWT를 만들어준다.
+				}
+
+				// seq로 JWT를 만들어준다.
 				jwt = jwtService.create("member", user.getSeq(), "user");
+
 				
 		} catch (Exception e) {
 			System.out.println(e);
@@ -283,4 +289,165 @@ public class UserController {
 		}
 	}
 
+	@ApiOperation(value = "카카오 로그인")
+	@GetMapping("kakao")
+	public ResponseEntity<String> kakao(HttpServletRequest request) throws Exception {
+		System.out.println("kakao");
+		String apiURL;
+		apiURL = "https://kapi.kakao.com/v1/user/access_token_info";
+		String token = request.getHeader("Authorization");
+		String jwt = "";
+
+		String id = getTokenExpired(token);
+		System.out.println(id);
+		User user = new User();
+		if (id.equals("expired")) {
+			System.out.println("expired");
+			// 토큰만료
+		} else if (id.equals("type_error")) {
+			System.out.println("type_error");
+			// 형식에러
+		} else {
+			try {// 로그인 성공
+				user = userService.selectUserBySocialId(id);
+				System.out.println(user.toString());
+			} catch (Exception e) {
+				// 최초 로그인
+				if (user == null) {
+					user = getUserInfoKakao(token);
+
+					userService.insertUser(user);
+
+					user = userService.selectUserBySocialId(id);
+					Blog blog = new Blog();
+					blog.setSeq(user.getSeq());
+					blog.setBlog_name(user.getId() + "님의 블로그");
+					blog.setBlog_detail("블로그 소개를 입력해주세요");
+					blogService.insertBlog(blog);
+				}
+
+			}
+			// seq로 JWT를 만들어준다.
+			jwt = jwtService.create("member", user.getSeq(), "user");
+
+		}
+
+		return new ResponseEntity<String>(jwt, HttpStatus.OK);
+
+	}
+
+	public String getTokenExpired(String access_token) {
+		String reqURL = "https://kapi.kakao.com/v1/user/access_token_info";
+		String id = "";
+		try {
+			URL url = new URL(reqURL);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+
+			// 요청 Header에 token 포함
+			conn.setRequestProperty("Authorization", "Bearer " + access_token);
+
+			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode : " + responseCode);
+			if (responseCode == 401) { // 토큰 만료
+				return "expired";
+			} else if (responseCode == 400) { // 잘못된 형식
+				return "type_error";
+			} else { // 토큰 만료 x
+				// 요청을 통해 id얻어옴
+				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				String line = "";
+				String result = "";
+
+				while ((line = br.readLine()) != null) {
+					result += line;
+				}
+//				System.out.println("response body : " + result);
+
+				// Json 파싱
+				JsonParser parser = new JsonParser();
+				JsonElement element = parser.parse(result);
+
+				id = element.getAsJsonObject().get("id").getAsString();
+
+				// 확인
+//				System.out.println("id : " + id);
+
+				br.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
+
+	public User getUserInfoKakao(String access_token) {
+		User user = new User();
+		String reqURL = "https://kapi.kakao.com/v2/user/me";
+
+		try {
+			URL url = new URL(reqURL);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+
+			// 요청 Header에 token 포함
+			conn.setRequestProperty("Authorization", "Bearer " + access_token);
+
+			int responseCode = conn.getResponseCode();
+//			System.out.println("responseCode : " + responseCode);
+
+			// 요청을 통해 사용자 정보 얻어옴
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line = "";
+			String result = "";
+
+			while ((line = br.readLine()) != null) {
+				result += line;
+			}
+//			System.out.println("response body : " + result);
+
+			// Json 파싱
+			JsonParser parser = new JsonParser();
+			JsonElement element = parser.parse(result);
+			JsonObject properties = null;
+			try {
+				properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+			} catch (NullPointerException e) {
+//				System.out.println("==================properties Null==============");
+			}
+			JsonObject kakao_account = element.getAsJsonObject().getAsJsonObject("kakao_account").getAsJsonObject();
+
+			String id = element.getAsJsonObject().get("id").getAsString();
+
+			user.setSocial_id(id);
+			user.setSocial("Kakao");
+			user.setPassword(id);
+			try {
+				String email = kakao_account.getAsJsonObject().get("email").getAsString();
+				user.setId(email);
+				user.setEmail(email);
+			} catch (NullPointerException e) {
+				// email x
+//				System.out.println("============No Email=============");
+				return null;
+			}
+			try {
+				String nickName = properties.get("nickname").getAsString();
+				user.setName(nickName);
+				user.setNickname(nickName);
+			} catch (NullPointerException e) {
+				user.setName("");
+			}
+			try {
+				String profile_img = properties.get("profile_image").getAsString();
+				user.setProfile_img_url(profile_img);
+			} catch (NullPointerException e) {
+			}
+
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
 }

@@ -12,7 +12,7 @@
             <input type="text" style="font-size:15px;" id="detail" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog" readonly />
           </div>
                 
-          <i class="ti-pencil-alt" v-if="this.$store.state.settingButtonVisible" @click="alterBlog" style="cursor:pointer;"></i>
+          <i class="ti-pencil-alt" v-if="this.getIsAdminMode" @click="alterBlog" style="cursor:pointer;"></i>
                 
           <div class="title2">
             by {{blogOwnerInfo.nickname}}
@@ -34,7 +34,7 @@
               </div>
               <div class="col-sm-4 emphasis" style="cursor:pointer;" @click="follower">
                 <h2><strong >{{blogOwnerNumOfNeighbor}}</strong></h2>
-                <p> <small v-bind="followerpage">Follower</small>
+                <p> <small>Follower </small>
                   <!-- <i class="material-icons" @click="subscribe">add_circle_outline</i> -->
                 </p>
               </div>
@@ -47,173 +47,169 @@
             #{{tag.tag}}
           </span>
 
-          <div class="column4" v-if="this.$store.state.isLogin">
-            <router-link to="writePost">
+          <div class="column4" v-if= "getIsLogin" >
+            <router-link to="../writePost">
               <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
             </router-link>
-              <span id="setting" @click="set">관리<i class="ti-settings" style="display:inline"></i></span>
+              <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>
           </div>
         </div>
         <!-- end profile -->
       </div>
       <!-- end container-movie -->
-      <!-- start box -->
       <div class="box">
-        <blog-content v-if="followerpage===false" :seq_blog="seq_blog"></blog-content>
-                <!-- <blog-content v-if="followerpage===false" :seq_blog="this.$route.params.id"></blog-content> -->
-        <follower v-if="followerpage"></follower>
+        <blog-content v-if="!followerpage"></blog-content>
+        <follower v-else></follower>
       </div>
     </div>
   </transition>
 </template>
 <script>
-  import blogContent from '../components/blogContent'
-  import follower from '../components/follower'
-  import http from '../util/http-common'
-  import { mapState } from 'vuex'
-  export default {
-    components: {
-     'blog-content': blogContent,
-     'follower': follower,
-    }, 
-    computed: {
-    ...mapState(['userInfo']),
-    },
-    data: () => {
-        return { 
-          alterTitleFlag: false,
-          seq_blog: '',
-          blogOwnerId: '',
-          //this.$store.state.userInfo.seq
-          // token : this.$store.state.token,
-          blogInfo:[],
-          blogOwnerInfo:[],
-          blogOwnerNumOfProject:'',
-          blogOwnerNumOfPost:'',
-          blogOwnerNumOfNeighbor:'',
-          blogOwnerMainTags:[],
-          tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
-          followerpage: false,
-        }
-    },
-    created(){	 
-      this.blogOwnerId= this.$route.params.id;
-      this.getBlogOwnerInfo();
-    },
-    mounted(){
+import blogContent from '../components/blogContent'
+import follower from '../components/follower'
+import http from '../util/http-common'
+import { mapGetters } from 'vuex'
+export default {
+  components: {
+    'blog-content': blogContent,
+    'follower': follower,
+  }, 
+  computed: {
+    ...mapGetters([
+      'getUserInfo',
+      'getIsAdminMode',
+      'getIsLogin'
+    ])
+  },
+  data: () => {
+    return { 
+      alterTitleFlag: false,
+      seq_blog: '',
+      blogInfo:[],
+      blogOwnerId: '',
+      blogOwnerInfo:[],
+      blogOwnerNumOfProject:'',
+      blogOwnerNumOfPost:'',
+      blogOwnerNumOfNeighbor:'',
+      blogOwnerMainTags:[],
+      tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
+      followerpage: false,
+    }
+  },
+  created() {
+    this.blogOwnerId= this.$route.params.id;
+    this.getBlogOwnerInfo();
+  },
+  mounted() {
+    var value = $('#title').val();
+    $('.title1').append('<div id="virtual_dom" style="display:inline;">' + value + '</div>');
+    var inputWidth =  $('#virtual_dom').width() + 400;
+    $('#title').css('width', inputWidth); 
+    $('#detail').css('width', inputWidth-200); 
+    $('#virtual_dom').remove();
+
+    $('#title').on('keydown', function(e){
       var value = $('#title').val();
       $('.title1').append('<div id="virtual_dom" style="display:inline;">' + value + '</div>');
-      var inputWidth =  $('#virtual_dom').width() + 400;
+      var inputWidth =  $('#virtual_dom').width() + 10;
       $('#title').css('width', inputWidth); 
-      $('#detail').css('width', inputWidth-200); 
       $('#virtual_dom').remove();
-
-      $('#title').on('keydown', function(e){
-        var value = $('#title').val();
-        $('.title1').append('<div id="virtual_dom" style="display:inline;">' + value + '</div>');
-        var inputWidth =  $('#virtual_dom').width() + 10;
-        $('#title').css('width', inputWidth); 
-        $('#virtual_dom').remove();
-      })
+    })
+  },
+  methods: {
+    getBlogOwnerInfo(){
+      http.get('user/id/'+this.blogOwnerId)
+      .then(({data})=>{
+        this.blogOwnerInfo=data;
+        this.seq_blog = this.blogOwnerInfo.seq;
+        this.getBlogInfo();
+      });
     },
-    methods:{
-      getBlogOwnerInfo(){
-         http.get('user/id/{seq}?id='+this.blogOwnerId)
-        .then(({data})=>{
-          this.blogOwnerInfo=data;
-          this.seq_blog = this.blogOwnerInfo.seq;
-          this.getBlogInfo();
+    getBlogInfo() {
+      http.get('blog/'+this.seq_blog)
+      .then(({ data }) => {
+        this.blogInfo=data;
+      });
+      http.get('project/blog/'+this.seq_blog)
+      .then(({ data }) => {
+          this.blogOwnerNumOfProject = data;
+      });
+      http.get('post/blog/'+this.seq_blog)
+      .then(({ data }) => {
+          this.blogOwnerNumOfPost = data;
+      });
+      http.get('userneighbor/'+this.seq_blog)
+      .then(({ data }) => {
+          this.blogOwnerNumOfNeighbor = data.length;
+      });
+      http.get('blogtag/'+this.seq_blog)
+      .then(({ data }) => {
+          this.blogOwnerMainTags = data;
+      });
+    },
+    toggleAdminMode() {
+      if(this.getIsAdminMode){
+        this.$message({
+          type: 'info',
+          message: '관리모드가 비활성화 되었습니다.'
         });
-
-      },
-      getBlogInfo(){
-            http.get('blog/'+this.seq_blog)
-            .then(({ data }) => {
-              this.blogInfo=data;
-            });
-            http.get('project/blog/'+this.seq_blog)
-            .then(({ data }) => {
-                this.blogOwnerNumOfProject = data;
-            });
-            http.get('post/blog/'+this.seq_blog)
-            .then(({ data }) => {
-                this.blogOwnerNumOfPost = data;
-            });
-            http.get('userneighbor/'+this.seq_blog)
-            .then(({ data }) => {
-                this.blogOwnerNumOfNeighbor = data.length;
-            });
-            http.get('blogtag/'+this.seq_blog)
-            .then(({ data }) => {
-                this.blogOwnerMainTags = data;
-            });
-      },
-      set(){
-        if(this.$store.state.settingButtonVisible){
+        $('#setting').css('color','#B1B0AC');
+        this.$store.commit('setIsAdminMode', false)
+      }
+      else{
+        this.$message({
+          type: 'info',
+          message: '관리모드가 활성화 되었습니다.',
+        });
+        $('#setting').css('color', 'black');
+        this.$store.commit('setIsAdminMode', true)
+      }
+    },
+    follower() {
+      this.followerpage =!this.followerpage
+    },
+    updateBlog(){
+      http.put('blog',this.blogInfo)
+      .then(({ data }) => {
+        if(data=="success"){
           this.$message({
-              type: 'info',
-              message: '관리모드가 비활성화 되었습니다.'
-          });
-          $('#setting').css('color','#B1B0AC');
-          this.$store.state.settingButtonVisible = false;
+            type: 'info',
+            message: '블로그 정보 수정이 완료되었습니다.'
+          })
         }
         else{
           this.$message({
-              type: 'info',
-              message: '관리모드가 활성화 되었습니다.',
-          });
-          $('#setting').css('color', 'black');
-          this.$store.state.settingButtonVisible = true;
-          // console.log(this.seq_user);
-          console.log(this.token);
-          console.log(this.seq_blog);
+            type: 'danger',
+            message: '블로그 정보 수정에 실패하였습니다.'
+          })
         }
-      },
-      follower(){
-        // this.$router.push('/follower')
-        this.followerpage =!this.followerpage
-      },
-      updateBlog(){
-        http.put('blog',this.blogInfo)
-            .then(({ data }) => {
-              if(data=="success"){
-              this.$message({
-              type: 'info',
-              message: '블로그 정보 수정이 완료되었습니다.'
-              }); }
-              else{
-              this.$message({
-              type: 'danger',
-              message: '블로그 정보 수정에 실패하였습니다.'
-              });
-              }
-        });
-      },
-      alterBlog(){
-        $('#title').attr('readonly', false);
-        $('#title').focus();
-        $('#title').keypress(function (e) {
-          if(e.which == 13){
-            $('#title').attr('readonly', true);
-          }
-        })
-        $('#detail').attr('readonly', false);
-        $('#detail').focus();
-        $('#detail').keypress(function (e) {
-          if(e.which == 13){
-            $('#detail').attr('readonly', true);
-          }
-        })
-      },
-      // 팔로우 페이지 이웃리스트에 추가해야하는데..
-      subscribe() {
-        http.post('userneighbor/' + this.seq_blog)
-        .then(({ data }) => {
-            this.neighborList.push(data)
-          });
-      }
+      })
+    },
+    alterBlog() {
+      $('#title').attr('readonly', false);
+      $('#title').focus();
+      $('#title').keypress(function (e) {
+        if(e.which == 13){
+          $('#title').attr('readonly', true);
+        }
+      })
+      $('#detail').attr('readonly', false);
+      $('#detail').focus();
+      $('#detail').keypress(function (e) {
+        if(e.which == 13){
+          $('#detail').attr('readonly', true);
+        }
+      })
+    },
+    // 팔로우 페이지 이웃리스트에 추가해야하는데..
+    subscribe() {
+      http.post('userneighbor/' + this.seq_blog)
+      .then(({ data }) => {
+        this.neighborList.push(data)
+      });
     }
   }
+}
 </script>
 <style>
 .column4{

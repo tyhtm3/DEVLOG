@@ -1,132 +1,151 @@
 <template>
- <transition name="el-zoom-in-top">
-<div>
+  <transition name="el-zoom-in-top">
+    <div>
+      <!-- 프로젝트 정보 시작 -->
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">* 제목</p>
+        </div>
+        <div class="col-sm-9">
+          <el-input style="padding:10px;" placeholder="PROJECT TITLE" v-model="title"> </el-input>
+        </div>
+      </div><hr>
 
-        <!-- 프로젝트 정보 :  프로젝트 명 / 프로젝트 개요 / 개발기간 / 기술스택 / 역할 / URL / 설명-->
-             <h2> <input placeholder="PROJECT TITLE" style="border:none;padding-left:13px;margin-top:5px;" v-model="title"></h2>
-            <hr>
-                <div class="row">
-                  <div class="col-sm-3 pjt-title ">
-                    <p class="pull-right">* 프로젝트 개요</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <el-input style="padding:10px;" type="textarea" :rows="5" placeholder="PROJECT SUMMARY" v-model="summary"> </el-input>
-                  </div>
-                </div>
-                    <div class="row">
-                  <div class="col-sm-3 pjt-title " style="height:120px;">
-                    <p class="pull-right">* 개발 기간</p>
-                  </div>
-                  <div class="col-sm-9" style="padding-top:15px;padding-left:25px;">
-                    <el-date-picker v-model="start_date" type="date"></el-date-picker><span style="font-size:20px;">&nbsp; ~ &nbsp;</span>
-                    <el-date-picker v-model="finish_date" type="date"></el-date-picker>
-                  </div>
-                </div>
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">* 프로젝트 개요</p>
+        </div>
+        <div class="col-sm-9">
+          <el-input style="padding:10px;" type="textarea" :rows="5" placeholder="PROJECT SUMMARY" v-model="summary"> </el-input>
+        </div>
+      </div><hr>
 
-                <div class="row">
-                  <div class="col-sm-3 pjt-title " style="height:400px;">
-                    <p class="pull-right">* 사용 스택</p>
-                  </div>
-                  <div class="col-sm-9">
-                   <!-- <div v-for="(stack,index) in all_stack" :key="index">
-                      <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
-                    </div> -->
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">* 개발 기간</p>
+        </div>
+        <div class="col-sm-9" style="padding-top:15px;padding-left:25px;">
+          <el-date-picker v-model="start_date" type="date"></el-date-picker><span style="font-size:20px;">&nbsp; ~ &nbsp;</span>
+          <el-date-picker v-model="finish_date" type="date"></el-date-picker>
+        </div>
+      </div><hr>
 
-                 <section class="selectProject" style="padding:15px;">
-                  <el-transfer
-                    :titles="['ALL STACK', 'YOUR STACK']"
-                    filterable
-                    :filter-method="filterMethod"
-                    filter-placeholder="기술스택 검색"
-                    v-model="stack"
-                    :button-texts="['','']"
-                    :data="all_stack">
-                  </el-transfer>
-                </section>
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">* 사용 스택</p>
+        </div>
+        <div class="col-sm-9">
+        <section class="selectProject" style="padding:15px;">
+          <el-transfer
+            :titles="['ALL STACK', 'YOUR STACK']"
+            filterable
+            :filter-method="filterMethod"
+            filter-placeholder="기술스택 검색"
+            v-model="stack"
+            :button-texts="['','']"
+            :data="all_stack">
+          </el-transfer>
+        </section>
+        </div>
+      </div><hr>
 
-                  </div>
-                </div>
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">* 역할</p>
+        </div>
+        <div class="col-sm-9">
+          <el-input style="padding:10px;" type="textarea" :rows="5" placeholder="PROJECT ROLE" v-model="role"> </el-input>
+        </div>
+      </div><hr>
 
-                  <div class="row">
-                  <div class="col-sm-3 pjt-title ">
-                    <p class="pull-right">* 역할</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <el-input style="padding:10px;" type="textarea" :rows="5" placeholder="PROJECT ROLE" v-model="role"> </el-input>
-                  </div>
-                </div>
+        <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">* Github url</p>
+        </div>
+        <div class="col-sm-9">
+          <el-input style="padding:10px;" v-model="github_url"> </el-input>
+        </div>
+      </div><hr>
 
-                 <div class="row">
-                  <div class="col-sm-3 pjt-title " style="height:60px;">
-                    <p class="pull-right">* Github url</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <input class="pjt-content" v-model="github_url" style="font-size:20px;">
-                  </div>
-                </div>
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">참고 url</p>
+        </div>
+        <div class="col-sm-9">
+          <el-input style="padding:10px;" v-model="etc_url"> </el-input>
+        </div>
+      </div><hr>
 
-                 <div class="row">
-                  <div class="col-sm-3 pjt-title " style="height:60px;">
-                    <p class="pull-right">참고 url</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <input class="pjt-content" v-model="etc_url" style="font-size:20px;">
-                  </div>
-                </div>
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">참조 url</p>
+        </div>
+        <div class="col-sm-9">
+          <el-input style="padding:10px;" v-model="rep_url"> </el-input>
+        </div>
+      </div><hr>
 
-                 <div class="row">
-                  <div class="col-sm-3 pjt-title " style="height:120px;">
-                    <p class="pull-right">참조 url</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <input class="pjt-content" v-model="rep_url" style="font-size:20px;">
-                  </div>
-                </div>
+      <div class="row">
+        <div class="col-sm-2 pjt-title" style="height:490px;">
+          <p class="pull-right">추가 설명</p>
+        </div>
+        <div class="col-sm-9">
+          <vue-editor id="project-editor" v-model="content" style="padding:10px;"></vue-editor>
+        </div>
+      </div><hr>
+      <!--  프로젝트 정보 끝 -->
 
-                 <div class="row">
-                  <div class="col-sm-3 pjt-title " style="height:490px;padding-top:0px;">
-                    <p class="pull-right">추가 설명</p>
-                  </div>
-                  <div class="col-sm-9">
-                   <vue-editor v-model="content"></vue-editor>
-                  </div>
-                </div>
-                <!--  프로젝트 정보 끝 -->
-      
-      <hr>
-      <div style="margin-bottom: 15px">
-        <span style="display:inline-block; width:100px">태그</span>
-        <span v-html="htmlTag">
-        </span>
-        <input v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그 입력 ">
-      </div>
-      <hr>
-      <div style="margin-bottom: 15px">
-        <span style="display:inline-block; width:100px">썸네일</span> 
-        <el-upload action="https://jsonplaceholder.typicode.com/posts/" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" list-type="picture-card" style="display:inline">
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">태그</p>
+        </div>
+        <div class="col-sm-9" style="padding:15px 0px 0px 25px">
+          <span v-html="htmlTag">
+          </span>
+          <input v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그 입력 ">
+        </div>
+      </div><hr>
+
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">썸네일</p>
+        </div>
+        <div class="col-sm-9" style="padding:0px 0px 0px 25px">
+          <el-upload action="https://jsonplaceholder.typicode.com/posts/" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" list-type="picture-card" style="display:inline">
           <i slot="default" class="el-icon-plus"></i>
-        </el-upload>
-        <el-dialog :visible.sync="isImgVisible">
-        <img width="100%" :src="img_url" alt="">
-        </el-dialog>
-      </div>
-      <hr>
-      <div style="margin-bottom: 15px">
-        <span style="display:inline-block; width:100px;">공개 여부</span> 
-        <el-radio-group v-model="disclosure">
-          <el-radio-button label="전체공개" ></el-radio-button>
-          <el-radio-button label="이웃공개" ></el-radio-button>
-          <el-radio-button label="비공개" ></el-radio-button>
-        </el-radio-group>
-      </div>
-      <hr>
-      <div style="margin-bottom: 15px;">
-        <span style="display:inline-block; width:100px">작성 시간</span> 
-        현재 <el-switch v-model="isReserve" on-text=true off-text=false></el-switch> 예약
-        <el-date-picker v-if="isReserve" v-model="regtime" type="datetime" placeholder="Select date and time">
-        </el-date-picker>
-      </div>
-      <hr>
+          </el-upload>
+          <el-dialog :visible.sync="isImgVisible">
+            <img width="100%" :src="img_url" alt="">
+          </el-dialog>
+          </div>
+      </div><hr>
+
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">공개 여부</p>
+        </div>
+        <div class="col-sm-9" style="padding:15px 0px 0px 25px">
+          <el-radio-group v-model="disclosure">
+            <el-radio-button label="전체공개"></el-radio-button>
+            <el-radio-button label="이웃공개"></el-radio-button>
+            <el-radio-button label="비공개"></el-radio-button>
+          </el-radio-group>
+        </div>
+      </div><hr>
+
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">작성 시간</p>
+        </div>
+        <div class="col-sm-9" style="padding:15px 0px 0px 25px">
+          현재 <el-switch v-model="isReserve" on-text=true off-text=false></el-switch> 예약
+          <el-date-picker v-if="isReserve" v-model="regtime" type="datetime" placeholder="Select date and time">
+          </el-date-picker>
+        </div>
+      </div><hr>
+
+      
+      
       <el-button @click="write" style="float:right">프로젝트 등록</el-button>
     </div>
   </transition>
@@ -242,7 +261,7 @@ components: {
             type: 'success',
             message: '프로젝트 등록 완료.'
           });
-         this.$router.push('/blog')  
+         this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)  
 
       })
       
@@ -360,30 +379,11 @@ components: {
 }
 </script>
 
-<style scoped>
-.ql-editor{
+<style>
+#project-editor .ql-editor{
   min-height: 400px;
 }
 .pjt-title{
-  font-size:18px;
-  background-color:#eee;
-  padding-top:15px;
-  height:180px;
+  padding-top: 20px;
 }
-.pjt-content{
-  padding-top:15px;
-  margin-top:-2px;
-  margin-left:10px;
-  font-size:14px;
-  word-spacing: 2px;
-  line-height:30px;
-}
-input {
-  outline: 0;
-  border-width: 0 0 1px;
-  border-color: lightgray
-}
-input:focus {
-  border-color: #3c8dbc;
-  }
 </style>

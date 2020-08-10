@@ -2,13 +2,12 @@
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 포스트 출력 -->
-            <div class="delete" @click="deletePost" v-show="this.$store.state.settingButtonVisible">
-            <!-- 2: {{this.$parent.seq_blog}} -->
+            <div class="delete" @click="deletePost" v-show="adminMode">
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
                 <div class="col-md-4" v-for="(post,index) in postList" :key="index">
-                    <span v-show="$store.state.settingButtonVisible">
+                    <span v-show="adminMode">
                         <input class="delete-box" :id=post.seq type="checkbox" :value=post.seq v-model="deleteList" />
                         <label :for=post.seq></label>
                     </span>
@@ -46,23 +45,13 @@
 import http from '../util/http-common'
 import InfiniteLoading from 'vue-infinite-loading'
 import store from '../store'
-// import { mapState } from 'vuex'
-// import store from '../store'
 export default {
     name: 'postList',
     components: {
         InfiniteLoading
     },
-    // computed: {
-    // ...mapState(['userInfo']),
-    // },
     data(){
         return{
-            // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정
-            seq_blog: this.$store.state.userInfo.seq,
-            seq_user: this.$store.state.userInfo.seq,
-            // seq_blog:'',
-            // seq_user:'',
             postList: [],
             comment: [],
             tag:[],
@@ -76,13 +65,13 @@ export default {
             deleteSuccess: true,
         }
     },
-    created(){	 
+    created(){
       this.getpostList();
-    // created(){
-    //     this.seq_blog=this.$parent.seq_blog;
-    //     this.seq_user = this.userInfo.seq;
-    //   alert(this.seq_blog + " " + this.seq_user)
-    //     this.getpostList();
+    },
+    computed: {
+        adminMode() {
+            return this.$store.getters.getIsAdminMode
+        }
     },
     methods:{
         removeTag(text){
@@ -95,38 +84,38 @@ export default {
         },
         // 페이지네이션 하기 전 처음 페이지에 뿌려줄 카드 불러오기
         getpostList(){
-            http.post('post/blog', { seq_blog:this.seq_blog, offset:0, limit:this.page})
-            .then(({ data }) => {
-                if(data.length){
-                this.postList = data;
-                this.getpostCommentTag(data)}
+            http.get('user/id/'+this.$route.params.id)
+            .then(({data})=>{
+                 http.post('post/blog', { seq_blog:data.seq, offset:0, limit:this.page})
+                .then(({ data }) => {
+                    if(data.length){
+                        this.postList = data;
+                        this.getpostCommentTag(data)
+                    }
+                })
             })
-            //   alert("블로그번호: " + this.seq_blog +  " / 유저번호: " + this.seq_user);
-            // http.post('post/blog', { seq_blog:this.seq_blog, offset:0, limit:this.page})
-            // .then(({ data }) => {
-            //     if(data.length){
-            //     this.postList = data;
-            //     this.getpostCommentTag(data)}
-            // })
         },
         // 인피니트로딩
         infiniteHandler($state){
-            http.post('post/blog', { seq_blog:this.seq_blog, offset:this.limit+this.page, limit:this.page})
-            .then(({ data }) => {
-                // 스크롤 페이징을 띄우기 위한 시간 1초
-                setTimeout(()=>{
-                    if(data.length){
-                        this.getpostCommentTag(data)
-                        this.postList = this.postList.concat(data);
-                        $state.loaded()
-                        this.limit +=this.page
-                        if(this.postList.length/this.page == 0){
+            http.get('user/id/'+this.$route.params.id)
+            .then(({data})=>{
+                http.post('post/blog', { seq_blog:data.seq, offset:this.limit+this.page, limit:this.page})
+                .then(({ data }) => {
+                    // 스크롤 페이징을 띄우기 위한 시간 1초
+                    setTimeout(()=>{
+                        if(data.length){
+                            this.getpostCommentTag(data)
+                            this.postList = this.postList.concat(data);
+                            $state.loaded()
+                            this.limit +=this.page
+                            if(this.postList.length/this.page == 0){
+                                $state.complete();
+                            }
+                        }else{
                             $state.complete();
                         }
-                    }else{
-                        $state.complete();
-                    }
-                },1000)
+                    },1000)
+                })
             })
         },
         // 포스트로부터 코멘트 개수와 태그 불러오기
