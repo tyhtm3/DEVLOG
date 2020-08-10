@@ -8,7 +8,7 @@
 				<input v-model="id" id="id" placeholder="id" type="text"/>
 				<input v-model="password" type="password" id="password" placeholder="password"/>
 				<button class="normal" @click="login">login</button><p/>
-				<button class="kakao" @click="kakaologin">kakao</button><button class="naver" @click="naverLogin">naver</button><p/>
+				<button class="kakao" @click="kakaoLogin">kakao</button><button class="naver" @click="naverLogin">naver</button><p/>
 				<!-- <button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button> -->
 				<p class="message">Not registered?
 					<router-link to="/signup">
@@ -50,35 +50,35 @@ export default {
 				this.$message.warning('아이디를 입력해주세요')
 			else if(this.password==='')
 				this.$message.warning('비밀번호를 입력해주세요')
-			// else{
-			// 	http
-			// 	.post('/user/login', { 
-			// 		id: this.id,
-			// 		password: this.password
-			// 	})
-			// 	.then(({data}) => {
-			// 		this.$store.commit('setIsLogin', true)
-			// 		this.$store.commit('setToken', data)
-			// 		http
-			// 		.get('/user/me',{headers : {'Authorization' : data,}})
-			// 		.then(({data}) => {
-			// 			this.$message.success('정상적으로 로그인되었습니다.')
-			// 			this.$store.commit('setUserInfo', data)
-			// 			this.$store.commit('setLoginFormVisible', false)
-			// 		})
-			// 		.catch((error) => {
-			// 			this.$message.error('로그인 도중 오류가 발생했습니다.')
-			// 		})
-			// 	})
-			// 	.catch((error) =>  {
-			// 		if(error.response.status == '404')
-			// 			this.$message.error('존재하지 않는 아이디입니다.')
-			// 		else if(error.response.status == '401')
-			// 			this.$message.error('비밀번호가 틀렸습니다.')
-			// 		else
-			// 			this.$message.error('로그인 도중 오류가 발생했습니다.')
-			// 	})
-			// }
+			else{
+				http
+				.post('/user/login', { 
+					id: this.id,
+					password: this.password
+				})
+				.then(({data}) => {
+					this.$store.commit('setIsLogin', true)
+					this.$store.commit('setToken', data)
+					http
+					.get('/user/me',{headers : {'Authorization' : data,}})
+					.then(({data}) => {
+						this.$message.success('정상적으로 로그인되었습니다.')
+						this.$store.commit('setUserInfo', data)
+						this.$store.commit('setLoginFormVisible', false)
+					})
+					.catch((error) => {
+						this.$message.error('로그인 도중 오류가 발생했습니다.')
+					})
+				})
+				.catch((error) =>  {
+					if(error.response.status == '404')
+						this.$message.error('존재하지 않는 아이디입니다.')
+					else if(error.response.status == '401')
+						this.$message.error('비밀번호가 틀렸습니다.')
+					else
+						this.$message.error('로그인 도중 오류가 발생했습니다.')
+				})
+			}
 		},
 		naverLogin(){
 			window.open(this.naverLoginURL, '_blank');
