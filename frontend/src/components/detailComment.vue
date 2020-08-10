@@ -106,18 +106,23 @@
       },
       // 댓글 입력
       insertComment(){
-        if(this.getIsLogin){
+        if(!this.getIsLogin){
+          this.$message({
+            type: 'error',
+            message: '댓글 작성 기능은 로그인 후 이용 가능합니다.'
+          })
+        }else if(this.insertContent==''){
+           this.$message({
+            type: 'error',
+            message: '메세지를 입력해주세요.'
+          })
+        }else{
           http.post('postcomment',{content:this.insertContent,seq_post:this.seq,seq_user:this.seq_user})
                   .then(({data}) => {
                 //댓글 입력하고 리스트 업데이트
                 this.getComment(this.seq)
           })
           this.insertContent = ''
-        }else{
-          this.$message({
-            type: 'error',
-            message: '댓글 작성 기능은 로그인 후 이용 가능합니다.'
-          })
         }
          
       },
