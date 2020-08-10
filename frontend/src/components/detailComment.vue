@@ -123,11 +123,18 @@
       },
       // 댓글 삭제
       deleteComment(seq){
-         http.delete('postcomment/'+seq)
+        this
+        .$confirm('삭제하시겠습니까?', {
+          confirmButtonText: '삭제',
+          cancelButtonText: '취소',
+          type: 'warning'
+        }).then(()=>{
+          http.delete('postcomment/'+seq)
                 .then(({data}) => {
               //댓글 삭제하고 리스트 업데이트
                this.getComment(this.seq)
          })
+        })
       },
       // 댓글 수정창
       showCommentEditor(seq,content){
