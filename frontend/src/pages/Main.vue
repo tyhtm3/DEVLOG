@@ -22,24 +22,32 @@
       <div class="box">
         <div class="box-body" style="min-height:400px;">
           <div class="col-sm-12">
-          
             <br><br><br>
 
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
+                        
+
               <!-- start tag search bar -->
               <!-- 미구현 목록
                   1. 태그 클릭시 기능 ??
                   2. 태그 입력시 추가되기
               --> 
+
               <div>
                 <span class="search" id="demo-2">
                   <input class="devin-search tag" type="search" style="font-size:15px;">
                 </span>   
-                <span v-for="(tag, index) in tags" v-bind:key="index" class="tag" style="font-size:20px; margin:10px;">
+                <span @click="tagSearch(index,tag.tag)" :class="{'active': itemsContains(index)}" v-for="(tag, index) in tags" v-bind:key="index" class="tag" style="font-size:20px; margin:10px;">
                   #{{tag.tag}}
                 </span>
               </div>
               <!-- end tag search bar -->
+           
+
+              <!-- 로그인했을때 전체/이웃글 스위칭 버튼 (1:전체글보기/ 2:이웃글보기)-->
+              <el-tooltip  class="pull-right" v-if="seq_user>0" :content="disclosure?'전체 글 보기':'이웃 글 보기'" placement="right">
+              <el-switch @change="neighborSearch" v-model="disclosure" on-color="#13ce66" off-color="#ff4949" :on-value="2" :off-value="1"> </el-switch>
+              </el-tooltip>
 
               <br><br><br>
 
@@ -58,9 +66,12 @@
                       <h2 style="font-weight: bold; margin-bottom:5px;" @click="goDetailProject(project.seq)">{{ project.title }}</h2>
                     </div>
                     <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" > 
-                      <span class="tag">#SpringBoot</span>
-                      <span class="tag">#Vue.js</span>
-                      <span class="tag">#css</span>
+
+                      <span v-for="(tag,index) in projectTag[index]" :key="index">
+                      <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                     </span>
+                      <!-- 여백 -->
+                      <span class="tag"></span>
 
                       <span class="tag-copy"><i class="ti-heart"></i> {{project.like_count}} </span>
                       <span class="tag-copy"><i class="ti-comment-alt"></i> {{projectComment[index]}} </span>
@@ -117,7 +128,9 @@
             </div>
             <!-- end post list -->          
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
-            <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+
+            <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+          
           </div>
         </div>
       </div>
@@ -139,40 +152,79 @@ export default {
       projectList: [],
       projectComment: [], 
       postComment: [],
+      projectTag: [],
       postTag: [],
       tags: [],
       // 페이지네이션
       limit: 0,
       page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3배수)
+      // 태그 검색
+      searchTags: [],
+      activeIndex: [],
+      // 이웃 검색
+      disclosure: false,
     }
   },
   created(){
     this.getTags();
-    http.post('/project/feed', {
-      disclosure: 1,
+    this.getPostandproject();
+  },
+  methods:{
+    // 이웃 스위치 바꿀때마다 검색
+    neighborSearch(){
+      this.limit=0
+      this.getPostandproject();
+    },
+    // 태그 누를때마다 검색
+    tagSearch(selected, tag){
+
+      // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
+      var index = this.searchTags.indexOf(tag)
+      var idx = this.activeIndex.indexOf(selected)
+      if(index<0){
+        this.searchTags.push(tag)
+        this.activeIndex.push(selected)
+      }else{
+        this.searchTags.splice(index,1)
+        this.activeIndex.splice(idx,1)
+      }
+     // 선택한 태그로 재검색 (합집합)
+    this.limit=0
+    this.getPostandproject();
+    },
+    // 프로젝트와 포스트 검색 초기화
+    getPostandproject(){
+      this.projectComment= [] 
+      this.postComment= []
+      this.projectTag= []
+      this.postTag= []
+      if(this.$refs.infiniteLoading){
+        this.$refs.infiniteLoading.stateChanger.reset(); 
+      }
+      http.post('/project/feed', {
+      seq_user:this.seq_user ,
+      disclosure: this.disclosure?2:1,
       offset: 0,
-      limit: 10
+      limit: 10,
+      tag: this.searchTags.length==0?null:this.searchTags
     })
     .then(({data}) => {
       this.projectList = data
-      for(var i=0; i<data.length; i++){
-        http
-        .get('postcomment/'+this.projectList[i].seq)
-        .then(({data}) => {
-            this.projectComment.push(data.length);
-        });
-      }
+      this.getprojectCommentTag(data)
     })
     http
     .post('/post/feed', {
-       seq_user:this.seq_user , disclosure:1, offset:0, limit:this.page 
+       seq_user:this.seq_user , 
+       disclosure: this.disclosure?2:1, 
+       offset:0, 
+       limit:this.page ,
+       tag: this.searchTags.length==0?null:this.searchTags
     })
     .then(({data}) => {
       this.postList = data
       this.getpostCommentTag(data)
     })
-  },
-  methods:{
+    },
     getTags(){
       if(this.seq_user==''){
         // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
@@ -190,7 +242,7 @@ export default {
     },
     // 인피니트로딩
     infiniteHandler($state){
-      http.post('post/feed', {  seq_user:this.seq_user , disclosure:1, offset:this.limit+this.page, limit:this.page })
+      http.post('post/feed', {  seq_user:this.seq_user , disclosure: this.disclosure?2:1, offset:this.limit+this.page, limit:this.page,tag: this.searchTags.length==0?null:this.searchTags })
       .then(({ data }) => {
         // 스크롤 페이징을 띄우기 위한 시간 1초
         setTimeout(()=>{
@@ -209,6 +261,21 @@ export default {
         },1000)
       })
     },   
+    // 프로젝트로부터 코멘트 개수와 태그 불러오기
+    getprojectCommentTag(data){
+      for(var i=0; i<data.length; i++){
+      // 코멘트
+        http.get('postcomment/count/'+data[i].seq)
+        .then(({data}) => {
+          this.projectComment.push(data);
+        });
+        // 태그
+        http.get('posttag/'+data[i].seq)
+        .then(({data}) => {
+          this.projectTag.push(data.slice(0,3));
+        });
+      }   
+    },
     // 포스트로부터 코멘트 개수와 태그 불러오기
     getpostCommentTag(data){
       for(var i=0; i<data.length; i++){
@@ -235,6 +302,9 @@ export default {
     },
     goDetailPost(seq){
       this.$router.push(`/blog/post/${seq}`)
+    },
+    itemsContains(n) {
+      return this.activeIndex.indexOf(n) > -1
     }
   }
 }
@@ -345,5 +415,8 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+.active {
+  background-color:    #DDDDDD;
 }
 </style>

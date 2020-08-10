@@ -79,7 +79,7 @@ const routes = [
         component: Main
       },
       {
-        path: '/naver/:jwt',
+        path: '/naver/*',
         name: 'naver',
         component: Naver
       },
