@@ -409,7 +409,7 @@ export default {
             type: 'success',
             message: '포트폴리오 생성 완료.'
         });
-        this.$router.push('/blog')
+        this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
       })
       .catch((error) => {
         console.log(error.response.status)

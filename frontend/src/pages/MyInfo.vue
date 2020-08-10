@@ -150,12 +150,14 @@ export default {
         http
         .delete('/user/')
         .then(({ data }) => {
-          this.commit('setIsLogin', false)
+          this.$store.commit('setIsLogin', false)
+          this.$store.commit('setUserInfo', {seq:0})
+          this.$store.commit('setToken', null)
           this.$message({
             type: 'success',
             message: '탈퇴가 완료되었습니다.'
           });
-          this.$router.push(`/`)
+          this.$router.push('/')
         }) 
       })
     },

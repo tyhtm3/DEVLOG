@@ -242,7 +242,7 @@ components: {
             type: 'success',
             message: '프로젝트 등록 완료.'
           });
-         this.$router.push('/blog')  
+         this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)  
 
       })
       

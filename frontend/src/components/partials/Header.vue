@@ -85,6 +85,7 @@ export default {
 		logout(){
 			this.$store.commit('setIsLogin', false)
 			this.$store.commit('setUserInfo', {seq:0})
+			this.$store.commit('setToken', null)
 			this.$message.success('로그아웃 되었습니다.');
 			localStorage.clear();
 		}
