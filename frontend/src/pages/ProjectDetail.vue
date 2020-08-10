@@ -21,7 +21,7 @@
           <i v-else @click="like" class="material-icons">favorite_border</i>
           &nbsp;{{project.like_count}}</li>
         <li class="pull-right" v-if="project.seq_blog==seq_user">
-          <span style="cursor:pointer">수정 </span>&nbsp;|&nbsp;
+          <span style="cursor:pointer" @click="updateProject(project.seq)">수정 </span>&nbsp;|&nbsp;
           <span style="cursor:pointer" @click="deleteProject(project.seq)"> 삭제</span>
         </li>
       </ul>
@@ -222,8 +222,8 @@
          })
       },
       // 프로젝트 수정 미구현
-      updateProject(){
-        
+      updateProject(seq){
+        this.$router.push('/blog/project-update/'+seq)
       },
       // Url로 이동
       goUrl(url){

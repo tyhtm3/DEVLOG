@@ -3,7 +3,7 @@
     <div>
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">* 제목</p>
+          <p class="pull-right">제목</p>
         </div>
         <div class="col-sm-9">
           <el-input style="padding:10px;" placeholder="POST TITLE" v-model="postInfo.title"> </el-input>
@@ -119,6 +119,7 @@ export default {
         img_url: this.dialogImageUrl
       })
       .then(({data}) => {
+        console.log(data)
         if(this.tags.length==0)
           this.postInfo.tags = null
         else
