@@ -144,7 +144,7 @@
       },
       // 포스트 수정 미구현
       updatePost(seq){
-        this.$router.push('/blog/modify/'+seq)
+        this.$router.push('/blog/post-update/'+seq)
       },
    },
   }

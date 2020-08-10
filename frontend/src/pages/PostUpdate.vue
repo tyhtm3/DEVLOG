@@ -73,7 +73,7 @@
                   </el-date-picker>
                 </div>
               </div><hr>
-              <el-button @click="write">수정</el-button>
+              <el-button @click="write" style="float:right">포스트 수정</el-button>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -95,6 +95,7 @@ export default {
     return {
       isReserve: '',
       postInfo: {
+        seq: '',
         title: '',
         content: '',
         disclosure: '전체공개',
@@ -125,8 +126,8 @@ export default {
       else
         this.postInfo.disclosure = 3
       http
-      .put('./post', {      
-        seq: this.$store.getters.getUserInfo.seq,
+      .put('/post', {
+        seq: this.$route.params.seq,
         title: this.postInfo.title,
         content: this.postInfo.content,
         disclosure: this.postInfo.disclosure,
@@ -137,8 +138,8 @@ export default {
         else
           this.postInfo.tags = this.tags
         http
-        .post('./posttag', {
-          seq_post: data,
+        .post('/posttag', {
+          seq_post: this.postInfo.seq,
           tag: this.postInfo.tags
         })
         .then(({data})=>{
@@ -187,6 +188,8 @@ export default {
         this.tags.push(this.tag)
         this.tag = '';
         this.renew()
+        this.tag = ' '
+        this.tag = ''
       }
     },
     deleteTag() {
@@ -207,18 +210,17 @@ export default {
       http
       .get('/post/'+this.$route.params.seq)
       .then(({data}) => {
-        console.log(data)
-        console.log(this.postInfo.disclosure)
         if(data.disclosure===1)
           this.postInfo.disclosure = '전체공개'
         else if(data.disclosure===2)
           this.postInfo.disclosure = '이웃공개'
         else
           this.postInfo.disclosure = '비공개'
-        this.postInfo.title = data.title,
-        this.postInfo.content = data.content,
+        this.postInfo.title = data.title
+        this.postInfo.seq = data.seq
+        this.postInfo.content = data.content
         this.postInfo.regtime = data.regtime
-        this.img_url = data.img_url
+        this.postInfo.img_url = data.img_url
         http
         .get('/posttag/'+this.$route.params.seq)
         .then(({data}) => {

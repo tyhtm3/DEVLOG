@@ -54,7 +54,8 @@ import PostDetail from './pages/PostDetail.vue'
 import PortfolioDetail from './pages/PortfolioDetail.vue'
 import NotFound from './pages/error/404.vue'
 import NotFoundSecond from './pages/error/500.vue'
-import PostModify from './pages/PostModify.vue'
+import PostUpdate from './pages/PostUpdate.vue'
+import ProjectUpdate from './pages/ProjectUpdate.vue'
 import Template01 from './pages/Template01.vue'
 
 // Routes
@@ -140,9 +141,14 @@ const routes = [
         component: Template01
       },
       {
-        path: '/blog/modify/:seq',
-        name: 'post-modify',
-        component: PostModify
+        path: '/blog/post-update/:seq',
+        name: 'post-update',
+        component: PostUpdate
+      },
+      {
+        path: '/blog/project-update/:seq',
+        name: 'project-update',
+        component: ProjectUpdate
       },
 
 

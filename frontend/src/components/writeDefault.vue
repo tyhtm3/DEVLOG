@@ -119,6 +119,7 @@ export default {
         img_url: this.dialogImageUrl
       })
       .then(({data}) => {
+        console.log(data)
         if(this.tags.length==0)
           this.postInfo.tags = null
         else
