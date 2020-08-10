@@ -53,7 +53,7 @@ public class PostController {
 
 	}
 
-	@ApiOperation(value = "새로운 게시글 입력 ( seq_blog, title, disclosure, content ) 사용. 예약기능을 사용할경우 regtime 사용(현재시간일 경우 안넣음) ", response = String.class)
+	@ApiOperation(value = "content, title, disclousre, img_url, regtime(2100-02-02 01:01:01) or null", response = String.class)
 	@PostMapping
 	public ResponseEntity<Integer> insertPost(@RequestBody Post post) {
 
@@ -71,7 +71,7 @@ public class PostController {
 		return new ResponseEntity<Integer>(0, HttpStatus.NO_CONTENT);
 	}
 
-	@ApiOperation(value = "게시글 수정 ( seq, title, disclosure, content ) 만 사용", response = String.class)
+	@ApiOperation(value = "seq, content, title, disclousre, img_url, regtime(2020-02-02 01:01:01)", response = String.class)
 	@PutMapping
 	public ResponseEntity<String> updatePost(@RequestBody Post post) {
 		logger.debug("updatePost - 호출");
