@@ -251,19 +251,18 @@ public class UserController {
 				nickName = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("nickname")
 						.getAsString();
 				email = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("email").getAsString();
-				profile_img_url = userInfoElement.getAsJsonObject().get("response").getAsJsonObject()
-						.get("profile_image").getAsString();
 
-				/*
-				 * id:99480180 nickname:dfaf email:tab1200@naver.com
-				 * profile_img_url:https://ssl.pstatic.net/static/pwe/address/img_profile.png
-				 */
-
-				User user = new User();
-				user = userService.selectUserBySocialId(id);
-
+				profile_img_url =  userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("profile_image").getAsString();
+			
+				/* id:99480180
+				 * nickname:dfaf
+				 * email:tab1200@naver.com
+				 * profile_img_url : https://ssl.pstatic.net/static/pwe/address/img_profile.png*/
+				
+				User user = userService.selectUserBySocialId(id);
 				// 첫 로그인시 회원가입 및 블로그 생성
-				if (user == null) {
+				if(user==null){
+					user = new User();
 					user.setSocial_id(id);
 					user.setSocial("Naver");
 					user.setId(email);
@@ -291,7 +290,8 @@ public class UserController {
 		}
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(URI.create("http://localhost:8080/jwt?" + jwt));
+
+		headers.setLocation(URI.create("http://localhost:8080/#/naver/"+jwt));
 		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
 
 	}

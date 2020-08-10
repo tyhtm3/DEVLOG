@@ -17,12 +17,12 @@
                   <dd>
                     <el-input v-model="userInfo.id" style="width: 40%;" disabled></el-input>
                     <el-upload
-                    class="avatar-uploader"
+                    class="avatar-uploader2"
                     action="https://jsonplaceholder.typicode.com/posts/"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    <img v-if="userInfo.profile_img_url" :src="userInfo.profile_img_url" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                   </dd>
@@ -60,25 +60,23 @@
 
 <script>
 import http from '../util/http-common'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
 export default {
   components: {
   },
   computed: {
-    ...mapState(['userInfo']),
+    ...mapGetters(['getUserInfo'])
   },
   data: () => {
     return {
-      imageUrl: '',
+      userInfo: {},
       password: '',
       confirm: ''
     }
   },
-  created() {
-    this.$store.state.loginFormVisible = false;
-    this.imageUrl = this.userInfo.profile_img_url
-  },
   mounted() {
+    this.userInfo = this.getUserInfo
   },
   methods: {
     modify() {
@@ -109,7 +107,7 @@ export default {
       else if (!this.validEmail(this.userInfo.email)){
           this.$message({
           type: 'error',
-          message: '이메일 형식을 확인해 주세요 입력해 주세요.'
+          message: '이메일 형식을 확인해 주세요.'
         })
       }
       else{
@@ -123,22 +121,21 @@ export default {
           tel: this.userInfo.tel,
           birthday: this.userInfo.birthday,
           github_url: this.userInfo.github_url,
-          profile_img_url: this.imageUrl
+          profile_img_url: this.userInfo.profile_img_url
         })
         .then(({ data }) => {
+          this.$store.commit('setUserInfo', this.userInfo)
           this.$message({
             type: 'success',
             message: '정보가 수정되었습니다.'
           })
-          this.$router.push('/blog')
+          this.$router.push('/')
         })
         .catch((error) => {
-          if(error.response.status=='404'){
-            this.$message({
-              type: 'error',
-              message: '정보 수정 도중 발생했습니다.'
-            })
-          }
+          this.$message({
+            type: 'error',
+            message: '정보 수정 도중 발생했습니다.'
+          })
         })
       }
     },
@@ -153,7 +150,7 @@ export default {
         http
         .delete('/user/')
         .then(({ data }) => {
-          this.$store.commit('mutateIsLogin', false)
+          this.commit('setIsLogin', false)
           this.$message({
             type: 'success',
             message: '탈퇴가 완료되었습니다.'
@@ -174,7 +171,7 @@ export default {
             'Content-Type': 'multipart/form-data'
           }})
         .then(({data}) => {
-          this.imageUrl = 'http://'.concat(data)
+          this.profile_img_url = 'http://'.concat(data)
       })
     },
     beforeAvatarUpload(file) {
@@ -192,33 +189,3 @@ export default {
   },
 }
 </script>
-
-<style>
-  .avatar-uploader .el-upload {
-    top: 90px;
-    left: 500px;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: absolute;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 168px;
-    height: 168px;
-    line-height: 34px;
-    text-align: center;
-  }
-  .avatar {
-    width: 168px;
-    height: 168px;
-  }
-  .avatar-uploader-icon {
-    transform: translate(0%, 40%);
-  }
-</style>

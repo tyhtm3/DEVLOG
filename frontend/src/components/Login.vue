@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import http from '../util/http-common'
 export default {
 	data: () => {
 		return {
@@ -35,15 +36,12 @@ export default {
 			CLIENT_ID: 'RSKBTL31UOSpdlckpmTt',
       		redirectURI: 'http://localhost:8090/devlog/api/user/naver',
 			state: 123, 
-			/* state : 사이트 간 요청 위조 공격을 방지하기 위해 애플리케이션에서 생성한 상태 토큰값으로
-			 URL 인코딩을 적용한 값을 사용해야한다는데 뭔지 모르겠으므로 일단 123으로 지정 */
      		naverLoginURL: 'https://nid.naver.com/oauth2.0/authorize?response_type=code'
 		}
 	},
 	created () {
-    this.naverLoginURL += '&client_id=' + this.CLIENT_ID
-    this.naverLoginURL += '&redirect_uri=' + this.redirectURI
-	this.naverLoginURL += '&state=' + this.state
+
+    this.naverLoginURL += '&client_id=' + this.CLIENT_ID + '&redirect_uri=' + this.redirectURI + '&state=' + this.state
   	},
 	methods: {
 		loginFormClose(){
@@ -54,16 +52,41 @@ export default {
 				this.$message.warning('아이디를 입력해주세요')
 			else if(this.password==='')
 				this.$message.warning('비밀번호를 입력해주세요')
-			else
-				this.$store.dispatch('login', {id: this.id, password: this.password})
+			else{
+				http
+				.post('/user/login', { 
+					id: this.id,
+					password: this.password
+				})
+				.then(({data}) => {
+					this.$store.commit('setIsLogin', true)
+					this.$store.commit('setToken', data)
+					this.$store.commit('setLoginFormVisible', false)
+					http
+					.get('/user/me',{headers : {'Authorization' : data,}})
+					.then(({data}) => {
+						this.$message.success('정상적으로 로그인되었습니다.')
+						console.log(data)
+						this.$store.commit('setUserInfo', data)
+					})
+					.catch((error) => {
+						this.$message.error('로그인 도중 오류가 발생했습니다.')
+					})
+				})
+				.catch((error) =>  {
+					if(error.response.status == '404')
+						this.$message.error('존재하지 않는 아이디입니다.')
+					else if(error.response.status == '401')
+						this.$message.error('비밀번호가 틀렸습니다.')
+					else
+						this.$message.error('로그인 도중 오류가 발생했습니다.')
+				})
+			}
 		},
 		naverLogin(){
-			//window.open(this.naverLoginURL, '_blank');
-			var popup = window.open(this.naverLoginURL,'window_name','width=430,height=500,left=500,right=500,location=no,status=no,scrollbars=yes');
-			
-			//popup.close();
+			window.open(this.naverLoginURL, '_blank');
+			//var popup = window.open(this.naverLoginURL,'window_name','width=430,height=500,left=500,right=500,location=no,status=no,scrollbars=yes');
 		},
-		
 		kakaoLogin(){
 			Kakao.Auth.login({
 				success:this.kakaoLoginStore,

@@ -43,6 +43,7 @@ import OpenLayer from './References/OpenLayer.vue'
 // devlog
 import Devlog from './pages/Devlog.vue'
 import Main from './pages/Main.vue'
+import Naver from './pages/Naver.vue'
 import Blog from './pages/Blog.vue'
 import SignUp from './pages/SignUp.vue'
 import MyInfo from './pages/MyInfo.vue'
@@ -76,6 +77,11 @@ const routes = [
         path: '',
         name: 'main',
         component: Main
+      },
+      {
+        path: '/naver/:jwt',
+        name: 'naver',
+        component: Naver
       },
       {
         path: '/blog/:id',

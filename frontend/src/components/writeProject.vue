@@ -88,7 +88,7 @@
                     <p class="pull-right">추가 설명</p>
                   </div>
                   <div class="col-sm-9">
-                   <vue-editor v-model="content"></vue-editor>
+                   <vue-editor id="project-editor" v-model="content"></vue-editor>
                   </div>
                 </div>
                 <!--  프로젝트 정보 끝 -->
@@ -360,30 +360,8 @@ components: {
 }
 </script>
 
-<style scoped>
-.ql-editor{
+<style>
+#project-editor .ql-editor{
   min-height: 400px;
 }
-.pjt-title{
-  font-size:18px;
-  background-color:#eee;
-  padding-top:15px;
-  height:180px;
-}
-.pjt-content{
-  padding-top:15px;
-  margin-top:-2px;
-  margin-left:10px;
-  font-size:14px;
-  word-spacing: 2px;
-  line-height:30px;
-}
-input {
-  outline: 0;
-  border-width: 0 0 1px;
-  border-color: lightgray
-}
-input:focus {
-  border-color: #3c8dbc;
-  }
 </style>
