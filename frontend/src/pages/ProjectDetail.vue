@@ -217,10 +217,8 @@
       deleteProject(seq){
         http.delete('project/'+seq)
         .then(({data}) => {
-            if(data==="SUCCESS"){
-              this.$message.success('프로젝트가 삭제되었습니다.')
-              this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
-            }
+            this.$message.success('프로젝트가 삭제되었습니다.')
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
          })
       },
       // 프로젝트 수정 미구현
@@ -277,10 +275,5 @@ a:hover { color: black; text-decoration: bold;}
   font-size:14px;
   word-spacing: 2px;
   line-height:30px;
-}
-</style>
-<style>
-#comment-editor .ql-editor{
-  min-height: 100px;
 }
 </style>
