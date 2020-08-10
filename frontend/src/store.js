@@ -64,5 +64,21 @@ export default new Vuex.Store({
       });
       
     },
+    kakaoLogin(context,{access_token}){
+      http
+      .get('/user/kakao', {headers :{'Authorization' : access_token,}
+      })
+      .then(({data}) => {
+        context.commit('mutateIsLogin', true)
+        context.commit('SET_TOKEN',data)
+        context.commit('mutateLoginFormVisible', false)
+        http
+        .get('/user/me',{headers : {'Authorization' : data,}
+        })
+        .then(({data}) =>{
+            context.commit('mutateUserInfo',data)
+        });
+      })
+    }
   }
 })
