@@ -34,9 +34,7 @@
               </div>
               <div class="col-sm-4 emphasis" style="cursor:pointer;" @click="follower">
                 <h2><strong >{{blogOwnerNumOfNeighbor}}</strong></h2>
-                <p> <small>Follower </small>
-                  <!-- <i class="material-icons" @click="subscribe">add_circle_outline</i> -->
-                </p>
+                <p><small>Follower </small></p>
               </div>
             </div>
           </div>
@@ -47,11 +45,12 @@
             #{{tag.tag}}
           </span>
 
-          <div class="column4" v-if= "getIsLogin" >
+          <div class="column4" v-if= "getIsLogin">
+            <span @click="subscribe">이웃추가<i class="ti-link"></i></span>&nbsp;
             <router-link to="../writePost">
               <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
             </router-link>
-              <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>
+            <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>&nbsp;
           </div>
         </div>
         <!-- end profile -->
@@ -200,13 +199,21 @@ export default {
           $('#detail').attr('readonly', true);
         }
       })
-    },
-    // 팔로우 페이지 이웃리스트에 추가해야하는데..
+    },  
     subscribe() {
-      http.post('userneighbor/' + this.seq_blog)
-      .then(({ data }) => {
-        this.neighborList.push(data)
-      });
+      http.get('user/id/'+this.$route.params.id)
+      .then(({data})=>{
+        http.post('/userneighbor', {
+          seq_neighbor: data.seq,
+          seq_user: this.$store.getters.getUserInfo.seq
+        })
+        .then(({ data }) => {
+          this.$message({
+            type: 'success',
+            message: '이웃에 추가 되었습니다.',
+          });
+        })
+      })
     }
   }
 }
