@@ -93,7 +93,7 @@
         return text
         },
         getportfolioList(){
-			http.get('user/id/{seq}?id='+this.$route.params.id)
+			http.get('user/id/'+this.$route.params.id)
             .then(({data})=>{
                 http.get('portfolio/blog/'+data.seq+'/'+data.seq+'/'+this.offset+'/'+this.limit)
 				.then(({ data }) => {

@@ -82,7 +82,7 @@
         },
         // 페이지네이션 하기 전 처음 페이지에 뿌려줄 카드 불러오기
         getprojectList(){
-            http.get('user/id/{seq}?id='+this.$route.params.id)
+            http.get('user/id/'+this.$route.params.id)
             .then(({data})=>{
                 http.post('project/blog', { seq_user:data.seq , seq_blog:data.seq, offset:0, limit:this.page } )
                 .then(({ data }) => {
@@ -108,7 +108,7 @@
         },
         // 인피니트로딩
         infiniteHandler($state){
-            http.get('user/id/{seq}?id='+this.$route.params.id)
+            http.get('user/id/'+this.$route.params.id)
             .then(({data})=>{
                 http.post('project/blog', { seq_user:data.seq , seq_blog:data.seq, offset:this.limit+this.page, limit:this.page })
                 .then(({ data }) => {

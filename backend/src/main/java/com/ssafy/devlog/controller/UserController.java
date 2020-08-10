@@ -97,8 +97,8 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "특정 회원의 정보를 반환한다.(Id로 검색)", response = List.class)
-	@GetMapping("id/{id}")
-	public ResponseEntity<User> selectUserById(@RequestParam String id) throws Exception {
+	@GetMapping("/id/{id}")
+	public ResponseEntity<User> selectUserById(@PathVariable String id) throws Exception {
 		logger.debug("selectUserByID - 호출");
 		return new ResponseEntity<User>(userService.selectUserById(id), HttpStatus.OK);
 	}

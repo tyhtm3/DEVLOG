@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     getBlogOwnerInfo(){
-      http.get('user/id/{seq}?id='+this.blogOwnerId)
+      http.get('user/id/'+this.blogOwnerId)
       .then(({data})=>{
         this.blogOwnerInfo=data;
         this.seq_blog = this.blogOwnerInfo.seq;
