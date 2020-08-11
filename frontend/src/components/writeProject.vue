@@ -54,9 +54,16 @@
           <p class="pull-right">* 역할</p>
         </div>
         <div class="col-sm-9">
-          <el-input style="padding:10px;" type="textarea" :rows="5" placeholder="PROJECT ROLE" v-model="role"> </el-input>
+          <div v-for="(role2,index) in roles" :key="index"><span><el-input  style="padding:10px;" type="textarea" :rows="2" :value="role2" readonly></el-input></span>
+          <div class="ti-minus pull-bottom pull-right" @click="deleteRole(index)"></div>
+          </div>
+          <el-input style="padding:10px;" type="textarea" :rows="4" placeholder="PROJECT ROLE" v-model="role"> </el-input>
+          <div class="ti-plus pull-bottom pull-right" @click="addRole"></div>
         </div>
-      </div><hr>
+      </div>
+      <hr>
+
+      
 
         <div class="row">
         <div class="col-sm-2 pjt-title">
@@ -174,13 +181,15 @@ components: {
       summary : '',
       start_date : '',
       finish_date : null,
-      role : '',
       github_url : '',
       etc_url : null,
       rep_url : null,
       content : null,
+      // 기술스택
       stack : [],
       all_stack : [],
+      // 역할
+      roles : [],
     }
   },
 
@@ -198,6 +207,17 @@ components: {
      })
  },
   methods : {
+    addRole(){
+        if(this.role==''){
+          this.$message.warning('프로젝트 역할을 입력해 주세요.')
+        }else{
+          this.roles.push(this.role)
+          this.role=''
+        }
+    },
+    deleteRole(index){
+        this.roles.splice(index,1)
+    },
      write(){
       // 필수 입력 확인받기
         if(this.title==='')
@@ -208,7 +228,7 @@ components: {
           this.$message.warning('프로젝트 시작 날짜를 입력해 주세요.')
         else if(this.stack.length==0)
           this.$message.warning('사용 스택을 입력해 주세요.')
-        else if(this.role==='')
+        else if(this.roles.length==0)
           this.$message.warning('프로젝트 역할을 입력해 주세요.')
         else if(this.github_url==='')
           this.$message.warning('깃허브 주소를 입력해주세요.')
@@ -231,7 +251,6 @@ components: {
                           summary : this.summary, 
                           start_date : this.date_to_str(this.start_date),
                           finish_date : this.date_to_str(this.finish_date),
-                          role : this.role,
                           github_url : this.github_url,
                           etc_url : this.etc_url,
                           rep_url : this.rep_url,
@@ -254,8 +273,12 @@ components: {
           stack: this.stack[i]
         })
         }
-
-      
+        // 프로젝트 역할 등록하기
+        http
+        .post('./projectrole', {
+          seq_post_project: data,
+          role: this.roles
+        })
 
         this.$message({
             type: 'success',

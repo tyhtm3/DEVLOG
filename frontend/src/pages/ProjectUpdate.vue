@@ -58,7 +58,11 @@
                   <p class="pull-right">* 역할</p>
                 </div>
                 <div class="col-sm-9">
-                  <el-input style="padding:10px;" type="textarea" :rows="5" placeholder="PROJECT ROLE" v-model="role"> </el-input>
+                  <div v-for="(role2,index) in roles" :key="index"><span><el-input  style="padding:10px;" type="textarea" :rows="2" :value="role2.role" readonly></el-input></span>
+                 <div class="ti-minus pull-bottom pull-right" @click="deleteRole(index)"></div>
+                  </div>
+                  <el-input style="padding:10px;" type="textarea" :rows="4" placeholder="PROJECT ROLE" v-model="role"> </el-input>
+                  <div class="ti-plus pull-bottom pull-right" @click="addRole"></div>
                 </div>
               </div><hr>
 
@@ -180,7 +184,7 @@ export default {
       summary : '',
       start_date : '',
       finish_date : null,
-      role : '',
+      roles : [],
       github_url : '',
       etc_url : null,
       rep_url : null,
@@ -209,6 +213,17 @@ export default {
     this.getProjectInfo()
   },
   methods : {
+    addRole(){
+        if(this.role==''){
+          this.$message.warning('프로젝트 역할을 입력해 주세요.')
+        }else{
+          this.roles.push(this.role)
+          this.role=''
+        }
+    },
+    deleteRole(index){
+        this.roles.splice(index,1)
+    },
     write(){
       // 필수 입력 확인받기
       if(this.title==='')
@@ -219,7 +234,7 @@ export default {
         this.$message.warning('프로젝트 시작 날짜를 입력해 주세요.')
       else if(this.stack.length===0)
         this.$message.warning('사용 스택을 입력해 주세요.')
-      else if(this.role==='')
+      else if(this.roles.length==0)
         this.$message.warning('프로젝트 역할을 입력해 주세요.')
       else if(this.github_url==='')
         this.$message.warning('깃허브 주소를 입력해주세요.')
@@ -235,21 +250,7 @@ export default {
           this.setRegtime()
         this.setDisclosure()
         this.setTag()
-        
-        console.log(this.seq)
-        console.log(this.seq_blog)
-        console.log(this.title)
-        console.log(this.disclosure)
-        console.log(this.img_url)
-        console.log(this.regtime)
-        console.log(this.summary)
-        console.log(this.start_date)
-        console.log(this.finish_date)
-        console.log(this.role)  
-        console.log(this.github_url)
-        console.log(this.etc_url)  
-        console.log(this.rep_url)  
-        console.log(this.content)  
+
         http
         .put('project', {
           content: this.content,
@@ -258,7 +259,6 @@ export default {
           github_url: this.github_url,
           img_url: this.img_url,
           regtime: this.regtime,
-          role: this.role,
           seq: this.seq,
           start_date: this.start_date,
           summary: this.summary,
@@ -284,9 +284,14 @@ export default {
             }
           })
 
+          // 프로젝트 역할 등록하기
+          http
+          .post('./projectrole', {
+            seq_post_project: this.seq,
+            role: this.roles
+          })
 
-          // 프로젝트 스택 등록하기
-          
+
           this.$message({
             type: 'success',
             message: '프로젝트 수정 완료.'
@@ -428,7 +433,6 @@ export default {
         this.start_date_temp = data.start_date
         this.finish_date = data.finish_date
         this.finish_date_temp = data.finish_date
-        this.role = data.role
         this.github_url = data.github_url
         this.etc_url = data.etc_url
         this.rep_url = data.rep_url
@@ -449,6 +453,13 @@ export default {
             this.stack.push(data[i].stack)
           }
         })
+        http
+        .get('/projectrole/'+this.$route.params.seq)
+        .then(({data}) => {
+          this.roles=data
+        })
+
+
       })
     }
   }
