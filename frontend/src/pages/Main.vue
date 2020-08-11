@@ -66,11 +66,10 @@
                     <div class="video-text">
                       <h2 style="font-weight: bold; margin-bottom:5px;" @click="goDetailProject(project.seq)">{{ project.title }}</h2>
                     </div>
-                    <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" > 
-
-                      <span v-for="(tag,index) in projectTag[index]" :key="index">
-                      <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
-                     </span>
+                    <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" >
+                      <span class="tag-nest-detail">
+                      <span v-for="(tag,index) in projectTag[index]" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                      </span>
                       <!-- 여백 -->
                       <span class="tag"></span>
 
@@ -111,11 +110,8 @@
                   <p class="content-3line">{{ removeTag(post.content) }}</p>
                   <hr>
                   <p class="pull-left">
-                    <span class="tag" style="font-size:17px; margin-right:8px;">#java</span>
-                    <span class="tag" style="font-size:17px; margin-right:8px;">#c++</span>
-                    <span class="tag" style="font-size:17px; margin-right:8px;">#eclipse</span>
-                    <!-- <span v-for="(tag, index) in postTag[index]" :key="index">
-                    <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span> -->
+                    <span v-for="(tag, index) in post.tags" :key="index">
+                    <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
                     </span>
                   </p>
                   <!-- <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button> -->
@@ -240,7 +236,7 @@ export default {
     })
     .then(({data}) => {
       this.postList = data
-      this.getpostCommentTag(data)
+      // this.getpostCommentTag(data)
     })
     },
     getTags(){
@@ -266,7 +262,7 @@ export default {
         setTimeout(()=>{
           if(data.length){
             this.postList = this.postList.concat(data);
-            this.getpostCommentTag(this.postList)
+            // this.getpostCommentTag(this.postList)
             $state.loaded()
             this.limit +=this.page
             if(this.postList.length/this.page == 0){
@@ -291,17 +287,6 @@ export default {
       this.projectComment.push(null);
       this.projectTag.push(null);
     },
-    // 포스트로부터 코멘트 개수와 태그 불러오기
-    getpostCommentTag(data){
-      console.log("comment 불러오기2")
-
-      for(var i=0; i<this.postList; i++){
-        this.getPostComments(i);
-        this.getPostTags(i);
-      }
-      this.postComment.push(null);
-      this.postTag.push(null);
-    },
     getProjectComments(i){
       if(i<this.projectList.length){
         http.get('postcomment/count/'+this.projectList[i].seq)
@@ -324,22 +309,31 @@ export default {
         });
       }
     },
-    getPostComments(i){
-      if(i<this.postList.length){
-        http.get('postcomment/count/'+this.postList[i].seq)
-        .then(({data}) => {
-          this.postComment[i] = data;
-        });
-      }
-    },
-    getPostTags(i){
-      if(i<this.postList.length){
-      http.get('posttag/'+this.postList[i].seq)
-        .then(({data}) => {
-          this.postTag[i] = (data.slice(0,3));
-      });
-      }
-    },
+    // 포스트로부터 코멘트 개수와 태그 불러오기
+    // getpostCommentTag(data){
+      // for(var i=0; i<this.postList; i++){
+      //   this.getPostComments(i);
+      //   this.getPostTags(i);
+      // }
+      // this.postComment.push(null);
+      // this.postTag.push(null);
+    // },
+    // getPostComments(i){
+    //   if(i<this.postList.length){
+    //     http.get('postcomment/count/'+this.postList[i].seq)
+    //     .then(({data}) => {
+    //       this.postComment[i] = data;
+    //     });
+    //   }
+    // },
+    // getPostTags(i){
+    //   if(i<this.postList.length){
+    //   http.get('posttag/'+this.postList[i].seq)
+    //     .then(({data}) => {
+    //       this.postTag[i] = (data.slice(0,3));
+    //   });
+    //   }
+    // },
     removeTag(text){
       text = text.replace(/<br\/>/ig, "\n")
       text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
