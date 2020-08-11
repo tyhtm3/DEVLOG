@@ -356,7 +356,11 @@ export default {
 }
 .well-media{
   margin:10px;
-  box-shadow: 5px 5px 5px rgba(83, 83, 83, 0.4);
+  box-shadow: 3px 3px 3px rgba(204, 204, 204, 0.4);
+}
+
+.well-media:hover{
+    box-shadow: 10px 10px 10px rgba(146, 146, 146, 0.4);
 }
 .el-carousel__item h3 {
   color: #475669;
@@ -366,16 +370,19 @@ export default {
   margin: 0;
 }
 
-.el-carousel__item:nth-child(2n) {
-  background-color: none;
-  // #d3dce6;
-  //#99a9bf
-  // box-shadow: 15px 15px 15px rgba(146, 146, 146, 0.4);
-}
+// .el-carousel__item:nth-child(2n) {
+//   background-color: none;
+//   // #d3dce6;
+//   //#99a9bf
+//   // box-shadow: 15px 15px 15px rgba(146, 146, 146, 0.4);
+// }
 
-.el-carousel__item:nth-child(2n+1) {
-  // background-color: #d3dce6;
-  
+// .el-carousel__item:nth-child(2n+1) {
+//   // background-color: #d3dce6;
+//   background-color: none;
+// }
+ 
+.el-carousel__item{
   background-color: none;
 }
 .left{
