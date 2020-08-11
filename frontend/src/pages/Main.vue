@@ -59,8 +59,9 @@
                 <el-carousel-item v-for="(project, index) in projectList" :key="index">
                   <div class="well-media">
                     <div class="vendor">
-                      <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url">
-                      <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
+                      <!-- 중앙일 때 : transform: translateX(125.25px) scale(1); -->
+                      <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" @click="goDetailProject(project.seq)">
+                      <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" @click="goDetailProject(project.seq)">
                     </div>
                     <div class="video-text">
                       <h2 style="font-weight: bold; margin-bottom:5px;" @click="goDetailProject(project.seq)">{{ project.title }}</h2>
