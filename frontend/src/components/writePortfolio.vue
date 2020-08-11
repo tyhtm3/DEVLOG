@@ -384,22 +384,18 @@ export default {
           seq_post_project: this.includedProject
         })
         .then(({ data }) => {
-          // alert(this.portfolioSeq+"번 portfolio에 "+  this.includedProject + "번 프로젝트 입력 성공!")
-          console.log(this.portfolioSeq+"번 portfolio에 "+  this.includedProject + "번 프로젝트 입력 성공!")
         })
         .catch((error)=>{
-          // alert(error.response.status);
           console.log(error.response.status)
         })
         for(let i=0; i<this.includedStack.length; i++){
           http
           .post('projectstack', {
-            seq_post_project: this.includedProject,
+            seq_post_project: this.portfolioSeq,
             stack: this.stackInfoList[this.includedStack[i]].stack,
-            stack_img_url: this.stackInfoList[this.includedStack[i]].stack_img_url
+            stack_img_url: this.stackInfoList[this.includedStack[i]].stack_img_url,
           })
           .then(({ data }) => {
-            console.log(this.portfolioSeq+"번 portfolio에 "+  this.stackInfoList[this.includedStack[i]].stack + " 기술스택 입력 성공!")
           })
           .catch((error)=>{
             console.log(error.response.status)
