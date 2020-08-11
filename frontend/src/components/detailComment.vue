@@ -3,7 +3,7 @@
         <div class="comment-nest">
               <div v-if="updateSeq==0">
               <div style="display:inline-block; height:100px;;width:100%;">
-              <vue-editor class="comment-editor" v-model="insertContent" :placeholder="placeholderMessage"></vue-editor>
+              <vue-editor class="comment-editor" v-model="insertContent" v-bind:placeholder="placeholderMessage"></vue-editor>
               </div>
               <br>
               <br>
@@ -70,16 +70,13 @@
           insertContent: '', // 댓글 입력 내용물
           updateContent: '', // 댓글 수정 내용물
           updateSeq: 0,
-          placeholderMessage:'댓글을 입력해주세요.',
+          placeholderMessage:'댓글',
         }
     },
     watch:{
-      getIsLogin: function(){
-        this.placeholderMessage='댓글을 입력해주세요.';
+      getUserInfo: function(){
         this.seq_user = this.$store.state.userInfo.seq;
-        // 유저정보는 왜 안들어가지?
-        // 이거 왜 실시간 반영 안되는거지
-      },
+      }
     },
     mounted(){
       this.getComment(this.seq);
@@ -146,9 +143,10 @@
             message: '메세지를 입력해주세요.'
           })
         }else{
-          http.post('postcomment',{content:this.insertContent,seq_post:this.seq,seq_user:this.seq_user})
+          http.post('postcomment',{content:this.insertContent,seq_post:this.seq,seq_user:this.seq_user}, {headers: {'Authorization': this.$store.state.token,}})
                   .then(({data}) => {
                 //댓글 입력하고 리스트 업데이트
+                // alert("댓글 작성중, 유저 번호 : " + this.seq_user);
                 this.getComment(this.seq)
           })
           this.insertContent = ''
