@@ -73,11 +73,12 @@ public class UserNeighborController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 
-	@ApiOperation(value = "유저의 이웃을 삭제한다.", response = String.class)
-	@DeleteMapping(value = "/{seq}")
-	public ResponseEntity<String> deleteUserNeighbor(@PathVariable int seq) throws Exception {
+	@ApiOperation(value = "유저의 이웃을 삭제한다. // seq_neighbor : 대상 유저 seq", response = String.class)
+	@DeleteMapping
+	public ResponseEntity<String> deleteUserNeighbor(@RequestBody UserNeighbor userNeighbor) throws Exception {
 		logger.debug("deleteUserNeighbor - 호출");
-		if (userNeighborService.deleteUserNeighbor(seq) == 1) {
+		userNeighbor.setSeq_user(jwtService.getSeq());
+		if (userNeighborService.deleteUserNeighbor(userNeighbor) == 1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

@@ -21,13 +21,14 @@
 	<select id="checkUserNeighbor" resultType="UserNeighbor">
 		select *
 		from user_neighbor
-		where seq_user = #{seq_user} and seq_neighbor = #{seq_neighbor};
+		where seq_user = #{seq_user} and seq_neighbor = #{seq_neighbor}
 	</select>
 	
 	<!-- 유저의 특정 이웃을 삭제한다. -->
 	<delete id="deleteUserNeighbor">
-		delete from user_neighbor
-		where seq = #{seq}
+		delete
+		from user_neighbor
+		where seq_user = #{seq_user} and seq_neighbor = #{seq_neighbor}
 	</delete>
 
 </mapper>

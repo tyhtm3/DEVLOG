@@ -8,7 +8,7 @@ public interface UserNeighborService {
 	
 	public List<UserNeighbor> selectAllUserNeighbor(int seq_user);
 	public int insertUserNeighbor(UserNeighbor userNeighbor);
-	public int deleteUserNeighbor(int seq);
+	public int deleteUserNeighbor(UserNeighbor userNeighbor);
 	public UserNeighbor checkUserNeighbor(int seq_user, int seq_neighbor);
 	
 }
