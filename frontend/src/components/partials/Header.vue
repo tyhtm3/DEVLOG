@@ -52,7 +52,6 @@
 </template>
 <script>
 import Login from '../../components/Login.vue'
-import router from '../../routes'
 import http from '../../util/http-common'
 import { mapGetters } from 'vuex'
 export default {
@@ -85,8 +84,10 @@ export default {
 		logout(){
 			this.$store.commit('setIsLogin', false)
 			this.$store.commit('setUserInfo', {seq:0})
-			this.$message.success('로그아웃 되었습니다.');
+			this.$store.commit('removeToken')
+			this.$message.success('로그아웃 되었습니다.')
 			localStorage.clear();
+			this.$router.push('/')
 		}
 	},
 }

@@ -148,16 +148,18 @@ export default {
       })
       .then(() => {
         http
-        .delete('/user/')
+        .delete('/user/',{headers : {'Authorization' : this.$store.state.token,}})
         .then(({ data }) => {
-          this.commit('setIsLogin', false)
+          this.$store.commit('setIsLogin', false)
+			    this.$store.commit('setUserInfo', null)
+			    this.$store.commit('removeToken')
           this.$message({
             type: 'success',
             message: '탈퇴가 완료되었습니다.'
           });
-          this.$router.push(`/`)
         }) 
       })
+      this.$router.push(`/blog/:id`)
     },
     validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
