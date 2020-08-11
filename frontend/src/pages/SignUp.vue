@@ -114,7 +114,7 @@ import http from '../util/http-common'
               type: 'success',
               message: '회원 가입이 완료되었습니다.'
             });
-            this.$router.push('/blog')
+            this.$router.push('/')
           })
           .catch((error) => {
             console.log(error.response.status)

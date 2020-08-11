@@ -21,7 +21,7 @@
           <i v-else @click="like" class="material-icons">favorite_border</i>
           &nbsp;{{project.like_count}}</li>
         <li class="pull-right" v-if="project.seq_blog==seq_user">
-          <span style="cursor:pointer">수정 </span>&nbsp;|&nbsp;
+          <span style="cursor:pointer" @click="updateProject(project.seq)">수정 </span>&nbsp;|&nbsp;
           <span style="cursor:pointer" @click="deleteProject(project.seq)"> 삭제</span>
         </li>
       </ul>
@@ -217,15 +217,13 @@
       deleteProject(seq){
         http.delete('project/'+seq)
         .then(({data}) => {
-            if(data==="SUCCESS"){
-              this.$message.success('프로젝트가 삭제되었습니다.')
-              this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
-            }
+            this.$message.success('프로젝트가 삭제되었습니다.')
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
          })
       },
       // 프로젝트 수정 미구현
-      updateProject(){
-        
+      updateProject(seq){
+        this.$router.push('/blog/project-update/'+seq)
       },
       // Url로 이동
       goUrl(url){
@@ -277,10 +275,5 @@ a:hover { color: black; text-decoration: bold;}
   font-size:14px;
   word-spacing: 2px;
   line-height:30px;
-}
-</style>
-<style>
-#comment-editor .ql-editor{
-  min-height: 100px;
 }
 </style>

@@ -97,7 +97,7 @@ export default {
         },
         // 인피니트로딩
         infiniteHandler($state){
-            http.get('user/id/='+this.$route.params.id)
+            http.get('user/id/'+this.$route.params.id)
             .then(({data})=>{
                 http.post('post/blog', { seq_blog:data.seq, offset:this.limit+this.page, limit:this.page})
                 .then(({ data }) => {

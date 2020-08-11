@@ -6,20 +6,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,8 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.JsonElement;
@@ -199,51 +193,25 @@ public class UserController {
 
 	@ApiOperation(value = "네이버 로그인")
 	@GetMapping("naver")
-	public ResponseEntity<Object> naver(@RequestParam(value = "code") String code,
-			@RequestParam(value = "state") String state, HttpServletResponse response) throws Exception {
-
-		String apiURL;
-		apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
-		apiURL += "client_id=RSKBTL31UOSpdlckpmTt";
-		apiURL += "&client_secret=MK0P6WjQXn";
-		apiURL += "&code=" + code;
-		apiURL += "&state=" + state;
-		String access_token = "";
+	public ResponseEntity<String> naver(HttpServletRequest request) throws Exception {
+		
+		String access_token = request.getHeader("Authorization");
 		String refresh_token = "";
 		String jwt = "";
 
 		try {
 
-			// 로그인이 정상적으로 된 상황이므로 code 와 state, secret pw로 네이버 apiURL을 통해 토큰을 요청한다.
-			URL url = new URL(apiURL);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("GET");
-			int responseCode = con.getResponseCode();
-			BufferedReader br;
-
-			if (responseCode == 200) {
-				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			} else {
-				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-			}
 			String inputLine;
 			StringBuffer res = new StringBuffer();
-			while ((inputLine = br.readLine()) != null) {
-				res.append(inputLine);
-			}
-			br.close();
-
-			if (responseCode == 200) {
-
+			
 				// 정상적으로 토큰을 가져오면 Gson 으로 JSON 파일을 파싱해준다.
 
 				String id, nickName, email, profile_img_url, tmp;
 				JsonParser parser = new JsonParser();
-				JsonElement accessElement = parser.parse(res.toString());
-				access_token = accessElement.getAsJsonObject().get("access_token").getAsString();
 
-				// 파싱한 access_token 값으로 네이버에 유저 정보를 요청. 이 함수의 return 값은 id, email, nickname 등
-				// 유저정보들과 상태 코드 등.
+				
+				// 파싱한 access_token 값으로 네이버에 유저 정보를 요청. 이 함수의 return 값은 id, email, nickname 등 유저정보들과 상태 코드 등.
+
 				tmp = getUserInfo(access_token);
 
 				JsonElement userInfoElement = parser.parse(tmp);
@@ -284,17 +252,14 @@ public class UserController {
 				// seq로 JWT를 만들어준다.
 				jwt = jwtService.create("member", user.getSeq(), "user");
 
-			}
+				
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-
-		HttpHeaders headers = new HttpHeaders();
-
-		headers.setLocation(URI.create("http://localhost:8080/#/naver/"+jwt));
-		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
-
+		return new ResponseEntity<String>(jwt, HttpStatus.OK);
+		
 	}
+
 
 	private String getUserInfo(String access_token) {
 		String header = "Bearer " + access_token; // Bearer 다음에 공백 추가해야함

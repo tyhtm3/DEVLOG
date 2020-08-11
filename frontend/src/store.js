@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-
+import http from './util/http-common'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -86,14 +86,30 @@ export default new Vuex.Store({
       .get('/user/kakao', {headers :{'Authorization' : access_token,}
       })
       .then(({data}) => {
-        context.commit('mutateIsLogin', true)
+        context.commit('setIsLogin', true)
         context.commit('setToken',data)
-        context.commit('mutateLoginFormVisible', false)
+        context.commit('setLoginFormVisible', false)
         http
         .get('/user/me',{headers : {'Authorization' : data,}
         })
         .then(({data}) =>{
-            context.commit('mutateUserInfo',data)
+            context.commit('setUserInfo',data)
+        });
+      })
+    },
+    naverLogin(context, {access_token}){
+      http
+      .get('/user/naver', {headers :{'Authorization' : access_token,}
+      })
+      .then(({data}) => {
+        context.commit('setIsLogin', true)
+        context.commit('setToken',data)
+        context.commit('setLoginFormVisible', false)
+        http
+        .get('/user/me',{headers : {'Authorization' : data,}
+        })
+        .then(({data}) =>{
+            context.commit('setUserInfo',data)
         });
       })
     }

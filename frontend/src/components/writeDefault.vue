@@ -1,48 +1,74 @@
 <template>
   <transition name="el-zoom-in-top">
     <div>
-      <div style="margin-bottom: 15px">
-        <span style="display:inline-block; width:100px;">제목</span>
-        <input class="title" v-model="postInfo.title" placeholder="제목을 입력해 주세요." style="width:50%; border:0px;">
-      </div>
-      <hr>
-      <div style="margin-bottom: 15px">
-        <vue-editor v-model="postInfo.content" id="editor"></vue-editor>
-      </div>
-      <hr>
-      <div style="margin-bottom: 15px">
-        <span style="display:inline-block; width:100px">태그</span>
-        <span v-html="htmlTag">
-        </span>
-        <input v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그 입력 ">
-      </div>
-      <hr>
-      <div style="margin-bottom: 15px">
-        <span style="display:inline-block; width:100px">썸네일</span> 
-        <el-upload action="https://jsonplaceholder.typicode.com/posts/" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" list-type="picture-card" style="display:inline">
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">제목</p>
+        </div>
+        <div class="col-sm-9">
+          <el-input style="padding:10px;" placeholder="POST TITLE" v-model="postInfo.title"> </el-input>
+        </div>
+      </div><hr>
+
+       <div class="row">
+        <div class="col-sm-2 pjt-title" style="height:490px;">
+          <p class="pull-right">내용</p>
+        </div>
+        <div class="col-sm-9">
+          <vue-editor id="project-editor" v-model="postInfo.content" style="padding:10px;"></vue-editor>
+        </div>
+      </div><hr>
+
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">태그</p>
+        </div>
+        <div class="col-sm-9" style="padding:15px 0px 0px 25px">
+          <span v-html="htmlTag">
+          </span>
+          <input v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그 입력 ">
+        </div>
+      </div><hr>
+
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">썸네일</p>
+        </div>
+        <div class="col-sm-9" style="padding:0px 0px 0px 25px">
+          <el-upload action="https://jsonplaceholder.typicode.com/posts/" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" list-type="picture-card" style="display:inline">
           <i slot="default" class="el-icon-plus"></i>
-        </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-        <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
-      </div>
-      <hr>
-      <div style="margin-bottom: 15px">
-        <span style="display:inline-block; width:100px;">공개 여부</span> 
-        <el-radio-group v-model="postInfo.disclosure">
-          <el-radio-button label="전체공개"></el-radio-button>
-          <el-radio-button label="이웃공개"></el-radio-button>
-          <el-radio-button label="비공개" ></el-radio-button>
-        </el-radio-group>
-      </div>
-      <hr>
-      <div style="margin-bottom: 15px;">
-        <span style="display:inline-block; width:100px">작성 시간</span> 
-        현재 <el-switch v-model="isReserve" on-text=true off-text=false></el-switch> 예약
-        <el-date-picker v-if="isReserve" v-model="postInfo.regtime" type="datetime" placeholder="Select date and time">
-        </el-date-picker>
-      </div>
-      <hr>
+          </el-upload>
+          <el-dialog :visible.sync="isImgVisible">
+            <img width="100%" :src="img_url" alt="">
+          </el-dialog>
+          </div>
+      </div><hr>
+
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">공개 여부</p>
+        </div>
+        <div class="col-sm-9" style="padding:15px 0px 0px 25px">
+          <el-radio-group v-model="postInfo.disclosure">
+            <el-radio-button label="전체공개" ></el-radio-button>
+            <el-radio-button label="이웃공개" ></el-radio-button>
+            <el-radio-button label="비공개" ></el-radio-button>
+          </el-radio-group>
+        </div>
+        <div class="col-sm-1" style="padding:15px 0px 0px 25px">
+        </div>
+      </div><hr>
+
+      <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">작성 시간</p>
+        </div>
+        <div class="col-sm-9" style="padding:15px 0px 0px 25px">
+          현재 <el-switch v-model="isReserve" on-text=true off-text=false></el-switch> 예약
+          <el-date-picker v-if="isReserve" v-model="postInfo.regtime" type="datetime" placeholder="Select date and time">
+          </el-date-picker>
+        </div>
+      </div><hr>
       <el-button @click="write" style="float:right">포스트 작성</el-button>
     </div>
   </transition>
@@ -50,6 +76,7 @@
 
 <script>
 import { VueEditor } from 'vue2-editor'
+import { mapGetters } from 'vuex'
 import http from '../util/http-common'
 
 export default {
@@ -65,7 +92,7 @@ export default {
         tags: [
 
         ],
-        disclosure: '',
+        disclosure: '전체공개',
         regtime: '',
       },
       dialogImageUrl: '',
@@ -85,13 +112,14 @@ export default {
         this.postInfo.disclosure = 3
       http
       .post('./post', {      
-        seq_blog: this.$store.state.userInfo.seq,
+        seq_blog: this.$store.getters.getUserInfo.seq,
         title: this.postInfo.title,
         content: this.postInfo.content,
         disclosure: this.postInfo.disclosure,
         img_url: this.dialogImageUrl
       })
       .then(({data}) => {
+        console.log(data)
         if(this.tags.length==0)
           this.postInfo.tags = null
         else
@@ -106,7 +134,7 @@ export default {
             type: 'success',
             message: '포스팅 완료.'
           });
-         this.$router.push(`/blog/:id`)
+          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
         })
       })
     },

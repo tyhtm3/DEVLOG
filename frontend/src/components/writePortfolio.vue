@@ -6,7 +6,7 @@
           <div class="box-body" style="align:center; min-height:400px; max-width:800px; margin:auto; padding : 0px;">
 						<div class="col-sm-12" style="padding:0px">
 							<div class="col-xs-12 col-sm-12" style="padding:0px">
-                 <hr>
+                <hr>
                   <div style="margin-bottom:15px; font-size:20px;"><b>개인정보 입력</b></div>
                   <!-- <div style="margin-bottom:15px; font-size:20px; text-align:center"><b>개인정보 입력</b></div> -->
                   <hr>
@@ -409,7 +409,7 @@ export default {
             type: 'success',
             message: '포트폴리오 생성 완료.'
         });
-        this.$router.push('/blog')
+        this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
       })
       .catch((error) => {
         console.log(error.response.status)

@@ -20,7 +20,8 @@
 									<ul class="menu">
 										<li> <i class="ti-user"></i>
 											<router-link to="/myinfo">
-												<h3 style="margin-top: 9px;">{{ this.getUserInfo.name }}<span class="text-green fontello-record"></span></h3>
+												<h3 style="margin-top: 9px;" v-if="this.getUserInfo.nickname==''">{{ this.getUserInfo.name }}<span class="text-green fontello-record"></span></h3>
+												<h3 style="margin-top: 9px;" v-else>{{ this.getUserInfo.nickname }}<span class="text-green fontello-record"></span></h3>
 												<p></p>
 											</router-link>
 										</li>
@@ -84,8 +85,8 @@ export default {
 		logout(){
 			this.$store.commit('setIsLogin', false)
 			this.$store.commit('setUserInfo', {seq:0})
-			this.$store.commit('removeToken')
-			this.$message.success('로그아웃 되었습니다.')
+			this.$store.commit('setToken', null)
+			this.$message.success('로그아웃 되었습니다.');
 			localStorage.clear();
 			this.$router.push('/')
 		}
