@@ -83,6 +83,7 @@ export default {
     this.$store.state.loginFormVisible = false;
   },
   methods: {
+    // 아이디 찾기 (ex.abcd****)
     findid(){
       http.get(`/user/email/${this.emailForId}`)
       .then(({ data }) => {
@@ -97,6 +98,7 @@ export default {
             }
         })
     },
+    // 아이디 정보 *표시 없이 메일로 전송
     findfullid(){
       http.get(`/user/findid?email=${this.emailForId}`)
       .then(({ data }) => {
@@ -105,6 +107,7 @@ export default {
                 message: '아이디가 이메일로 전송되었습니다.'
             }) })
     },
+    // 임시 비밀번호 발급 메일 전송
     findpwd(){
         http.get(`/user/findpwd?email=${this.emailForPassword}`)
         .then(({ data }) => {
