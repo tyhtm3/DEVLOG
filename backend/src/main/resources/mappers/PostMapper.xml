@@ -109,9 +109,9 @@
 	<update id="updatePost">
 		update post 
 		   set title = #{title}, 
-		   	   disclosure = #{disclosure}
+		   	   disclosure = #{disclosure},
 		   	   img_url = #{img_url}
-		   	   <if test="regtime != null">regtime = #{regtime}</if>
+		   	   <if test="regtime != null">,regtime = #{regtime}</if>
 		 where seq = #{seq}
 	</update>
 

@@ -59,6 +59,7 @@ public class ProjectController {
         Project pjt = new Project();
         pjt = project;
         pjt.setSeq_blog(jwtService.getSeq());
+        System.out.println(pjt.getSeq_blog());
         projectService.insertPost(pjt);
 
         if (projectService.insertPostProject(pjt)==1) {

@@ -11,13 +11,20 @@
 	
 	
 	<!-- 포스트 모든 댓글 불러오기  -->
-	<select id="selectAllPostComment" resultType="PostComment">
+	<!-- <select id="selectAllPostComment" resultType="PostComment">
 		select *
 		from post_comment
 		where seq_post = #{seq_post}
+	</select> -->
+	
+	<!-- 포스트 모든 댓글과 작성한 유저정보 함께 불러오기 -->
+	<select id="selectAllPostComment" resultType="PostCommentUser">
+		select post_comment.seq, seq_post, seq_user, content, regtime, id, nickname, name, profile_img_url
+		from post_comment join user on post_comment.seq_user = user.seq
+		where seq_post = #{seq_post}
 	</select>
 	
-	<!-- 이웃이 쓴 댓긃 불러오기 //seq_user : 이웃  seq -->
+	<!-- 이웃이 쓴 댓글 불러오기 //seq_user : 이웃  seq -->
 	<select id="selectAllPostCommentByNeighbor" resultType="PostComment">
 		select *
 		from post_comment
