@@ -190,6 +190,7 @@ export default {
 
       start_date_temp: '',
       finish_date_temp: '',
+      regtime_temp: '',
     }
   },
   created(){
@@ -216,7 +217,7 @@ export default {
         this.$message.warning('프로젝트 개요를 입력해 주세요.')
       else if(this.start_date==='')
         this.$message.warning('프로젝트 시작 날짜를 입력해 주세요.')
-      else if(this.stack.length==0)
+      else if(this.stack.length===0)
         this.$message.warning('사용 스택을 입력해 주세요.')
       else if(this.role==='')
         this.$message.warning('프로젝트 역할을 입력해 주세요.')
@@ -226,42 +227,52 @@ export default {
         this.$message.warning("썸네일을 등록해 주세요")
       else
       {
-       
-        this.setDisclosure()
-        this.setRegtime()
-        this.setTag()
-        console.log(this.seq)
-        console.log(this.seq_blog)
         if(this.start_date_temp != this.start_date)
           this.start_date = this.date_to_str(this.start_date)
         if(this.finish_date_temp != this.finish_date)
           this.finish_date = this.date_to_str(this.finish_date)
+        if(this.regtime_temp = this.regtime)
+          this.setRegtime()
+        this.setDisclosure()
+        this.setTag()
+        
+        console.log(this.seq)
+        console.log(this.seq_blog)
+        console.log(this.title)
+        console.log(this.disclosure)
+        console.log(this.img_url)
+        console.log(this.regtime)
+        console.log(this.summary)
+        console.log(this.start_date)
+        console.log(this.finish_date)
+        console.log(this.role)  
+        console.log(this.github_url)
+        console.log(this.etc_url)  
+        console.log(this.rep_url)  
+        console.log(this.content)  
         http
-        .put('project', { 
-          seq : this.seq,
-          seq_blog : this.seq_blog,
-          title:this.title,
-          disclosure:this.disclosure, 
-          img_url : this.img_url, 
-          regtime:this.regtime,
-          summary : this.summary,
-          start_date : this.start_date,
-          finish_date : this.finish_date,
-          role : this.role,
-          github_url : this.github_url,
-          etc_url : this.etc_url,
-          rep_url : this.rep_url,
-          content : this.content,
+        .put('project', {
+          content: this.content,
+          disclosure: this.disclosure,
+          etc_url: this.etc_url,
+          github_url: this.github_url,
+          img_url: this.img_url,
+          regtime: this.regtime,
+          role: this.role,
+          seq: this.seq,
+          start_date: this.start_date,
+          summary: this.summary,
+          title: this.title,
+          finish_date: this.finish_date,
+          rep_url: this.rep_url,
         })
         .then(({data}) => {
-          console.log(data)
           // 프로젝트 태그 등록하기
           http
           .post('./posttag', {
             seq_post: this.seq,
             tag: this.tags
           })
-
           // 프로젝트 스택 등록하기
           for(var i=0; i<this.stack.length; i++){
             http.post('./projectstack', {
@@ -302,27 +313,8 @@ export default {
         if(sec<10) sec = '0' + sec;
           this.regtime =  year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;
       }
-      else
-        this.regtime = null
     },
-    unsetRegtime(){
-      if(this.isReserve){
-        var year = this.regtime.getFullYear();
-        var month = this.regtime.getMonth() + 1;
-        if(month<10) month = '0' + month;
-          var date = this.regtime.getDate();
-        if(date<10) date = '0' + date;
-          var hour = this.regtime.getHours();
-        if(hour<10) hour = '0' + hour;
-          var min = this.regtime.getMinutes();
-        if(min<10) min = '0' + min;
-          var sec = this.regtime.getSeconds();
-        if(sec<10) sec = '0' + sec;
-          this.regtime =  year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;
-      }
-      else
-        this.regtime = null
-    },
+    
     // 태그 셋팅
     setTag(){
       if(this.tags.length==0)
@@ -410,6 +402,7 @@ export default {
       http
       .get('/project/'+this.$route.params.seq)
       .then(({data}) => {
+        console.log(data)
         if(data.disclosure===1)
           this.disclosure = '전체공개'
         else if(data.disclosure===2)
@@ -421,6 +414,7 @@ export default {
         this.title = data.title
         this.content = data.content
         this.regtime = data.regtime
+        this.regtime_temp = data.regtime
         this.img_url = data.img_url
         this.summary = data.summary
         this.start_date = data.start_date
@@ -432,6 +426,7 @@ export default {
         this.etc_url = data.etc_url
         this.rep_url = data.rep_url
         this.content = data.content
+     
         http
         .get('/posttag/'+this.$route.params.seq)
         .then(({data}) => {

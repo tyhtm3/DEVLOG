@@ -239,7 +239,9 @@ export default {
             })
           }
           else{
-            http.delete('/userneighbor/'+this.blogOwnerInfo.seq)
+            http.delete('/userneighbor', {
+              seq_neighbor: this.blogOwnerInfo.seq
+            })
             .then(({ data }) => {
               this.$message({
                 type: 'success',
