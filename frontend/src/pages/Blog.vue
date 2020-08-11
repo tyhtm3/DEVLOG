@@ -52,7 +52,7 @@
               </router-link>
               <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>&nbsp;
             </span>
-            <span v-else @click="subscribe">이웃추가<i class="ti-link"></i></span>&nbsp;
+            <span v-else @click="subscribe">이웃추가 <i class="ti-link"></i></span>&nbsp;
           </div>
         </div>
         <!-- end profile -->
@@ -103,8 +103,6 @@ export default {
     this.getBlogOwnerInfo();
   },
   mounted() {
-    console.log(this.$route.params.id)
-    console.log(this.getUserInfo.id)
     if(this.blogOwnerId === this.getUserInfo.id)
       this.isAdmin = true
     var value = $('#title').val();
@@ -126,10 +124,19 @@ export default {
     getBlogOwnerInfo(){
       http.get('user/id/'+this.blogOwnerId)
       .then(({data})=>{
-        this.blogOwnerInfo=data;
-        this.seq_blog = this.blogOwnerInfo.seq;
-        this.getBlogInfo();
-      });
+        if(data){
+          this.blogOwnerInfo=data;
+          this.seq_blog = this.blogOwnerInfo.seq;
+          this.getBlogInfo();
+        }
+        else{
+          this.$message({
+            type: 'error',
+            message: '존재하지 않는 블로그입니다.'
+          });
+          this.$router.push('/')
+        }
+      })
     },
     getBlogInfo() {
       http.get('blog/'+this.seq_blog)
