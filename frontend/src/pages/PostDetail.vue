@@ -184,4 +184,8 @@ a:hover { color: black; text-decoration: bold;}
   font-size:14px;
   line-height:30px;
 }
+.material-icons{
+  font-size:13px;
+}
+
 </style>

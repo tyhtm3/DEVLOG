@@ -276,4 +276,7 @@ a:hover { color: black; text-decoration: bold;}
   word-spacing: 2px;
   line-height:30px;
 }
+.material-icons{
+  font-size:13px;
+}
 </style>
