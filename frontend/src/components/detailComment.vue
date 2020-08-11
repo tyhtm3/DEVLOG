@@ -11,20 +11,19 @@
               </div>
               <div style="margin-bottom:70px;"></div>
               <!-- 댓글 리스트 -->
-              <div v-for="(comment,index) in comment" :key="index">
+              <div v-for="(comment,index) in comments" :key="index">
                 <ul class="media-list">
                   <li class="media">
-
                     <!-- 프로필 사진이 있으면 -->
-                    <a class="pull-left" style="margin-top:10px;" href="#" v-if="commentUser[index].profile_img_url" > <img class="media-object img-circle" data-src="holder.js/64x64" alt="64x64" :src="commentUser[index].profile_img_url" style="width: 64px; height: 64px;"> </a>
+                    <a class="pull-left" style="margin-top:10px;" href="#" v-if="comment.profile_img_url" > <img class="media-object img-circle" data-src="holder.js/64x64" alt="64x64" :src="comment.profile_img_url" style="width: 64px; height: 64px;"> </a>
                     <!-- 프로필 사진이 없으면 -->
                     <a class="pull-left" style="margin-top:10px;" href="#" v-else > <img class="media-object img-circle" data-src="holder.js/64x64" alt="64x64" src="http://api.randomuser.me/portraits/thumb/women/21.jpg" style="width: 64px; height: 64px;"> </a>
                     
                     <div class="media-body">
                       <div class="social-profile">
-                        <h3> <a class="link-comment" href="#">{{commentUser[index].nickname}}</a>
+                        <h3> <a class="link-comment" href="#">{{comment.nickname}}</a>
                           <span style="font-size:12px;"><i class="entypo-globe"></i>&nbsp;{{comment.regtime}}</span>
-                          <span v-if="commentUser[index].seq==seq_user">
+                          <span v-if="comment.seq==seq_user">
                             <span style="font-size:13px;"><a class="link-comment pull-right"  @click="deleteComment(comment.seq)"><i class="fontawesome-share"></i>&nbsp;삭제</a></span>
                             <span style="font-size:13px;"><a class="link-comment pull-right"><i class="fontawesome-share"></i>&nbsp; | </a></span>
                             <span style="font-size:13px;"><a class="link-comment pull-right" @click="showCommentEditor(comment.seq,comment.content)"><i class="fontawesome-share"></i>&nbsp;수정</a></span>
@@ -65,13 +64,13 @@
     props: ['seq'],
     data: function () {
         return { 
-          comment:'',
+          comments:'',
           commentUser:[], 
           seq_user: this.$store.state.userInfo.seq,
           insertContent: '', // 댓글 입력 내용물
           updateContent: '', // 댓글 수정 내용물
           updateSeq: 0,
-          placeholderMessage:'댓글을 입력해주세요.'
+          placeholderMessage:'댓글을 입력해주세요.',
         }
     },
     watch:{
@@ -81,29 +80,59 @@
         // 유저정보는 왜 안들어가지?
         // 이거 왜 실시간 반영 안되는거지
       },
-      // seq_user:function(){
-      //   this.placeholderMessage='댓글을 입력해주세요.';
-      // }
     },
     mounted(){
-      this.getComment(this.seq)
-    },
+      this.getComment(this.seq);
+    }
+    ,
     methods: {
       // 댓글 리스트 불러오기
        getComment(seq){
         this.commentUser = []
         http.get('postcomment/'+seq)
         .then(({data}) => {
-            // 댓글을 작성한 사용자 정보를 불러오기
-            for(var i=0; i<data.length; i++){
-                http.get('user/'+data[i].seq_user)
-                .then(({data}) => {
-                    this.commentUser.push(data);
-                });
-            }
-            this.comment=data
+          this.comments=data;
+          console.log(this.comments);
+          // alert("코맨트 갯수: " + this.comments.length);
+          // for(var i=0; i<data.length; i++){
+          //   this.getCommentUser(i);
+          // }
          })
       },
+     
+     // getCommentUser(i){
+      //   // console.log(this.comments[i].seq_user);
+      //   http.get('user/'+this.comments[i].seq_user)
+      //     .then(({data}) => {
+      //       console.log(i + "번째 데이터 : ");
+      //       console.log(data);
+      //         // this.test.push({data[i].seq_user:data});
+      //       // this.test.push(i);
+      //       // console.log((data));
+      //         // this.commentUser.push(data);
+              
+      //       this.commentUser[i]=data;
+      //        this.commentUser.push(null);
+      //     });
+
+
+      //   //  console.log((data));
+      //   // 댓글을 작성한 사용자 정보를 불러오기
+      //   // alert("데이터길이" + data.length);
+      //   // for(var i=0; i<this.comments.length; i++){
+      //   // for(let comment in this.comments){
+      //   //   console.log(this.comments[comment].seq_user);
+      //   //   http.get('user/'+this.comments[comment].seq_user)
+      //   //     .then(({data}) => {
+      //   //       console.log(i + "번째 데이터 : ");
+      //   //       console.log(data);
+      //   //         // this.test.push({data[i].seq_user:data});
+      //   //       // this.test.push(i);
+      //   //       // console.log((data));
+      //   //         this.commentUser.push(data);
+      //   //     });
+      //   // }
+      // },
       // 댓글 입력
       insertComment(){
         if(!this.getIsLogin){
