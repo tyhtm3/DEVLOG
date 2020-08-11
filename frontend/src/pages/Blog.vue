@@ -219,15 +219,34 @@ export default {
     subscribe() {
       http.get('user/id/'+this.$route.params.id)
       .then(({data})=>{
-        http.post('/userneighbor', {
-          seq_neighbor: data.seq,
-          seq_user: this.$store.getters.getUserInfo.seq
-        })
-        .then(({ data }) => {
-          this.$message({
-            type: 'success',
-            message: '이웃에 추가 되었습니다.',
-          });
+        // console.log(data)
+        http.get('/userneighbor/check/'+data.seq)
+        .then(({data}) => {
+          console.log(data)
+          if(data.length === 0){
+            alert("추가안된이웃")
+            console.log(this.blogOwnerInfo.seq)
+            console.log(this.$store.getters.getUserInfo.seq)
+            http.post('/userneighbor', {
+              seq_neighbor: this.blogOwnerInfo.seq,
+              seq_user: this.$store.getters.getUserInfo.seq
+            })
+            .then(({ data }) => {
+              this.$message({
+                type: 'success',
+                message: '이웃에 추가 되었습니다.',
+              });
+            })
+          }
+          else{
+            http.delete('/userneighbor/'+this.blogOwnerInfo.seq)
+            .then(({ data }) => {
+              this.$message({
+                type: 'success',
+                message: '이웃목록에서 삭제 되었습니다.',
+              });
+            })
+          }
         })
       })
     }
