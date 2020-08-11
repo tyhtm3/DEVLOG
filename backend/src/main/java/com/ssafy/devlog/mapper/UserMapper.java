@@ -11,6 +11,7 @@ public interface UserMapper {
 	public List<User> selectAllUser();
 	public User selectUserBySeq(int seq);
 	public User selectUserById(String id);
+	public User selectUserByEmail(String email);
 	public User selectUserBySocialId(String social_id);
 	public int insertUser(User user);
 	public int updateUser(User user);

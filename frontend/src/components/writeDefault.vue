@@ -99,7 +99,7 @@ export default {
       dialogVisible: false,
       disabled: false,
       tag: '',
-      tags: []
+      tags: [],
     }
   },
   methods:{
