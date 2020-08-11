@@ -17,12 +17,12 @@
       </div>
       <!-- end banner carousel -->
 
-      <br><br><br>
+      <br>
 
       <div class="box">
         <div class="box-body" style="min-height:400px;">
           <div class="col-sm-12">
-            <br><br><br>
+            <br>
 
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
                         
@@ -111,11 +111,14 @@
                   <p class="content-3line">{{ removeTag(post.content) }}</p>
                   <hr>
                   <p class="pull-left">
-                    <span v-for="(tag, index) in postTag[index]" :key="index">
-                    <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                    <span class="tag" style="font-size:17px; margin-right:8px;">#java</span>
+                    <span class="tag" style="font-size:17px; margin-right:8px;">#c++</span>
+                    <span class="tag" style="font-size:17px; margin-right:8px;">#eclipse</span>
+                    <!-- <span v-for="(tag, index) in postTag[index]" :key="index">
+                    <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span> -->
                     </span>
                   </p>
-                  <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button>
+                  <!-- <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button> -->
                   <div style="clear:both;"></div>
                 </div>
                 <div class="right" @click="goDetailPost(post.seq)">
@@ -262,8 +265,8 @@ export default {
         // 스크롤 페이징을 띄우기 위한 시간 1초
         setTimeout(()=>{
           if(data.length){
-            this.getpostCommentTag(data)
             this.postList = this.postList.concat(data);
+            this.getpostCommentTag(this.postList)
             $state.loaded()
             this.limit +=this.page
             if(this.postList.length/this.page == 0){
@@ -278,32 +281,63 @@ export default {
     },
     // 프로젝트로부터 코멘트 개수와 태그 불러오기
     getprojectCommentTag(data){
+      // console.log("this.projectList");
+      // console.log(this.projectList);
+      // console.log("데이터길이" + datad.length)
       for(var i=0; i<data.length; i++){
-      // 코멘트
-        http.get('postcomment/count/'+data[i].seq)
-        .then(({data}) => {
-          this.projectComment.push(data);
-        });
-        // 태그
-        http.get('posttag/'+data[i].seq)
-        .then(({data}) => {
-          this.projectTag.push(data.slice(0,3));
-        });
+        this.getProjectComments(i)
+        this.getProjectTags(i)
       }
+      this.projectComment.push(null);
+      this.projectTag.push(null);
     },
     // 포스트로부터 코멘트 개수와 태그 불러오기
     getpostCommentTag(data){
-      for(var i=0; i<data.length; i++){
-      // 코멘트
-        http.get('postcomment/count/'+data[i].seq)
+      console.log("comment 불러오기2")
+
+      for(var i=0; i<this.postList; i++){
+        this.getPostComments(i);
+        this.getPostTags(i);
+      }
+      this.postComment.push(null);
+      this.postTag.push(null);
+    },
+    getProjectComments(i){
+      if(i<this.projectList.length){
+        http.get('postcomment/count/'+this.projectList[i].seq)
         .then(({data}) => {
-          this.postComment.push(data);
+        // console.log(i+"번째 댓글: ");
+        this.projectComment[i] = data;
+        // console.log(data);
+        // console.log(this.projectComment[i]);
         });
-        // 태그
-        http.get('posttag/'+data[i].seq)
+      }
+    },
+    getProjectTags(i){
+      if(i<this.projectList.length){
+      http.get('posttag/'+this.projectList[i].seq)
         .then(({data}) => {
-          this.postTag.push(data.slice(0,3));
+        // console.log(i+"번째 글 태그: ");
+        this.projectTag[i] = data.slice(0,3);
+        // console.log(data);
+        // console.log(this.projectTag[i]);
         });
+      }
+    },
+    getPostComments(i){
+      if(i<this.postList.length){
+        http.get('postcomment/count/'+this.postList[i].seq)
+        .then(({data}) => {
+          this.postComment[i] = data;
+        });
+      }
+    },
+    getPostTags(i){
+      if(i<this.postList.length){
+      http.get('posttag/'+this.postList[i].seq)
+        .then(({data}) => {
+          this.postTag[i] = (data.slice(0,3));
+      });
       }
     },
     removeTag(text){
@@ -356,11 +390,11 @@ export default {
 }
 .well-media{
   margin:10px;
-  box-shadow: 3px 3px 3px rgba(204, 204, 204, 0.4);
+  box-shadow: 10px 10px 10px rgba(204, 204, 204, 0.4);
 }
 
 .well-media:hover{
-    box-shadow: 10px 10px 10px rgba(146, 146, 146, 0.4);
+    box-shadow: 10px 10px 10px rgba(109, 109, 109, 0.4);
 }
 .el-carousel__item h3 {
   color: #475669;
@@ -449,6 +483,6 @@ export default {
   background-color:    #DDDDDD;
 }
 .row:hover{
-  box-shadow: 15px 15px 15px rgba(146, 146, 146, 0.4);
+  box-shadow: 15px 15px 15px rgba(121, 106, 106, 0.4);
 }
 </style>
