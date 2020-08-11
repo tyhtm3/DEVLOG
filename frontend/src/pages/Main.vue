@@ -95,7 +95,7 @@
             -->
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
               <div class="row" v-for="(post,index) in this.postList" :key="index">
-                <div class="left">
+                <div class="left" @click="goDetailPost(post.seq)">
                   <h2 class="title-1line">{{ post.title }}</h2>
                   <ul class="list-inline blog-devin-tag">
                     <li>
@@ -118,7 +118,7 @@
                   <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button>
                   <div style="clear:both;"></div>
                 </div>
-                <div class="right">
+                <div class="right" @click="goDetailPost(post.seq)">
                   <div class="vendor">
                     <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
                     <img v-else class="img-responsive-media" style="margin-top:25px;" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
@@ -326,8 +326,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .row {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 40px;
 }
 .search {
   float: none;
@@ -355,7 +354,10 @@ export default {
     -moz-osx-font-smoothing: grayscale;
   }
 }
-
+.well-media{
+  margin:10px;
+  box-shadow: 5px 5px 5px rgba(83, 83, 83, 0.4);
+}
 .el-carousel__item h3 {
   color: #475669;
   font-size: 18px;
@@ -365,11 +367,16 @@ export default {
 }
 
 .el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
+  background-color: none;
+  // #d3dce6;
+  //#99a9bf
+  // box-shadow: 15px 15px 15px rgba(146, 146, 146, 0.4);
 }
 
 .el-carousel__item:nth-child(2n+1) {
-  background-color: #d3dce6;
+  // background-color: #d3dce6;
+  
+  background-color: none;
 }
 .left{
   width: 60%;
@@ -433,5 +440,8 @@ export default {
 }
 .active {
   background-color:    #DDDDDD;
+}
+.row:hover{
+  box-shadow: 15px 15px 15px rgba(146, 146, 146, 0.4);
 }
 </style>
