@@ -29,5 +29,10 @@ public class UserNeighborServiceImpl implements UserNeighborService {
 		return userNeighborMapper.deleteUserNeighbor(seq);
 	}
 
+	@Override
+	public UserNeighbor checkUserNeighbor(int seq_user, int seq_neighbor) {
+		return userNeighborMapper.checkUserNeighbor(seq_user, seq_neighbor);
+	}
+
 
 }
