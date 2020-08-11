@@ -261,14 +261,19 @@ export default {
             seq_post: this.seq,
             tag: this.tags
           })
+          
+          http.delete('./projectstack/'+this.seq)
+          .then(()=>{
+              for(var i=0; i<this.stack.length; i++){
+              http.post('./projectstack', {
+                seq_post_project: this.seq,
+                stack: this.stack[i]
+              })
+            }
+          })
 
           // 프로젝트 스택 등록하기
-          for(var i=0; i<this.stack.length; i++){
-            http.post('./projectstack', {
-              seq_post_project: this.seq,
-              stack: this.stack[i]
-            })
-          }
+          
           this.$message({
             type: 'success',
             message: '프로젝트 수정 완료.'

@@ -229,7 +229,6 @@ export default {
             console.log(this.$store.getters.getUserInfo.seq)
             http.post('/userneighbor', {
               seq_neighbor: this.blogOwnerInfo.seq,
-              seq_user: this.$store.getters.getUserInfo.seq
             })
             .then(({ data }) => {
               this.$message({
@@ -239,7 +238,11 @@ export default {
             })
           }
           else{
-            http.delete('/userneighbor/'+this.blogOwnerInfo.seq)
+            http.delete('/userneighbor', {
+              data:{
+              seq_neighbor: this.blogOwnerInfo.seq,
+              }
+            })
             .then(({ data }) => {
               this.$message({
                 type: 'success',

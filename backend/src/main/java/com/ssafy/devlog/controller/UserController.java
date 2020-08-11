@@ -10,6 +10,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -117,7 +118,8 @@ public class UserController {
 			Blog blog = new Blog();
 			user = userService.selectUserById(user.getId());
 			blog.setSeq(user.getSeq());
-			blog.setBlog_name(user.getId() + "님의 블로그");
+			blog.setBlog_name((user.getNickname() == null || user.getNickname().equals("")) ? user.getName()
+					: user.getNickname() + "님의 블로그");
 			blog.setBlog_detail("블로그 소개를 입력해주세요");
 			if (blogService.insertBlog(blog) == 1) {
 				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -194,7 +196,7 @@ public class UserController {
 	@ApiOperation(value = "네이버 로그인")
 	@GetMapping("naver")
 	public ResponseEntity<String> naver(HttpServletRequest request) throws Exception {
-		
+
 		String access_token = request.getHeader("Authorization");
 		String refresh_token = "";
 		String jwt = "";
@@ -203,63 +205,64 @@ public class UserController {
 
 			String inputLine;
 			StringBuffer res = new StringBuffer();
-			
-				// 정상적으로 토큰을 가져오면 Gson 으로 JSON 파일을 파싱해준다.
 
-				String id, nickName, email, profile_img_url, tmp;
-				JsonParser parser = new JsonParser();
+			// 정상적으로 토큰을 가져오면 Gson 으로 JSON 파일을 파싱해준다.
 
-				
-				// 파싱한 access_token 값으로 네이버에 유저 정보를 요청. 이 함수의 return 값은 id, email, nickname 등 유저정보들과 상태 코드 등.
+			String id, nickName, email, profile_img_url, tmp;
+			JsonParser parser = new JsonParser();
 
-				tmp = getUserInfo(access_token);
+			// 파싱한 access_token 값으로 네이버에 유저 정보를 요청. 이 함수의 return 값은 id, email, nickname 등
+			// 유저정보들과 상태 코드 등.
 
-				JsonElement userInfoElement = parser.parse(tmp);
-				id = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("id").getAsString();
-				nickName = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("nickname")
-						.getAsString();
-				email = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("email").getAsString();
+			tmp = getUserInfo(access_token);
 
-				profile_img_url =  userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("profile_image").getAsString();
-			
-				/* id:99480180
-				 * nickname:dfaf
-				 * email:tab1200@naver.com
-				 * profile_img_url : https://ssl.pstatic.net/static/pwe/address/img_profile.png*/
-				
-				User user = userService.selectUserBySocialId(id);
-				// 첫 로그인시 회원가입 및 블로그 생성
-				if(user==null){
-					user = new User();
-					user.setSocial_id(id);
-					user.setSocial("Naver");
-					user.setId(email);
-					user.setName(nickName);
-					user.setPassword(id);
-					user.setNickname(nickName);
-					user.setEmail(email);
-					user.setProfile_img_url(profile_img_url);
-					userService.insertUser(user);
+			JsonElement userInfoElement = parser.parse(tmp);
+			id = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("id").getAsString();
+			nickName = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("nickname")
+					.getAsString();
+			email = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("email").getAsString();
 
-					user = userService.selectUserBySocialId(id);
-					Blog blog = new Blog();
-					blog.setSeq(user.getSeq());
-					blog.setBlog_name(user.getId() + "님의 블로그");
-					blog.setBlog_detail("블로그 소개를 입력해주세요");
-					blogService.insertBlog(blog);
-				}
+			profile_img_url = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("profile_image")
+					.getAsString();
 
-				// seq로 JWT를 만들어준다.
-				jwt = jwtService.create("member", user.getSeq(), "user");
+			/*
+			 * id:99480180 nickname:dfaf email:tab1200@naver.com profile_img_url :
+			 * https://ssl.pstatic.net/static/pwe/address/img_profile.png
+			 */
 
-				
+			User user = userService.selectUserBySocialId(id);
+			// 첫 로그인시 회원가입 및 블로그 생성
+			if (user == null) {
+				user = new User();
+				user.setSocial_id(id);
+				user.setSocial("Naver");
+				StringTokenizer st = new StringTokenizer(email,"@");
+				user.setId(st.nextToken() + "Naver");
+				user.setName(nickName);
+				user.setPassword(id);
+				user.setNickname(nickName);
+				user.setEmail(email);
+				user.setProfile_img_url(profile_img_url);
+				userService.insertUser(user);
+
+				user = userService.selectUserBySocialId(id);
+				Blog blog = new Blog();
+				blog.setSeq(user.getSeq());
+				blog.setBlog_name((user.getNickname() == null || user.getNickname().equals("")) ? user.getName()
+						: user.getNickname() + "님의 블로그");
+				blog.setBlog_detail("블로그 소개를 입력해주세요");
+				blogService.insertBlog(blog);
+			}
+
+			// seq로 JWT를 만들어준다.
+			jwt = jwtService.create("member", user.getSeq(), "user");
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 		return new ResponseEntity<String>(jwt, HttpStatus.OK);
-		
-	}
 
+	}
 
 	private String getUserInfo(String access_token) {
 		String header = "Bearer " + access_token; // Bearer 다음에 공백 추가해야함
@@ -321,7 +324,8 @@ public class UserController {
 					user = userService.selectUserBySocialId(id);
 					Blog blog = new Blog();
 					blog.setSeq(user.getSeq());
-					blog.setBlog_name(user.getId() + "님의 블로그");
+					blog.setBlog_name((user.getNickname() == null || user.getNickname().equals("")) ? user.getName()
+							: user.getNickname() + "님의 블로그");
 					blog.setBlog_detail("블로그 소개를 입력해주세요");
 					blogService.insertBlog(blog);
 				}
@@ -424,7 +428,8 @@ public class UserController {
 			user.setPassword(id);
 			try {
 				String email = kakao_account.getAsJsonObject().get("email").getAsString();
-				user.setId(email);
+				StringTokenizer st = new StringTokenizer(email,"@");
+				user.setId(st.nextToken() + "Kakao");
 				user.setEmail(email);
 			} catch (NullPointerException e) {
 				// email x
