@@ -9,18 +9,26 @@
 		user_neighbor
 		where seq_user = #{seq_user}
 	</select>
-
+	
 	<!-- 특정 유저의 이웃을 추가한다 -->
 	<insert id="insertUserNeighbor">
 		insert into user_neighbor( seq_user, seq_neighbor)
 		values (
 		#{seq_user},#{seq_neighbor} )
 	</insert>
-
-	<!-- 프로젝트의 기술스택을 삭제한다. -->
+	
+	<!-- 유저의 이웃 관계 여부 검사  -->
+	<select id="checkUserNeighbor" resultType="UserNeighbor">
+		select *
+		from user_neighbor
+		where seq_user = #{seq_user} and seq_neighbor = #{seq_neighbor}
+	</select>
+	
+	<!-- 유저의 특정 이웃을 삭제한다. -->
 	<delete id="deleteUserNeighbor">
-		delete from user_neighbor
-		where seq = #{seq}
+		delete
+		from user_neighbor
+		where seq_user = #{seq_user} and seq_neighbor = #{seq_neighbor}
 	</delete>
 
 </mapper>

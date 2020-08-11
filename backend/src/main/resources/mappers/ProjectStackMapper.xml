@@ -48,7 +48,7 @@
 	<!-- 프로젝트의 기술스택을 삭제한다. -->
 	<delete id="deleteProjectStack">
 		delete from post_project_stack
-		where 	seq = #{seq}
+		where 	seq_post_project = #{seq}
 	</delete>
 	
 </mapper>

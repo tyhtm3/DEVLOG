@@ -34,9 +34,7 @@
               </div>
               <div class="col-sm-4 emphasis" style="cursor:pointer;" @click="follower">
                 <h2><strong >{{blogOwnerNumOfNeighbor}}</strong></h2>
-                <p> <small>Follower </small>
-                  <!-- <i class="material-icons" @click="subscribe">add_circle_outline</i> -->
-                </p>
+                <p><small>Follower </small></p>
               </div>
             </div>
           </div>
@@ -47,11 +45,14 @@
             #{{tag.tag}}
           </span>
 
-          <div class="column4" v-if= "getIsLogin" >
-            <router-link to="../writePost">
-              <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
-            </router-link>
-              <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>
+          <div class="column4" v-if= "getIsLogin">
+            <span v-if="isAdmin">
+              <router-link to="../writePost">
+                <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
+              </router-link>
+              <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>&nbsp;
+            </span>
+            <span v-else @click="subscribe">이웃추가 <i class="ti-link"></i></span>&nbsp;
           </div>
         </div>
         <!-- end profile -->
@@ -94,6 +95,7 @@ export default {
       blogOwnerMainTags:[],
       tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
       followerpage: false,
+      isAdmin: '',
     }
   },
   created() {
@@ -101,6 +103,8 @@ export default {
     this.getBlogOwnerInfo();
   },
   mounted() {
+    if(this.blogOwnerId === this.getUserInfo.id)
+      this.isAdmin = true
     var value = $('#title').val();
     $('.title1').append('<div id="virtual_dom" style="display:inline;">' + value + '</div>');
     var inputWidth =  $('#virtual_dom').width() + 400;
@@ -120,10 +124,19 @@ export default {
     getBlogOwnerInfo(){
       http.get('user/id/'+this.blogOwnerId)
       .then(({data})=>{
-        this.blogOwnerInfo=data;
-        this.seq_blog = this.blogOwnerInfo.seq;
-        this.getBlogInfo();
-      });
+        if(data){
+          this.blogOwnerInfo=data;
+          this.seq_blog = this.blogOwnerInfo.seq;
+          this.getBlogInfo();
+        }
+        else{
+          this.$message({
+            type: 'error',
+            message: '존재하지 않는 블로그입니다.'
+          });
+          this.$router.push('/')
+        }
+      })
     },
     getBlogInfo() {
       http.get('blog/'+this.seq_blog)
@@ -166,7 +179,9 @@ export default {
       }
     },
     follower() {
-      this.followerpage =!this.followerpage
+      if(this.isAdmin){
+        this.followerpage =!this.followerpage
+      }
     },
     updateBlog(){
       http.put('blog',this.blogInfo)
@@ -200,13 +215,43 @@ export default {
           $('#detail').attr('readonly', true);
         }
       })
-    },
-    // 팔로우 페이지 이웃리스트에 추가해야하는데..
+    },  
     subscribe() {
-      http.post('userneighbor/' + this.seq_blog)
-      .then(({ data }) => {
-        this.neighborList.push(data)
-      });
+      http.get('user/id/'+this.$route.params.id)
+      .then(({data})=>{
+        // console.log(data)
+        http.get('/userneighbor/check/'+data.seq)
+        .then(({data}) => {
+          console.log(data)
+          if(data.length === 0){
+            alert("추가안된이웃")
+            console.log(this.blogOwnerInfo.seq)
+            console.log(this.$store.getters.getUserInfo.seq)
+            http.post('/userneighbor', {
+              seq_neighbor: this.blogOwnerInfo.seq,
+            })
+            .then(({ data }) => {
+              this.$message({
+                type: 'success',
+                message: '이웃에 추가 되었습니다.',
+              });
+            })
+          }
+          else{
+            http.delete('/userneighbor', {
+              data:{
+              seq_neighbor: this.blogOwnerInfo.seq,
+              }
+            })
+            .then(({ data }) => {
+              this.$message({
+                type: 'success',
+                message: '이웃목록에서 삭제 되었습니다.',
+              });
+            })
+          }
+        })
+      })
     }
   }
 }

@@ -21,7 +21,7 @@
           &nbsp;{{post.like_count}}
         </li>
         <li class="pull-right" v-if="post.seq_blog==seq_user">
-          <span style="cursor:pointer">수정 </span>&nbsp;|&nbsp;
+          <span style="cursor:pointer" @click="updatePost(post.seq)">수정 </span>&nbsp;|&nbsp;
           <span style="cursor:pointer" @click="deletePost(post.seq)"> 삭제</span>
         </li>
       </ul>
@@ -143,8 +143,8 @@
          })
       },
       // 포스트 수정 미구현
-      updatePost(){
-        
+      updatePost(seq){
+        this.$router.push('/blog/post-update/'+seq)
       },
    },
   }

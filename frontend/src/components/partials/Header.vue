@@ -53,7 +53,6 @@
 </template>
 <script>
 import Login from '../../components/Login.vue'
-import router from '../../routes'
 import http from '../../util/http-common'
 import { mapGetters } from 'vuex'
 export default {
@@ -89,6 +88,7 @@ export default {
 			this.$store.commit('setToken', null)
 			this.$message.success('로그아웃 되었습니다.');
 			localStorage.clear();
+			this.$router.push('/')
 		}
 	},
 }

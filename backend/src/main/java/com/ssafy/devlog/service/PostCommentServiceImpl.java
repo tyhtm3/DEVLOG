@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.devlog.dto.PostComment;
+import com.ssafy.devlog.dto.PostCommentUser;
 import com.ssafy.devlog.mapper.PostCommentMapper;
 
 @Service
@@ -21,7 +22,7 @@ public class PostCommentServiceImpl implements PostCommentService {
 	}
 	
 	@Override
-	public List<PostComment> selectAllPostComment(int seq_post){
+	public List<PostCommentUser> selectAllPostComment(int seq_post){
 		return postCommentMapper.selectAllPostComment(seq_post);
 	}
 	

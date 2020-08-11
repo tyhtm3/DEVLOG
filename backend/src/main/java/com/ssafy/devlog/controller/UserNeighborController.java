@@ -53,7 +53,15 @@ public class UserNeighborController {
 		return new ResponseEntity<List<UserNeighbor>>(userNeighborService.selectAllUserNeighbor(seq_user),
 				HttpStatus.OK);
 	}
-
+	
+	@ApiOperation(value = "해당 유저와 이웃인지 검사한다", response = String.class)
+	@GetMapping(value = "check/{seq_neighbor}")
+	public ResponseEntity<UserNeighbor> checkUserNeighbor(@PathVariable int seq_neighbor) throws Exception {
+		int seq_user = jwtService.getSeq();
+		logger.debug("checkUserNeighbor - 호출");
+		return new ResponseEntity<UserNeighbor>(userNeighborService.checkUserNeighbor(seq_user,seq_neighbor), HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "유저에 이웃을 추가한다.", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> insertUserNeighbor(@RequestBody UserNeighbor userNeighbor) throws Exception {
@@ -65,13 +73,16 @@ public class UserNeighborController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 
-	@ApiOperation(value = "유저의 이웃을 삭제한다.", response = String.class)
-	@DeleteMapping(value = "/{seq}")
-	public ResponseEntity<String> deleteUserNeighbor(@PathVariable int seq) throws Exception {
+	@ApiOperation(value = "유저의 이웃을 삭제한다. // seq_neighbor : 대상 유저 seq", response = String.class)
+	@DeleteMapping
+	public ResponseEntity<String> deleteUserNeighbor(@RequestBody UserNeighbor userNeighbor) throws Exception {
 		logger.debug("deleteUserNeighbor - 호출");
-		if (userNeighborService.deleteUserNeighbor(seq) == 1) {
+		userNeighbor.setSeq_user(jwtService.getSeq());
+		if (userNeighborService.deleteUserNeighbor(userNeighbor) == 1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
+	
+	
 }

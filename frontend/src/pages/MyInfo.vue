@@ -148,7 +148,7 @@ export default {
       })
       .then(() => {
         http
-        .delete('/user/')
+        .delete('/user/',{headers : {'Authorization' : this.$store.state.token,}})
         .then(({ data }) => {
           this.$store.commit('setIsLogin', false)
           this.$store.commit('setUserInfo', {seq:0})
@@ -160,6 +160,7 @@ export default {
           this.$router.push('/')
         }) 
       })
+      this.$router.push(`/blog/:id`)
     },
     validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

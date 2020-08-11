@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.PostComment;
+import com.ssafy.devlog.dto.PostCommentUser;
 import com.ssafy.devlog.service.JwtService;
 import com.ssafy.devlog.service.PostCommentService;
 
@@ -46,9 +47,9 @@ public class PostCommentController {
 
 	@ApiOperation(value = "포스트 및 프로젝트의 seq로 모든 댓글을 반환한다.", response = List.class)
 	@GetMapping(value = "/{seq_post}")
-	public ResponseEntity<List<PostComment>> selectAllPostComment(@PathVariable int seq_post) throws Exception {
+	public ResponseEntity<List<PostCommentUser>> selectAllPostComment(@PathVariable int seq_post) throws Exception {
 		logger.debug("selectAllPostComment - 호출");
-		return new ResponseEntity<List<PostComment>>(postCommentService.selectAllPostComment(seq_post), HttpStatus.OK);
+		return new ResponseEntity<List<PostCommentUser>>(postCommentService.selectAllPostComment(seq_post), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "특정 이웃이 남긴 댓글을 전부 불러온다. // seq_user : 이웃의 seq ", response = List.class)
