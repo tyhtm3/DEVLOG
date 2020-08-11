@@ -3,7 +3,8 @@ package com.ssafy.devlog.controller;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Date; 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.devlog.dto.Post;
+import com.ssafy.devlog.dto.PostWithTag;
 import com.ssafy.devlog.service.JwtService;
 import com.ssafy.devlog.service.PostService;
+import com.ssafy.devlog.service.PostTagService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -41,6 +44,8 @@ public class PostController {
 
 	@Autowired
 	private PostService postService;
+	@Autowired
+	private PostTagService postTagService;
 	@Autowired
 	private JwtService jwtService;
 
@@ -64,7 +69,7 @@ public class PostController {
 		postBasic = post;
 		postBasic.setSeq_blog(jwtService.getSeq());
 		postService.insertPost(postBasic);
-		
+
 		if (postService.insertPostBasic(postBasic) == 1) {
 			return new ResponseEntity<Integer>(postBasic.getSeq(), HttpStatus.OK);
 		}
@@ -102,11 +107,18 @@ public class PostController {
 	// show feed
 	@ApiOperation(value = "피드에서 한 페이지의 포스트 반환. (ex. { seq_user:1 , disclosure:1, offset:0, limit:6, tag:['python']  } )", response = List.class)
 	@PostMapping(value = "/feed")
-	public ResponseEntity<List<Post>> selectPostByFeed(@RequestBody Map<String, Object> params) throws Exception {
+	public ResponseEntity<List<PostWithTag>> selectPostByFeed(@RequestBody Map<String, Object> params) throws Exception {
 		int seq_user = jwtService.getSeq();
 		logger.debug("selectPostByFeed - 호출");
-		return new ResponseEntity<List<Post>>(postService.selectPostByFeed(seq_user, (int) params.get("disclosure"),
-				(int) params.get("offset"), (int) params.get("limit"), (List<String>) params.get("tag")),
+		List<Post> postList= postService.selectPostByFeed(seq_user, (int) params.get("disclosure"),
+				(int) params.get("offset"), (int) params.get("limit"), (List<String>) params.get("tag"));
+		
+		List<PostWithTag> postWithTagList = new ArrayList<PostWithTag>();
+		for(int i=0,size=postList.size();i<size;i++) {
+			postWithTagList.add(new PostWithTag(postList.get(i)));
+			postWithTagList.get(i).setTags(postTagService.selectAllPostTag(postList.get(i).getSeq()));
+		}
+		return new ResponseEntity<List<PostWithTag>>(postWithTagList,
 				HttpStatus.OK);
 	}
 
@@ -120,12 +132,22 @@ public class PostController {
 	}
 
 	@SuppressWarnings("unchecked")
-	@ApiOperation(value = "블로그 메인에서 한 페이지의 포스트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:6, tag:['python','c++']  } )", response = List.class)    
+	@ApiOperation(value = "블로그 메인에서 한 페이지의 포스트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:6, tag:['python','c++']  } )", response = List.class)
 	@PostMapping(value = "/blog")
-	public ResponseEntity<List<Post>> selectPostByBlog(@RequestBody Map<String, Object> params) throws Exception {
+	public ResponseEntity<List<PostWithTag>> selectPostByBlog(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("selectPostByBlog - 호출");
 		int seq_user = jwtService.getSeq();
-		return new ResponseEntity<List<Post>>(postService.selectPostByBlog(seq_user,(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
+		
+		List<Post> postList= postService.selectPostByBlog(seq_user, (int) params.get("seq_blog"),
+				(int) params.get("offset"), (int) params.get("limit"), (List<String>) params.get("tag"));
+		System.out.println(postList.size());
+		List<PostWithTag> postWithTagList = new ArrayList<PostWithTag>();
+		for(int i=0,size=postList.size();i<size;i++) {
+			postWithTagList.add(new PostWithTag(postList.get(i)));
+			postWithTagList.get(i).setTags(postTagService.selectAllPostTag(postList.get(i).getSeq()));
+		}
+		return new ResponseEntity<List<PostWithTag>>(postWithTagList,
+				HttpStatus.OK);
 	}
 
 }

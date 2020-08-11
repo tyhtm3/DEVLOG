@@ -28,7 +28,7 @@
 	<select id="selectAllPostCommentByNeighbor" resultType="PostComment">
 		select *
 		from post_comment
-		where seq_user = #{seq_user} and seq_post in (select seq_post
+		where seq_user = #{seq_user} and seq_post in (select seq
 													 from post
 													 where seq_blog = #{seq_blog})
 	</select>
