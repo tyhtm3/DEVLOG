@@ -9,8 +9,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -18,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,13 +64,9 @@ public class UserController {
 	private BlogService blogService;
 	@Autowired
 	private JwtService jwtService;
+	@Autowired
+	private JavaMailSender mailSender;
 
-//	@ApiOperation(value = "모든 회원을 반환한다.", response = List.class)
-//	@GetMapping
-//	public ResponseEntity<List<User>> selectAllUser() throws Exception {
-//		logger.debug("selectAllUser - 호출");
-//		return new ResponseEntity<List<User>>(userService.selectAllUser(), HttpStatus.OK);
-//	}
 
 	@ApiOperation(value = "로그인 시 id, password를 입력받아 일치여부를 확인한다. // 아이디없음 : 404 , 비밀번호 틀림 : 401", response = List.class)
 	@PostMapping("/login")
@@ -97,6 +101,13 @@ public class UserController {
 		return new ResponseEntity<User>(userService.selectUserById(id), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "특정 회원의 정보를 반환한다.(Email로 검색)", response = List.class)
+	@GetMapping("/email/{email}")
+	public ResponseEntity<User> selectUserByEmail(@PathVariable String email) throws Exception {
+		logger.debug("selectUserByEmail - 호출");
+		return new ResponseEntity<User>(userService.selectUserByEmail(email), HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "내 정보를 반환한다.", response = List.class)
 	@GetMapping("/me")
 	public ResponseEntity<User> selectMyInfo() throws Exception {
@@ -450,4 +461,80 @@ public class UserController {
 		}
 		return user;
 	}
+	
+	@GetMapping("/findid")
+	@ApiOperation(value = "아이디 찾는 메일 전송")
+	public ResponseEntity<String> findid(@RequestParam(required = true) final String email){
+	
+		User user = userService.selectUserByEmail(email);
+		System.out.println(email);
+        /* 임시 비밀번호 발급 메일 전송 */
+        try {
+        	 MimeMessage msg = mailSender.createMimeMessage();
+             MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
+             messageHelper.setSubject(user.getName()+"님 아이디 찾기 메일입니다.");
+             messageHelper.setText("아이디는 "+user.getId()+" 입니다."); 
+             messageHelper.setTo(email);
+             msg.setRecipients(MimeMessage.RecipientType.TO , InternetAddress.parse(email));
+             mailSender.send(msg);
+                         
+        }catch(MessagingException e) {
+            System.out.println("MessagingException");
+            e.printStackTrace();
+       }
+        
+
+        return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		
+    }
+	
+	@GetMapping("/findpwd")
+	@ApiOperation(value = "임시 비밀번호 발급")
+	public ResponseEntity<String> auth(@RequestParam(required = true) final String email){
+	
+		User user = userService.selectUserByEmail(email);
+		String code;
+		/* 존재하는 이메일이 없을시 */
+		if (user==null) 
+			return new ResponseEntity<String>("null", HttpStatus.NOT_FOUND);
+		
+		
+		/* 임시 비밀번호 6자리 생성*/
+		Random random = new Random(System.currentTimeMillis());
+        
+        int range = (int)Math.pow(10,6);
+        int trim = (int)Math.pow(10, 5);
+        int value = random.nextInt(range)+trim;
+         
+        if(value>range)
+        	value = value - trim;
+        
+        code = String.valueOf(value);
+        
+        /* 임시 비밀번호 발급 메일 전송 */
+        try {
+        	 MimeMessage msg = mailSender.createMimeMessage();
+             MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
+             messageHelper.setSubject(user.getName()+"님 임시 비밀번호 발급 메일입니다.");
+             messageHelper.setText("임시 비밀번호는 "+code+" 입니다."); 
+             messageHelper.setTo(email);
+             msg.setRecipients(MimeMessage.RecipientType.TO , InternetAddress.parse(email));
+             mailSender.send(msg);
+                         
+        }catch(MessagingException e) {
+            System.out.println("MessagingException");
+            e.printStackTrace();
+       }
+        
+        /* 임시 비밀번호로 세팅 */
+        user.setPassword(code);
+        if (userService.updateUser(user) == 1) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		
+    }
+
+	
+	
 }
