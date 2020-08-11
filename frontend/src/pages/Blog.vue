@@ -46,11 +46,13 @@
           </span>
 
           <div class="column4" v-if= "getIsLogin">
-            <span @click="subscribe">이웃추가<i class="ti-link"></i></span>&nbsp;
-            <router-link to="../writePost">
-              <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
-            </router-link>
-            <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>&nbsp;
+            <span v-if="isAdmin">
+              <router-link to="../writePost">
+                <span>포스팅<i class="ti-pencil" style="display:inline"></i></span>&nbsp;
+              </router-link>
+              <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>&nbsp;
+            </span>
+            <span v-else @click="subscribe">이웃추가<i class="ti-link"></i></span>&nbsp;
           </div>
         </div>
         <!-- end profile -->
@@ -93,6 +95,7 @@ export default {
       blogOwnerMainTags:[],
       tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
       followerpage: false,
+      isAdmin: '',
     }
   },
   created() {
@@ -100,6 +103,10 @@ export default {
     this.getBlogOwnerInfo();
   },
   mounted() {
+    console.log(this.$route.params.id)
+    console.log(this.getUserInfo.id)
+    if(this.blogOwnerId === this.getUserInfo.id)
+      this.isAdmin = true
     var value = $('#title').val();
     $('.title1').append('<div id="virtual_dom" style="display:inline;">' + value + '</div>');
     var inputWidth =  $('#virtual_dom').width() + 400;
@@ -165,7 +172,9 @@ export default {
       }
     },
     follower() {
-      this.followerpage =!this.followerpage
+      if(this.isAdmin){
+        this.followerpage =!this.followerpage
+      }
     },
     updateBlog(){
       http.put('blog',this.blogInfo)
