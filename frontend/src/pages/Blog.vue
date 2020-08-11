@@ -7,12 +7,10 @@
         <div class="details-profile" >
           <div class="title1" style="display:inline">
             <!-- input length 바꾸게 하는것 -->
-            <input type="text" style="font-size:40px;" id="title" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog" readonly />
+            <input type="text" style="width:100%; font-size:40px;" id="title" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog" readonly />
             <br>
-            <input type="text" style="font-size:15px;" id="detail" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog" readonly />
+            <input type="text" style="width:100%; font-size:15px;" id="detail" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog" readonly />
           </div>
-                
-          <i class="ti-pencil-alt" v-if="this.getIsAdminMode" @click="alterBlog" style="cursor:pointer;"></i>
                 
           <div class="title2">
             by {{blogOwnerInfo.nickname}}
@@ -34,7 +32,7 @@
               </div>
               <div class="col-sm-4 emphasis" style="cursor:pointer;" @click="follower">
                 <h2><strong >{{blogOwnerNumOfNeighbor}}</strong></h2>
-                <p><small>Follower </small></p>
+                <p><small>Follow </small></p>
               </div>
             </div>
           </div>
@@ -52,7 +50,7 @@
               </router-link>
               <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>&nbsp;
             </span>
-            <span v-else @click="subscribe">이웃추가 <i class="ti-link"></i></span>&nbsp;
+            <span v-else @click="subscribe">이웃 <i class="ti-link"></i></span>&nbsp;
           </div>
         </div>
         <!-- end profile -->
@@ -105,19 +103,24 @@ export default {
   mounted() {
     if(this.blogOwnerId === this.getUserInfo.id)
       this.isAdmin = true
-    var value = $('#title').val();
-    $('.title1').append('<div id="virtual_dom" style="display:inline;">' + value + '</div>');
-    var inputWidth =  $('#virtual_dom').width() + 400;
-    $('#title').css('width', inputWidth); 
-    $('#detail').css('width', inputWidth-200); 
-    $('#virtual_dom').remove();
+    this.$store.commit('setIsAdminMode', false)
+    $('#title').attr('readonly', true);
+    $('#detail').attr('readonly', true);
 
     $('#title').on('keydown', function(e){
       var value = $('#title').val();
-      $('.title1').append('<div id="virtual_dom" style="display:inline;">' + value + '</div>');
-      var inputWidth =  $('#virtual_dom').width() + 10;
+      $('.title1').append('<div id="virtual_dom" style="display:inline; font-size:40px">' + value + '</div>');
+      var inputWidth =  $('#virtual_dom').width();
       $('#title').css('width', inputWidth); 
       $('#virtual_dom').remove();
+    })
+
+    $('#detail').on('keydown', function(e){
+      var value2 = $('#detail').val();
+      $('.title1').append('<div id="virtual_dom2" style="display:inline; font-size:15px">' + value2 + '</div>');
+      var inputWidth2 =  $('#virtual_dom2').width();
+      $('#detail').css('width', inputWidth2); 
+      $('#virtual_dom2').remove();
     })
   },
   methods: {
@@ -157,7 +160,7 @@ export default {
       });
       http.get('blogtag/'+this.seq_blog)
       .then(({ data }) => {
-          this.blogOwnerMainTags = data;
+        this.blogOwnerMainTags = data;
       });
     },
     toggleAdminMode() {
@@ -166,16 +169,22 @@ export default {
           type: 'info',
           message: '관리모드가 비활성화 되었습니다.'
         });
-        $('#setting').css('color','#B1B0AC');
         this.$store.commit('setIsAdminMode', false)
+        $('#setting').css('color','#B1B0AC');
+        $('#title').attr('readonly', true);
+        $('#detail').attr('readonly', true);
+        
       }
       else{
         this.$message({
           type: 'info',
           message: '관리모드가 활성화 되었습니다.',
         });
-        $('#setting').css('color', 'black');
         this.$store.commit('setIsAdminMode', true)
+        $('#setting').css('color', 'black');
+        $('#title').attr('readonly', false);
+        $('#detail').attr('readonly', false);
+        
       }
     },
     follower() {
@@ -200,33 +209,12 @@ export default {
         }
       })
     },
-    alterBlog() {
-      $('#title').attr('readonly', false);
-      $('#title').focus();
-      $('#title').keypress(function (e) {
-        if(e.which == 13){
-          $('#title').attr('readonly', true);
-        }
-      })
-      $('#detail').attr('readonly', false);
-      $('#detail').focus();
-      $('#detail').keypress(function (e) {
-        if(e.which == 13){
-          $('#detail').attr('readonly', true);
-        }
-      })
-    },  
     subscribe() {
       http.get('user/id/'+this.$route.params.id)
       .then(({data})=>{
-        // console.log(data)
         http.get('/userneighbor/check/'+data.seq)
         .then(({data}) => {
-          console.log(data)
           if(data.length === 0){
-            alert("추가안된이웃")
-            console.log(this.blogOwnerInfo.seq)
-            console.log(this.$store.getters.getUserInfo.seq)
             http.post('/userneighbor', {
               seq_neighbor: this.blogOwnerInfo.seq,
               seq_user: this.$store.getters.getUserInfo.seq
@@ -234,19 +222,26 @@ export default {
             .then(({ data }) => {
               this.$message({
                 type: 'success',
-                message: '이웃에 추가 되었습니다.',
+                message: '이웃 목록에 추가 되었습니다.',
               });
             })
           }
           else{
+            console.log(this.blogOwnerInfo.seq)
             http.delete('/userneighbor', {
-              seq_neighbor: this.blogOwnerInfo.seq
+              data:{
+                seq_neighbor: this.blogOwnerInfo.seq
+              }
             })
             .then(({ data }) => {
+              console.log(data)
               this.$message({
-                type: 'success',
-                message: '이웃목록에서 삭제 되었습니다.',
+                type: 'error',
+                message: '이웃 목록에서 삭제 되었습니다.',
               });
+            })
+            .catch(({ error }) => {
+              console.log(error)
             })
           }
         })
