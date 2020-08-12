@@ -73,13 +73,12 @@
                     </div>
                     <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" >
                       <span class="tag-nest-detail">
-                      <span v-for="(tag,index) in projectTag[index]" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                      <span v-for="(tag,index) in project.tags" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
                       </span>
                       <!-- 여백 -->
                       <span class="tag"></span>
-
-                      <span class="tag-copy"><i class="ti-comment-alt"></i> {{ projectComment[index] }} </span>
-                      <span class="tag-copy"><i class="ti-heart"></i> {{ project.like_count }} </span>
+                      <span class="tag-copy" @click="goDetailProject(project.seq)"><i class="ti-heart"></i> {{ project.like_count }} </span>
+                      <span class="tag-copy" @click="goDetailProject(project.seq)"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
                     </div>
                   </div>
                 </el-carousel-item>
@@ -105,16 +104,21 @@
                 <div class="left">
                   <div class="left-part" @click="goDetailPost(post.seq)">
                     <h2 class="title-1line">{{ post.title }}</h2>
-                    <ul class="list-inline blog-devin-tag">
+                    <ul class="list-inline blog-devin-tag">  
                       <li>
-                        <a href="#"> <span class="ti-pencil"></span>&nbsp;{{ post.regtime }}</a>
+                      <span class="tag-copy2" ><i class="ti-pencil"></i> {{ post.regtime }}&nbsp;</span>
+                      <span class="tag-copy2" >&nbsp;<i class="ti-comment-alt"></i>&nbsp;{{ post.comment_count }} </span>
+                      <span class="tag-copy2" >&nbsp;<i class="ti-heart"></i>&nbsp;{{ post.like_count }} </span>
+                      </li>
+                      <!-- <li>
+                        <a href="#"> <span class="ti-pencil"></span>{{ post.regtime }}</a>
                       </li>
                       <li>
-                        <a href="#"> <span class="ti-comment-alt"></span>&nbsp;{{ postComment[index] }}</a>
+                        <a href="#"> <span class="ti-comment-alt"></span>{{ post.comment_count }}</a>
                       </li>
                       <li>
-                        <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
-                      </li>
+                        <a href="#"> <span class="ti-heart"></span>{{ post.like_count }}</a>
+                      </li> -->
                     </ul>
                     <p class="content-3line">{{ removeTag(post.content) }}</p>
                   </div>
@@ -124,6 +128,7 @@
                     <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
                     </span>
                   </p>
+                  <!-- <button class="pull-right" @click="goDetailPost(post.seq)">더보기<i class="ti-heart"></i></button> -->
                   <!-- <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button> -->
                   <div style="clear:both;"></div>
                 </div>
@@ -251,19 +256,19 @@ export default {
     })
     },
     getTags(){
-      // if(this.seq_user==''){
-      //   // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
-      //   http.get('usertag/feed')
-      //   .then(({data}) => {
-      //     this.tags=data;
-      //   });
-      // }
-      // else{
+      if(this.seq_user==''){
+        // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
+        http.get('usertag/feed')
+        .then(({data}) => {
+          this.tags=data;
+        });
+      }
+      else{
         http.get('usertag/')
         .then(({data}) => {
           this.tags=data;
         });
-      // }
+      }
     },
     // 인피니트로딩
     infiniteHandler($state){
@@ -422,6 +427,17 @@ export default {
   padding-top: 8px;
   margin-right: 5px;
 }
+.tag-copy2{
+  // float: right;
+  padding-top: 8px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.ul{
+  float: right;
+  // padding-top: 8px;
+  // margin-right: 5px;
+}
 .content{
   padding: 0px;
 }
@@ -434,6 +450,7 @@ export default {
 }
 .title-1line{
   /* 한 줄 자르기 */
+  margin-bottom: 0px;
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
@@ -469,6 +486,10 @@ export default {
 }
 .row:hover{
   box-shadow: 15px 15px 15px rgba(121, 106, 106, 0.4);
+}
+.blog-devin-tag li{
+  margin-right: 0px;
+  padding-top: 0px !important
 }
 // .left-part{
 //   background-color: green;
