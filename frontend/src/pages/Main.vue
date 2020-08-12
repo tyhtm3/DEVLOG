@@ -25,21 +25,20 @@
             <br>
 
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
-                        
-
-              <!-- start tag search bar -->
-              <!-- 미구현 목록
-                  태그 입력시 추가되기
-              --> 
+                      
 
               <div>
                 <span class="search" id="demo-2">
-                  <input class="devin-search tag" type="search" style="font-size:15px;">
-                </span>   
-                <span @click="tagSearch(index,tag.tag)" :class="{'active': itemsContains(index)}" v-for="(tag, index) in tags" v-bind:key="index" class="tag" style="font-size:20px; margin:10px;">
+                  <input v-on:keyup.enter="addTag"  v-model="inputtag" class="devin-search tag" type="search" style="font-size:15px;">
+                </span> 
+
+                <div v-for="(tag, index) in tags" v-bind:key="index" style="display:inline-block;margin-right:10px;">
+                <span @click="tagSearch(index,tag.tag)" :class="{'active': itemsContains(index)}" class="tag" style="font-size:20px; margin:10px;">
                   #{{tag.tag}}
-                  <!-- {{tag.tag}} -->
                 </span>
+                <span @click="deleteTag(index)" class="ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
+                </div>
+
               </div>
               <!-- end tag search bar -->
            
@@ -174,6 +173,8 @@ export default {
       // 태그 검색
       searchTags: [],
       activeIndex: [],
+      // 태그 추가
+      inputtag: '',
       // 이웃 검색
       disclosure: false,
     }
@@ -193,6 +194,13 @@ export default {
   created(){
     this.getTags();
     this.getPostandproject();
+  },
+  watch: { 
+      getUserInfo() {
+            this.seq_user = this.getUserInfo.seq
+            this.getTags();
+            this.getPostandproject();
+        }
   },
   methods:{
     // 이웃 스위치 바꿀때마다 검색
@@ -232,7 +240,10 @@ export default {
       offset: 0,
       limit: 10,
       tag: this.searchTags.length==0?null:this.searchTags
-    })
+    }, {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }})
     .then(({data}) => {
       this.projectList = data
       this.getprojectCommentTag(data)
@@ -244,7 +255,10 @@ export default {
        offset:0, 
        limit:this.page ,
        tag: this.searchTags.length==0?null:this.searchTags
-    })
+    }, {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }})
     .then(({data}) => {
       this.postList = data
     })
@@ -258,7 +272,11 @@ export default {
       //   });
       // }
       // else{
-        http.get('usertag/')
+        this.tags=[]
+        http.get('usertag/', {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }})
         .then(({data}) => {
           this.tags=data;
         });
@@ -266,7 +284,10 @@ export default {
     },
     // 인피니트로딩
     infiniteHandler($state){
-      http.post('post/feed', {  seq_user:this.seq_user , disclosure: this.disclosure?2:1, offset:this.limit+this.page, limit:this.page,tag: this.searchTags.length==0?null:this.searchTags })
+      http.post('post/feed', {  seq_user:this.seq_user , disclosure: this.disclosure?2:1, offset:this.limit+this.page, limit:this.page,tag: this.searchTags.length==0?null:this.searchTags }, {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }})
       .then(({ data }) => {
         // 스크롤 페이징을 띄우기 위한 시간 1초
         setTimeout(()=>{
@@ -298,7 +319,10 @@ export default {
     },
     getProjectComments(i){
       if(i<this.projectList.length){
-        http.get('postcomment/count/'+this.projectList[i].seq)
+        http.get('postcomment/count/'+this.projectList[i].seq, {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }})
         .then(({data}) => {
         // console.log(i+"번째 댓글: ");
         this.projectComment[i] = data;
@@ -309,7 +333,10 @@ export default {
     },
     getProjectTags(i){
       if(i<this.projectList.length){
-      http.get('posttag/'+this.projectList[i].seq)
+      http.get('posttag/'+this.projectList[i].seq, {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }})
         .then(({data}) => {
         // console.log(i+"번째 글 태그: ");
         this.projectTag[i] = data.slice(0,3);
@@ -332,7 +359,67 @@ export default {
     },
     itemsContains(n) {
       return this.activeIndex.indexOf(n) > -1
-    }
+    },
+    addTag(){
+        var tag = this.inputtag
+        if(this.inputtag.length==0){
+          this.$message.warning('검색할 태그를 입력해 주세요.')
+        }else{
+          // 로그인 - 유저태그에 등록
+          if(this.seq_user>0){
+              http.post('/usertag', {
+              tag: this.inputtag
+              }, {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }})
+              .then(({data}) => {
+                this.tags.push({tag : tag, seq: data})
+                })
+              .catch((error) => {
+                console.log(error.response.status)
+                if(error.response.status=='401'){
+                  this.$message({
+                    type: 'warning',
+                    message: '중복되는 태그입니다.'
+                  });
+                }
+          })
+          }
+          //비로그인 - 화면에만 띄워줌
+          else{
+
+            let isDuplicatedTag = false
+            for(var i=0;i<this.tags.length;i++)
+              if(this.tags[i].tag == tag)
+                isDuplicatedTag = true
+
+            if(isDuplicatedTag)
+              this.$message({
+                    type: 'warning',
+                    message: '중복되는 태그입니다.'
+                  });
+            else
+              this.tags.push({tag : tag})
+          }
+          this.inputtag=''
+        }
+    },
+    deleteTag(index) {
+      // 로그인 - 유저태그에서 삭제 : 비로그인 - 화면에서만 삭제
+      if(this.seq_user>0){
+        http.delete('/usertag/'+this.tags[index].seq, {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }}).then(({data}) => {
+        this.$message({
+                type: 'success',
+                message: '관심 태그가 삭제되었습니다.'
+              });   
+        })
+      }
+      this.tags.splice(index,1)   
+    },
   }
 }
 </script>
@@ -468,6 +555,9 @@ export default {
 }
 .row:hover{
   box-shadow: 15px 15px 15px rgba(121, 106, 106, 0.4);
+}
+.ti-close{
+  cursor:pointer;
 }
 // .left-part{
 //   background-color: green;

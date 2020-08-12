@@ -23,7 +23,7 @@
                       <div class="social-profile">
                         <h3> <a class="link-comment" href="#">{{comment.nickname}}</a>
                           <span style="font-size:12px;"><i class="entypo-globe"></i>&nbsp;{{comment.regtime}}</span>
-                          <span v-if="comment.seq==seq_user">
+                          <span v-if="comment.seq_user==seq_user">
                             <span style="font-size:13px;"><a class="link-comment pull-right"  @click="deleteComment(comment.seq)"><i class="fontawesome-share"></i>&nbsp;삭제</a></span>
                             <span style="font-size:13px;"><a class="link-comment pull-right"><i class="fontawesome-share"></i>&nbsp; | </a></span>
                             <span style="font-size:13px;"><a class="link-comment pull-right" @click="showCommentEditor(comment.seq,comment.content)"><i class="fontawesome-share"></i>&nbsp;수정</a></span>

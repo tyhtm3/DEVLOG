@@ -8,7 +8,7 @@
 				<input v-model="id" id="id" placeholder="id" type="text"/>
 				<input v-model="password" type="password" id="password" placeholder="password"/>
 				<button class="normal" @click="login">login</button><p/>
-				<button class="kakao" @click="kakaoLogin">kakao</button><button  id="naverIdLogin" class="naver">naver</button><p/>
+				<button class="kakao" @click="kakaoLogin">kakao</button><button  id="naverIdLogin" class="naver">NAVER</button><p/>
 				<!-- <button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button> -->
 				<p class="message">Not registered?
 					<router-link to="/signup">
@@ -40,9 +40,9 @@ export default {
 		callbackUrl:'http://localhost:8080/naver/',
 		  isPopup: true,
 		  loginButton:{
-			  color:'black',
+			  color:'green',
 			  type:1,
-			  height:20,
+			  height:15,
 		  },
 		  callbackHandle: true
     	})
