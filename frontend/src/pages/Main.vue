@@ -39,6 +39,7 @@
                 </span>   
                 <span @click="tagSearch(index,tag.tag)" :class="{'active': itemsContains(index)}" v-for="(tag, index) in tags" v-bind:key="index" class="tag" style="font-size:20px; margin:10px;">
                   #{{tag.tag}}
+                  <!-- {{tag.tag}} -->
                 </span>
               </div>
               <!-- end tag search bar -->
@@ -358,7 +359,10 @@ export default {
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    
   }
+  // &[type=search] {
+  //   }
 }
 .well-media{
   margin:10px;
