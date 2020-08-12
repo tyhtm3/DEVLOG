@@ -74,7 +74,7 @@
                       <span v-for="(tag,index) in project.tags" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
                       </span>
                       <!-- 여백 -->
-                      <span class="tag"></span>
+                      <span class="tag donotshow"></span>
                       <span class="tag-copy" @click="goDetailProject(project.seq)"><i class="ti-heart"></i> {{ project.like_count }} </span>
                       <span class="tag-copy" @click="goDetailProject(project.seq)"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
                     </div>
@@ -589,6 +589,15 @@ export default {
 .cover{
   margin-bottom: 5px;
   margin-top: 5px;
+}
+.tag{
+  line-height:50px;
+}
+.tag:hover{
+  box-shadow: 1px 1px 3px rgba(199, 199, 199, 0.4);
+}
+.donotshow{
+  visibility:hidden;
 }
 // #deleteTagSpan{
 //   display:none;
