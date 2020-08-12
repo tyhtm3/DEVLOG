@@ -113,6 +113,7 @@
 export default {
   data(){
     return{
+      isFullScreen: false,
       aboutmeVisible: false,
       project1Visible: false,
       project2Visible: false,
@@ -127,6 +128,17 @@ export default {
   mounted(){
     $(".main-header").css('display','none')
     $(".main-footer"). css('display','none')
+    $(document).ready(function(){
+      document.body.requestFullscreen()
+      this.isFullScreen = true
+      if(this.FullScreen){
+        $(window).keydown(function(event) {
+          if (event.keyCode == 27) {
+            document.exitFullscreen();
+          }
+        })
+      }
+    })
   },
   methods:{
     changeImage(src){

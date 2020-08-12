@@ -10,7 +10,7 @@
               <el-tab-pane label="Project">
                 <write-project></write-project>
               </el-tab-pane>
-              <el-tab-pane label="Portfolio">
+              <el-tab-pane style=";" label="Portfolio">
                 <write-portfolio></write-portfolio>
               </el-tab-pane>
             </el-tabs>

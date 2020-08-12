@@ -36,13 +36,14 @@
             </div>
           </div>
 
-          <div>    
-          <span style="margin-left:60px;"></span>  
-          
-          <!-- 블로그 태그 -->
-          <span @click="tagSearch(index,tag.tag)" :class="{'tag-active': itemsContains(index)}" v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="margin-right:20px;">
-            #{{tag.tag}}
-           </span>
+          <div style="margin-left:60px;">    
+            <!-- 블로그 태그 -->
+            <span @click="tagSearch(index,tag.tag)" :class="{'tag-active': itemsContains(index)}" v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="margin-right:20px;">
+              #{{tag.tag}}
+            </span>
+            <span style="position: absolute; cursor:pointer" v-if="this.getIsAdminMode" @click="addTag">
+              <i class="material-icons">add_circle_outline</i>
+            </span>
           </div>
           <div class="column4" v-if= "getIsLogin">
             <span v-if="isAdmin">
@@ -246,14 +247,12 @@ export default {
             })
           }
           else{
-            console.log(this.blogOwnerInfo.seq)
             http.delete('/userneighbor', {
               data:{
                 seq_neighbor: this.blogOwnerInfo.seq
               }
             })
             .then(({ data }) => {
-              console.log(data)
               this.$message({
                 type: 'error',
                 message: '이웃 목록에서 삭제 되었습니다.',
@@ -265,6 +264,9 @@ export default {
           }
         })
       })
+    },
+    addTag(){
+      alert("태그추가")
     }
   }
 }
