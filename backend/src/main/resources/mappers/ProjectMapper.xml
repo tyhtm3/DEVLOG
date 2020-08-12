@@ -98,9 +98,9 @@
 	<!-- 프로젝트 내용 등록 -->
 	<insert id="insertPostProject">
 		insert into post_project(
-			seq,summary,start_date,finish_date,role,github_url,etc_url,rep_url,content
+			seq,summary,start_date,finish_date,github_url,etc_url,rep_url,content
 		) values (
-			#{seq}, #{summary}, #{start_date}, #{finish_date}, #{role}, #{github_url}, #{etc_url}, #{rep_url}, #{content}
+			#{seq}, #{summary}, #{start_date}, #{finish_date},#{github_url}, #{etc_url}, #{rep_url}, #{content}
 		)
 	</insert>
 	
@@ -119,7 +119,7 @@
 	<!-- 프로젝트 내용 수정 -->
 	<update id="updatePostProject">
 		update post_project 
-		   set summary = #{summary}, start_date = #{start_date}, finish_date = #{finish_date}, role = #{role}, 
+		   set summary = #{summary}, start_date = #{start_date}, finish_date = #{finish_date}, 
 		   github_url = #{github_url}, etc_url = #{etc_url}, rep_url = #{rep_url}, content = #{content}
 		 where seq = #{seq}
 	</update>
