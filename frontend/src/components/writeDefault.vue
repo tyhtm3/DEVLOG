@@ -38,14 +38,13 @@
           <el-upload action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
+          :show-file-list="false"
           list-type="picture-card"
           style="display:inline">
-          <i slot="default" class="el-icon-plus"></i>
+          <img v-if="postInfo.img_url" :src="postInfo.img_url" style="width:100%; height:100%; vertical-align:top">
+          <i v-else slot="default" class="el-icon-plus"></i>
           </el-upload>
-          <el-dialog :visible.sync="isImgVisible">
-            <img width="100%" :src="img_url" alt="">
-          </el-dialog>
-          </div>
+        </div>
       </div><hr>
 
       <div class="row">
@@ -98,9 +97,8 @@ export default {
         ],
         disclosure: '전체공개',
         regtime: '',
+        img_url: ''
       },
-      dialogImageUrl: '',
-      dialogVisible: false,
       disabled: false,
       tag: '',
       tags: [],
@@ -120,7 +118,7 @@ export default {
         title: this.postInfo.title,
         content: this.postInfo.content,
         disclosure: this.postInfo.disclosure,
-        img_url: this.dialogImageUrl
+        img_url: this.postInfo.img_url
       })
       .then(({data}) => {
         console.log(data)
@@ -144,18 +142,18 @@ export default {
     },
     handleAvatarSuccess(res, file) {
 
-      this.dialogImageUrl = 'http://'.concat(res)
+      this.postInfo.img_url = 'http://'.concat(res)
 
     },
     beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 4;
+        const isLt2M = file.size / 1024 / 1024 < 2;
 
         if (!isJPG) {
           this.$message.error('Image must be JPG format!');
         }
         if (!isLt2M) {
-          this.$message.error('Image size can not exceed 4MB!');
+          this.$message.error('Image size can not exceed 2MB!');
         }
         return isJPG && isLt2M;
     },

@@ -39,12 +39,15 @@
                   <p class="pull-right">썸네일</p>
                 </div>
                 <div class="col-sm-9" style="padding:0px 0px 0px 25px">
-                  <el-upload action="https://jsonplaceholder.typicode.com/posts/" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" list-type="picture-card" style="display:inline">
-                  <i slot="default" class="el-icon-plus"></i>
+                  <el-upload action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
+                  :on-success="handleAvatarSuccess"
+                  :before-upload="beforeAvatarUpload"
+                  :show-file-list="false"
+                  list-type="picture-card"
+                  style="display:inline">
+                  <img v-if="postInfo.img_url" :src="postInfo.img_url" style="width:100%; height:100%; vertical-align:top">
+                  <i v-else slot="default" class="el-icon-plus"></i>
                   </el-upload>
-                  <el-dialog>
-                    <img width="100%" :src="img_url" alt="">
-                  </el-dialog>
                 </div>
               </div><hr>
 
@@ -101,10 +104,7 @@ export default {
         disclosure: '전체공개',
         regtime: '',
         img_url: '',
-        tags: [
-
-        ],
-        
+        tags: [],
       },
       dialogImageUrl: '',
       dialogVisible: false,
@@ -131,6 +131,7 @@ export default {
         title: this.postInfo.title,
         content: this.postInfo.content,
         disclosure: this.postInfo.disclosure,
+        img_url: this.postInfo.img_url
       })
       .then(({data}) => {
         if(this.tags.length==0)
@@ -152,29 +153,21 @@ export default {
       })
     },
     handleAvatarSuccess(res, file) {
-        
-      var frm = new FormData();
-      frm.append("upload_file", file.raw);
 
-        http.post('user/upload',frm,{headers: {
-          'Content-Type': 'multipart/form-data'
-        }})
-      .then(({data}) => {
-        this.dialogImageUrl = 'http://'.concat(data)
-        })
+      this.postInfo.img_url = 'http://'.concat(res)
+
     },
     beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
 
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('Avatar picture must be JPG format!');
-        }
-        if (!isLt2M) {
-          this.$message.error('Avatar picture size can not exceed 2MB!');
-        }
-        return isJPG && isLt2M;
+      if (!isJPG) {
+        this.$message.error('Image must be JPG format!');
+      }
+      if (!isLt2M) {
+        this.$message.error('Image size can not exceed 2MB!');
+      }
+      return isJPG && isLt2M;
     },
     addTag() {
       if(this.tag != ''){

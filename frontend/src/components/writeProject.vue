@@ -121,13 +121,12 @@
           <el-upload action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
+          :show-file-list="false"
           list-type="picture-card"
           style="display:inline">
-          <i slot="default" class="el-icon-plus"></i>
+          <img v-if="img_url" :src="img_url" style="width:100%; height:100%; vertical-align:top">
+          <i v-else slot="default" class="el-icon-plus"></i>
           </el-upload>
-          <el-dialog :visible.sync="isImgVisible">
-            <img width="100%" :src="img_url" alt="">
-          </el-dialog>
           </div>
       </div><hr>
 
@@ -239,95 +238,92 @@ components: {
           this.$message.warning('깃허브 주소를 입력해주세요.')
          else if(this.img_url==='')
           this.$message.warning("썸네일을 등록해 주세요")
-        else
-      {
+        else{
        
-       this.setDisclosure()
-       this.setRegtime()
-       this.setTag()
+          this.setDisclosure()
+          this.setRegtime()
+          this.setTag()
       
-      // 프로젝트 등록하기
-      http.post('project', { 
-                          seq_blog : this.seq_blog,
-                          title:this.title,
-                          disclosure:this.disclosure, 
-                          img_url : this.img_url, 
-                          regtime:this.regtime,
-                          summary : this.summary, 
-                          start_date : this.date_to_str(this.start_date),
-                          finish_date : this.date_to_str(this.finish_date),
-                          github_url : this.github_url,
-                          etc_url : this.etc_url,
-                          rep_url : this.rep_url,
-                          content : this.content,
-                        })
-        .then(({data}) => {
-        // data = project의 seq
+          // 프로젝트 등록하기
+          http.post('project', { 
+            seq_blog : this.seq_blog,
+            title:this.title,
+            disclosure:this.disclosure, 
+            img_url : this.img_url, 
+            regtime:this.regtime,
+            summary : this.summary, 
+            start_date : this.date_to_str(this.start_date),
+            finish_date : this.date_to_str(this.finish_date),
+            github_url : this.github_url,
+            etc_url : this.etc_url,
+            rep_url : this.rep_url,
+            content : this.content,
+          })
+          .then(({data}) => {
+          // data = project의 seq
 
-        // 프로젝트 태그 등록하기
-        http
-        .post('./posttag', {
-          seq_post: data,
-          tag: this.tags
-        })
-        // 프로젝트 스택 등록하기
-        
-        for(var i=0; i<this.stack.length; i++){
-         http.post('./projectstack', {
-          seq_post_project: data,
-          stack: this.stack[i]
-        })
-        }
-        // 프로젝트 역할 등록하기
-        http
-        .post('./projectrole', {
-          seq_post_project: data,
-          role: this.roles
-        })
+          // 프로젝트 태그 등록하기
+          http
+          .post('./posttag', {
+            seq_post: data,
+            tag: this.tags
+          })
+          // 프로젝트 스택 등록하기
+          
+          for(var i=0; i<this.stack.length; i++){
+            http.post('./projectstack', {
+              seq_post_project: data,
+              stack: this.stack[i]
+            })
+          }
+          // 프로젝트 역할 등록하기
+          http
+          .post('./projectrole', {
+            seq_post_project: data,
+            role: this.roles
+          })
 
-        this.$message({
+          this.$message({
             type: 'success',
             message: '프로젝트 등록 완료.'
           });
-         this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)  
-
-      })
-      
+          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)  
+        })     
       }
-     },
+    },
       // 공개 여부 셋팅
-     setDisclosure(){
+    setDisclosure(){
       if(this.disclosure === "전체공개")
         this.disclosure = 1
       else if(this.disclosure === "이웃공개")
         this.disclosure = 2
       else
         this.disclosure = 3
-     },
-     // 날짜 셋팅
-     setRegtime(){
-        if(this.isReserve){
-        var year = this.regtime.getFullYear();
-        var month = this.regtime.getMonth() + 1;
-        if(month<10) month = '0' + month;
-        var date = this.regtime.getDate();
-        if(date<10) date = '0' + date;
-        var hour = this.regtime.getHours();
-        if(hour<10) hour = '0' + hour;
-        var min = this.regtime.getMinutes();
-        if(min<10) min = '0' + min;
-        var sec = this.regtime.getSeconds();
-        if(sec<10) sec = '0' + sec;
-        this.regtime =  year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;}
-        else
-        this.regtime = null
-      },
-     // 태그 셋팅
-     setTag(){
+    },
+    // 날짜 셋팅
+    setRegtime(){
+      if(this.isReserve){
+      var year = this.regtime.getFullYear();
+      var month = this.regtime.getMonth() + 1;
+      if(month<10) month = '0' + month;
+      var date = this.regtime.getDate();
+      if(date<10) date = '0' + date;
+      var hour = this.regtime.getHours();
+      if(hour<10) hour = '0' + hour;
+      var min = this.regtime.getMinutes();
+      if(min<10) min = '0' + min;
+      var sec = this.regtime.getSeconds();
+      if(sec<10) sec = '0' + sec;
+      this.regtime =  year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;}
+      else
+      this.regtime = null
+    },
+    // 태그 셋팅
+    setTag(){
        if(this.tags.length==0)
           this.tags=null
-     },
-     addTag() {
+    },
+    addTag() {
       if(this.tag != ''){
         for(var i=0; i<this.tags.length; i++){
           if(this.tags[i] === this.tag){
@@ -357,23 +353,23 @@ components: {
     },
     // 날짜 포맷 변경
     date_to_str(format){
-        if(format!==null){
-        var year = format.getFullYear();
-        var month = format.getMonth() + 1;
-        if(month<10) month = '0' + month;
-        var date = format.getDate();
-        if(date<10) date = '0' + date;
-        var hour = format.getHours();
-        if(hour<10) hour = '0' + hour;
-        var min = format.getMinutes();
-        if(min<10) min = '0' + min;
-        var sec = format.getSeconds();
-        if(sec<10) sec = '0' + sec;
-        return year + "-" + month + "-" + date + " ";}
-        else{
-          return null
-        }
-      },
+      if(format!==null){
+      var year = format.getFullYear();
+      var month = format.getMonth() + 1;
+      if(month<10) month = '0' + month;
+      var date = format.getDate();
+      if(date<10) date = '0' + date;
+      var hour = format.getHours();
+      if(hour<10) hour = '0' + hour;
+      var min = format.getMinutes();
+      if(min<10) min = '0' + min;
+      var sec = format.getSeconds();
+      if(sec<10) sec = '0' + sec;
+      return year + "-" + month + "-" + date + " ";}
+      else{
+        return null
+      }
+    },
 
      // 썸네일 사진 업로드
     handleAvatarSuccess(res, file) {
@@ -382,19 +378,19 @@ components: {
 
     },
     beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 4;
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG) {
-          this.$message.error('Image must be JPG format!');
-        }
-        if (!isLt2M) {
-          this.$message.error('Image size can not exceed 4MB!');
-        }
-        return isJPG && isLt2M;
+      if (!isJPG) {
+        this.$message.error('Image must be JPG format!');
+      }
+      if (!isLt2M) {
+        this.$message.error('Image size can not exceed 2MB!');
+      }
+      return isJPG && isLt2M;
     },
     filterMethod(query, item) {
-        return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
+      return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
     },
   }
 }

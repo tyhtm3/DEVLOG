@@ -141,9 +141,9 @@ import http from '../util/http-common'
         if(date<10) date = '0' + date;
         return year + "-" + month + "-" + date}
       },
-     handleAvatarSuccess(res, file) {
-      this.imageUrl = 'http://'.concat(res)
-    },
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = 'http://'.concat(res)
+      },
       beforeAvatarUpload(file) {
 
         const isJPG = file.type === 'image/jpeg';
@@ -152,10 +152,10 @@ import http from '../util/http-common'
         if (!isJPG) {
           this.$message.error('Profile image must be JPG format!');
         }
-        if (!isLt10M) {
+        if (!isLt2M) {
           this.$message.error('Profile image size can not exceed 2MB!');
         }
-        return isJPG && isLt10M;
+        return isJPG && isLt2M;
       }
     },
   }
