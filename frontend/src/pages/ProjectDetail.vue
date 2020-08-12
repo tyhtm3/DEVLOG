@@ -76,7 +76,9 @@
                     <p class="pjt-title">역할</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="pjt-content">{{project.role}}</p>
+                    <div v-for="(role,index) in role" :key="index">
+                      <p class="pjt-content">{{role.role}}</p>  
+                    </div>
                   </div>
                 </div>
                 <div class="row">
@@ -151,6 +153,7 @@
           commentCnt:'',
           tag: [],
           stack: [],
+          role: [],
           seq_user: this.$store.state.userInfo.seq,
           basicurl: '/blog/',
           blogurl:'',
@@ -189,6 +192,11 @@
         http.get('projectstack/'+seq)
                 .then(({data}) => {
                 this.stack = data;
+         })
+        // 역할 불러오기
+         http.get('projectrole/'+seq)
+                .then(({data}) => {
+                this.role = data;
          })
         // 좋아요 여부 불러오기
         http.get('postlike/'+seq)
