@@ -16,7 +16,7 @@
                     <el-input v-model="name" style="width: 40%; border: 0px"></el-input>
                     <el-upload
                     class="avatar-uploader"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
@@ -417,31 +417,24 @@ export default {
       return re.test(email);
     },
     
-    // 올려도 안올라감 url 바꿔야됨
     // 회원정보 수정전용
     handleAvatarSuccess(res, file) {
-      var frm = new FormData();
-      frm.append("upload_file", file.raw);
 
-      http.post('user/upload',frm,{headers: {
-            'Content-Type': 'multipart/form-data'
-          }})
-        .then(({data}) => {
-          this.imageUrl = 'http://'.concat(data)
-      })
+      this.imageUrl = 'http://'.concat(res)
+
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG) {
-        this.$message.error('Avatar picture must be JPG format!');
-      }
-      if (!isLt2M) {
-        this.$message.error('Avatar picture size can not exceed 2MB!');
-      }
-      return isJPG && isLt2M;
-    }
+        if (!isJPG) {
+          this.$message.error('Image must be JPG format!');
+        }
+        if (!isLt2M) {
+          this.$message.error('Image size can not exceed 2MB!');
+        }
+        return isJPG && isLt2M;
+    },
   }
 }
 </script>

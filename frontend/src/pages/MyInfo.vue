@@ -18,7 +18,7 @@
                     <el-input v-model="userInfo.id" style="width: 40%;" disabled></el-input>
                     <el-upload
                     class="avatar-uploader2"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
@@ -148,7 +148,7 @@ export default {
       })
       .then(() => {
         http
-        .delete('/user/',{headers : {'Authorization' : this.$store.state.token,}})
+        .delete('/user/')
         .then(({ data }) => {
           this.$store.commit('setIsLogin', false)
           this.$store.commit('setUserInfo', {seq:0})
@@ -160,32 +160,23 @@ export default {
           this.$router.push('/')
         }) 
       })
-      this.$router.push(`/blog/:id`)
     },
     validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     },
     handleAvatarSuccess(res, file) {
-      var frm = new FormData();
-      frm.append("upload_file", file.raw);
-
-      http.post('user/upload',frm,{headers: {
-            'Content-Type': 'multipart/form-data'
-          }})
-        .then(({data}) => {
-          this.profile_img_url = 'http://'.concat(data)
-      })
+      this.userInfo.profile_img_url = 'http://'.concat(res)
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = file.size / 1024 / 1024 < 4;
 
       if (!isJPG) {
-        this.$message.error('Avatar picture must be JPG format!');
+        this.$message.error('Profile image must be JPG format!');
       }
       if (!isLt2M) {
-        this.$message.error('Avatar picture size can not exceed 2MB!');
+        this.$message.error('Profile image size can not exceed 2MB!');
       }
       return isJPG && isLt2M;
     }

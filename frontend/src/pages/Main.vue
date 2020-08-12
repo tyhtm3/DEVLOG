@@ -17,12 +17,12 @@
       </div>
       <!-- end banner carousel -->
 
-      <br><br><br>
+      <br>
 
       <div class="box">
         <div class="box-body" style="min-height:400px;">
           <div class="col-sm-12">
-            <br><br><br>
+            <br>
 
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
                         
@@ -38,6 +38,7 @@
                 </span>   
                 <span @click="tagSearch(index,tag.tag)" :class="{'active': itemsContains(index)}" v-for="(tag, index) in tags" v-bind:key="index" class="tag" style="font-size:20px; margin:10px;">
                   #{{tag.tag}}
+                  <!-- {{tag.tag}} -->
                 </span>
               </div>
               <!-- end tag search bar -->
@@ -54,21 +55,25 @@
               <!-- 미구현 목록
                   1. 프로젝트의 어떤 태그를 가져올지
               --> 
-              <el-carousel :interval="4000" type="card" height="400px">
+              <div v-if="projectList.length==0" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
+                조건에 일치하는 프로젝트가 존재하지 않습니다.
+              </div>
+              <div v-else >
+              <el-carousel  :interval="4000" type="card" height="400px">
                 <el-carousel-item v-for="(project, index) in projectList" :key="index">
                   <div class="well-media">
                     <div class="vendor">
-                      <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url">
-                      <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
+                      <!-- 중앙일 때 : transform: translateX(125.25px) scale(1); -->
+                      <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" @click="goDetailProject(project.seq)">
+                      <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" @click="goDetailProject(project.seq)">
                     </div>
                     <div class="video-text">
                       <h2 style="font-weight: bold; margin-bottom:5px;" @click="goDetailProject(project.seq)">{{ project.title }}</h2>
                     </div>
-                    <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" > 
-
-                      <span v-for="(tag,index) in projectTag[index]" :key="index">
-                      <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
-                     </span>
+                    <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" >
+                      <span class="tag-nest-detail">
+                      <span v-for="(tag,index) in projectTag[index]" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                      </span>
                       <!-- 여백 -->
                       <span class="tag"></span>
 
@@ -78,11 +83,13 @@
                   </div>
                 </el-carousel-item>
               </el-carousel>
+              </div>
               <!-- end project list -->
-            
             </div>
 
-            <br><br><br>
+            <br>
+            <hr>
+            <br>
 
             <!-- start post list -->
             <!-- 미구현 목록
@@ -91,32 +98,35 @@
                 추가한 부분
                 1. 포스트 타이틀 1줄만 출력 : title-1line class 로 css수정
             -->
-            <div class="col-sm-8" style="margin: 0 auto; float: none;">
-              <div class="row" v-for="(post,index) in this.postList" :key="index">
+            <div v-if="postList.length>0" class="col-sm-8" style="margin: 0 auto; float: none;">
+              <div class="row" v-for="(post,index) in postList" :key="index">
+                <!-- 추후에 시간되면 left 전체에 @click 걸고 태그 버튼만 z인덱스 주기-->
                 <div class="left">
-                  <h2 class="title-1line">{{ post.title }}</h2>
-                  <ul class="list-inline blog-devin-tag">
-                    <li>
-                      <a href="#"> <span class="ti-pencil"></span>&nbsp;{{ post.regtime }}</a>
-                    </li>
-                    <li>
-                      <a href="#"> <span class="ti-comment-alt"></span>&nbsp;{{ postComment[index] }}</a>
-                    </li>
-                    <li>
-                      <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
-                    </li>
-                  </ul>
-                  <p class="content-3line">{{ removeTag(post.content) }}</p>
+                  <div class="left-part" @click="goDetailPost(post.seq)">
+                    <h2 class="title-1line">{{ post.title }}</h2>
+                    <ul class="list-inline blog-devin-tag">
+                      <li>
+                        <a href="#"> <span class="ti-pencil"></span>&nbsp;{{ post.regtime }}</a>
+                      </li>
+                      <li>
+                        <a href="#"> <span class="ti-comment-alt"></span>&nbsp;{{ postComment[index] }}</a>
+                      </li>
+                      <li>
+                        <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
+                      </li>
+                    </ul>
+                    <p class="content-3line">{{ removeTag(post.content) }}</p>
+                  </div>
                   <hr>
                   <p class="pull-left">
-                    <span v-for="(tag, index) in postTag[index]" :key="index">
+                    <span v-for="(tag, index) in post.tags" :key="index">
                     <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
                     </span>
                   </p>
-                  <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button>
+                  <!-- <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button> -->
                   <div style="clear:both;"></div>
                 </div>
-                <div class="right">
+                <div class="right" @click="goDetailPost(post.seq)">
                   <div class="vendor">
                     <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
                     <img v-else class="img-responsive-media" style="margin-top:25px;" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
@@ -124,11 +134,13 @@
                 </div>
                 <!-- <hr style="clear:both"> -->
               </div>
-            </div>
-            <!-- end post list -->          
-            <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
-
             <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+            </div>
+            <!-- end post list -->  
+            <div v-else style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
+                조건에 일치하는 글이 존재하지 않습니다.
+            </div>> 
+            <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
           
           </div>
         </div>
@@ -235,7 +247,6 @@ export default {
     })
     .then(({data}) => {
       this.postList = data
-      this.getpostCommentTag(data)
     })
     },
     getTags(){
@@ -260,7 +271,6 @@ export default {
         // 스크롤 페이징을 띄우기 위한 시간 1초
         setTimeout(()=>{
           if(data.length){
-            this.getpostCommentTag(data)
             this.postList = this.postList.concat(data);
             $state.loaded()
             this.limit +=this.page
@@ -276,31 +286,35 @@ export default {
     },
     // 프로젝트로부터 코멘트 개수와 태그 불러오기
     getprojectCommentTag(data){
+      // console.log("this.projectList");
+      // console.log(this.projectList);
+      // console.log("데이터길이" + datad.length)
       for(var i=0; i<data.length; i++){
-      // 코멘트
-        http.get('postcomment/count/'+data[i].seq)
+        this.getProjectComments(i)
+        this.getProjectTags(i)
+      }
+      this.projectComment.push(null);
+      this.projectTag.push(null);
+    },
+    getProjectComments(i){
+      if(i<this.projectList.length){
+        http.get('postcomment/count/'+this.projectList[i].seq)
         .then(({data}) => {
-          this.projectComment.push(data);
-        });
-        // 태그
-        http.get('posttag/'+data[i].seq)
-        .then(({data}) => {
-          this.projectTag.push(data.slice(0,3));
+        // console.log(i+"번째 댓글: ");
+        this.projectComment[i] = data;
+        // console.log(data);
+        // console.log(this.projectComment[i]);
         });
       }
     },
-    // 포스트로부터 코멘트 개수와 태그 불러오기
-    getpostCommentTag(data){
-      for(var i=0; i<data.length; i++){
-      // 코멘트
-        http.get('postcomment/count/'+data[i].seq)
+    getProjectTags(i){
+      if(i<this.projectList.length){
+      http.get('posttag/'+this.projectList[i].seq)
         .then(({data}) => {
-          this.postComment.push(data);
-        });
-        // 태그
-        http.get('posttag/'+data[i].seq)
-        .then(({data}) => {
-          this.postTag.push(data.slice(0,3));
+        // console.log(i+"번째 글 태그: ");
+        this.projectTag[i] = data.slice(0,3);
+        // console.log(data);
+        // console.log(this.projectTag[i]);
         });
       }
     },
@@ -324,8 +338,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .row {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 40px;
+  // box-shadow: 2px 2px 2px rgba(226, 223, 223, 0.4);
+  // margin: 2px;
 }
 .search {
   float: none;
@@ -351,9 +366,20 @@ export default {
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    
   }
+  // &[type=search] {
+  //   }
+}
+.well-media{
+  margin:10px;
+  box-shadow: 10px 10px 10px rgba(204, 204, 204, 0.4);
+  z-index: -3;
 }
 
+.well-media:hover{
+    box-shadow: 10px 10px 10px rgba(109, 109, 109, 0.4);
+}
 .el-carousel__item h3 {
   color: #475669;
   font-size: 18px;
@@ -362,12 +388,20 @@ export default {
   margin: 0;
 }
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
+// .el-carousel__item:nth-child(2n) {
+//   background-color: none;
+//   // #d3dce6;
+//   //#99a9bf
+//   // box-shadow: 15px 15px 15px rgba(146, 146, 146, 0.4);
+// }
 
-.el-carousel__item:nth-child(2n+1) {
-  background-color: #d3dce6;
+// .el-carousel__item:nth-child(2n+1) {
+//   // background-color: #d3dce6;
+//   background-color: none;
+// }
+ 
+.el-carousel__item{
+  background-color: none;
 }
 .left{
   width: 60%;
@@ -432,4 +466,10 @@ export default {
 .active {
   background-color:    #DDDDDD;
 }
+.row:hover{
+  box-shadow: 15px 15px 15px rgba(121, 106, 106, 0.4);
+}
+// .left-part{
+//   background-color: green;
+// }
 </style>
