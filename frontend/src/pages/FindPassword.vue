@@ -48,7 +48,7 @@
                   <br><br>
                   <div class="row">
                   <div class="col-sm-3"><p style="margin-top:8px;">이메일 주소</p></div>
-                  <div class="col-sm-9"><el-input v-model="idForPassword" style="width: 60%;"></el-input>
+                  <div class="col-sm-9"><el-input v-model="emailForPassword" style="width: 60%;"></el-input>
                   <el-button :plain="true" style="margin-left:20px;" @click="findpwd">비밀번호 전송</el-button></div>
                   </div>
 
