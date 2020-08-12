@@ -190,6 +190,7 @@ components: {
       all_stack : [],
       // 역할
       roles : [],
+      role: '',
     }
   },
 

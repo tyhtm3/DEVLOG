@@ -58,7 +58,7 @@
                   <p class="pull-right">* 역할</p>
                 </div>
                 <div class="col-sm-9">
-                  <div v-for="(role2,index) in roles" :key="index"><span><el-input  style="padding:10px;" type="textarea" :rows="2" :value="role2.role" readonly></el-input></span>
+                  <div v-for="(role2,index) in roles" :key="index"><span><el-input  style="padding:10px;" type="textarea" :rows="2" :value="role2" readonly></el-input></span>
                  <div class="ti-minus pull-bottom pull-right" @click="deleteRole(index)"></div>
                   </div>
                   <el-input style="padding:10px;" type="textarea" :rows="4" placeholder="PROJECT ROLE" v-model="role"> </el-input>
@@ -184,7 +184,9 @@ export default {
       summary : '',
       start_date : '',
       finish_date : null,
+      getRoles : [],
       roles : [],
+      role : '',
       github_url : '',
       etc_url : null,
       rep_url : null,
@@ -456,10 +458,12 @@ export default {
         http
         .get('/projectrole/'+this.$route.params.seq)
         .then(({data}) => {
-          this.roles=data
+          this.getRoles=data
+          for(var i=0;i<this.getRoles.length;i++){
+              this.roles.push(this.getRoles[i].role)
+          }
         })
-
-
+        
       })
     }
   }
