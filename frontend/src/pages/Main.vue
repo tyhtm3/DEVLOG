@@ -94,20 +94,23 @@
             -->
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
               <div class="row" v-for="(post,index) in this.postList" :key="index">
-                <div class="left" @click="goDetailPost(post.seq)">
-                  <h2 class="title-1line">{{ post.title }}</h2>
-                  <ul class="list-inline blog-devin-tag">
-                    <li>
-                      <a href="#"> <span class="ti-pencil"></span>&nbsp;{{ post.regtime }}</a>
-                    </li>
-                    <li>
-                      <a href="#"> <span class="ti-comment-alt"></span>&nbsp;{{ postComment[index] }}</a>
-                    </li>
-                    <li>
-                      <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
-                    </li>
-                  </ul>
-                  <p class="content-3line">{{ removeTag(post.content) }}</p>
+                <!-- 추후에 시간되면 left 전체에 @click 걸고 태그 버튼만 z인덱스 주기-->
+                <div class="left">
+                  <div class="left-part" @click="goDetailPost(post.seq)">
+                    <h2 class="title-1line">{{ post.title }}</h2>
+                    <ul class="list-inline blog-devin-tag">
+                      <li>
+                        <a href="#"> <span class="ti-pencil"></span>&nbsp;{{ post.regtime }}</a>
+                      </li>
+                      <li>
+                        <a href="#"> <span class="ti-comment-alt"></span>&nbsp;{{ postComment[index] }}</a>
+                      </li>
+                      <li>
+                        <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
+                      </li>
+                    </ul>
+                    <p class="content-3line">{{ removeTag(post.content) }}</p>
+                  </div>
                   <hr>
                   <p class="pull-left">
                     <span v-for="(tag, index) in post.tags" :key="index">
@@ -236,7 +239,6 @@ export default {
     })
     .then(({data}) => {
       this.postList = data
-      // this.getpostCommentTag(data)
     })
     },
     getTags(){
@@ -262,7 +264,6 @@ export default {
         setTimeout(()=>{
           if(data.length){
             this.postList = this.postList.concat(data);
-            // this.getpostCommentTag(this.postList)
             $state.loaded()
             this.limit +=this.page
             if(this.postList.length/this.page == 0){
@@ -309,31 +310,6 @@ export default {
         });
       }
     },
-    // 포스트로부터 코멘트 개수와 태그 불러오기
-    // getpostCommentTag(data){
-      // for(var i=0; i<this.postList; i++){
-      //   this.getPostComments(i);
-      //   this.getPostTags(i);
-      // }
-      // this.postComment.push(null);
-      // this.postTag.push(null);
-    // },
-    // getPostComments(i){
-    //   if(i<this.postList.length){
-    //     http.get('postcomment/count/'+this.postList[i].seq)
-    //     .then(({data}) => {
-    //       this.postComment[i] = data;
-    //     });
-    //   }
-    // },
-    // getPostTags(i){
-    //   if(i<this.postList.length){
-    //   http.get('posttag/'+this.postList[i].seq)
-    //     .then(({data}) => {
-    //       this.postTag[i] = (data.slice(0,3));
-    //   });
-    //   }
-    // },
     removeTag(text){
       text = text.replace(/<br\/>/ig, "\n")
       text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
@@ -355,6 +331,8 @@ export default {
 <style lang="scss" scoped>
 .row {
   padding: 40px;
+  // box-shadow: 2px 2px 2px rgba(226, 223, 223, 0.4);
+  // margin: 2px;
 }
 .search {
   float: none;
@@ -385,6 +363,7 @@ export default {
 .well-media{
   margin:10px;
   box-shadow: 10px 10px 10px rgba(204, 204, 204, 0.4);
+  z-index: -3;
 }
 
 .well-media:hover{
@@ -479,4 +458,7 @@ export default {
 .row:hover{
   box-shadow: 15px 15px 15px rgba(121, 106, 106, 0.4);
 }
+// .left-part{
+//   background-color: green;
+// }
 </style>
