@@ -120,11 +120,12 @@
                     <p class="content-3line">{{ removeTag(post.content) }}</p>
                   </div>
                   <hr>
-                  <p class="pull-left">
-                    <span v-for="(tag, index) in post.tags" :key="index">
+                  <p class="pull-left posttag-nest">
+                    <span v-for="(tag, index) in post.tags" :key="index" >
                     <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
                     </span>
                   </p>
+                  <!-- </p> -->
                   <!-- <button class="pull-right" @click="goDetailPost(post.seq)">더보기<i class="ti-heart"></i></button> -->
                   <!-- <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button> -->
                   <div style="clear:both;"></div>
@@ -606,7 +607,7 @@ export default {
   white-space:nowrap; 
   display:inline-block; 
   width:70%; 
-  overflow:auto;
+  overflow:scroll;
 }
 // .tag-nest-detail::-webkit-scrollbar {
 //     display: none;
@@ -626,14 +627,24 @@ export default {
   border-radius: 30px;
   // box-shadow: inset 0px 0px 3px transparent;
 }
-
-
-
-
-// #deleteTagSpan{
-//   display:none;
-// }
-// .left-part{
-//   background-color: green;
-// }
+.left > .posttag-nest{
+  white-space:nowrap; 
+  display:inline-block; 
+  width:100%; 
+  overflow:scroll;
+}
+.posttag-nest::-webkit-scrollbar {
+  width: 7px;
+}
+.posttag-nest::-webkit-scrollbar-thumb {
+  width: 1px;
+  background-color:  rgb(212, 211, 211);
+  border-radius: 30px;
+  background-clip: padding-box;
+  border: 7px solid transparent;
+}
+.posttag-nest::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 30px;
+}
 </style>
