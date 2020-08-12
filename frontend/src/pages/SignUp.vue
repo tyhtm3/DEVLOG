@@ -18,7 +18,7 @@
                     <el-input v-model="id" style="width: 40%;"></el-input>
                     <el-upload
                     class="avatar-uploader2"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload"
@@ -142,28 +142,20 @@ import http from '../util/http-common'
         return year + "-" + month + "-" + date}
       },
      handleAvatarSuccess(res, file) {
-      var frm = new FormData();
-      frm.append("upload_file", file.raw);
-
-      http.post('user/upload',frm,{headers: {
-            'Content-Type': 'multipart/form-data'
-          }})
-        .then(({data}) => {
-          this.imageUrl = 'http://'.concat(data)
-      })
+      this.imageUrl = 'http://'.concat(res)
     },
       beforeAvatarUpload(file) {
 
         const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        const isLt10M = file.size / 1024 / 1024 < 2;
 
         if (!isJPG) {
-          this.$message.error('Avatar picture must be JPG format!');
+          this.$message.error('Profile image must be JPG format!');
         }
-        if (!isLt2M) {
-          this.$message.error('Avatar picture size can not exceed 2MB!');
+        if (!isLt10M) {
+          this.$message.error('Profile image size can not exceed 2MB!');
         }
-        return isJPG && isLt2M;
+        return isJPG && isLt10M;
       }
     },
   }
