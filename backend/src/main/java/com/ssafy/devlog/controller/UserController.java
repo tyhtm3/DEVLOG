@@ -163,7 +163,7 @@ public class UserController {
 
 	@ApiOperation(value = "프로필 이미지 파일을 업로드 한다.")
 	@PostMapping("upload")
-	public String doFileUpload(@RequestParam("upload_file") MultipartFile uploadfile) {
+	public String doFileUpload(@RequestParam("file") MultipartFile uploadfile) {
 		try {
 			// 업로드 파일 이름에 날짜로 해싱
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");

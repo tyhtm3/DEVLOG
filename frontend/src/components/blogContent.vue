@@ -12,19 +12,19 @@
           <div class="tab-content">
             <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade active in" id="project">
-              <project-list></project-list>
+              <project-list v-bind:searchTags="searchTags"></project-list>
             </div>
             <!--/ TAB PANEL ITEM -->
 
             <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade" id="portfolio">
-              <portfolio-list></portfolio-list>
+              <portfolio-list ></portfolio-list>
             </div>
             <!--/ TAB PANEL ITEM -->
 
             <!-- TAB PANEL ITEM-->
             <div role="tabpanel" class="tab-pane fade" id="post">
-              <post-list></post-list>
+              <post-list v-bind:searchTags="searchTags"></post-list>
             </div>
             <!--/ TAB PANEL ITEM -->
 
@@ -43,6 +43,7 @@ import postList from './postList.vue'
 import portfolioList from './portfolioList.vue'
 export default {
   name: 'blog-content',
+  props: ['searchTags'],
   components: {
     'project-list': projectList,
     'post-list': postList,

@@ -37,7 +37,7 @@
                 </div>
             </div>
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
-            <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+            <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
         </section>
     </transition>
 </template>
@@ -49,6 +49,14 @@ export default {
     name: 'postList',
     components: {
         InfiniteLoading
+    },
+    props: ['searchTags'],
+    watch: { 
+      	searchTags(){
+            // 선택한 태그로 재검색 (합집합)
+            this.limit=0
+            this.getpostList();
+        }
     },
     data(){
         return{
@@ -84,9 +92,15 @@ export default {
         },
         // 페이지네이션 하기 전 처음 페이지에 뿌려줄 카드 불러오기
         getpostList(){
+            this.postList= []
+            this.comment= []
+            this.tag=[]
+            if(this.$refs.infiniteLoading){
+            this.$refs.infiniteLoading.stateChanger.reset(); 
+            }
             http.get('user/id/'+this.$route.params.id)
             .then(({data})=>{
-                 http.post('post/blog', { seq_blog:data.seq, offset:0, limit:this.page})
+                 http.post('post/blog', { seq_blog:data.seq, offset:0, limit:this.page , tag:(this.searchTags.length==0?null:this.searchTags) })
                 .then(({ data }) => {
                     if(data.length){
                         this.postList = data;
@@ -99,7 +113,7 @@ export default {
         infiniteHandler($state){
             http.get('user/id/'+this.$route.params.id)
             .then(({data})=>{
-                http.post('post/blog', { seq_blog:data.seq, offset:this.limit+this.page, limit:this.page})
+                http.post('post/blog', { seq_blog:data.seq, offset:this.limit+this.page, limit:this.page , tag:(this.searchTags.length==0?null:this.searchTags) })
                 .then(({ data }) => {
                     // 스크롤 페이징을 띄우기 위한 시간 1초
                     setTimeout(()=>{

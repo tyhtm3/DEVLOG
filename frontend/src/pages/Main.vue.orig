@@ -270,6 +270,7 @@ export default {
     })
     },
     getTags(){
+<<<<<<< HEAD
       if(this.seq_user==''){
         // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
         http.get('usertag/feed')
@@ -279,6 +280,21 @@ export default {
       }
       else{
         http.get('usertag/')
+=======
+      // if(this.seq_user==''){
+      //   // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
+      //   http.get('usertag/feed')
+      //   .then(({data}) => {
+      //     this.tags=data;
+      //   });
+      // }
+      // else{
+        this.tags=[]
+        http.get('usertag/', {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }})
+>>>>>>> c167d8c095c2f659fcf90997d8dc21421e51d456
         .then(({data}) => {
           this.tags=data;
         });
@@ -570,12 +586,14 @@ export default {
 .row:hover{
   box-shadow: 15px 15px 15px rgba(121, 106, 106, 0.4);
 }
+<<<<<<< HEAD
 .blog-devin-tag li{
   margin-right: 0px;
   padding-top: 0px !important
-}
+=======
 .ti-close{
   cursor:pointer;
+>>>>>>> c167d8c095c2f659fcf90997d8dc21421e51d456
 }
 // .left-part{
 //   background-color: green;

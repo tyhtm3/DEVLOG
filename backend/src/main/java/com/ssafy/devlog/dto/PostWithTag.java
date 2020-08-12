@@ -11,6 +11,8 @@ public class PostWithTag {
 	private String regtime;
 	private int disclosure; //1 전체공개 2 이웃공개(내가 추가한 이웃) 3 비공개
 	private int like_count;
+	private int comment_count;
+	
 	private String img_url;
 	
 	private List<PostTag> tags;
@@ -70,10 +72,15 @@ public class PostWithTag {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
+	public int getComment_count() {
+		return comment_count;
+	}
+	public void setComment_count(int comment_count) {
+		this.comment_count = comment_count;
+	}
 	public PostWithTag() {
 	}
-	public PostWithTag(Post p) {
+	public PostWithTag(Post p,List<PostTag> tags,int comment_count ) {
 		this.seq = p.getSeq();
 		this.seq_blog = p.getSeq_blog();
 		this.title = p.getTitle();
@@ -82,15 +89,20 @@ public class PostWithTag {
 		this.like_count = p.getLike_count();
 		this.img_url = p.getImg_url();
 		this.content = p.getContent();
+		this.tags = tags;
+		this.comment_count = comment_count;
 	}
+
 	public PostWithTag(int seq, int seq_blog, String title, String regtime, int disclosure, int like_count,
-			String img_url, List<PostTag> tags, String content) {
+			int comment_count, String img_url, List<PostTag> tags, String content) {
+		super();
 		this.seq = seq;
 		this.seq_blog = seq_blog;
 		this.title = title;
 		this.regtime = regtime;
 		this.disclosure = disclosure;
 		this.like_count = like_count;
+		this.comment_count = comment_count;
 		this.img_url = img_url;
 		this.tags = tags;
 		this.content = content;
@@ -98,10 +110,9 @@ public class PostWithTag {
 	@Override
 	public String toString() {
 		return "PostWithTag [seq=" + seq + ", seq_blog=" + seq_blog + ", title=" + title + ", regtime=" + regtime
-				+ ", disclosure=" + disclosure + ", like_count=" + like_count + ", img_url=" + img_url + ", tags="
-				+ tags + ", content=" + content + "]";
+				+ ", disclosure=" + disclosure + ", like_count=" + like_count + ", comment_count=" + comment_count
+				+ ", img_url=" + img_url + ", tags=" + tags + ", content=" + content + "]";
 	}
-		
 	
 }
 
