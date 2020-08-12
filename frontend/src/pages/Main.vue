@@ -58,7 +58,7 @@
                 조건에 일치하는 프로젝트가 존재하지 않습니다.
               </div>
               <div v-else >
-              <el-carousel  :interval="4000" type="card" height="400px">
+              <el-carousel  :interval="4000" type="card" height="700px">
                 <el-carousel-item v-for="(project, index) in projectList" :key="index">
                   <div class="well-media">
                     <div class="vendor">
@@ -69,14 +69,13 @@
                     <div class="video-text">
                       <h2 style="font-weight: bold; margin-bottom:5px;" @click="goDetailProject(project.seq)">{{ project.title }}</h2>
                     </div>
-                    <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" >
-                      <span class="tag-nest-detail">
-                      <span v-for="(tag,index) in project.tags" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                    <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px; ">
+                      <span class = "tag-nest-detail">
+                        <span v-for="(tag,index) in project.tags" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                        <span class="tag donotshow"></span>
                       </span>
-                      <!-- 여백 -->
-                      <span class="tag donotshow"></span>
-                      <span class="tag-copy" @click="goDetailProject(project.seq)"><i class="ti-heart"></i> {{ project.like_count }} </span>
-                      <span class="tag-copy" @click="goDetailProject(project.seq)"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
+                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-heart"></i> {{ project.like_count }} </span>
+                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
                     </div>
                   </div>
                 </el-carousel-item>
@@ -511,9 +510,13 @@ export default {
   float: left;
 }
 .tag-copy{
-  float: right;
-  padding-top: 8px;
+  background: transparent;
+  border-radius: 10px;
+  padding: 3px 0px;
+  font-size: 14px;
   margin-right: 5px;
+  line-height: 50px;
+  float: right;
 }
 .tag-copy2{
   // float: right;
@@ -599,6 +602,34 @@ export default {
 .donotshow{
   visibility:hidden;
 }
+.tag-nest-detail{
+  white-space:nowrap; 
+  display:inline-block; 
+  width:70%; 
+  overflow:auto;
+}
+// .tag-nest-detail::-webkit-scrollbar {
+//     display: none;
+// }
+.tag-nest-detail::-webkit-scrollbar {
+  width: 7px;
+}
+.tag-nest-detail::-webkit-scrollbar-thumb {
+  width: 1px;
+  background-color: rgb(212, 211, 211);
+  border-radius: 30px;
+  background-clip: padding-box;
+  border: 7px solid transparent;
+}
+.tag-nest-detail::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 30px;
+  // box-shadow: inset 0px 0px 3px transparent;
+}
+
+
+
+
 // #deleteTagSpan{
 //   display:none;
 // }
