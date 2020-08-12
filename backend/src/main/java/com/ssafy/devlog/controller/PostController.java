@@ -26,8 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.devlog.dto.Post;
+import com.ssafy.devlog.dto.PostTag;
 import com.ssafy.devlog.dto.PostWithTag;
 import com.ssafy.devlog.service.JwtService;
+import com.ssafy.devlog.service.PostCommentService;
 import com.ssafy.devlog.service.PostService;
 import com.ssafy.devlog.service.PostTagService;
 
@@ -46,6 +48,8 @@ public class PostController {
 	private PostService postService;
 	@Autowired
 	private PostTagService postTagService;
+	@Autowired
+	private PostCommentService postCommentService;
 	@Autowired
 	private JwtService jwtService;
 
@@ -115,8 +119,10 @@ public class PostController {
 		
 		List<PostWithTag> postWithTagList = new ArrayList<PostWithTag>();
 		for(int i=0,size=postList.size();i<size;i++) {
-			postWithTagList.add(new PostWithTag(postList.get(i)));
-			postWithTagList.get(i).setTags(postTagService.selectAllPostTag(postList.get(i).getSeq()));
+			int seq = postList.get(i).getSeq();
+			List<PostTag> tags = postTagService.selectAllPostTag(seq);
+			int comment_count = postCommentService.selectPostCommentCnt(seq);
+			postWithTagList.add(new PostWithTag(postList.get(i),tags,comment_count));
 		}
 		return new ResponseEntity<List<PostWithTag>>(postWithTagList,
 				HttpStatus.OK);
@@ -143,8 +149,10 @@ public class PostController {
 		System.out.println(postList.size());
 		List<PostWithTag> postWithTagList = new ArrayList<PostWithTag>();
 		for(int i=0,size=postList.size();i<size;i++) {
-			postWithTagList.add(new PostWithTag(postList.get(i)));
-			postWithTagList.get(i).setTags(postTagService.selectAllPostTag(postList.get(i).getSeq()));
+			int seq = postList.get(i).getSeq();
+			List<PostTag> tags = postTagService.selectAllPostTag(seq);
+			int comment_count = postCommentService.selectPostCommentCnt(seq);
+			postWithTagList.add(new PostWithTag(postList.get(i),tags,comment_count));
 		}
 		return new ResponseEntity<List<PostWithTag>>(postWithTagList,
 				HttpStatus.OK);

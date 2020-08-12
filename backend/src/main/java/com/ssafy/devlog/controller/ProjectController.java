@@ -25,6 +25,7 @@ import com.ssafy.devlog.dto.Project;
 import com.ssafy.devlog.dto.ProjectRole;
 import com.ssafy.devlog.dto.ProjectWithRoleTag;
 import com.ssafy.devlog.service.JwtService;
+import com.ssafy.devlog.service.PostCommentService;
 import com.ssafy.devlog.service.PostTagService;
 import com.ssafy.devlog.service.ProjectRoleService;
 import com.ssafy.devlog.service.ProjectService;
@@ -46,6 +47,8 @@ public class ProjectController {
 	private ProjectRoleService projectRoleService;
 	@Autowired
 	private PostTagService postTagService;
+	@Autowired
+	private PostCommentService postCommentService;
 	@Autowired
 	private JwtService jwtService;
 	
@@ -118,9 +121,11 @@ public class ProjectController {
 		List<ProjectWithRoleTag> projectWithRoleTagList = new ArrayList<ProjectWithRoleTag>(); 
 		List<Project> projectList = projectService.selectProjectByFeed(seq_user,(int)params.get("disclosure"),(List<String>)params.get("tag"));
 		for(int i=0,size=projectList.size();i<size;i++) {
-			List<PostTag> postTagList = postTagService.selectAllPostTag(projectList.get(i).getSeq());
-			List<ProjectRole> projectRoleList = projectRoleService.selectAllProjectRole(projectList.get(i).getSeq());
-			projectWithRoleTagList.add(new ProjectWithRoleTag(projectList.get(i),postTagList,projectRoleList));
+			int seq = projectList.get(i).getSeq();
+			List<PostTag> postTagList = postTagService.selectAllPostTag(seq);
+			List<ProjectRole> projectRoleList = projectRoleService.selectAllProjectRole(seq);
+			int comment_count = postCommentService.selectPostCommentCnt(seq);
+			projectWithRoleTagList.add(new ProjectWithRoleTag(projectList.get(i),postTagList,projectRoleList,comment_count));
 		}
 		return new ResponseEntity<List<ProjectWithRoleTag>>(projectWithRoleTagList, HttpStatus.OK);
 	}
@@ -143,9 +148,11 @@ public class ProjectController {
 		List<ProjectWithRoleTag> projectWithRoleTagList = new ArrayList<ProjectWithRoleTag>(); 
 		List<Project> projectList = projectService.selectProjectByBlog(seq_user,(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag"));
 		for(int i=0,size=projectList.size();i<size;i++) {
-			List<PostTag> postTagList = postTagService.selectAllPostTag(projectList.get(i).getSeq());
-			List<ProjectRole> projectRoleList = projectRoleService.selectAllProjectRole(projectList.get(i).getSeq());
-			projectWithRoleTagList.add(new ProjectWithRoleTag(projectList.get(i),postTagList,projectRoleList));
+			int seq = projectList.get(i).getSeq();
+			List<PostTag> postTagList = postTagService.selectAllPostTag(seq);
+			List<ProjectRole> projectRoleList = projectRoleService.selectAllProjectRole(seq);
+			int comment_count = postCommentService.selectPostCommentCnt(seq);
+			projectWithRoleTagList.add(new ProjectWithRoleTag(projectList.get(i),postTagList,projectRoleList,comment_count));
 		}
 		return new ResponseEntity<List<ProjectWithRoleTag>>(projectWithRoleTagList, HttpStatus.OK);
 	}
