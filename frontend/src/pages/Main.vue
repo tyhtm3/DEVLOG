@@ -58,8 +58,8 @@
                 조건에 일치하는 프로젝트가 존재하지 않습니다.
               </div>
               <div v-else >
-              <el-carousel  :interval="4000" type="card" height="700px">
-                <el-carousel-item v-for="(project, index) in projectList" :key="index">
+              <el-carousel  :interval="4000" type="card" height="440px">
+                <el-carousel-item v-for="(project, index) in projectList" :key="index" >
                   <div class="well-media">
                     <div class="vendor">
                       <!-- 중앙일 때 : transform: translateX(125.25px) scale(1); -->
