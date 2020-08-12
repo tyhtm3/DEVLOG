@@ -27,6 +27,7 @@
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
                       
 
+              <!-- 유저태그 관리(비로그인시 화면단에서만 등록,삭제 가능) -->
               <div>
                 <span class="search" id="demo-2">
                   <input v-on:keyup.enter="addTag"  v-model="inputtag" class="devin-search tag" type="search" style="font-size:15px;">
