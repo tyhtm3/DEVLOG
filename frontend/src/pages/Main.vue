@@ -23,21 +23,20 @@
         <div class="box-body" style="min-height:400px;">
           <div class="col-sm-12">
             <br>
-
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
-                      
-
               <!-- 유저태그 관리(비로그인시 화면단에서만 등록,삭제 가능) -->
               <div>
                 <span class="search" id="demo-2">
                   <input v-on:keyup.enter="addTag"  v-model="inputtag" class="devin-search tag" type="search" style="font-size:15px;">
                 </span> 
 
-                <div v-for="(tag, index) in tags" v-bind:key="index" style="display:inline-block;margin-right:10px;">
+                <div v-for="(tag, index) in tags" v-bind:key="index" style="display:inline-block;" @mouseenter="showCloseButton(index)" @mouseleave="hideCloseButton(index)">
+                <!-- <span class="cover" > -->
                 <span @click="tagSearch(index,tag.tag)" :class="{'active': itemsContains(index)}" class="tag" style="font-size:20px; margin:10px;">
                   #{{tag.tag}}
                 </span>
-                <span @click="deleteTag(index)" class="ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
+                <span @click="deleteTag(index)" class="hideDeleteButton ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
+                <!-- </span> -->
                 </div>
 
               </div>
@@ -75,7 +74,7 @@
                       <span v-for="(tag,index) in project.tags" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
                       </span>
                       <!-- 여백 -->
-                      <span class="tag"></span>
+                      <span class="tag donotshow"></span>
                       <span class="tag-copy" @click="goDetailProject(project.seq)"><i class="ti-heart"></i> {{ project.like_count }} </span>
                       <span class="tag-copy" @click="goDetailProject(project.seq)"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
                     </div>
@@ -422,6 +421,12 @@ export default {
       }
       this.tags.splice(index,1)   
     },
+    showCloseButton(index){
+      $(".hideDeleteButton").eq(index).show();
+    },
+    hideCloseButton(index){
+      $(".hideDeleteButton").eq(index).hide();
+    }
   }
 }
 </script>
@@ -577,6 +582,26 @@ export default {
 .ti-close{
   cursor:pointer;
 }
+.hideDeleteButton{
+  display:none;
+  // visibility:hidden;
+}
+.cover{
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.tag{
+  line-height:50px;
+}
+.tag:hover{
+  box-shadow: 1px 1px 3px rgba(199, 199, 199, 0.4);
+}
+.donotshow{
+  visibility:hidden;
+}
+// #deleteTagSpan{
+//   display:none;
+// }
 // .left-part{
 //   background-color: green;
 // }
