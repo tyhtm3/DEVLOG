@@ -208,7 +208,19 @@
 									<dd><el-input v-model="portfolioContent" style="width: 70%;"></el-input></dd>
                   <!-- <dt>POSITION</dt>
 									<dd><el-input v-model="portfolioRole" style="width: 70%;"></el-input></dd> -->
+                  <dt>썸네일</dt>
+                  <dd>
+                    <el-upload action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
+                    
+                    :show-file-list="false"
+                    list-type="picture-card"
+                    style="display:inline">
+                    
+                    <i slot="default" class="el-icon-plus"></i>
+                    </el-upload>
+                  </dd>
                   <dt>공개 여부</dt>
+                  
                   <dd>
                     <el-radio-group v-model="portfolioDisclosure">
                       <el-radio-button label="전체공개"></el-radio-button>
@@ -425,15 +437,15 @@ export default {
     },
     beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        const isLt10M = file.size / 1024 / 1024 < 10;
 
         if (!isJPG) {
           this.$message.error('Image must be JPG format!');
         }
-        if (!isLt2M) {
-          this.$message.error('Image size can not exceed 2MB!');
+        if (!isLt10M) {
+          this.$message.error('Image size can not exceed 10MB!');
         }
-        return isJPG && isLt2M;
+        return isJPG && isLt10M;
     },
   }
 }
