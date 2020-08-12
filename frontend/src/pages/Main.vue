@@ -251,19 +251,19 @@ export default {
     })
     },
     getTags(){
-      // if(this.seq_user==''){
-      //   // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
-      //   http.get('usertag/feed')
-      //   .then(({data}) => {
-      //     this.tags=data;
-      //   });
-      // }
-      // else{
+      if(this.seq_user==''){
+        // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
+        http.get('usertag/feed')
+        .then(({data}) => {
+          this.tags=data;
+        });
+      }
+      else{
         http.get('usertag/')
         .then(({data}) => {
           this.tags=data;
         });
-      // }
+      }
     },
     // 인피니트로딩
     infiniteHandler($state){
