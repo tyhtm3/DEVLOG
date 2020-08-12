@@ -56,7 +56,11 @@
               <!-- 미구현 목록
                   1. 프로젝트의 어떤 태그를 가져올지
               --> 
-              <el-carousel :interval="4000" type="card" height="400px">
+              <div v-if="projectList.length==0" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
+                조건에 일치하는 프로젝트가 존재하지 않습니다.
+              </div>
+              <div v-else >
+              <el-carousel  :interval="4000" type="card" height="400px">
                 <el-carousel-item v-for="(project, index) in projectList" :key="index">
                   <div class="well-media">
                     <div class="vendor">
@@ -80,11 +84,13 @@
                   </div>
                 </el-carousel-item>
               </el-carousel>
+              </div>
               <!-- end project list -->
-            
             </div>
 
-            <br><br><br>
+            <br>
+            <hr>
+            <br>
 
             <!-- start post list -->
             <!-- 미구현 목록
@@ -93,8 +99,8 @@
                 추가한 부분
                 1. 포스트 타이틀 1줄만 출력 : title-1line class 로 css수정
             -->
-            <div class="col-sm-8" style="margin: 0 auto; float: none;">
-              <div class="row" v-for="(post,index) in this.postList" :key="index">
+            <div v-if="postList.length>0" class="col-sm-8" style="margin: 0 auto; float: none;">
+              <div class="row" v-for="(post,index) in postList" :key="index">
                 <!-- 추후에 시간되면 left 전체에 @click 걸고 태그 버튼만 z인덱스 주기-->
                 <div class="left">
                   <div class="left-part" @click="goDetailPost(post.seq)">
@@ -129,11 +135,13 @@
                 </div>
                 <!-- <hr style="clear:both"> -->
               </div>
-            </div>
-            <!-- end post list -->          
-            <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
-
             <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+            </div>
+            <!-- end post list -->  
+            <div v-else style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
+                조건에 일치하는 글이 존재하지 않습니다.
+            </div>> 
+            <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
           
           </div>
         </div>
