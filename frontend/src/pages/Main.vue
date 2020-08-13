@@ -23,21 +23,20 @@
         <div class="box-body" style="min-height:400px;">
           <div class="col-sm-12">
             <br>
-
             <div class="col-sm-8" style="margin: 0 auto; float: none;">
-                      
-
               <!-- 유저태그 관리(비로그인시 화면단에서만 등록,삭제 가능) -->
               <div>
                 <span class="search" id="demo-2">
                   <input v-on:keyup.enter="addTag"  v-model="inputtag" class="devin-search tag" type="search" style="font-size:15px;">
                 </span> 
-             
-                <div v-for="(tag, index) in tags" v-bind:key="index" style="display:inline-block;margin-right:10px;">
-                <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:20px; margin:10px;">
+
+                <div v-for="(tag, index) in tags" v-bind:key="index" style="display:inline-block;" @mouseenter="showCloseButton(index)" @mouseleave="hideCloseButton(index)">
+                <!-- <span class="cover" > -->
+                <span @click="tagSearch(index,tag.tag)" :class="{'active': itemsContains(index)}" class="tag" style="font-size:20px; margin:10px;">
                   #{{tag.tag}}
                 </span>
-                <span @click="deleteTag(index)" class="ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
+                <span @click="deleteTag(index)" class="hideDeleteButton ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
+                <!-- </span> -->
                 </div>
 
               </div>
@@ -55,10 +54,12 @@
               <!-- 미구현 목록
                   1. 프로젝트의 어떤 태그를 가져올지
               --> 
-         
-              <div v-if="projectList.length>0" >
-              <el-carousel  :interval="4000" type="card" height="400px">
-                <el-carousel-item v-for="(project, index) in projectList" :key="index">
+              <div v-if="projectList.length==0" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
+                조건에 일치하는 프로젝트가 존재하지 않습니다.
+              </div>
+              <div v-else >
+              <el-carousel  :interval="4000" type="card" height="440px">
+                <el-carousel-item v-for="(project, index) in projectList" :key="index" >
                   <div class="well-media">
                     <div class="vendor">
                       <!-- 중앙일 때 : transform: translateX(125.25px) scale(1); -->
@@ -72,27 +73,23 @@
                       <span class="tag-nest-detail">
 
 
-                      <div  class="pull-left" @click="tagSearch(tag.tag)" v-for="(tag,index) in projectTag[index]" :key="index" style="display:inline-block;" >
-                      <span class="tag" :class="{'active': itemsContains(tag.tag)}" style="font-size:17px; margin-right:8px;">
+                      <div @click="tagSearch(tag.tag)" v-for="(tag,index) in project.tags" :key="index" style="display:inline-block;" >
+                      <span class="tag" :class="{'active': itemsContains(tag.tag)}" style="font-size:17px; margin-right:8px;float:left;">
                         #{{tag.tag}}
                       </span>
                       </div>
+                      <span class="tag donotshow"></span>
+
 
                       </span>
-                      <!-- 여백 -->
-                      <span class="tag"></span>
-
-                      <span class="tag-copy"><i class="ti-comment-alt"></i> {{ projectComment[index] }} </span>
-                      <span class="tag-copy"><i class="ti-heart"></i> {{ project.like_count }} </span>
+                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-heart"></i> {{ project.like_count }} </span>
+                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
                     </div>
                   </div>
                 </el-carousel-item>
               </el-carousel>
               </div>
               <!-- end project list -->
-              <div v-else style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
-                조건에 일치하는 프로젝트가 존재하지 않습니다.
-              </div>
             </div>
 
             <br>
@@ -112,26 +109,36 @@
                 <div class="left">
                   <div class="left-part" @click="goDetailPost(post.seq)">
                     <h2 class="title-1line">{{ post.title }}</h2>
-                    <ul class="list-inline blog-devin-tag">
+                    <ul class="list-inline blog-devin-tag">  
                       <li>
-                        <a href="#"> <span class="ti-pencil"></span>&nbsp;{{ post.regtime }}</a>
+                      <span class="tag-copy2" ><i class="ti-pencil"></i> {{ post.regtime }}&nbsp;</span>
+                      <span class="tag-copy2" >&nbsp;<i class="ti-comment-alt"></i>&nbsp;{{ post.comment_count }} </span>
+                      <span class="tag-copy2" >&nbsp;<i class="ti-heart"></i>&nbsp;{{ post.like_count }} </span>
+                      </li>
+                      <!-- <li>
+                        <a href="#"> <span class="ti-pencil"></span>{{ post.regtime }}</a>
                       </li>
                       <li>
-                        <a href="#"> <span class="ti-comment-alt"></span>&nbsp;{{ postComment[index] }}</a>
+                        <a href="#"> <span class="ti-comment-alt"></span>{{ post.comment_count }}</a>
                       </li>
                       <li>
-                        <a href="#"> <span class="ti-heart"></span>&nbsp;{{ post.like_count }}</a>
-                      </li>
+                        <a href="#"> <span class="ti-heart"></span>{{ post.like_count }}</a>
+                      </li> -->
                     </ul>
                     <p class="content-3line">{{ removeTag(post.content) }}</p>
                   </div>
                   <hr>
-                    <div  class="pull-left" @click="tagSearch(tag.tag)" v-for="(tag, index) in post.tags" :key="index" style="display:inline-block;" >
-                    <span class="tag" :class="{'active': itemsContains(tag.tag)}"  style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
-                    </div>
+
+                  <p class="pull-left posttag-nest">
+                    <span v-for="(tag, index) in post.tags" :key="index" >
+                    <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                    </span>
+                  </p>
+
                   <!-- <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button> -->
                   <div style="clear:both;"></div>
                 </div>
+
                 <div class="right" @click="goDetailPost(post.seq)">
                   <div class="vendor">
                     <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
@@ -256,8 +263,9 @@ export default {
         Authorization : this.$store.state.token,
         }})
     .then(({data}) => {
-      this.projectList = data
-      this.getprojectCommentTag(data)
+      this.projectList = data;
+      this.getPostandproject();
+      // this.getprojectCommentTag(data)
     })
     http
     .post('/post/feed', {
@@ -276,7 +284,18 @@ export default {
     },
     // 유저태그 가져오기
     getTags(){
-        this.tags=[]
+      this.tags=[]
+      if(this.seq_user==''){
+        // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
+        http.get('usertag/feed', {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }})
+        .then(({data}) => {
+          this.tags=data;
+        });
+      }
+      else{
         http.get('usertag/', {headers: {
         'Content-type': 'application/json',
         Authorization : this.$store.state.token,
@@ -284,6 +303,7 @@ export default {
         .then(({data}) => {
           this.tags=data;
         });
+      }
     },
     //디테일 페이지로부터 넘어온 태그 검색
     getFromDetailSearchTag(){
@@ -319,42 +339,45 @@ export default {
       })
     },
     // 프로젝트로부터 코멘트 개수와 태그 불러오기
-    getprojectCommentTag(data){
-      for(var i=0; i<data.length; i++){
-        this.getProjectComments(i)
-        this.getProjectTags(i)
-      }
-      this.projectComment.push(null);
-      this.projectTag.push(null);
-    },
-    getProjectComments(i){
-      if(i<this.projectList.length){
-        http.get('postcomment/count/'+this.projectList[i].seq, {headers: {
-        'Content-type': 'application/json',
-        Authorization : this.$store.state.token,
-        }})
-        .then(({data}) => {
-        // console.log(i+"번째 댓글: ");
-        this.projectComment[i] = data;
-        // console.log(data);
-        // console.log(this.projectComment[i]);
-        });
-      }
-    },
-    getProjectTags(i){
-      if(i<this.projectList.length){
-      http.get('posttag/'+this.projectList[i].seq, {headers: {
-        'Content-type': 'application/json',
-        Authorization : this.$store.state.token,
-        }})
-        .then(({data}) => {
-        // console.log(i+"번째 글 태그: ");
-        this.projectTag[i] = data.slice(0,3);
-        // console.log(data);
-        // console.log(this.projectTag[i]);
-        });
-      }
-    },
+    // getprojectCommentTag(data){
+    //   // console.log("this.projectList");
+    //   // console.log(this.projectList);
+    //   // console.log("데이터길이" + datad.length)
+    //   for(var i=0; i<data.length; i++){
+    //     this.getProjectComments(i)
+    //     this.getProjectTags(i)
+    //   }
+    //   this.projectComment.push(null);
+    //   this.projectTag.push(null);
+    // },
+    // getProjectComments(i){
+    //   if(i<this.projectList.length){
+    //     http.get('postcomment/count/'+this.projectList[i].seq, {headers: {
+    //     'Content-type': 'application/json',
+    //     Authorization : this.$store.state.token,
+    //     }})
+    //     .then(({data}) => {
+    //     // console.log(i+"번째 댓글: ");
+    //     this.projectComment[i] = data;
+    //     // console.log(data);
+    //     // console.log(this.projectComment[i]);
+    //     });
+    //   }
+    // },
+    // getProjectTags(i){
+    //   if(i<this.projectList.length){
+    //   http.get('posttag/'+this.projectList[i].seq, {headers: {
+    //     'Content-type': 'application/json',
+    //     Authorization : this.$store.state.token,
+    //     }})
+    //     .then(({data}) => {
+    //     // console.log(i+"번째 글 태그: ");
+    //     this.projectTag[i] = data.slice(0,3);
+    //     // console.log(data);
+    //     // console.log(this.projectTag[i]);
+    //     });
+    //   }
+    // },
     removeTag(text){
       text = text.replace(/<br\/>/ig, "\n")
       text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
@@ -431,6 +454,12 @@ export default {
       }
       this.tags.splice(index,1)   
     },
+    showCloseButton(index){
+      $(".hideDeleteButton").eq(index).show();
+    },
+    hideCloseButton(index){
+      $(".hideDeleteButton").eq(index).hide();
+    }
   }
 }
 </script>
@@ -471,12 +500,13 @@ export default {
 }
 .well-media{
   margin:10px;
-  box-shadow: 10px 10px 10px rgba(204, 204, 204, 0.4);
+  border-radius: 3px;
+  box-shadow: 7px 7px 3px rgba(204, 204, 204, 0.144);
   z-index: -3;
 }
 
 .well-media:hover{
-    box-shadow: 10px 10px 10px rgba(109, 109, 109, 0.4);
+    box-shadow: 8px 8px 6px  rgba(163, 163, 163, 0.404);
 }
 .el-carousel__item h3 {
   color: #475669;
@@ -514,10 +544,16 @@ export default {
 .blog-list-nest{
   float: left;
 }
-.tag-copy{
-  float: right;
+.tag-copy2{
+  // float: right;
   padding-top: 8px;
   margin-right: 5px;
+  vertical-align: middle;
+}
+.ul{
+  float: right;
+  // padding-top: 8px;
+  // margin-right: 5px;
 }
 .content{
   padding: 0px;
@@ -531,6 +567,7 @@ export default {
 }
 .title-1line{
   /* 한 줄 자르기 */
+  margin-bottom: 0px;
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
@@ -567,10 +604,88 @@ export default {
 .row:hover{
   box-shadow: 15px 15px 15px rgba(121, 106, 106, 0.4);
 }
+.blog-devin-tag li{
+  margin-right: 0px;
+  padding-top: 0px !important
+}
 .ti-close{
   cursor:pointer;
 }
-// .left-part{
-//   background-color: green;
+.hideDeleteButton{
+  display:none;
+  // visibility:hidden;
+}
+.cover{
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.tag{
+  line-height:50px;
+}
+.tag:hover{
+  box-shadow: 1px 1px 3px rgba(199, 199, 199, 0.4);
+}
+.donotshow{
+  visibility:hidden;
+}
+.left > .posttag-nest{
+  white-space:nowrap; 
+  display:inline-block; 
+  width:100%; 
+  overflow:scroll;
+}
+.posttag-nest::-webkit-scrollbar {
+  width: 7px;
+}
+.posttag-nest::-webkit-scrollbar-thumb {
+  width: 1px;
+  background-color:  rgb(212, 211, 211);
+  border-radius: 30px;
+  background-clip: padding-box;
+  border: 7px solid transparent;
+}
+.posttag-nest::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 30px;
+}
+</style>
+
+
+
+
+<style lang="scss">
+
+.tag-copy{
+  background: transparent;
+  border-radius: 10px;
+  padding: 3px 0px;
+  font-size: 14px;
+  margin-right: 5px;
+  line-height: 50px;
+  float: right;
+}
+.tag-nest-detail{
+  white-space:nowrap; 
+  display:inline-block; 
+  width:70%; 
+  overflow:scroll;
+}
+// .tag-nest-detail::-webkit-scrollbar {
+//     display: none;
 // }
+.tag-nest-detail::-webkit-scrollbar {
+  width: 7px;
+}
+.tag-nest-detail::-webkit-scrollbar-thumb {
+  width: 1px;
+  background-color: rgb(212, 211, 211);
+  border-radius: 30px;
+  background-clip: padding-box;
+  border: 7px solid transparent;
+}
+.tag-nest-detail::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 30px;
+  // box-shadow: inset 0px 0px 3px transparent;
+}
 </style>

@@ -26,7 +26,7 @@
         <div class="col-sm-9" style="padding:15px 0px 0px 25px">
           <span v-html="htmlTag">
           </span>
-          <input v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그 입력 ">
+          # <input class="inputtag" v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그를 입력해주세요.">
         </div>
       </div><hr>
 
@@ -147,15 +147,15 @@ export default {
     },
     beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        const isLt10M = file.size / 1024 / 1024 < 10;
 
         if (!isJPG) {
           this.$message.error('Image must be JPG format!');
         }
-        if (!isLt2M) {
-          this.$message.error('Image size can not exceed 2MB!');
+        if (!isLt10M) {
+          this.$message.error('Image size can not exceed 10MB!');
         }
-        return isJPG && isLt2M;
+        return isJPG && isLt10M;
     },
     addTag() {
       if(this.tag != ''){
@@ -192,5 +192,29 @@ export default {
 <style>
 #editor .ql-editor{
   min-height: 400px !important;
+}
+/* 
+.inputtag::before{
+  background-color: red;
+  content: "#" !important;
+  padding-right:500px;
+} */
+
+.inputtag{
+  opacity:0.5;
+  border:solid;
+  border-top:1px;
+  border-left:1px;
+  border-right:1px;
+  border-color: rgba(143, 143, 143, 0.432);
+  border-width: 0.1px;
+  width:135px;
+}
+.inputtag:hover{
+  opacity:0.8;
+}
+.inputtag:focus{
+  opacity:0.8;
+  outline: none;
 }
 </style>

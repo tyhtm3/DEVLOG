@@ -10,6 +10,7 @@ public class ProjectWithRoleTag {
 		private String regtime;
 		private int disclosure; //1 전체공개 2 이웃공개(내가 추가한 이웃) 3 비공개
 		private int like_count;
+		private int comment_count;
 		private String img_url;
 
 		//post_project
@@ -72,6 +73,14 @@ public class ProjectWithRoleTag {
 
 		public void setLike_count(int like_count) {
 			this.like_count = like_count;
+		}
+
+		public int getComment_count() {
+			return comment_count;
+		}
+
+		public void setComment_count(int comment_count) {
+			this.comment_count = comment_count;
 		}
 
 		public String getImg_url() {
@@ -157,7 +166,7 @@ public class ProjectWithRoleTag {
 		public ProjectWithRoleTag() {
 		}
 		
-		public ProjectWithRoleTag(Project p,List<PostTag> tags,List<ProjectRole> roles) {
+		public ProjectWithRoleTag(Project p,List<PostTag> tags,List<ProjectRole> roles,int comment_coount) {
 			this.seq = p.getSeq();
 			this.seq_blog = p.getSeq_blog();
 			this.title = p.getTitle();
@@ -174,16 +183,20 @@ public class ProjectWithRoleTag {
 			this.content = p.getContent();
 			this.tags = tags;
 			this.roles = roles;
+			this.comment_count = comment_coount;
 		}
+
 		public ProjectWithRoleTag(int seq, int seq_blog, String title, String regtime, int disclosure, int like_count,
-				String img_url, String summary, String start_date, String finish_date, String github_url,
-				String etc_url, String rep_url, String content, List<PostTag> tags, List<ProjectRole> roles) {
+				int comment_count, String img_url, String summary, String start_date, String finish_date,
+				String github_url, String etc_url, String rep_url, String content, List<PostTag> tags,
+				List<ProjectRole> roles) {
 			this.seq = seq;
 			this.seq_blog = seq_blog;
 			this.title = title;
 			this.regtime = regtime;
 			this.disclosure = disclosure;
 			this.like_count = like_count;
+			this.comment_count = comment_count;
 			this.img_url = img_url;
 			this.summary = summary;
 			this.start_date = start_date;

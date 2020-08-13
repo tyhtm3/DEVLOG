@@ -109,7 +109,8 @@
         <div class="col-sm-9" style="padding:15px 0px 0px 25px">
           <span v-html="htmlTag">
           </span>
-          <input v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그 입력 ">
+          # <input class="inputtag" v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그를 입력해주세요.">
+          <!-- <input v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그 입력 "> -->
         </div>
       </div><hr>
 
@@ -379,15 +380,15 @@ components: {
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt10M = file.size / 1024 / 1024 < 10;
 
       if (!isJPG) {
         this.$message.error('Image must be JPG format!');
       }
-      if (!isLt2M) {
-        this.$message.error('Image size can not exceed 2MB!');
+      if (!isLt10M) {
+        this.$message.error('Image size can not exceed 10MB!');
       }
-      return isJPG && isLt2M;
+      return isJPG && isLt10M;
     },
     filterMethod(query, item) {
       return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;

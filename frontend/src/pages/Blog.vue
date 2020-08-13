@@ -14,7 +14,7 @@
           <div class="title2" style="color:#959595;font-size:18px">
             by {{blogOwnerInfo.nickname}}
             <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
-            <a href="#"><img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" /></a>
+            <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" />
             <!-- <span>Web Designer</span> -->
           </div>
         </div>
@@ -36,14 +36,22 @@
             </div>
           </div>
 
-          <div>    
-          <span style="margin-left:60px;"></span>  
-          
-           <!-- 태그 3개만 갖고오기--> 
-            <div v-for="(tag,index) in blogOwnerMainTags" :class="{'tag-active': itemsContains(tag.tag)}"  :key="index" style="display:inline-block;" >
-               <span style="margin-right:20px;" class="tag" @click="tagSearch(tag.tag)"  >#{{tag.tag}}</span>
-            </div>
-
+          <div style="margin-left:60px;">    
+            <!-- 블로그 태그 -->
+            <span @click="tagSearch(tag.tag)" :class="{'tag-active': itemsContains(tag.tag)}"
+            v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="padding:5px; margin:2px; cursor:pointer">
+              #{{tag.tag}}
+              <span v-show="getIsAdminMode" @click="deleteTag(tag.seq)" class="ti-close" style="position:absolute; font-size:3px; color:#333333;"></span>
+            </span>
+           
+            <span v-if="getIsAdminMode">
+              <span v-if="searchBar">
+                <input v-on:keyup.enter="addTag" v-model="tag" placeholder="#">
+              </span>
+              <span v-if="addIcon" style="position: absolute; cursor:pointer;" @click="tagInputVisible">
+                <i class="material-icons">add_circle_outline</i>
+              </span>
+            </span>
           </div>
           <div class="column4" v-if= "getIsLogin">
             <span v-if="isAdmin">
@@ -93,12 +101,14 @@ export default {
       blogOwnerNumOfPost:'',
       blogOwnerNumOfNeighbor:'',
       blogOwnerMainTags:[],
-      tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
       followerpage: false,
       isAdmin: '',
       // 태그 검색
       searchTags: [],
       activeIndex: [],
+      searchBar: false,
+      addIcon: true,
+      tag: '',
     }
   },
   created() {
@@ -247,14 +257,12 @@ export default {
             })
           }
           else{
-            console.log(this.blogOwnerInfo.seq)
             http.delete('/userneighbor', {
               data:{
                 seq_neighbor: this.blogOwnerInfo.seq
               }
             })
             .then(({ data }) => {
-              console.log(data)
               this.$message({
                 type: 'error',
                 message: '이웃 목록에서 삭제 되었습니다.',
@@ -266,6 +274,33 @@ export default {
           }
         })
       })
+    },
+    tagInputVisible(){
+      this.searchBar = true
+      this.addIcon = false
+    },
+    addTag(){
+      http
+      .post('blogtag', {
+        tag: this.tag
+      })
+      .then(({data}) => {
+        this.blogOwnerMainTags.push(this.tag)
+        this.searchBar = false
+        this.addIcon = true
+        this.getBlogOwnerInfo()
+      })
+    },
+    deleteTag(seq){
+      http
+      .delete('blogtag/'+seq)
+      .then(({data}) => {
+        this.$message({
+          type: 'success',
+          message: '태그가 삭제되었습니다.',
+        });
+        this.getBlogOwnerInfo()
+      })
     }
   }
 }
@@ -273,7 +308,10 @@ export default {
 <style>
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 .container-movie{  font-family: 'Noto Sans KR', sans-serif;}
-
+.tag-active {
+  background: #DDDDDD;
+  border-radius: 20px;
+}
 .column4{
     float: right;
     margin-right: 40px;

@@ -6,7 +6,7 @@
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
-                <div class="col-md-4" v-for="(post,index) in postList" :key="index">
+                <div class="col-md-4" v-for="(post,index) in postList" :key="index" style="height:534px;">
                     <span v-show="adminMode">
                         <input class="delete-box" :id=post.seq type="checkbox" :value=post.seq v-model="deleteList" />
                         <label :for=post.seq></label>
@@ -20,19 +20,20 @@
                             <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{post.title}}</h2>
                             <p class="content-3line" style="color:black;">{{ removeTag(post.content) }}</p>
                         </div>
-                        <div class="tag-nest" style="block:inline">
-                            
-                            <!-- 태그 3개만 갖고오기--> 
-                            <div v-for="(tag,index) in tag[index]" :key="index" style="display:inline-block;" >
-                            <span class="tag" @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" >#{{tag.tag}}</span>
-                            </div>
-                            
-                            <!-- 여백 -->
-                            <span class="tag"></span>
+                        <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px; ">
 
-                            <!-- 좋아요, 코멘트 수 -->
-                            <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{post.like_count}} </span>
-                            <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span> 
+                        <span class = "tag-nest-detail">
+                            <!-- 태그 갖고오기-->
+                            <span v-for="(tag,index) in post.tags" :key="index"  class="tag"  @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}"
+                            style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                            <!-- 여백 -->
+                            <span class="tag donotshow"></span>
+                        </span>
+
+
+                        <!-- 좋아요, 코멘트 수 -->
+                        <span class="tag-copy" style="display:inline-block;"><i class="ti-heart"></i> {{ post.like_count }} </span>
+                        <span class="tag-copy" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ post.comment_count }} </span>
                         </div>
                     </div>
                 </div>
@@ -63,8 +64,8 @@ export default {
     data(){
         return{
             postList: [],
-            comment: [],
-            tag:[],
+            // comment: [],
+            // tag:[],
             counter: 0,
             // 페이지네이션
             limit: 0,
@@ -123,7 +124,7 @@ export default {
                 .then(({ data }) => {
                     if(data.length){
                         this.postList = data;
-                        this.getpostCommentTag(data)
+                        // this.getpostCommentTag(data)
                     }
                 })
             })
@@ -137,7 +138,7 @@ export default {
                     // 스크롤 페이징을 띄우기 위한 시간 1초
                     setTimeout(()=>{
                         if(data.length){
-                            this.getpostCommentTag(data)
+                            // this.getpostCommentTag(data)
                             this.postList = this.postList.concat(data);
                             $state.loaded()
                             this.limit +=this.page
@@ -152,21 +153,21 @@ export default {
             })
         },
         // 포스트로부터 코멘트 개수와 태그 불러오기
-        getpostCommentTag(data){
-            for(var i=0; i<data.length; i++){
-                this.postVisible[i] = true;
-                // 코멘트
-                http.get('postcomment/count/'+data[i].seq)
-                .then(({data}) => {
-                this.comment.push(data);
-                });
-                // 태그
-                http.get('posttag/'+data[i].seq)
-                .then(({data}) => {
-                this.tag.push(data.slice(0,3));
-                });
-            }   
-        },
+        // getpostCommentTag(data){
+        //     for(var i=0; i<data.length; i++){
+        //         this.postVisible[i] = true;
+        //         // 코멘트
+        //         http.get('postcomment/count/'+data[i].seq)
+        //         .then(({data}) => {
+        //         this.comment.push(data);
+        //         });
+        //         // 태그
+        //         http.get('posttag/'+data[i].seq)
+        //         .then(({data}) => {
+        //         this.tag.push(data.slice(0,3));
+        //         });
+        //     }   
+        // },
         deletePost(){
             if(this.deleteList.length === 0){
                 this.$message({
