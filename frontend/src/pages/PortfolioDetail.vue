@@ -254,9 +254,7 @@
                             <div style="clear:both;"></div>
                         </div>
                       </div>
-                    </div>
-                      <!--  END OF BLOG CONTENT -->
-            <!-- /.content -->
+                    </div> -->
     </div>
   </transition>
 </template>

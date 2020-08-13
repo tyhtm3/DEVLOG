@@ -34,8 +34,10 @@
                     center>
                     <div style="text-align:center">
                         <!-- <div class="wrap"> -->
-                            <button class="fill" @click="goTemplate00(portfolio.seq)">resume</button>
-                            <button class="fill" @click="goTemplate01(portfolio.seq)">4 cards</button>
+                            <button class="fill" @click="goTemplate00(clickedSeq)">resume</button>
+                            <button class="fill" @click="goTemplate01(clickedSeq)">4 cards</button>
+                            <!-- <button class="fill" @click="goTemplate00(portfolio.seq)">resume</button>
+                            <button class="fill" @click="goTemplate01(portfolio.seq)">4 cards</button> -->
                         <!-- </div> -->
                     </div>
                     </el-dialog>
