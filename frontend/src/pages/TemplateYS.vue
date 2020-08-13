@@ -78,81 +78,56 @@
                 <h3>{{project.start_date.substr(0,7)}}</h3>
                 <section>
                   <ul>
-                    <li><img :src="project.img_url" height="250" width="400"></li>
-                    
-                    <li>프로젝트명 : {{project.title}}</li>
-                    <li>img url : {{project.img_url}}</li>
-                    <li>개발기간 : {{project.start_date}}~{{project.finish_date}}</li>
-                    <li>프로젝트요약 : {{project.summary}}</li>
-                    <li>역할 : 
-                      <ul>
-                        <li>to-do 페이지 제작</li>
-                        <li>데이터베이스 설계</li>
-                        <li>FireBase 연동</li>
-                      </ul>
+                  <li><img :src="project.img_url" height="250" width="400"></li>
+                  </ul>
+                </section>
+                <section>
+                  <h4>프로젝트명</h4>
+                  <ul>
+                    <li>{{project.title}}</li>
+                  </ul>
+                </section>
+                <section>
+                  <h4>개발기간</h4>
+                  <ul>
+                    <li>{{project.start_date}}~{{project.finish_date}}</li>
+                  </ul>
+                </section>
+                <section>
+                  <h4>프로젝트요약</h4>
+                  <ul>
+                    <li>{{project.summary}}</li>
+                  </ul>
+                </section>
+                <section>
+                  <h4>역할</h4>
+                  <ul>
+                    <li>to-do 페이지 제작</li>
+                    <li>데이터베이스 설계</li>
+                    <li>FireBase 연동</li>
+                  </ul>
+                </section>
+                <section>
+                  <h4>기술스택</h4>
+                  <ul>
+                    <li>
+                      <img v-for="(stack,index) in stacks" :key="index" class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
                     </li>
-                    <li>기술스택 : 
-                      <div v-for="(stack,index) in stacks" :key="index">
-                        <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
-                      </div>
-                    </li>
-                    <li>링크 : <a href="http://i3a402.p.ssafy.io">http://i3a402.p.ssafy.io</a> </li>
-                    <li>자세히보기 : <a href="http://localhost:8080/blog/project/394">http://localhost:8080/blog/project/394</a> </li>  
                   </ul>
                 </section>
-              </section>
-              <section class="year">
-                <h3>2016</h3>
+                <br>
                 <section>
-                  <h4>January</h4>
+                  <h4>관련링크</h4>
                   <ul>
-                    <li>Price at <span class="price">$1150</span> per bitcoin.</li>
-                    <li>Price fell 30% in a week, reaching a multi-month low of <span class="price">$750.</span></li>
-                    <li>The network exceeded 1 exahash/sec.</li>
+                    <li><a :href="project.github_url">{{project.github_url}}</a> </li>
                   </ul>
                 </section>
                 <section>
-                  <h4>February</h4>
+                  <h4>프로젝트 더보기</h4>
                   <ul>
-                    <li>Version 0.12 released.</li>
+                    <li><a :href="project.etc_url">{{project.etc_url}}</a> </li>  
                   </ul>
                 </section>
-                <section>
-                  <h4>April</h4>
-                  <ul>
-                    <li>Steam started accepting bitcoin as payment.</li>
-                  </ul>
-                </section>
-                <section>
-                  <h4>August</h4>
-                  <ul>
-                    <li>Version 0.13 released.</li>
-                  </ul>
-                </section>
-                <section>
-                  <h4>September</h4>
-                  <ul>
-                    <li>There are 770 bitcoin ATMs worldwide.</li>
-                  </ul>
-                </section>
-              </section>
-              <section class="year">
-                <h3>2017</h3>
-                <section>
-                  <h4>March</h4>
-                  <ul>
-                    <li>Version 0.14 released.</li>
-                    <li>The price of 1 bitcoin surpassed the spot price of an ounce of gold for the first time.</li>
-                    <li>The number of GitHub projects related to bitcoin passed 10,000.</li>
-                    <li>Price traded above <span class="price">$1290.</span></li>
-                  </ul>
-                  </section>
-                  <section>
-                    <h4>Today</h4>
-                    <ul>
-                      <li>At the moment, one bitcoin cost: <span class="price"><div id="btcwidget"></div>.</span></li>
-                    </ul>
-                  </section>
               </section>
             </div>
           </div>
@@ -186,7 +161,6 @@ export default {
       this.chartData = {
         rows: [
           { 'stack': 'Spring', 'rate': 5 },
-          { 'stack': 'Spring', 'rate': 5 },
           { 'stack': 'Java', 'rate': 4 },
           { 'stack': 'MariaDB', 'rate': 3 },
           { 'stack': 'AWS', 'rate': 3 },
@@ -213,7 +187,15 @@ export default {
                 this.stacks.push(data[j])
               }
             })
+          //   http.get('projectrole/'+this.projects[i].seq)
+          //   .then(({data})=>{
+          //     console.log(data[0])
+          //     console.log(data[0].role)
+          //     this.projects[i].role = data[0].role
+          //  })
+          //   console.log(this.projects[i])
           }
+          
         })
       }
     }
@@ -230,6 +212,10 @@ export default {
   margin-left : 20%;
   margin-right : 20%;
   background-color :white;
+}
+ul{
+  list-style: none;
+  list-style-type: none;
 }
 .tl-item {
   transform: translate3d(0, 0, 0);
@@ -261,6 +247,8 @@ export default {
     opacity: 0;
     transform: translate3d(0, 0, 0) translateY(50%);
     transition: opacity 0.5s ease, transform 0.5s ease;
+    list-style: none;
+    list-style-type: none;
   }
 
   &:hover {
@@ -336,9 +324,7 @@ export default {
 .padding-fifthin{
   padding: 15px!important;
 }
-ul{
-  list-style: none;
-}
+
 #box-pie{
   margin-left: 15%;
   margin-right: 15%;
