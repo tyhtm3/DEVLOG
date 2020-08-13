@@ -2,14 +2,6 @@
   <transition name="el-zoom-in-top">
     <div class="content-wrapper" style="background: white;">
       <br><br><br><br>
-
-
-      
-      <div>
-        {{basicinfo}}
-        <br><br><br>
-        {{portfolioUser}}
-      </div>  
       <!-- <div>
         <br>{{basicinfo.seq}}: 71,
         <br>{{basicinfo.seq_blog}}: 4,
@@ -48,16 +40,15 @@
               <li><a></a></li>
               <li class="pull-right" v-if="basicinfo.seq_blog==seq_user"><span class="ti-pencil"></span>&nbsp;{{basicinfo.regtime}} &nbsp; | <a href="#"> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
           </ul>
-          <div v-if="basicinfo.profile_img_url" class="header-image">
-          <img style="block:inline;" :src='basicinfo.profile_img_url' class="avatar">
+          <div class="header-image">
+          <img v-if="true" style="block:inline;" src="http://api.randomuser.me/portraits/women/22.jpg" class="avatar">
+          <img v-else src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" class="avatar">
           </div>
-          <div class="nextToAvater">
-            <div class="header-text" :class="{ 'header-text-noImage' : !basicinfo.profile_img_url }">
-            <p style="font-size:50px;"><b>{{basicinfo.name}}</b></p>
-            <i class="ti-mobile" style="font-size:30px;"/> {{basicinfo.tel}}<br>
-            <i class="ti-email" style="font-size:30px;"/> {{basicinfo.email}}<br>
-            <i class="ti-link" style="font-size:30px;"/> {{basicinfo.github_url}}<br>
-            </div>
+          <div class="header-text" >
+            <p style="font-size:70px;"><b>{{basicinfo.name}}</b></p>
+            <i class="ti-mobile" style="font-size:40px;"/> {{portfolioUser.tel}}<br>
+            <i class="ti-email" style="font-size:40px;"/> {{portfolioUser.email}}<br>
+            <i class="ti-link" style="font-size:40px;"/> {{portfolioUser.github_url}}<br>
           </div>
       </div>
       <!-- end banner carousel -->
@@ -214,28 +205,28 @@
             this.projects=data
          })
       },
-    //   // 프로젝트 삭제
-    //   deleteProject(seq){
-    //     http.delete('portfolio/'+seq)
-    //     .then(({data}) => {
-    //         alert('프로젝트가 삭제되었습니다.')
-    //         this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
-    //      })
-    //   },
-    //   // 프로젝트 수정 미구현
-    //   updateProject(){
+      // 프로젝트 삭제
+      deleteProject(seq){
+        http.delete('portfolio/'+seq)
+        .then(({data}) => {
+            alert('프로젝트가 삭제되었습니다.')
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
+         })
+      },
+      // 프로젝트 수정 미구현
+      updateProject(){
         
-    //   },
-    //   // Url로 이동
-    //   goUrl(url){
-    //     window.open(url, '_blank');
-    //   },
-    //    removeTag(text){
-    //   text = text.replace(/<br\/>/ig, "\n")
-    //   text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
-    //   // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
-    //   return text
-    // },
+      },
+      // Url로 이동
+      goUrl(url){
+        window.open(url, '_blank');
+      },
+       removeTag(text){
+      text = text.replace(/<br\/>/ig, "\n")
+      text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
+      // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
+      return text
+    },
    },
   }
 </script>
@@ -261,9 +252,8 @@ a:hover { color: black; text-decoration: bold;}
   font-size:80px;
 }
 .header-text{
-  vertical-align:middle;
   float:right; 
-  /* margin-left:100px; */
+  margin-left:100px;
   text-align: left;
   position: absolute;
   top: 50%;
@@ -271,12 +261,6 @@ a:hover { color: black; text-decoration: bold;}
   transform: translate( 0%, -50% );
   color:black;
   font-size:40px;
-  min-width: 500px;
-}
-.header-text-noImage{
-  left: 50%;
-  margin-left: 0px;
-  transform: translate( -50%, -50% );
 }
 .box{
    padding-left:300px;
@@ -287,20 +271,16 @@ a:hover { color: black; text-decoration: bold;}
 
 }
 .pjt-title{
-  font-size:14px;
+  font-size:18px;
 }
 .pjt-content{
   margin-top:-2px;
-  font-size:12px;
+  font-size:14px;
   word-spacing: 2px;
   line-height:30px;
 }
 .avatar{
-  width:auto;
-  height:250px;
-}
-.nextToAvater{
-  min-width: 500px;
-  height:250px;
+  width:250%;
+  height:250%;
 }
 </style>
