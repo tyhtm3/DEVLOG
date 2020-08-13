@@ -5,13 +5,13 @@
       <div class="carousel">
         <el-carousel indicator-position="outside" height='500px'>
           <el-carousel-item class="img-resize">
-            <img class="img-resize" src="../../docs/static/img/banner1.jpg">
+            <img class="img-resize" src="../../docs/static/img/ba.png">
           </el-carousel-item>
           <el-carousel-item>
-            <img class="img-resize" src="../../docs/static/img/banner2.jpg">
+            <img class="img-resize" src="../../docs/static/img/ba2.png">
           </el-carousel-item>
           <el-carousel-item>
-            <img class="img-resize" src="../../docs/static/img/banner3.jpg">
+            <img class="img-resize" src="../../docs/static/img/ba3.png">
           </el-carousel-item>
         </el-carousel>
       </div>
