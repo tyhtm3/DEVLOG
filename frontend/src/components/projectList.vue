@@ -11,22 +11,22 @@
                         <input class="delete-box" :id=project.seq type="checkbox" :value=project.seq v-model="deleteList" />
                         <label :for=project.seq></label>
                     </span>
-                    <div class="well-media" @click="goDetail(project.seq)" style="cursor:pointer;">
-                        <div class="vendor">
+                    <div class="well-media" style="cursor:pointer;">
+                        <div class="vendor" @click="goDetail(project.seq)">
                             <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" alt="">
                             <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
                         </div>
-                        <div class="video-text">
+                        <div class="video-text" @click="goDetail(project.seq)">
                             <!-- {{project}} -->
                             <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{project.title}}</h2>
                             <p class="content-3line" style="color:black;">{{project.summary}}</p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 
                            <!-- 태그 3개만 갖고오기--> 
-                            <span v-for="(tag,index) in tag[index]" :key="index">
-                            <span class="tag">#{{tag.tag}}</span>
-                            </span>
+                            <div v-for="(tag,index) in tag[index]" :key="index" style="display:inline-block;" >
+                            <span class="tag" @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" >#{{tag.tag}}</span>
+                            </div>
                             <!-- 여백 -->
                             <span class="tag"></span>
 
@@ -73,7 +73,8 @@
             limit: 0,
             page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3배수)
             deleteList: [],
-            deleteSuccess: true
+            deleteSuccess: true,
+            activeIndex: [],
         }
     },
     created() {
@@ -85,6 +86,22 @@
         },
     },
     methods:{
+        // 태그 누를때마다 검색
+        tagSearch(tag){
+          // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
+          var index = this.searchTags.indexOf(tag)
+          var idx = this.activeIndex.indexOf(index)
+          if(index<0){
+            this.searchTags.push(tag)
+            this.activeIndex.push(index)
+          }else{
+            this.searchTags.splice(index,1)
+            this.activeIndex.splice(idx,1)
+          }
+        },
+        itemsContains(tag) {
+        return this.searchTags.indexOf(tag) > -1
+        },
         goDetail(seq){
             this.$router.push(`/blog/project/${seq}`)
         },
@@ -278,5 +295,8 @@ input[type="checkbox"]:checked + label:before {
   border-left-color: transparent;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+.active {
+  background-color:    #DDDDDD;
 }
 </style>

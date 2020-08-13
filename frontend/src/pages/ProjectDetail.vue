@@ -110,7 +110,7 @@
 
                 <!-- 프로젝트 태그 -->
                 <p class="pull-left">
-                  <span v-for="(tag, index) in tag" v-bind:key="index" class="tag">
+                  <span @click="tagSearch(tag.tag)" v-for="(tag, index) in tag" v-bind:key="index" class="tag">
                     #{{tag.tag}}
                   </span>
                 </p>
@@ -165,6 +165,14 @@
       this.getInfo(this.seq)
     },
     methods: {
+      tagSearch(tag){
+        this.$store.commit('setSearchTag',tag)
+        if(this.$store.state.previousUrl.indexOf('blog')>0){
+            this.$router.push('/blog/'+this.blogurl)
+        }else{
+            this.$router.push('/')
+        }
+      },
       getInfo(seq){
         // 프로젝트 불러오기.
         http.get('project/'+seq)
