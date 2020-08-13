@@ -57,6 +57,7 @@ import NotFoundSecond from './pages/error/500.vue'
 import PostUpdate from './pages/PostUpdate.vue'
 import ProjectUpdate from './pages/ProjectUpdate.vue'
 import Template01 from './pages/Template01.vue'
+import TemplateYS from './pages/TemplateYS.vue'
 
 import store from './store';
 
@@ -160,7 +161,11 @@ const routes = [
         name: 'project-update',
         component: ProjectUpdate
       },
-
+      {
+        path: '/ys',
+        name: 'ys',
+        component : TemplateYS
+      },
 
 
       ///////////////////////////
