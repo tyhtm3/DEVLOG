@@ -17,7 +17,7 @@
     <br><br>
     <li>&emsp;이름 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{blogOwnerInfo.name}}( {{blogOwnerInfo.birthday.substr(0,11)}} )</li>
     <li>&emsp;연락처 &nbsp;&nbsp;: {{blogOwnerInfo.tel}}</li>
-    <li>&emsp;Github    : https://github.com/C9Boom7</li>
+    <li>&emsp;Github    : {{blogOwnerInfo.github_url}}</li>
     </ul>
     <br>
     

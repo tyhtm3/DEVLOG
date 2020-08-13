@@ -495,7 +495,7 @@ export default {
     top: 3px;
     left: 21px;
     font-family: 'themify';
-    speak: none;
+    // speak: none;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
