@@ -21,7 +21,9 @@
                     
                     <div class="media-body">
                       <div class="social-profile">
-                        <h3> <a class="link-comment" href="#">{{comment.nickname}}</a>
+                        <h3>
+                          <span v-if="comment.nickname" class="link-comment" @click="moveBlog(comment.id)" style="cursor:pointer;">{{comment.nickname}}</span>
+                          <span v-else class="link-comment" @click="moveBlog(comment.id)" style="cursor:pointer;">{{comment.name}}</span>
                           <span style="font-size:12px;"><i class="entypo-globe"></i>&nbsp;{{comment.regtime}}</span>
                           <span v-if="comment.seq_user==seq_user">
                             <span class="link-comment pull-right" style="font-size:13px; cursor:pointer;">
@@ -194,6 +196,9 @@
                this.getComment(this.seq)
          })
       },
+      moveBlog(id){
+        this.$router.push('../'+id)
+      }
    },
   }
 </script>

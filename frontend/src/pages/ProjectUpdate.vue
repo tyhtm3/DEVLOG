@@ -420,6 +420,7 @@ export default {
           this.disclosure = '이웃공개'
         else
           this.disclosure = '비공개'
+          
         this.seq = data.seq
         this.seq_blog = data.seq_blog
         this.title = data.title
@@ -435,7 +436,6 @@ export default {
         this.github_url = data.github_url
         this.etc_url = data.etc_url
         this.rep_url = data.rep_url
-        this.content = data.content
      
         http
         .get('/posttag/'+this.$route.params.seq)

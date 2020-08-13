@@ -147,11 +147,6 @@ const routes = [
         component: NotFoundSecond
       },
       {
-        path: '/template01',
-        name: 'template01',
-        component: Template01
-      },
-      {
         path: '/blog/post-update/:seq',
         name: 'post-update',
         component: PostUpdate
@@ -164,8 +159,14 @@ const routes = [
       {
         path: '/ys',
         name: 'ys',
-        component : TemplateYS
+        component: TemplateYS
       },
+      {
+        path: '/blog/portfolio1/:seq',
+        name: 'template01',
+        component: Template01
+      },
+
 
 
       ///////////////////////////

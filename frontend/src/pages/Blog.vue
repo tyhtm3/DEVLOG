@@ -288,6 +288,7 @@ export default {
         this.blogOwnerMainTags.push(this.tag)
         this.searchBar = false
         this.addIcon = true
+        this.tag = ''
         this.getBlogOwnerInfo()
       })
     },
