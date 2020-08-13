@@ -32,7 +32,7 @@
 
                 <div v-for="(tag, index) in tags" v-bind:key="index" style="display:inline-block;" @mouseenter="showCloseButton(index)" @mouseleave="hideCloseButton(index)">
                 <!-- <span class="cover" > -->
-                <span @click="tagSearch(index,tag.tag)" :class="{'active': itemsContains(index)}" class="tag" style="font-size:20px; margin:10px;">
+                <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:20px; margin:10px;">
                   #{{tag.tag}}
                 </span>
                 <span @click="deleteTag(index)" class="hideDeleteButton ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
@@ -227,7 +227,6 @@ export default {
     },
     // 태그 누를때마다 검색
     tagSearch(tag){
-
       // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
       var index = this.searchTags.indexOf(tag)
       var idx = this.activeIndex.indexOf(index)
@@ -264,7 +263,6 @@ export default {
         }})
     .then(({data}) => {
       this.projectList = data;
-      this.getPostandproject();
       // this.getprojectCommentTag(data)
     })
     http
