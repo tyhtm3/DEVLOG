@@ -100,7 +100,13 @@ export default {
             }
             http.get('user/id/'+this.$route.params.id)
             .then(({data})=>{
-                 http.post('post/blog', { seq_blog:data.seq, offset:0, limit:this.page , tag:(this.searchTags.length==0?null:this.searchTags) })
+                http
+                .post('post/blog', { 
+                    seq_blog:data.seq,
+                    offset:0,
+                    limit:this.page,
+                    tag:(this.searchTags.length==0?null:this.searchTags)
+                })
                 .then(({ data }) => {
                     if(data.length){
                         this.postList = data;
@@ -113,7 +119,13 @@ export default {
         infiniteHandler($state){
             http.get('user/id/'+this.$route.params.id)
             .then(({data})=>{
-                http.post('post/blog', { seq_blog:data.seq, offset:this.limit+this.page, limit:this.page , tag:(this.searchTags.length==0?null:this.searchTags) })
+                http
+                .post('post/blog', {
+                    seq_blog:data.seq,
+                    offset:this.limit+this.page,
+                    limit:this.page,
+                    tag:(this.searchTags.length==0?null:this.searchTags)
+                })
                 .then(({ data }) => {
                     // 스크롤 페이징을 띄우기 위한 시간 1초
                     setTimeout(()=>{

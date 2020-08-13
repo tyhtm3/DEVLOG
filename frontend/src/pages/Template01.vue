@@ -6,7 +6,7 @@
 <section id="timelineTemplate">
 
   <!-- about me 시작 -->
-  <div class="tl-item">
+  <div class="tl-item" @click="aboutmedetail=true">
     <div class="tl-bg" style="background-image: url('../../static/img/template01_01.png')"></div>
     <div class="tl-year">
       <p class="f2 heading--sanSerif">about me</p>
@@ -15,30 +15,64 @@
       <h1>{{ portfolioInfo.name }}</h1>
       <p>자기 소개가 들어가야 하는데 포트폴리오 입력 페이지에서 입력 항목에 없음</p>
     </div>
-    <el-dialog style="z-index:100" class="template01detail" title="About Me" :visible.sync="aboutmedetail">
-      <img src="../../static/img/template01_09.jpg" style="position:absolute; top:0; left:0; height:100%; width:100%;">
-    </el-dialog>
   </div>
   <!-- about me 끝 -->
   
   <!-- project 시작 -->
-  <div class="tl-item" v-for="(project, index) in projectInfo" :key="index">
+  <div class="tl-item" v-for="(project, index) in projectInfo" :key="index" @click="pd(project)">
+    <!-- projectdetail=true -->
     <div class="tl-bg" :style="'background-image: url('+project.img_url+')'"  ></div>
     <div class="tl-year">
       <p class="f2 heading--sanSerif">{{ project.title }}</p>
     </div>
     <div class="tl-content">
-      <h1 class="f3 text--accent ttu">한줄 설명</h1>
-      <p>{{ project.summary }}</p>
-      <p></p>
-      <p></p>
-      <p></p>
-      <p></p>
-      <p></p>
-
+      <h1 class="f3 text--accent ttu">{{ project.summary }}</h1>
+      <p>개발 기간 : {{ project.start_date }} ~ {{ project.finish_date }}</p>
+      <p>역할 : 
+        <span v-for="(role, index) in project.roles" :key="index">
+          {{ role.role }}
+        </span>
+      </p>
+      <p>기술스택 : 
+        <span v-for="(stack, index) in project.stacks" :key="index">
+          #{{ stack.stack }}
+        </span>
+      </p>
     </div>
   </div>
   <!-- project 끝 -->
+
+  <!-- about me modal 시작 -->
+  <el-dialog class="template01detail" title="About Me" :visible.sync="aboutmedetail">
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10" style="margin-top:5%">
+        <img :src="this.portfolioInfo.profile_img_url" style="width:150px; height:150px;">
+        
+      </div>
+      <div class="col-lg-1"></div>
+    </div>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10" style="margin-top:1%">
+        <h3>{{ portfolioInfo.name }} </h3>
+        <p><i class="material-icons" style="margin-right:5px;"> phone_android</i>{{ portfolioInfo.tel }}</p>
+        <p><i class="material-icons" style="margin-right:5px;"> email</i>oyes9316@naver.com</p>
+        <p><i class="material-icons" style="margin-right:5px;"> chat_bubble</i>kakao ID : cl07</p>
+        
+        
+      </div>
+      <div class="col-lg-1"></div>
+    </div>
+  </el-dialog>
+  <!-- about me modal 끝 -->
+
+  <!-- project modal 시작 -->
+  <el-dialog class="template01detail" :title="title" :visible.sync="projectdetail" style="overflow:auto">
+    <div v-html="content">
+    </div>
+  </el-dialog>
+  <!-- project modal 끝 -->
 </section>
 
 </template>
@@ -52,6 +86,10 @@ export default {
       seq_portfolio: '',
       portfolioInfo: [],
       projectInfo: [],
+      aboutmedetail: false,
+      projectdetail: false,
+      title: '',
+      content: '',
     }
   },
   created() {
@@ -87,13 +125,17 @@ export default {
           this.projectInfo = data.reverse()
         })
       })
+    },
+    pd(data){
+      this.projectdetail = !this.projectdetail
+      this.title = data.title
+      this.content = data.content
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
 
 #timelineTemplate {
   display: flex;
@@ -208,11 +250,12 @@ export default {
   transition: filter 0.5s ease;
   filter: grayscale(100%);
 }
-</style>>
+</style>
 <style>
 .template01detail .el-dialog{
-  width: 90% !important;
+  width: 70% !important;
   height: 80% !important;
-  margin-top: 50px !important;
+  margin-top: 5% !important;
+  overflow: auto;
 }
 </style>
