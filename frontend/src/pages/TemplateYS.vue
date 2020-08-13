@@ -102,16 +102,16 @@
                 <section>
                   <h4>역할</h4>
                   <ul>
-                    <li>to-do 페이지 제작</li>
-                    <li>데이터베이스 설계</li>
-                    <li>FireBase 연동</li>
+                    <li v-for="(role,index) in project.roles" :key="index">
+                      {{role.role}}
+                    </li>
                   </ul>
                 </section>
                 <section>
                   <h4>기술스택</h4>
                   <ul>
                     <li>
-                      <img v-for="(stack,index) in stacks" :key="index" class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
+                      <img v-for="(stack,index) in project.stacks" :key="index" class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
                     </li>
                   </ul>
                 </section>
@@ -180,6 +180,7 @@ export default {
         http.get('portfoliopjt/'+this.seq_portfolio)
         .then(({data}) =>{
           this.projects = data
+          console.log(data)
           for(var i=0;i<data.length;i++){
             http.get('projectstack/'+this.projects[i].seq)
             .then(({data})=>{
