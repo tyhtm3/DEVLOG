@@ -13,7 +13,7 @@
 
       <!-- 헤더 : 프로젝트 작성시간, 댓글수, 좋아요 수, 수정|삭제 -->
       <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
-        <li><a :href="url" v-if="projectuser.nickname">&nbsp;&nbsp;<span class="ti-user"></span>{{projectUser.nickname}}</a>
+        <li><a :href="url" v-if="projectUser.nickname">&nbsp;&nbsp;<span class="ti-user"></span>{{projectUser.nickname}}</a>
             <a :href="url" v-else>&nbsp;&nbsp;<span class="ti-user"></span>{{projectUser.id}}</a>
         </li>
         <li><a> <span class="ti-pencil"></span>&nbsp;{{project.regtime}}</a></li>
