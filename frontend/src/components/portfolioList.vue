@@ -29,6 +29,7 @@
                             <!-- <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span>  -->
                         </div>
                     </div>
+                    
                     <!-- 템플릿 선택 dialog 시작 -->
                     <el-dialog
                     title="select template"
@@ -39,6 +40,7 @@
                         <!-- <div class="wrap"> -->
                             <button class="fill" @click="goTemplate00(portfolio.seq)">resume</button>
                             <button class="fill" @click="goTemplate01">4 cards</button>
+                            <button class="fill" @click="goTemplate03(417)">JUHYEON</button>
                         <!-- </div> -->
                     </div>
                     </el-dialog>
@@ -84,6 +86,9 @@
             this.$router.push(`/template01`)
         },
         goTemplate02(seq){
+        },
+        goTemplate03(seq){
+            this.$router.push(`/template03/${seq}`)
         },
         goTemplate04(seq){
         },
