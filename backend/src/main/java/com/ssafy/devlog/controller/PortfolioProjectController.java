@@ -1,5 +1,6 @@
 package com.ssafy.devlog.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.PortfolioProject;
 import com.ssafy.devlog.dto.Project;
+import com.ssafy.devlog.dto.ProjectRole;
+import com.ssafy.devlog.dto.ProjectStack;
+import com.ssafy.devlog.dto.ProjectWithRoleStack;
 import com.ssafy.devlog.service.PortfolioProjectService;
+import com.ssafy.devlog.service.ProjectRoleService;
+import com.ssafy.devlog.service.ProjectStackService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -34,12 +40,26 @@ public class PortfolioProjectController {
 	
 	@Autowired
 	private PortfolioProjectService portfolioProjectService;
+	@Autowired
+	private ProjectRoleService projectRoleService;
+	@Autowired
+	private ProjectStackService projectStackService;
 	
 	@ApiOperation(value = "포트폴리오의 모든 프로젝들을 반환한다.", response = List.class)
 	@GetMapping(value = "/{seq_post_portfolio}")
-	public ResponseEntity<List<Project>> selectAllPortfolioProject(@PathVariable int seq_post_portfolio) throws Exception {
+	public ResponseEntity<List<ProjectWithRoleStack>> selectAllPortfolioProject(@PathVariable int seq_post_portfolio) throws Exception {
 		logger.debug("selectAllPortfolioProject - 호출");
-		return new ResponseEntity<List<Project>>(portfolioProjectService.selectAllPortfolioProject(seq_post_portfolio), HttpStatus.OK);
+		
+		List<Project> projectList = portfolioProjectService.selectAllPortfolioProject(seq_post_portfolio);
+		List<ProjectWithRoleStack> projectWithRoleStackList = new ArrayList<ProjectWithRoleStack>();
+		for(int i=0,size=projectList.size();i<size;i++) {
+			int seq_post_project = projectList.get(i).getSeq();
+			List<ProjectRole> projectRoleList = projectRoleService.selectAllProjectRole(seq_post_project);
+			List<ProjectStack> projectStackList = projectStackService.selectAllProjectStack(seq_post_project);
+			projectWithRoleStackList.add(new ProjectWithRoleStack(projectList.get(i), projectRoleList, projectStackList));
+		}
+		
+		return new ResponseEntity<List<ProjectWithRoleStack>>(projectWithRoleStackList, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "포트폴리오에 프로젝트를 추가하거나 삭제한다(seq_post_project == null >> 해당 포트폴리오 연관 프로젝트 전체 삭제) ex) {seq_post_portfolio : 4, seq_post_project :[3,16,42,62]}", response = String.class)
