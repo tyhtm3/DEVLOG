@@ -6,27 +6,31 @@
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
-                <div class="col-md-4" v-for="(post,index) in postList" :key="index">
+                <div class="col-md-4" v-for="(post,index) in postList" :key="index" style="height:534px;">
                     <span v-show="adminMode">
                         <input class="delete-box" :id=post.seq type="checkbox" :value=post.seq v-model="deleteList" />
                         <label :for=post.seq></label>
                     </span>
-                    <div class="well-media" @click="goDetail(post.seq)" style="cursor:pointer;">
-                        <div class="vendor">
+                    <div class="well-media" style="cursor:pointer;">
+                        <div class="vendor" @click="goDetail(post.seq)">
                             <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
                             <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                         </div>
-                        <div class="video-text">
+                        <div class="video-text" @click="goDetail(post.seq)">
                             <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{post.title}}</h2>
                             <p class="content-3line" style="color:black;">{{ removeTag(post.content) }}</p>
                         </div>
                         <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px; ">
+
                         <span class = "tag-nest-detail">
                             <!-- 태그 갖고오기-->
-                            <span v-for="(tag,index) in post.tags" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                            <span v-for="(tag,index) in post.tags" :key="index"  class="tag"  @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}"
+                            style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
                             <!-- 여백 -->
                             <span class="tag donotshow"></span>
                         </span>
+
+
                         <!-- 좋아요, 코멘트 수 -->
                         <span class="tag-copy" style="display:inline-block;"><i class="ti-heart"></i> {{ post.like_count }} </span>
                         <span class="tag-copy" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ post.comment_count }} </span>
@@ -35,7 +39,8 @@
                 </div>
             </div>
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
-            <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+            <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
+            </infinite-loading>
         </section>
     </transition>
 </template>
@@ -69,6 +74,7 @@ export default {
             postVisible: [
             ],
             deleteSuccess: true,
+            activeIndex: [],
         }
     },
     created(){
@@ -80,6 +86,22 @@ export default {
         }
     },
     methods:{
+        // 태그 누를때마다 검색
+        tagSearch(tag){
+          // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
+          var index = this.searchTags.indexOf(tag)
+          var idx = this.activeIndex.indexOf(index)
+          if(index<0){
+            this.searchTags.push(tag)
+            this.activeIndex.push(index)
+          }else{
+            this.searchTags.splice(index,1)
+            this.activeIndex.splice(idx,1)
+          }
+        },
+        itemsContains(tag) {
+        return this.searchTags.indexOf(tag) > -1
+        },
         removeTag(text){
         text = text.replace(/<br\/>/ig, "\n");
         text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
@@ -281,5 +303,8 @@ input[type="checkbox"]:checked + label:before {
   border-left-color: transparent;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+.active {
+  background-color:    #DDDDDD;
 }
 </style>

@@ -13,7 +13,9 @@
 
       <!-- 헤더 : 프로젝트 작성시간, 댓글수, 좋아요 수, 수정|삭제 -->
       <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
-        <li><a :href="url">&nbsp;&nbsp;<span class="ti-user"></span>{{projectUser.nickname}}</a></li>
+        <li><a :href="url" v-if="projectuser.nickname">&nbsp;&nbsp;<span class="ti-user"></span>{{projectUser.nickname}}</a>
+            <a :href="url" v-else>&nbsp;&nbsp;<span class="ti-user"></span>{{projectUser.id}}</a>
+        </li>
         <li><a> <span class="ti-pencil"></span>&nbsp;{{project.regtime}}</a></li>
         <li><a> <span class="ti-comment-alt"></span>&nbsp;{{commentCnt}}</a></li>
         <li>
@@ -110,7 +112,7 @@
 
                 <!-- 프로젝트 태그 -->
                 <p class="pull-left">
-                  <span v-for="(tag, index) in tag" v-bind:key="index" class="tag">
+                  <span @click="tagSearch(tag.tag)" v-for="(tag, index) in tag" v-bind:key="index" class="tag">
                     #{{tag.tag}}
                   </span>
                 </p>
@@ -165,6 +167,14 @@
       this.getInfo(this.seq)
     },
     methods: {
+      tagSearch(tag){
+        this.$store.commit('setSearchTag',tag)
+        if(this.$store.state.previousUrl.indexOf('blog')>0){
+            this.$router.push('/blog/'+this.blogurl)
+        }else{
+            this.$router.push('/')
+        }
+      },
       getInfo(seq){
         // 프로젝트 불러오기.
         http.get('project/'+seq)

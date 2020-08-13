@@ -16,6 +16,8 @@ export default new Vuex.Store({
     isAdminMode: false,
     loginFormVisible: false,
     token : null,
+    searchTag : null,
+    previousUrl : null,
   },
   getters: {
     getUserInfo: function(state) {
@@ -32,6 +34,12 @@ export default new Vuex.Store({
     },
     getToken: function(state) {
       return state.token
+    },
+    getSearchTag : function(state){
+      return state.searchTag
+    },
+    getPreviousUrl : function(state){
+      return state.previousUrl
     }
   },
   mutations: {
@@ -52,7 +60,13 @@ export default new Vuex.Store({
     },
     removeToken(state){
       state.token = null
-    }
+    },
+    setSearchTag(state, payload) {
+      state.searchTag = payload
+    },
+    setPreviousUrl(state, payload){
+      state.previousUrl = payload
+    },
   },
   actions: {
     login(context, {id, password, url}){

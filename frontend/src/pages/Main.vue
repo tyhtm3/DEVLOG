@@ -5,13 +5,13 @@
       <div class="carousel">
         <el-carousel indicator-position="outside" height='500px'>
           <el-carousel-item class="img-resize">
-            <img class="img-resize" src="../../docs/static/img/banner1.jpg">
+            <img class="img-resize" src="../../docs/static/img/ba.png">
           </el-carousel-item>
           <el-carousel-item>
-            <img class="img-resize" src="../../docs/static/img/banner2.jpg">
+            <img class="img-resize" src="../../docs/static/img/ba2.png">
           </el-carousel-item>
           <el-carousel-item>
-            <img class="img-resize" src="../../docs/static/img/banner3.jpg">
+            <img class="img-resize" src="../../docs/static/img/ba3.png">
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -32,7 +32,7 @@
 
                 <div v-for="(tag, index) in tags" v-bind:key="index" style="display:inline-block;" @mouseenter="showCloseButton(index)" @mouseleave="hideCloseButton(index)">
                 <!-- <span class="cover" > -->
-                <span @click="tagSearch(index,tag.tag)" :class="{'active': itemsContains(index)}" class="tag" style="font-size:20px; margin:10px;">
+                <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:20px; margin:10px;">
                   #{{tag.tag}}
                 </span>
                 <span @click="deleteTag(index)" class="hideDeleteButton ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
@@ -69,10 +69,18 @@
                     <div class="video-text">
                       <h2 style="font-weight: bold; margin-bottom:5px;" @click="goDetailProject(project.seq)">{{ project.title }}</h2>
                     </div>
-                    <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px; ">
-                      <span class = "tag-nest-detail">
-                        <span v-for="(tag,index) in project.tags" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
-                        <span class="tag donotshow"></span>
+                    <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" >
+                      <span class="tag-nest-detail">
+
+
+                      <div @click="tagSearch(tag.tag)" v-for="(tag,index) in project.tags" :key="index" style="display:inline-block;" >
+                      <span class="tag" :class="{'active': itemsContains(tag.tag)}" style="font-size:17px; margin-right:8px;float:left;">
+                        #{{tag.tag}}
+                      </span>
+                      </div>
+                      <span class="tag donotshow"></span>
+
+
                       </span>
                       <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-heart"></i> {{ project.like_count }} </span>
                       <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
@@ -120,16 +128,17 @@
                     <p class="content-3line">{{ removeTag(post.content) }}</p>
                   </div>
                   <hr>
+
                   <p class="pull-left posttag-nest">
                     <span v-for="(tag, index) in post.tags" :key="index" >
-                    <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                    <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
                     </span>
                   </p>
-                  <!-- </p> -->
-                  <!-- <button class="pull-right" @click="goDetailPost(post.seq)">더보기<i class="ti-heart"></i></button> -->
+
                   <!-- <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button> -->
                   <div style="clear:both;"></div>
                 </div>
+
                 <div class="right" @click="goDetailPost(post.seq)">
                   <div class="vendor">
                     <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
@@ -144,6 +153,7 @@
             <div v-else style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
                 조건에 일치하는 글이 존재하지 않습니다.
             </div>> 
+            
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
           
           </div>
@@ -178,6 +188,7 @@ export default {
       // 태그 검색
       searchTags: [],
       activeIndex: [],
+      fromDetailSearchTag: this.$store.state.searchTag,
       // 태그 추가
       inputtag: '',
       // 이웃 검색
@@ -198,6 +209,7 @@ export default {
   },
   created(){
     this.getTags();
+    this.getFromDetailSearchTag();
     this.getPostandproject();
   },
   watch: { 
@@ -214,18 +226,18 @@ export default {
       this.getPostandproject();
     },
     // 태그 누를때마다 검색
-    tagSearch(selected, tag){
-
+    tagSearch(tag){
       // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
       var index = this.searchTags.indexOf(tag)
-      var idx = this.activeIndex.indexOf(selected)
+      var idx = this.activeIndex.indexOf(index)
       if(index<0){
         this.searchTags.push(tag)
-        this.activeIndex.push(selected)
+        this.activeIndex.push(index)
       }else{
         this.searchTags.splice(index,1)
         this.activeIndex.splice(idx,1)
       }
+    
      // 선택한 태그로 재검색 (합집합)
     this.limit=0
     this.getPostandproject();
@@ -251,7 +263,6 @@ export default {
         }})
     .then(({data}) => {
       this.projectList = data;
-      this.getPostandproject();
       // this.getprojectCommentTag(data)
     })
     http
@@ -269,20 +280,38 @@ export default {
       this.postList = data
     })
     },
+    // 유저태그 가져오기
     getTags(){
+      this.tags=[]
       if(this.seq_user==''){
         // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
-        http.get('usertag/feed')
+        http.get('usertag/feed', {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }})
         .then(({data}) => {
           this.tags=data;
         });
       }
       else{
-        http.get('usertag/')
+        http.get('usertag/', {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }})
         .then(({data}) => {
           this.tags=data;
         });
       }
+    },
+    //디테일 페이지로부터 넘어온 태그 검색
+    getFromDetailSearchTag(){
+        if(this.fromDetailSearchTag!=null){
+        this.inputtag = this.fromDetailSearchTag
+        this.addTag()
+        this.searchTags.push(this.fromDetailSearchTag)
+        this.fromDetailSearchTag = null
+        this.$store.commit('setSearchTag',null)
+        }
     },
     // 인피니트로딩
     infiniteHandler($state){
@@ -359,8 +388,8 @@ export default {
     goDetailPost(seq){
       this.$router.push(`/blog/post/${seq}`)
     },
-    itemsContains(n) {
-      return this.activeIndex.indexOf(n) > -1
+    itemsContains(tag) {
+      return this.searchTags.indexOf(tag) > -1
     },
     addTag(){
         var tag = this.inputtag
@@ -379,18 +408,17 @@ export default {
                 this.tags.push({tag : tag, seq: data})
                 })
               .catch((error) => {
-                console.log(error.response.status)
                 if(error.response.status=='401'){
+                  if(this.fromDetailSearchTag!=null){
                   this.$message({
                     type: 'warning',
                     message: '중복되는 태그입니다.'
-                  });
+                  });}
                 }
           })
           }
           //비로그인 - 화면에만 띄워줌
           else{
-
             let isDuplicatedTag = false
             for(var i=0;i<this.tags.length;i++)
               if(this.tags[i].tag == tag)
@@ -418,6 +446,8 @@ export default {
                 type: 'success',
                 message: '관심 태그가 삭제되었습니다.'
               });   
+        // var idx = this.searchTags.indexOf(this.tags[index].tag)
+        // this.searchTags.splice(idx,1)      
         })
       }
       this.tags.splice(index,1)   

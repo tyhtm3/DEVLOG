@@ -38,12 +38,12 @@
 
           <div style="margin-left:60px;">    
             <!-- 블로그 태그 -->
-            <span @click="tagSearch(index,tag.tag)" :class="{'tag-active': itemsContains(index)}"
+            <span @click="tagSearch(tag.tag)" :class="{'tag-active': itemsContains(tag.tag)}"
             v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="padding:5px; margin:2px; cursor:pointer">
               #{{tag.tag}}
               <span v-show="getIsAdminMode" @click="deleteTag(tag.seq)" class="ti-close" style="position:absolute; font-size:3px; color:#333333;"></span>
             </span>
-            </span>
+           
             <span v-if="getIsAdminMode">
               <span v-if="searchBar">
                 <input v-on:keyup.enter="addTag" v-model="tag" placeholder="#">
@@ -139,14 +139,14 @@ export default {
     })
   },
   methods: {
-    // 태그 누를때마다 검색
-    tagSearch(selected, tag){
+     // 태그 누를때마다 검색
+    tagSearch(tag){
       // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
       var index = this.searchTags.indexOf(tag)
-      var idx = this.activeIndex.indexOf(selected)
+      var idx = this.activeIndex.indexOf(index)
       if(index<0){
         this.searchTags.push(tag)
-        this.activeIndex.push(selected)
+        this.activeIndex.push(index)
       }else{
         this.searchTags.splice(index,1)
         this.activeIndex.splice(idx,1)
@@ -237,8 +237,8 @@ export default {
         }
       })
     },
-    itemsContains(n) {
-      return this.activeIndex.indexOf(n) > -1
+    itemsContains(tag) {
+      return this.searchTags.indexOf(tag) > -1
     },
     subscribe() {
       http.get('user/id/'+this.$route.params.id)
@@ -336,6 +336,9 @@ export default {
     cursor: pointer;
 }
 .tagspecial:hover {
+    background: #ddd;
+}
+.tag-active {
     background: #ddd;
 }
 @font-face {
