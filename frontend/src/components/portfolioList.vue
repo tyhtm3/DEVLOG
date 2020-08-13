@@ -23,8 +23,8 @@
                         </div>
                         <div class="tag-nest" style="block:inline"> 
                             <span class="tag">#SpringBoot</span>
-                            <span class="tag">#Vue.js</span>
-                            <span class="tag">#css</span>
+                            <!-- <span class="tag">#Vue.js</span>
+                            <span class="tag">#css</span> -->
                             <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{portfolio.like_count}} </span>
                             <!-- <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span>  -->
                         </div>

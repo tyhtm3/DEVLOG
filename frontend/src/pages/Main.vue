@@ -250,8 +250,9 @@ export default {
         Authorization : this.$store.state.token,
         }})
     .then(({data}) => {
-      this.projectList = data
-      this.getprojectCommentTag(data)
+      this.projectList = data;
+      this.getPostandproject();
+      // this.getprojectCommentTag(data)
     })
     http
     .post('/post/feed', {
@@ -307,45 +308,45 @@ export default {
       })
     },
     // 프로젝트로부터 코멘트 개수와 태그 불러오기
-    getprojectCommentTag(data){
-      // console.log("this.projectList");
-      // console.log(this.projectList);
-      // console.log("데이터길이" + datad.length)
-      for(var i=0; i<data.length; i++){
-        this.getProjectComments(i)
-        this.getProjectTags(i)
-      }
-      this.projectComment.push(null);
-      this.projectTag.push(null);
-    },
-    getProjectComments(i){
-      if(i<this.projectList.length){
-        http.get('postcomment/count/'+this.projectList[i].seq, {headers: {
-        'Content-type': 'application/json',
-        Authorization : this.$store.state.token,
-        }})
-        .then(({data}) => {
-        // console.log(i+"번째 댓글: ");
-        this.projectComment[i] = data;
-        // console.log(data);
-        // console.log(this.projectComment[i]);
-        });
-      }
-    },
-    getProjectTags(i){
-      if(i<this.projectList.length){
-      http.get('posttag/'+this.projectList[i].seq, {headers: {
-        'Content-type': 'application/json',
-        Authorization : this.$store.state.token,
-        }})
-        .then(({data}) => {
-        // console.log(i+"번째 글 태그: ");
-        this.projectTag[i] = data.slice(0,3);
-        // console.log(data);
-        // console.log(this.projectTag[i]);
-        });
-      }
-    },
+    // getprojectCommentTag(data){
+    //   // console.log("this.projectList");
+    //   // console.log(this.projectList);
+    //   // console.log("데이터길이" + datad.length)
+    //   for(var i=0; i<data.length; i++){
+    //     this.getProjectComments(i)
+    //     this.getProjectTags(i)
+    //   }
+    //   this.projectComment.push(null);
+    //   this.projectTag.push(null);
+    // },
+    // getProjectComments(i){
+    //   if(i<this.projectList.length){
+    //     http.get('postcomment/count/'+this.projectList[i].seq, {headers: {
+    //     'Content-type': 'application/json',
+    //     Authorization : this.$store.state.token,
+    //     }})
+    //     .then(({data}) => {
+    //     // console.log(i+"번째 댓글: ");
+    //     this.projectComment[i] = data;
+    //     // console.log(data);
+    //     // console.log(this.projectComment[i]);
+    //     });
+    //   }
+    // },
+    // getProjectTags(i){
+    //   if(i<this.projectList.length){
+    //   http.get('posttag/'+this.projectList[i].seq, {headers: {
+    //     'Content-type': 'application/json',
+    //     Authorization : this.$store.state.token,
+    //     }})
+    //     .then(({data}) => {
+    //     // console.log(i+"번째 글 태그: ");
+    //     this.projectTag[i] = data.slice(0,3);
+    //     // console.log(data);
+    //     // console.log(this.projectTag[i]);
+    //     });
+    //   }
+    // },
     removeTag(text){
       text = text.replace(/<br\/>/ig, "\n")
       text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
@@ -467,12 +468,13 @@ export default {
 }
 .well-media{
   margin:10px;
-  box-shadow: 10px 10px 10px rgba(204, 204, 204, 0.4);
+  border-radius: 3px;
+  box-shadow: 7px 7px 3px rgba(204, 204, 204, 0.144);
   z-index: -3;
 }
 
 .well-media:hover{
-    box-shadow: 10px 10px 10px rgba(109, 109, 109, 0.4);
+    box-shadow: 8px 8px 6px  rgba(163, 163, 163, 0.404);
 }
 .el-carousel__item h3 {
   color: #475669;
@@ -509,15 +511,6 @@ export default {
 }
 .blog-list-nest{
   float: left;
-}
-.tag-copy{
-  background: transparent;
-  border-radius: 10px;
-  padding: 3px 0px;
-  font-size: 14px;
-  margin-right: 5px;
-  line-height: 50px;
-  float: right;
 }
 .tag-copy2{
   // float: right;
@@ -603,6 +596,42 @@ export default {
 .donotshow{
   visibility:hidden;
 }
+.left > .posttag-nest{
+  white-space:nowrap; 
+  display:inline-block; 
+  width:100%; 
+  overflow:scroll;
+}
+.posttag-nest::-webkit-scrollbar {
+  width: 7px;
+}
+.posttag-nest::-webkit-scrollbar-thumb {
+  width: 1px;
+  background-color:  rgb(212, 211, 211);
+  border-radius: 30px;
+  background-clip: padding-box;
+  border: 7px solid transparent;
+}
+.posttag-nest::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 30px;
+}
+</style>
+
+
+
+
+<style lang="scss">
+
+.tag-copy{
+  background: transparent;
+  border-radius: 10px;
+  padding: 3px 0px;
+  font-size: 14px;
+  margin-right: 5px;
+  line-height: 50px;
+  float: right;
+}
 .tag-nest-detail{
   white-space:nowrap; 
   display:inline-block; 
@@ -626,25 +655,5 @@ export default {
   background-color: transparent;
   border-radius: 30px;
   // box-shadow: inset 0px 0px 3px transparent;
-}
-.left > .posttag-nest{
-  white-space:nowrap; 
-  display:inline-block; 
-  width:100%; 
-  overflow:scroll;
-}
-.posttag-nest::-webkit-scrollbar {
-  width: 7px;
-}
-.posttag-nest::-webkit-scrollbar-thumb {
-  width: 1px;
-  background-color:  rgb(212, 211, 211);
-  border-radius: 30px;
-  background-clip: padding-box;
-  border: 7px solid transparent;
-}
-.posttag-nest::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-radius: 30px;
 }
 </style>

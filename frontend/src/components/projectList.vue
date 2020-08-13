@@ -22,17 +22,13 @@
                             <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{project.title}}</h2>
                             <p class="content-3line" style="color:black;">{{project.summary}}</p>
                         </div>
-                        <div class="tag-nest" style="block:inline"> 
-                           <!-- 태그 3개만 갖고오기--> 
-                            <span v-for="(tag,index) in tag[index]" :key="index">
-                            <span class="tag">#{{tag.tag}}</span>
-                            </span>
-                            <!-- 여백 -->
-                            <span class="tag"></span>
-
-                            <!-- 좋아요, 코멘트 수 -->
-                            <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{project.like_count}} </span>
-                            <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span> 
+                        <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px; ">
+                        <span class = "tag-nest-detail">
+                            <span v-for="(tag,index) in project.tags" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                            <span class="tag donotshow"></span>
+                        </span>
+                        <span class="tag-copy" style="display:inline-block;"><i class="ti-heart"></i> {{ project.like_count }} </span>
+                        <span class="tag-copy" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
                         </div>
                         <!-- <div class="video-category-bg">
                             <h3>FRONT-END</h3>
@@ -67,8 +63,8 @@
     data(){
         return{
             projectList: [],
-            comment: [],
-            tag:[],
+            // comment: [],
+            // tag:[],
             // 페이지네이션
             limit: 0,
             page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3배수)
@@ -101,25 +97,25 @@
                 http.post('project/blog', { seq_user:data.seq , seq_blog:data.seq, offset:0, limit:this.page , tag:(this.searchTags.length==0?null:this.searchTags) } )
                 .then(({ data }) => {
                     this.projectList = data;
-                    this.getprojectCommentTag(data)
+                    // this.getprojectCommentTag(data)
                 })
             })
         },
         // 프로젝트로부터 코멘트 개수와 태그 불러오기
-        getprojectCommentTag(data){
-            for(var i=0; i<data.length; i++){
-                // 코멘트
-                http.get('postcomment/count/'+data[i].seq)
-                .then(({data}) => {
-                    this.comment.push(data);
-                });
-                // 태그
-                http.get('posttag/'+data[i].seq)
-                .then(({data}) => {
-                    this.tag.push(data.slice(0,3));
-                });
-            }   
-        },
+        // getprojectCommentTag(data){
+        //     for(var i=0; i<data.length; i++){
+        //         // 코멘트
+        //         http.get('postcomment/count/'+data[i].seq)
+        //         .then(({data}) => {
+        //             this.comment.push(data);
+        //         });
+        //         // 태그
+        //         http.get('posttag/'+data[i].seq)
+        //         .then(({data}) => {
+        //             this.tag.push(data.slice(0,3));
+        //         });
+        //     }   
+        // },
         // 인피니트로딩
         infiniteHandler($state){
             http.get('user/id/'+this.$route.params.id)
@@ -129,7 +125,7 @@
                     // 스크롤 페이징을 띄우기 위한 시간 1초
                     setTimeout(()=>{
                         if(data.length){
-                            this.getprojectCommentTag(data)
+                            // this.getprojectCommentTag(data)
                             this.projectList = this.projectList.concat(data);
                             $state.loaded()
                             this.limit +=this.page
@@ -278,5 +274,15 @@ input[type="checkbox"]:checked + label:before {
   border-left-color: transparent;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+</style>
+<style lang="scss" >
+
+.col-md-4{
+  margin-bottom:20px;
+  border-radius: 5px;
+}
+.col-md-4:hover{
+  box-shadow: 15px 15px 15px rgba(134, 134, 134, 0.096);
 }
 </style>
