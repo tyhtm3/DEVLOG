@@ -36,8 +36,8 @@
                                 희망 직무 {{portfolio.content}}
                               </span> 
                               <p> {{portfolio.github_url}}</p>
-                              <p>{{user.email}}</p>
-                              <p>{{user.tel}}</p>
+                              <p>{{portfolio.email}}</p>
+                              <p>{{portfolio.tel}}</p>
                             </div>
                             <!-- 3. 소개 끝 -->
 
@@ -142,7 +142,6 @@
     data: function () {
         return { 
           seq : this.$route.params.seq,
-          user : '',
           portfolio : '',
           portfoliopjt : '',
         }
@@ -150,9 +149,6 @@
     created(){
       http.get(`portfolio/${this.seq}`).then(({data}) => {
           this.portfolio=data
-           http.get(`user/${data.seq_blog}`).then(({data}) => {
-           this.user=data
-           });
       });
       http.get(`portfoliopjt/${this.seq}`).then(({data}) => {
           this.portfoliopjt=data
