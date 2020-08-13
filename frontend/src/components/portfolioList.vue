@@ -78,7 +78,7 @@
     },
     methods:{
         setPortfolioSeq(seq){
-          alert(seq);
+          // alert(seq);
           this.clickedSeq = seq;
         },
         goTemplate00(seq){
