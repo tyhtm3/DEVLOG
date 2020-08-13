@@ -32,9 +32,9 @@
                 <span class="search" id="demo-2">
                   <input v-on:keyup.enter="addTag"  v-model="inputtag" class="devin-search tag" type="search" style="font-size:15px;">
                 </span> 
-
+             
                 <div v-for="(tag, index) in tags" v-bind:key="index" style="display:inline-block;margin-right:10px;">
-                <span @click="tagSearch(index,tag.tag)" :class="{'active': itemsContains(index)}" class="tag" style="font-size:20px; margin:10px;">
+                <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:20px; margin:10px;">
                   #{{tag.tag}}
                 </span>
                 <span @click="deleteTag(index)" class="ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
@@ -55,10 +55,8 @@
               <!-- 미구현 목록
                   1. 프로젝트의 어떤 태그를 가져올지
               --> 
-              <div v-if="projectList.length==0" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
-                조건에 일치하는 프로젝트가 존재하지 않습니다.
-              </div>
-              <div v-else >
+         
+              <div v-if="projectList.length>0" >
               <el-carousel  :interval="4000" type="card" height="400px">
                 <el-carousel-item v-for="(project, index) in projectList" :key="index">
                   <div class="well-media">
@@ -72,7 +70,14 @@
                     </div>
                     <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" >
                       <span class="tag-nest-detail">
-                      <span v-for="(tag,index) in projectTag[index]" :key="index" class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+
+
+                      <div  class="pull-left" @click="tagSearch(tag.tag)" v-for="(tag,index) in projectTag[index]" :key="index" style="display:inline-block;" >
+                      <span class="tag" :class="{'active': itemsContains(tag.tag)}" style="font-size:17px; margin-right:8px;">
+                        #{{tag.tag}}
+                      </span>
+                      </div>
+
                       </span>
                       <!-- 여백 -->
                       <span class="tag"></span>
@@ -85,6 +90,9 @@
               </el-carousel>
               </div>
               <!-- end project list -->
+              <div v-else style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
+                조건에 일치하는 프로젝트가 존재하지 않습니다.
+              </div>
             </div>
 
             <br>
@@ -118,11 +126,9 @@
                     <p class="content-3line">{{ removeTag(post.content) }}</p>
                   </div>
                   <hr>
-                  <p class="pull-left">
-                    <span v-for="(tag, index) in post.tags" :key="index">
-                    <span class="tag" style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
-                    </span>
-                  </p>
+                    <div  class="pull-left" @click="tagSearch(tag.tag)" v-for="(tag, index) in post.tags" :key="index" style="display:inline-block;" >
+                    <span class="tag" :class="{'active': itemsContains(tag.tag)}"  style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                    </div>
                   <!-- <button class="btn btn-info pull-right"  @click="goDetailPost(post.seq)">Read More</button> -->
                   <div style="clear:both;"></div>
                 </div>
@@ -140,6 +146,7 @@
             <div v-else style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
                 조건에 일치하는 글이 존재하지 않습니다.
             </div>> 
+            
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
           
           </div>
@@ -174,6 +181,7 @@ export default {
       // 태그 검색
       searchTags: [],
       activeIndex: [],
+      fromDetailSearchTag: this.$store.state.searchTag,
       // 태그 추가
       inputtag: '',
       // 이웃 검색
@@ -194,6 +202,14 @@ export default {
   },
   created(){
     this.getTags();
+    // 디테일 페이지에서 클릭한 태그로 피드에 넘어왔을 경우
+    if(this.fromDetailSearchTag!=null){
+    this.inputtag = this.fromDetailSearchTag
+    this.addTag()
+    this.searchTags.push(this.fromDetailSearchTag)
+    this.fromDetailSearchTag = null
+    this.$store.commit('setSearchTag',null)
+    }
     this.getPostandproject();
   },
   watch: { 
@@ -210,18 +226,19 @@ export default {
       this.getPostandproject();
     },
     // 태그 누를때마다 검색
-    tagSearch(selected, tag){
+    tagSearch(tag){
 
       // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
       var index = this.searchTags.indexOf(tag)
-      var idx = this.activeIndex.indexOf(selected)
+      var idx = this.activeIndex.indexOf(index)
       if(index<0){
         this.searchTags.push(tag)
-        this.activeIndex.push(selected)
+        this.activeIndex.push(index)
       }else{
         this.searchTags.splice(index,1)
         this.activeIndex.splice(idx,1)
       }
+    
      // 선택한 태그로 재검색 (합집합)
     this.limit=0
     this.getPostandproject();
@@ -264,15 +281,8 @@ export default {
       this.postList = data
     })
     },
+    // 유저태그 가져오기
     getTags(){
-      // if(this.seq_user==''){
-      //   // 모든 태그 띄워주기 or 인기 태그 띄워주기 or 최신 태그 띄워주기
-      //   http.get('usertag/feed')
-      //   .then(({data}) => {
-      //     this.tags=data;
-      //   });
-      // }
-      // else{
         this.tags=[]
         http.get('usertag/', {headers: {
         'Content-type': 'application/json',
@@ -281,7 +291,6 @@ export default {
         .then(({data}) => {
           this.tags=data;
         });
-      // }
     },
     // 인피니트로딩
     infiniteHandler($state){
@@ -308,9 +317,6 @@ export default {
     },
     // 프로젝트로부터 코멘트 개수와 태그 불러오기
     getprojectCommentTag(data){
-      // console.log("this.projectList");
-      // console.log(this.projectList);
-      // console.log("데이터길이" + datad.length)
       for(var i=0; i<data.length; i++){
         this.getProjectComments(i)
         this.getProjectTags(i)
@@ -358,8 +364,8 @@ export default {
     goDetailPost(seq){
       this.$router.push(`/blog/post/${seq}`)
     },
-    itemsContains(n) {
-      return this.activeIndex.indexOf(n) > -1
+    itemsContains(tag) {
+      return this.searchTags.indexOf(tag) > -1
     },
     addTag(){
         var tag = this.inputtag
@@ -378,18 +384,17 @@ export default {
                 this.tags.push({tag : tag, seq: data})
                 })
               .catch((error) => {
-                console.log(error.response.status)
                 if(error.response.status=='401'){
+                  if(this.fromDetailSearchTag!=null){
                   this.$message({
                     type: 'warning',
                     message: '중복되는 태그입니다.'
-                  });
+                  });}
                 }
           })
           }
           //비로그인 - 화면에만 띄워줌
           else{
-
             let isDuplicatedTag = false
             for(var i=0;i<this.tags.length;i++)
               if(this.tags[i].tag == tag)
@@ -417,6 +422,8 @@ export default {
                 type: 'success',
                 message: '관심 태그가 삭제되었습니다.'
               });   
+        // var idx = this.searchTags.indexOf(this.tags[index].tag)
+        // this.searchTags.splice(idx,1)      
         })
       }
       this.tags.splice(index,1)   

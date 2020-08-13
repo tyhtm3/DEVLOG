@@ -39,10 +39,11 @@
           <div>    
           <span style="margin-left:60px;"></span>  
           
-          <!-- 블로그 태그 -->
-          <span @click="tagSearch(index,tag.tag)" :class="{'tag-active': itemsContains(index)}" v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="margin-right:20px;">
-            #{{tag.tag}}
-           </span>
+           <!-- 태그 3개만 갖고오기--> 
+            <div v-for="(tag,index) in blogOwnerMainTags" :class="{'tag-active': itemsContains(tag.tag)}"  :key="index" style="display:inline-block;" >
+               <span style="margin-right:20px;" class="tag" @click="tagSearch(tag.tag)"  >#{{tag.tag}}</span>
+            </div>
+
           </div>
           <div class="column4" v-if= "getIsLogin">
             <span v-if="isAdmin">
@@ -129,13 +130,13 @@ export default {
   },
   methods: {
      // 태그 누를때마다 검색
-    tagSearch(selected, tag){
+    tagSearch(tag){
       // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
       var index = this.searchTags.indexOf(tag)
-      var idx = this.activeIndex.indexOf(selected)
+      var idx = this.activeIndex.indexOf(index)
       if(index<0){
         this.searchTags.push(tag)
-        this.activeIndex.push(selected)
+        this.activeIndex.push(index)
       }else{
         this.searchTags.splice(index,1)
         this.activeIndex.splice(idx,1)
@@ -226,8 +227,8 @@ export default {
         }
       })
     },
-    itemsContains(n) {
-      return this.activeIndex.indexOf(n) > -1
+    itemsContains(tag) {
+      return this.searchTags.indexOf(tag) > -1
     },
     subscribe() {
       http.get('user/id/'+this.$route.params.id)
@@ -272,9 +273,7 @@ export default {
 <style>
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 .container-movie{  font-family: 'Noto Sans KR', sans-serif;}
-.tag-active {
-  background:    #DDDDDD;
-}
+
 .column4{
     float: right;
     margin-right: 40px;
@@ -299,6 +298,9 @@ export default {
     cursor: pointer;
 }
 .tagspecial:hover {
+    background: #ddd;
+}
+.tag-active {
     background: #ddd;
 }
 @font-face {

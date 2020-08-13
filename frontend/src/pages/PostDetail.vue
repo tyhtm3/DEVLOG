@@ -38,7 +38,7 @@
                 </div>
                 <!-- 포스트 태그 -->
                 <p class="pull-left">
-                  <span v-for="(tag, index) in tag" v-bind:key="index" class="tag">
+                  <span @click="tagSearch(tag.tag)" v-for="(tag, index) in tag" v-bind:key="index" class="tag">
                   #{{tag.tag}}
                   </span>
                 </p>
@@ -89,6 +89,17 @@
       this.getInfo(this.seq)
     },
     methods: {
+       tagSearch(tag){
+        this.$store.commit('setSearchTag',tag)
+        // 블로그 메인 -> 디테일페이지 -> 태그검색 -> 블로그메인
+        if(this.$store.state.previousUrl.indexOf('blog')>0){
+            this.$router.push('/blog/'+this.blogurl)
+        }
+        // 피드 -> 디테일페이지 -> 태그검색 -> 피드
+        else{
+            this.$router.push('/')
+        }
+      },
       getInfo(seq){
         // 포스트 불러오기.
         http.get('post/'+seq)
