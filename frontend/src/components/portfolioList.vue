@@ -22,9 +22,7 @@
                             <p class="content-3line" style="color:black;">{{ removeTag(portfolio.content) }}</p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 
-                            <span class="tag">#SpringBoot</span>
-                            <span class="tag">#Vue.js</span>
-                            <span class="tag">#css</span>
+                            <span class="tag">#Portfolio</span>
                             <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{portfolio.like_count}} </span>
                             <!-- <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span>  -->
                         </div>
@@ -38,7 +36,7 @@
                     <div style="text-align:center">
                         <!-- <div class="wrap"> -->
                             <button class="fill" @click="goTemplate00(portfolio.seq)">resume</button>
-                            <button class="fill" @click="goTemplate01">4 cards</button>
+                            <button class="fill" @click="goTemplate01(portfolio.seq)">4 cards</button>
                         <!-- </div> -->
                     </div>
                     </el-dialog>
@@ -81,7 +79,7 @@
             this.$router.push(`/blog/portfolio/${seq}`)
         },
         goTemplate01(seq){
-            this.$router.push(`/template01`)
+            this.$router.push('/blog/portfolio1/'+seq)
         },
         goTemplate02(seq){
         },

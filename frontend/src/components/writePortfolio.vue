@@ -206,19 +206,6 @@
                   <dd><el-input v-model="portfolioTitle" style="width: 70%;"></el-input></dd>
                   <dt>CONTENT</dt>
 									<dd><el-input v-model="portfolioContent" style="width: 70%;"></el-input></dd>
-                  <!-- <dt>POSITION</dt>
-									<dd><el-input v-model="portfolioRole" style="width: 70%;"></el-input></dd> -->
-                  <dt>썸네일</dt>
-                  <dd>
-                    <el-upload action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
-                    
-                    :show-file-list="false"
-                    list-type="picture-card"
-                    style="display:inline">
-                    
-                    <i slot="default" class="el-icon-plus"></i>
-                    </el-upload>
-                  </dd>
                   <dt>공개 여부</dt>
                   
                   <dd>

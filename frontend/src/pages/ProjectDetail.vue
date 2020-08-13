@@ -147,7 +147,7 @@
     data: function () {
         return { 
           seq:'',
-          project:'',
+          project:{},
           projectUser:'',
           isLike:'',
           commentCnt:'',
@@ -234,7 +234,6 @@
             this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
          })
       },
-      // 프로젝트 수정 미구현
       updateProject(seq){
         this.$router.push('/blog/project-update/'+seq)
       },
