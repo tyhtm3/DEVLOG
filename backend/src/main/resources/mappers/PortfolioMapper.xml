@@ -7,7 +7,7 @@
 
 	<!-- 블로그 메인에서 한 페이지의 포트폴리오 반환 -->
 	<select id="selectPortfolioByBlog" resultType="Portfolio">
-		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content
+		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content,b.tel,b.email 
 		from post as a inner join post_portfolio as b on a.seq = b.seq
 		where seq_blog = #{seq_blog}
 		<if test="seq_user != 0">
@@ -24,7 +24,7 @@
 	
 	<!-- 포트폴리오 상세조회  -->
 	<select id="selectPortfolio" resultType="Portfolio">
-		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content
+		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content,b.tel,b.email 
 		from post as a inner join post_portfolio as b on a.seq = b.seq
 		where a.seq = #{seq}
 	</select>
