@@ -12,7 +12,9 @@
 
       <!-- 헤더 : 프로젝트 작성시간, 댓글수, 좋아요 수, 수정|삭제 -->
       <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
-        <li><a :href="url">&nbsp;&nbsp;<span class="ti-user"></span>{{postUser.nickname}}</a></li>
+        <li><a :href="url" v-if="postUser.nickname">&nbsp;&nbsp;<span class="ti-user"></span>{{postUser.nickname}}</a>
+            <a :href="url" v-else>&nbsp;&nbsp;<span class="ti-user"></span>{{postUser.id}}</a>
+        </li>
         <li><a> <span class="ti-pencil"></span>&nbsp;{{post.regtime}}</a></li>
         <li><a> <span class="ti-comment-alt"></span>&nbsp;{{commentCnt}}</a></li>
         <li>
