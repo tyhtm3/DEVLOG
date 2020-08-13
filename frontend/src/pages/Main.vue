@@ -5,14 +5,21 @@
       <div class="carousel">
         <el-carousel indicator-position="outside" height='500px'>
           <el-carousel-item class="img-resize">
+            <img class="img-resize" src="../../docs/static/img/test1.jpg">
+          </el-carousel-item>
+          <el-carousel-item class="img-resize">
+            <img class="img-resize" src="../../docs/static/img/test2.jpg">
+          </el-carousel-item>
+          <el-carousel-item class="img-resize">
             <img class="img-resize" src="../../docs/static/img/ba.png">
           </el-carousel-item>
-          <el-carousel-item>
+          <el-carousel-item class="img-resize">
             <img class="img-resize" src="../../docs/static/img/ba2.png">
           </el-carousel-item>
-          <el-carousel-item>
+          <el-carousel-item class="img-resize">
             <img class="img-resize" src="../../docs/static/img/ba3.png">
           </el-carousel-item>
+          
         </el-carousel>
       </div>
       <!-- end banner carousel -->
@@ -560,8 +567,12 @@ export default {
   top: 65px
 }
 .img-resize{
-  width:100%;
-  height:100%;
+  // width:100%;
+  height:100% !important;
+  text-align: center !important;
+  // background-image:url('../../docs/static/img/ba.png');
+  // background-position:center;
+  // background-size:contain;
 }
 .title-1line{
   /* 한 줄 자르기 */

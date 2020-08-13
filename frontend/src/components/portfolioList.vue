@@ -11,13 +11,12 @@
                         <input class="delete-box" :id=portfolio.seq type="checkbox" :value=portfolio.seq v-model="deleteList" />
                         <label :for=portfolio.seq></label>
                     </span>
-                    <div class="well-media" @click="selectDialogVisible=true;" style="cursor:pointer;">
+                    <div class="well-media" @click="selectDialogVisible=true;setPortfolioSeq(portfolio.seq);" style="cursor:pointer;">
                         <div class="vendor">
                             <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
                         </div>
                         <div class="video-text">
-                            <!-- {{portfolio}} -->
                             <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{portfolio.title}}</h2>
                             <p class="content-3line" style="color:black;">{{ removeTag(portfolio.content) }}</p>
                         </div>
@@ -37,7 +36,7 @@
                     center>
                     <div style="text-align:center">
                         <!-- <div class="wrap"> -->
-                            <button class="fill" @click="goTemplate00(portfolio.seq)">resume</button>
+                            <button class="fill" @click="goTemplate00(clickedSeq)">resume</button>
                             <button class="fill" @click="goTemplate01">4 cards</button>
                         <!-- </div> -->
                     </div>
@@ -62,7 +61,8 @@
 			counter: 0,
 			deleteList: [],
 			deleteSuccess: true,
-			selectDialogVisible: false
+      selectDialogVisible: false,
+      clickedSeq:''
 		}
     },
     created(){
@@ -77,7 +77,12 @@
 		}
     },
     methods:{
+        setPortfolioSeq(seq){
+          alert(seq);
+          this.clickedSeq = seq;
+        },
         goTemplate00(seq){
+            // alert(seq);
             this.$router.push(`/blog/portfolio/${seq}`)
         },
         goTemplate01(seq){
