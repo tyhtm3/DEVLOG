@@ -23,18 +23,20 @@
                       <div class="social-profile">
                         <h3> <a class="link-comment" href="#">{{comment.nickname}}</a>
                           <span style="font-size:12px;"><i class="entypo-globe"></i>&nbsp;{{comment.regtime}}</span>
-                          <span v-if="comment.seq==seq_user">
-                            <span style="font-size:13px;"><a class="link-comment pull-right"  @click="deleteComment(comment.seq)"><i class="fontawesome-share"></i>&nbsp;삭제</a></span>
-                            <span style="font-size:13px;"><a class="link-comment pull-right"><i class="fontawesome-share"></i>&nbsp; | </a></span>
-                            <span style="font-size:13px;"><a class="link-comment pull-right" @click="showCommentEditor(comment.seq,comment.content)"><i class="fontawesome-share"></i>&nbsp;수정</a></span>
+                          <span v-if="comment.seq_user==seq_user">
+                            <span class="link-comment pull-right" style="font-size:13px; cursor:pointer;">
+                              <span @click="showCommentEditor(comment.seq,comment.content)">수정</span>
+                              &nbsp;|&nbsp;
+                              <span @click="deleteComment(comment.seq)">삭제</span>
+                            </span>
                           </span>
                         </h3>
                       </div>
                       
                       <!-- 댓글 수정 클릭시 updateContent 정보가 담겨진 vue editor가 나타난다.-->
                       <div v-if="updateSeq==comment.seq" style="margin-top:20px;">
-                      <vue-editor class="comment-editor" v-model="updateContent" style="display:inline-block;width:100%;"></vue-editor><br><br>
-                      <el-button class="pull-right" @click="updateComment">Comment</el-button>
+                        <vue-editor class="comment-editor" v-model="updateContent" style="display:inline-block;width:100%;"></vue-editor><br><br>
+                        <el-button class="pull-right" @click="updateComment">Comment</el-button>
                       </div>
                       <p v-else v-html="comment.content" style="margin-left:0px;"></p>
                       

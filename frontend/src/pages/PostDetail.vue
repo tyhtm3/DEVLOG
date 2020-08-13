@@ -12,7 +12,9 @@
 
       <!-- 헤더 : 프로젝트 작성시간, 댓글수, 좋아요 수, 수정|삭제 -->
       <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
-        <li><a>&nbsp;&nbsp;<span class="ti-user"></span>{{postUser.nickname}}</a></li>
+        <li><a :href="url" v-if="postUser.nickname">&nbsp;&nbsp;<span class="ti-user"></span>{{postUser.nickname}}</a>
+            <a :href="url" v-else>&nbsp;&nbsp;<span class="ti-user"></span>{{postUser.id}}</a>
+        </li>
         <li><a> <span class="ti-pencil"></span>&nbsp;{{post.regtime}}</a></li>
         <li><a> <span class="ti-comment-alt"></span>&nbsp;{{commentCnt}}</a></li>
         <li>
@@ -38,7 +40,7 @@
                 </div>
                 <!-- 포스트 태그 -->
                 <p class="pull-left">
-                  <span v-for="(tag, index) in tag" v-bind:key="index" class="tag">
+                  <span @click="tagSearch(tag.tag)" v-for="(tag, index) in tag" v-bind:key="index" class="tag">
                   #{{tag.tag}}
                   </span>
                 </p>
@@ -78,6 +80,10 @@
           commentCnt:'',
           tag: [],
           seq_user: this.$store.state.userInfo.seq,
+          basicurl: '/blog/',
+          blogurl:'',
+          url:'',
+
         }
     },
     created(){
@@ -85,6 +91,17 @@
       this.getInfo(this.seq)
     },
     methods: {
+       tagSearch(tag){
+        this.$store.commit('setSearchTag',tag)
+        // 블로그 메인 -> 디테일페이지 -> 태그검색 -> 블로그메인
+        if(this.$store.state.previousUrl.indexOf('blog')>0){
+            this.$router.push('/blog/'+this.blogurl)
+        }
+        // 피드 -> 디테일페이지 -> 태그검색 -> 피드
+        else{
+            this.$router.push('/')
+        }
+      },
       getInfo(seq){
         // 포스트 불러오기.
         http.get('post/'+seq)
@@ -94,6 +111,8 @@
             http.get('user/'+data.seq_blog)
             .then(({data}) => {
               this.postUser=data
+              this.blogurl = this.postUser.id
+              this.url=this.basicurl+this.blogurl
             }) 
          })
         // 댓글 개수 불러오기

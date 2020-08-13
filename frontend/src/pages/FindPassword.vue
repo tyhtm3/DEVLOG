@@ -48,7 +48,7 @@
                   <br><br>
                   <div class="row">
                   <div class="col-sm-3"><p style="margin-top:8px;">이메일 주소</p></div>
-                  <div class="col-sm-9"><el-input v-model="idForPassword" style="width: 60%;"></el-input>
+                  <div class="col-sm-9"><el-input v-model="emailForPassword" style="width: 60%;"></el-input>
                   <el-button :plain="true" style="margin-left:20px;" @click="findpwd">비밀번호 전송</el-button></div>
                   </div>
 
@@ -85,6 +85,11 @@ export default {
   methods: {
     // 아이디 찾기 (ex.abcd****)
     findid(){
+      if(this.nameForId=='')
+          this.$message.warning('이름을 입력해주세요.')
+      else if(this.emailForId=='')
+          this.$message.warning('이메일을 입력해 주세요.')
+      else{
       http.get(`/user/email/${this.emailForId}`)
       .then(({ data }) => {
             if(data.length!==0 && data.name===this.nameForId){
@@ -97,6 +102,7 @@ export default {
               });
             }
         })
+          }
     },
     // 아이디 정보 *표시 없이 메일로 전송
     findfullid(){
@@ -109,6 +115,9 @@ export default {
     },
     // 임시 비밀번호 발급 메일 전송
     findpwd(){
+        if(this.emailForPassword=='')
+          this.$message.warning('이메일을 입력해주세요.')
+        else{
         http.get(`/user/findpwd?email=${this.emailForPassword}`)
         .then(({ data }) => {
             this.$message({
@@ -123,6 +132,7 @@ export default {
               });
             }
           })
+        }
     },
     hideId(id){
       let newId=''

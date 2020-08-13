@@ -1804,14 +1804,16 @@ input.devin-search {
         background: #ddd;
         border: solid 0px #ddd;
         padding: 10px 10px 10px 32px;
-        width: 55px;
+        width: 30px;
         -webkit-border-radius: 10em;
         -moz-border-radius: 10em;
-        border-radius: 10em;
+        border-radius: 15em;
         -webkit-transition: all .5s;
         -moz-transition: all .5s;
         transition: all .5s;
         position: relative;
+        height:30px;
+        // margin-bottom: 10px;
         &:focus {
             width: 130px;
             background-color: #eee;
@@ -1839,6 +1841,34 @@ input.devin-search {
         &:focus {
             width: 97%;
             // padding-left: 32px;
+            
+            border-radius: 15em;
+            padding-left: 50px;
+            color: #000;
+            background-color: #eee;
+            cursor: auto;
+        }
+    }
+    &:-moz-placeholder,
+    &::-webkit-input-placeholder {
+        color: transparent;
+    }
+}
+
+#demo-3 input {
+    &[type=search] {
+        width: 13px;
+        // padding-left: 10px;
+        color: transparent;
+        cursor: pointer;
+        &:hover {
+            background-color: #ccc;
+        }
+        &:focus {
+            width: 100px;
+            // padding-left: 32px;
+            
+            padding-left: 50px;
             color: #000;
             background-color: #eee;
             cursor: auto;

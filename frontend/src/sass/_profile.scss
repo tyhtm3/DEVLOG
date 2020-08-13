@@ -6,7 +6,7 @@
 
 .container-movie {
     margin: 0 auto;
-    height: 450px;
+    height: 500px;
     background: #F0F0ED;
     border-radius: 5px;
     position: relative;
@@ -92,6 +92,13 @@
     margin-right: 4px;
     line-height: 35px;
     cursor: pointer;
+}
+// .tag::before {
+//     content: "#";
+// }
+
+.inputtag{
+    background-color: transparent;
 }
 
 .tag:hover {

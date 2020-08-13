@@ -103,7 +103,7 @@ $gray: #000;
     .chat-history {
         padding: 30px 30px 30px;
         border-bottom: 1px solid #eee;
-        overflow-y: scroll;
+        overflow-y: auto;
         height: 567px;
         ul {
             li {

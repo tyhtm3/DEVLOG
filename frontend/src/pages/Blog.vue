@@ -1,48 +1,58 @@
 <template>
   <transition name="el-zoom-in-top">
-    <div class="content-wrapper" style="background: white;">
+    <div class="content-wrapper" style="background: white;padding-left:50px;padding-right:50px">
       <!-- start container-movie : 블로그 배너-->
-      <div class="container-movie" style="top:65px;">
+      <div class="container-movie" style="top:65px;background: white;">
         <!-- start profile -->
         <div class="details-profile" >
-          <div class="title1" style="display:inline">
+          <div class="title1" style="display:inline;">
             <!-- input length 바꾸게 하는것 -->
-            <input type="text" style="width:100%; font-size:40px;" id="title" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog" readonly />
-            <br>
-            <input type="text" style="width:100%; font-size:15px;" id="detail" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog" readonly />
+            <input type="text" style="width:100%; font-size:32px;color:#333333;" id="title" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog" readonly />
+            <input type="text" style="width:100%; font-size:13px;color:#959595;" id="detail" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog" readonly />
           </div>
                 
-          <div class="title2">
+          <div class="title2" style="color:#959595;font-size:18px">
             by {{blogOwnerInfo.nickname}}
             <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
-            <a href="#"><img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" /></a>
+            <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" />
             <!-- <span>Web Designer</span> -->
           </div>
         </div>
         <div class="description-profile">
           <div class="column2">
             <div class="row"> 
-              <div class="col-xs-12 col-sm-4 emphasis">
+              <div class="col-xs-12 col-sm-3 emphasis">
                 <h2><strong>{{blogOwnerNumOfProject}}</strong></h2>
                 <p> <small>Projects</small> </p>
               </div>
-              <div class="col-xs-12 col-sm-4 emphasis">
+              <div class="col-xs-12 col-sm-3 emphasis">
                 <h2><strong>{{blogOwnerNumOfPost}}</strong></h2>
                 <p> <small>Post</small> </p>
               </div>
-              <div class="col-sm-4 emphasis" style="cursor:pointer;" @click="follower">
+              <div class="col-sm-3 emphasis" style="cursor:pointer;" @click="follower">
                 <h2><strong >{{blogOwnerNumOfNeighbor}}</strong></h2>
                 <p><small>Follow </small></p>
               </div>
             </div>
           </div>
-              
-          <span style="margin-left:60px;"></span>  
-          <!-- 블로그 태그 -->
-          <span class = "tag" v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="margin-right:20px;">
-            #{{tag.tag}}
-          </span>
 
+          <div style="margin-left:60px;">    
+            <!-- 블로그 태그 -->
+            <span @click="tagSearch(tag.tag)" :class="{'tag-active': itemsContains(tag.tag)}"
+            v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="padding:5px; margin:2px; cursor:pointer">
+              #{{tag.tag}}
+              <span v-show="getIsAdminMode" @click="deleteTag(tag.seq)" class="ti-close" style="position:absolute; font-size:3px; color:#333333;"></span>
+            </span>
+           
+            <span v-if="getIsAdminMode">
+              <span v-if="searchBar">
+                <input v-on:keyup.enter="addTag" v-model="tag" placeholder="#">
+              </span>
+              <span v-if="addIcon" style="position: absolute; cursor:pointer;" @click="tagInputVisible">
+                <i class="material-icons">add_circle_outline</i>
+              </span>
+            </span>
+          </div>
           <div class="column4" v-if= "getIsLogin">
             <span v-if="isAdmin">
               <router-link to="../writePost">
@@ -57,7 +67,7 @@
       </div>
       <!-- end container-movie -->
       <div class="box">
-        <blog-content v-if="!followerpage"></blog-content>
+        <blog-content v-bind:searchTags="searchTags" v-if="!followerpage"></blog-content>
         <follower v-else></follower>
       </div>
     </div>
@@ -91,9 +101,14 @@ export default {
       blogOwnerNumOfPost:'',
       blogOwnerNumOfNeighbor:'',
       blogOwnerMainTags:[],
-      tags: ['java', 'spring', 'python', 'aws', 'ml', 'database', 'blockchain', 'javascript', 'tensorflow'],
       followerpage: false,
       isAdmin: '',
+      // 태그 검색
+      searchTags: [],
+      activeIndex: [],
+      searchBar: false,
+      addIcon: true,
+      tag: '',
     }
   },
   created() {
@@ -124,6 +139,19 @@ export default {
     })
   },
   methods: {
+     // 태그 누를때마다 검색
+    tagSearch(tag){
+      // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
+      var index = this.searchTags.indexOf(tag)
+      var idx = this.activeIndex.indexOf(index)
+      if(index<0){
+        this.searchTags.push(tag)
+        this.activeIndex.push(index)
+      }else{
+        this.searchTags.splice(index,1)
+        this.activeIndex.splice(idx,1)
+      }
+    },
     getBlogOwnerInfo(){
       http.get('user/id/'+this.blogOwnerId)
       .then(({data})=>{
@@ -209,6 +237,9 @@ export default {
         }
       })
     },
+    itemsContains(tag) {
+      return this.searchTags.indexOf(tag) > -1
+    },
     subscribe() {
       http.get('user/id/'+this.$route.params.id)
       .then(({data})=>{
@@ -226,14 +257,12 @@ export default {
             })
           }
           else{
-            console.log(this.blogOwnerInfo.seq)
             http.delete('/userneighbor', {
               data:{
                 seq_neighbor: this.blogOwnerInfo.seq
               }
             })
             .then(({ data }) => {
-              console.log(data)
               this.$message({
                 type: 'error',
                 message: '이웃 목록에서 삭제 되었습니다.',
@@ -245,11 +274,44 @@ export default {
           }
         })
       })
+    },
+    tagInputVisible(){
+      this.searchBar = true
+      this.addIcon = false
+    },
+    addTag(){
+      http
+      .post('blogtag', {
+        tag: this.tag
+      })
+      .then(({data}) => {
+        this.blogOwnerMainTags.push(this.tag)
+        this.searchBar = false
+        this.addIcon = true
+        this.getBlogOwnerInfo()
+      })
+    },
+    deleteTag(seq){
+      http
+      .delete('blogtag/'+seq)
+      .then(({data}) => {
+        this.$message({
+          type: 'success',
+          message: '태그가 삭제되었습니다.',
+        });
+        this.getBlogOwnerInfo()
+      })
     }
   }
 }
 </script>
 <style>
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+.container-movie{  font-family: 'Noto Sans KR', sans-serif;}
+.tag-active {
+  background: #DDDDDD;
+  border-radius: 20px;
+}
 .column4{
     float: right;
     margin-right: 40px;
@@ -275,5 +337,44 @@ export default {
 }
 .tagspecial:hover {
     background: #ddd;
+}
+.tag-active {
+    background: #ddd;
+}
+@font-face {
+font-family: 'NotoKrL';
+font-style: normal;
+font-weight: 100;
+src: local('Noto Sans Light'), local('NotoSans-Light'), url(/fonts/NotoSans-Light.eot);
+src: url(/fonts/NotoSans-Light.eot?#iefix) format('embedded-opentype'),
+url(/fonts/NotoSans-Light.woff2) format('woff2'),
+url(/fonts/NotoSans-Light.woff) format('woff');;
+}
+@font-face {
+font-family: 'NotoKrR';
+font-style: normal;
+font-weight: 300;
+src: local('Noto Sans Regular'), local('NotoSans-Regular'), url(/fonts/NotoSans-Regular.eot);
+src: url(/fonts/NotoSans-Regular.eot?#iefix) format('embedded-opentype'),
+url(/fonts/NotoSans-Regular.woff2) format('woff2'),
+url(/fonts/NotoSans-Regular.woff) format('woff');
+}
+@font-face {
+font-family: 'NotoKrM';
+font-style: normal;
+font-weight: 500;
+src: local('Noto Sans Medium'), local('NotoSans-Medium'), url(/fonts/NotoSans-Medium.eot);
+src: url(/fonts/NotoSans-Medium.eot?#iefix) format('embedded-opentype'),
+url(/fonts/NotoSans-Medium.woff2) format('woff2'),
+url(/fonts/NotoSans-Medium.woff) format('woff');
+}
+@font-face {
+font-family: 'NotoKrB';
+font-style: normal;
+font-weight: 700;
+src: local('Noto Sans Bold'), local('NotoSans-Bold'), url(/fonts/NotoSans-Bold.eot);
+src: url(/fonts/NotoSans-Bold.eot?#iefix) format('embedded-opentype'),
+url(/fonts/NotoSans-Bold.woff2) format('woff2'),
+url(/fonts/NotoSans-Bold.woff) format('woff');
 }
 </style>

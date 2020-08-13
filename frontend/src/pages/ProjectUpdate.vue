@@ -58,7 +58,11 @@
                   <p class="pull-right">* 역할</p>
                 </div>
                 <div class="col-sm-9">
-                  <el-input style="padding:10px;" type="textarea" :rows="5" placeholder="PROJECT ROLE" v-model="role"> </el-input>
+                  <div v-for="(role2,index) in roles" :key="index"><span><el-input  style="padding:10px;" type="textarea" :rows="2" :value="role2" readonly></el-input></span>
+                 <div class="ti-minus pull-bottom pull-right" @click="deleteRole(index)"></div>
+                  </div>
+                  <el-input style="padding:10px;" type="textarea" :rows="4" placeholder="PROJECT ROLE" v-model="role"> </el-input>
+                  <div class="ti-plus pull-bottom pull-right" @click="addRole"></div>
                 </div>
               </div><hr>
 
@@ -106,7 +110,7 @@
                 <div class="col-sm-9" style="padding:15px 0px 0px 25px">
                   <span v-html="htmlTag">
                   </span>
-                  <input v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그 입력 ">
+                  # <input class="inputtag" v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그를 입력해주세요.">
                 </div>
               </div><hr>
 
@@ -115,13 +119,16 @@
                   <p class="pull-right">썸네일</p>
                 </div>
                 <div class="col-sm-9" style="padding:0px 0px 0px 25px">
-                  <el-upload action="https://jsonplaceholder.typicode.com/posts/" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" list-type="picture-card" style="display:inline">
-                  <i slot="default" class="el-icon-plus"></i>
+                  <el-upload action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
+                  :on-success="handleAvatarSuccess"
+                  :before-upload="beforeAvatarUpload"
+                  :show-file-list="false"
+                  list-type="picture-card"
+                  style="display:inline">
+                  <img v-if="img_url" :src="img_url" style="width:100%; height:100%; vertical-align:top">
+                  <i v-else slot="default" class="el-icon-plus"></i>
                   </el-upload>
-                  <el-dialog :visible.sync="isImgVisible">
-                    <img width="100%" :src="img_url" alt="">
-                  </el-dialog>
-                  </div>
+                </div>
               </div><hr>
 
               <div class="row">
@@ -180,6 +187,8 @@ export default {
       summary : '',
       start_date : '',
       finish_date : null,
+      getRoles : [],
+      roles : [],
       role : '',
       github_url : '',
       etc_url : null,
@@ -209,6 +218,17 @@ export default {
     this.getProjectInfo()
   },
   methods : {
+    addRole(){
+        if(this.role==''){
+          this.$message.warning('프로젝트 역할을 입력해 주세요.')
+        }else{
+          this.roles.push(this.role)
+          this.role=''
+        }
+    },
+    deleteRole(index){
+        this.roles.splice(index,1)
+    },
     write(){
       // 필수 입력 확인받기
       if(this.title==='')
@@ -219,7 +239,7 @@ export default {
         this.$message.warning('프로젝트 시작 날짜를 입력해 주세요.')
       else if(this.stack.length===0)
         this.$message.warning('사용 스택을 입력해 주세요.')
-      else if(this.role==='')
+      else if(this.roles.length==0)
         this.$message.warning('프로젝트 역할을 입력해 주세요.')
       else if(this.github_url==='')
         this.$message.warning('깃허브 주소를 입력해주세요.')
@@ -235,21 +255,7 @@ export default {
           this.setRegtime()
         this.setDisclosure()
         this.setTag()
-        
-        console.log(this.seq)
-        console.log(this.seq_blog)
-        console.log(this.title)
-        console.log(this.disclosure)
-        console.log(this.img_url)
-        console.log(this.regtime)
-        console.log(this.summary)
-        console.log(this.start_date)
-        console.log(this.finish_date)
-        console.log(this.role)  
-        console.log(this.github_url)
-        console.log(this.etc_url)  
-        console.log(this.rep_url)  
-        console.log(this.content)  
+
         http
         .put('project', {
           content: this.content,
@@ -258,7 +264,6 @@ export default {
           github_url: this.github_url,
           img_url: this.img_url,
           regtime: this.regtime,
-          role: this.role,
           seq: this.seq,
           start_date: this.start_date,
           summary: this.summary,
@@ -284,9 +289,14 @@ export default {
             }
           })
 
+          // 프로젝트 역할 등록하기
+          http
+          .post('./projectrole', {
+            seq_post_project: this.seq,
+            role: this.roles
+          })
 
-          // 프로젝트 스택 등록하기
-          
+
           this.$message({
             type: 'success',
             message: '프로젝트 수정 완료.'
@@ -379,28 +389,22 @@ export default {
     },
 
     // 썸네일 사진 업로드
-    handleAvatarSuccess(res, file) {   
-      var frm = new FormData();
-      frm.append("upload_file", file.raw);
+    handleAvatarSuccess(res, file) {
 
-      http.post('user/upload',frm,{headers: {
-        'Content-Type': 'multipart/form-data'
-      }})
-      .then(({data}) => {
-        this.img_url = 'http://'.concat(data)
-      })
+      this.img_url = 'http://'.concat(res)
+
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt10M = file.size / 1024 / 1024 < 10;
 
       if (!isJPG) {
-        this.$message.error('Avatar picture must be JPG format!');
+        this.$message.error('Image must be JPG format!');
       }
-      if (!isLt2M) {
-        this.$message.error('Avatar picture size can not exceed 2MB!');
+      if (!isLt10M) {
+        this.$message.error('Image size can not exceed 10MB!');
       }
-      return isJPG && isLt2M;
+      return isJPG && isLt10M;
     },
     filterMethod(query, item) {
       return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
@@ -428,7 +432,6 @@ export default {
         this.start_date_temp = data.start_date
         this.finish_date = data.finish_date
         this.finish_date_temp = data.finish_date
-        this.role = data.role
         this.github_url = data.github_url
         this.etc_url = data.etc_url
         this.rep_url = data.rep_url
@@ -449,6 +452,15 @@ export default {
             this.stack.push(data[i].stack)
           }
         })
+        http
+        .get('/projectrole/'+this.$route.params.seq)
+        .then(({data}) => {
+          this.getRoles=data
+          for(var i=0;i<this.getRoles.length;i++){
+              this.roles.push(this.getRoles[i].role)
+          }
+        })
+        
       })
     }
   }
@@ -458,8 +470,5 @@ export default {
 <style>
 #project-editor .ql-editor{
   min-height: 400px;
-}
-.pjt-title{
-  padding-top: 20px;
 }
 </style>

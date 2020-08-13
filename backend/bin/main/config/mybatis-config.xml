@@ -14,6 +14,7 @@
 		<mapper resource="mappers/PostLikeMapper.xml" />
 		<mapper resource="mappers/PostCommentMapper.xml" />
 		<mapper resource="mappers/ProjectMapper.xml" />
+		<mapper resource="mappers/ProjectRoleMapper.xml" />
 		<mapper resource="mappers/ProjectStackMapper.xml" />
 		<mapper resource="mappers/PortfolioMapper.xml" />
 		<mapper resource="mappers/PortfolioProjectMapper.xml" /> 

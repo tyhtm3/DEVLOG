@@ -59,6 +59,8 @@ import ProjectUpdate from './pages/ProjectUpdate.vue'
 import Template01 from './pages/Template01.vue'
 import TemplateYS from './pages/TemplateYS.vue'
 
+import store from './store';
+
 // Routes
 const routes = [
   {
@@ -94,12 +96,20 @@ const routes = [
       {
         path: '/blog/post/:seq',
         name: 'post-detail',
-        component: PostDetail
+        component: PostDetail,
+        beforeEnter: (to, from, next) => {
+          store.commit('setPreviousUrl',from.path)
+          next()
+        }
       },
       {
         path: '/blog/project/:seq',
         name: 'project-detail',
-        component: ProjectDetail
+        component: ProjectDetail,
+        beforeEnter: (to, from, next) => {
+          store.commit('setPreviousUrl',from.path)
+          next()
+        }
       },
       {
         path: '/blog/portfolio/:seq',
