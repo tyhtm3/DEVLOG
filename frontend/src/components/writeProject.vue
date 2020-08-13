@@ -109,7 +109,8 @@
         <div class="col-sm-9" style="padding:15px 0px 0px 25px">
           <span v-html="htmlTag">
           </span>
-          <input v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그 입력 ">
+          # <input class="inputtag" v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그를 입력해주세요.">
+          <!-- <input v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그 입력 "> -->
         </div>
       </div><hr>
 
