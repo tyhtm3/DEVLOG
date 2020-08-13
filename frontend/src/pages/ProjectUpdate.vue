@@ -471,7 +471,4 @@ export default {
 #project-editor .ql-editor{
   min-height: 400px;
 }
-.pjt-title{
-  padding-top: 20px;
-}
 </style>

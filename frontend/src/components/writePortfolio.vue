@@ -66,7 +66,7 @@
                     <div style="margin-bottom:15px; font-size:15px"><b>프로젝트 정보</b></div>
                     <div class="row pjt-margin">
                       <div class="col-sm-4">
-                      <p class="pjt-title">제목</p>
+                      <p>제목</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">{{projectInfoList[0].title}}</p>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="row pjt-margin">
                       <div class="col-sm-4">
-                      <p class="pjt-title">개요</p>
+                      <p>개요</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">{{projectInfoList[0].summary}}</p>
@@ -82,7 +82,7 @@
                     </div>
                     <div class="row pjt-margin">
                       <div class="col-sm-4">
-                      <p class="pjt-title">기간</p>
+                      <p>기간</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">{{projectInfoList[0].start_date}} ~ <br>{{projectInfoList[0].finish_date}}</p>
@@ -90,7 +90,7 @@
                     </div>
                     <div class="row pjt-margin">
                       <div class="col-sm-4">
-                      <p class="pjt-title">스택</p>
+                      <p>스택</p>
                       </div>
                       <div class="col-sm-8">
                       <div v-for="(stack,index) in stack" :key="index">
@@ -100,7 +100,7 @@
                     </div>
                     <div class="row pjt-margin">
                       <div class="col-sm-4">
-                      <p class="pjt-title">역할</p>
+                      <p>역할</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">{{projectInfoList[0].role}}</p>
@@ -108,7 +108,7 @@
                     </div>
                     <div class="row" v-if="projectInfoList[0].github_url">
                       <div class="col-sm-4">
-                      <p class="pjt-title">Github</p>
+                      <p>Github</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content"><a href="#" @click="goUrl(projectInfoList[0].github_url)">{{projectInfoList[0].github_url}}</a></p>
@@ -116,7 +116,7 @@
                     </div>
                     <div class="row" v-if="projectInfoList[0].etc_url">
                       <div class="col-sm-4">
-                      <p class="pjt-title">참고 Url</p>
+                      <p>참고 Url</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">{{projectInfoList[0].etc_url}}</p>
@@ -124,7 +124,7 @@
                     </div>
                     <div class="row" v-if="projectInfoList[0].rep_url">
                       <div class="col-sm-4">
-                      <p class="pjt-title">참조 Url</p>
+                      <p>참조 Url</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">{{projectInfoList[0].rep_url}}</p>
@@ -164,7 +164,7 @@
                     <div style="margin-bottom:15px; text-align:center"><img :src=stackInfoList[0].stack_img_url width="200px"/></div>
                     <div class="row pjt-margin">
                       <div class="col-sm-4">
-                      <p class="pjt-title">기술스택</p>
+                      <p>기술스택</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">{{stackInfoList[0].stack}}</p>
@@ -173,7 +173,7 @@
                     <div class="row pjt-margin">
                       <a href="#">
                       <div class="col-sm-4">
-                      <p class="pjt-title">활용 1)</p>
+                      <p>활용 1)</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">abc프로젝트</p>
@@ -183,7 +183,7 @@
                     <div class="row pjt-margin">
                       <a href="#">
                       <div class="col-sm-4">
-                      <p class="pjt-title">활용 2)</p>
+                      <p>활용 2)</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">def프로젝트</p>
