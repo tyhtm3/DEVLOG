@@ -202,14 +202,7 @@ export default {
   },
   created(){
     this.getTags();
-    // 디테일 페이지에서 클릭한 태그로 피드에 넘어왔을 경우
-    if(this.fromDetailSearchTag!=null){
-    this.inputtag = this.fromDetailSearchTag
-    this.addTag()
-    this.searchTags.push(this.fromDetailSearchTag)
-    this.fromDetailSearchTag = null
-    this.$store.commit('setSearchTag',null)
-    }
+    this.getFromDetailSearchTag();
     this.getPostandproject();
   },
   watch: { 
@@ -291,6 +284,16 @@ export default {
         .then(({data}) => {
           this.tags=data;
         });
+    },
+    //디테일 페이지로부터 넘어온 태그 검색
+    getFromDetailSearchTag(){
+        if(this.fromDetailSearchTag!=null){
+        this.inputtag = this.fromDetailSearchTag
+        this.addTag()
+        this.searchTags.push(this.fromDetailSearchTag)
+        this.fromDetailSearchTag = null
+        this.$store.commit('setSearchTag',null)
+        }
     },
     // 인피니트로딩
     infiniteHandler($state){
