@@ -23,7 +23,8 @@
               <!-- Default box -->
               <div class="box">
                   <div class="box-body" id="box-pie">
-                      <ve-pie :data="chartData" :settings="chartSettings"></ve-pie>
+                      <ve-pie :data="chartData" :settings="chartSettings" :id="box-pie"></ve-pie>
+                      <h4 style="text-align : center">프로젝트 기술스택 목록</h4>
                   </div>
                   <!-- /.box-body -->
               </div>
@@ -150,7 +151,7 @@ export default {
       chartData : {},
       chartSettings : {},
       projects : [],
-      stacks : [],
+      blogOwnerInfo : {},
     }
   },
    mounted(){
@@ -160,11 +161,11 @@ export default {
   created() {
       this.chartData = {
         rows: [
-          { 'stack': 'Spring', 'rate': 5 },
-          { 'stack': 'Java', 'rate': 4 },
-          { 'stack': 'MariaDB', 'rate': 3 },
-          { 'stack': 'AWS', 'rate': 3 },
-          { 'stack': 'Vue.js', 'rate': 1 }
+          // { 'stack': 'Spring', 'rate': 5 },
+          // { 'stack': 'Java', 'rate': 4 },
+          // { 'stack': 'MariaDB', 'rate': 3 },
+          // { 'stack': 'AWS', 'rate': 3 },
+          // { 'stack': 'Vue.js', 'rate': 1 }
         ]
       }
       this.chartSettings = {
@@ -176,31 +177,44 @@ export default {
       this.getProjectInfo()
     },
     methods: {
+      //포폴 정보 가져오기
       getProjectInfo(){
         http.get('portfoliopjt/'+this.seq_portfolio)
         .then(({data}) =>{
           this.projects = data
-          console.log(data)
+          console.log(this.projects.seq_blog)
+          // 프로젝트 개수 반복
           for(var i=0;i<data.length;i++){
-            http.get('projectstack/'+this.projects[i].seq)
-            .then(({data})=>{
-              for(var j=0;j<data.length;j++){
-                this.stacks.push(data[j])
+            //스택 개수 반복
+            for(var j=0;j<data[i].stacks.length;j++){
+              var rows = new Object()
+              rows.stack = data[i].stacks[j].stack
+              rows.rate = 1
+              var found = false;
+              //이미 들어온 데이터 확인하면서 중복이면 숫자 증가
+              for(var k = 0; k < this.chartData.rows.length; k++) {
+                if (this.chartData.rows[k].stack == rows.stack) {
+                  found = true;
+                 this.chartData.rows[k].rate += 1
+                break;
+                }
               }
-            })
-          //   http.get('projectrole/'+this.projects[i].seq)
-          //   .then(({data})=>{
-          //     console.log(data[0])
-          //     console.log(data[0].role)
-          //     this.projects[i].role = data[0].role
-          //  })
-          //   console.log(this.projects[i])
+              //새로 들어온거면 1로 추가
+              if(!found)
+              this.chartData.rows.push(rows)
+            } 
           }
-          
+          http.get('/user/'+this.projects.seq_blog)
+          .then(({data})=>{
+            this.blogOwnerInfo = data;
+            console.log(data)
+          })
         })
-      }
+      }             
     }
-}
+    }
+    
+
 </script>
 
 <style lang="scss" scoped>
@@ -326,8 +340,10 @@ ul{
   padding: 15px!important;
 }
 
-#box-pie{
-  margin-left: 15%;
-  margin-right: 15%;
-}
+// #box-pie{
+//   margin-left: 15%;
+//   margin-right: 15%;
+//   width: 500px;
+//   height: 500px;
+// }
 </style>
