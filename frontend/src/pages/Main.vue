@@ -11,6 +11,12 @@
             <img class="img-resize" src="../../docs/static/img/test2.jpg">
           </el-carousel-item>
           <el-carousel-item class="img-resize">
+            <img class="img-resize" src="../../docs/static/img/test3.jpg">
+          </el-carousel-item>
+          <el-carousel-item class="img-resize">
+            <img class="img-resize" src="../../docs/static/img/test4.jpg">
+          </el-carousel-item>
+          <el-carousel-item class="img-resize">
             <img class="img-resize" src="../../docs/static/img/ba.png">
           </el-carousel-item>
           <el-carousel-item class="img-resize">

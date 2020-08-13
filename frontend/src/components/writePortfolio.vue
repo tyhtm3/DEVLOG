@@ -208,7 +208,7 @@
 									<dd><el-input v-model="portfolioContent" style="width: 70%;"></el-input></dd>
                   <!-- <dt>POSITION</dt>
 									<dd><el-input v-model="portfolioRole" style="width: 70%;"></el-input></dd> -->
-                  <dt>썸네일</dt>
+                  <!-- <dt>썸네일</dt>
                   <dd>
                     <el-upload action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
                     
@@ -218,7 +218,7 @@
                     
                     <i slot="default" class="el-icon-plus"></i>
                     </el-upload>
-                  </dd>
+                  </dd> -->
                   <dt>공개 여부</dt>
                   
                   <dd>
@@ -390,6 +390,7 @@ export default {
       })
       .then(({ data }) => {
         this.portfolioSeq=data;
+      alert(this.imageUrl);
         http
         .post('portfoliopjt', {
           seq_post_portfolio: this.portfolioSeq,
@@ -431,9 +432,7 @@ export default {
     
     // 회원정보 수정전용
     handleAvatarSuccess(res, file) {
-
       this.imageUrl = 'http://'.concat(res)
-
     },
     beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
