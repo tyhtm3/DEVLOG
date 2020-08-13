@@ -41,9 +41,9 @@
 	<!-- 포트폴리오 내용 등록 -->
 	<insert id="insertPostPortfolio">
 		insert into post_portfolio(
-			seq,name,profile_img_url,github_url,birthday,content
+			seq,name,profile_img_url,github_url,birthday,content,tel,email
 		) values (
-			#{seq}, #{name}, #{profile_img_url}, #{github_url}, #{birthday}, #{content}
+			#{seq}, #{name}, #{profile_img_url}, #{github_url}, #{birthday}, #{content},#{tel},#{email}
 		)
 	</insert>
 	
@@ -60,7 +60,7 @@
 	<update id="updatePostPortfolio">
 		update post_portfolio 
 		   set name = #{name}, profile_img_url = #{profile_img_url},
-		   github_url = #{github_url}, birthday = #{birthday}, content = #{content}
+		   github_url = #{github_url}, birthday = #{birthday}, content = #{content}, tel=#{tel}, email=#{email}
 		 where seq = #{seq}
 	</update>
 	
