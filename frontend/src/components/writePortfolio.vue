@@ -220,13 +220,6 @@
               </div>
               <el-button @click="makePortfolio" style="float:right; margin-bottom: 20px">포트폴리오 생성</el-button>
 
-              
-              <!-- <div class="one">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-                <div class="two">BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-                  <div class="three">CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-                  </div>
-                </div>
-              </div> -->
 						</div> 
           </div>
           <!--/myCarousel-->
@@ -366,6 +359,7 @@ export default {
       // alert(this.includedProject);
       http
       .post('portfolio', {
+        email: this.email,
         content: this.portfolioContent,
         disclosure: this.portfolioDisclosure,
         github_url: this.giturl,

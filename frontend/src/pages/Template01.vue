@@ -3,7 +3,7 @@
 <!--  지원하는 직무에 적합한 3개의
 핵심 프로젝트를 어필하는데 적합한 템플릿 -->
 
-<section id="timelineTemplate">
+<section id="timelineTemplate" v-loading="loading">
 
   <!-- about me 시작 -->
   <div class="tl-item" @click="aboutmedetail=true">
@@ -19,8 +19,7 @@
   <!-- about me 끝 -->
   
   <!-- project 시작 -->
-  <div class="tl-item" v-for="(project, index) in projectInfo" :key="index" @click="pd(project)">
-    <!-- projectdetail=true -->
+  <div class="tl-item" v-for="(project, index) in projectInfo" :key="index" @click="projectDetailVisible(project)">
     <div class="tl-bg" :style="'background-image: url('+project.img_url+')'"  ></div>
     <div class="tl-year">
       <p class="f2 heading--sanSerif">{{ project.title }}</p>
@@ -46,24 +45,34 @@
   <el-dialog class="template01detail" title="About Me" :visible.sync="aboutmedetail">
     <div class="row">
       <div class="col-lg-1"></div>
-      <div class="col-lg-10" style="margin-top:3%">
+      <div class="col-lg-10" style="margin-top:30px">
         <span class="col-lg-3">
           <img :src="this.portfolioInfo.profile_img_url" style="width:150px; height:200px;">
           <h3>{{ portfolioInfo.name }} </h3>
-          <p><i class="material-icons" style="margin-right:10px;">phone_android</i>{{ portfolioInfo.tel }}</p>
-          <p><i class="material-icons" style="margin-right:10px;">email</i>oyes9316@naver.com</p>
-          <p><i class="material-icons" style="margin-right:10px;">chat_bubble</i>kakao ID : cl07</p>
+          <p><i class="ti-mobile" style="margin-right:10px;"></i>{{ portfolioInfo.tel }}</p>
+          <p><i class="ti-email" style="margin-right:10px;"></i>{{ portfolioInfo.email }}</p>
+          <p><i class="ti-comment" style="margin-right:10px;"></i>kakao ID : cl07</p>
         </span>
         <span class="col-lg-4">
-          <span>CERTIFICATE</span><span style="float:right">+</span>
+          <span>CERTIFICATE</span>
+          <span style="float:right">
+            <i class="ti-plus" style="cursor:pointer" @click="addCertificateVisible"></i>
+          </span>
           <el-card class="box-card" style="width:100%; margin-top:10px">
             <div v-for="(item, index) in certifications" :key="index" class="text item">
-              <span style="margin-right:20%">{{ item.date }}/</span>
+              <span style="width:30%; display:inline-block;">{{ item.date }}/</span>
               <span>{{ item.name }}</span>
+            </div>
+            <div v-show="inputCertificate">
+              <span><input size="5" placeholder="취득년도"></span>
+              <span><input placeholder="자격증"></span>
             </div>
           </el-card>
           <br><br>
-          <span>DEVELOMENT SKILLS</span><span style="float:right">+</span>
+          <span>DEVELOMENT SKILLS</span>
+          <span style="float:right">
+            <i class="ti-plus" style="cursor:pointer" @click="addSkillVisible"></i>
+          </span>
           <ul class="listProgram" style="padding:0px">
             <li>Java
               <div class="bar"> 
@@ -98,7 +107,7 @@
           </ul>
         </span>
         <span class="col-lg-5">
-              <ve-pie :data="chartData" :settings="chartSettings"></ve-pie>
+          <ve-pie :data="chartData" :settings="chartSettings"></ve-pie>
         </span>
       </div>
       <div class="col-lg-1"></div>
@@ -141,6 +150,8 @@ export default {
           name: '정보처리기사'
         },
       ],
+      loading: true,
+      inputCertificate: false,
     }
   },
   created() {
@@ -148,11 +159,6 @@ export default {
     this.chartData = {
         columns: ['Stack'],
         rows: [
-          { 'stack': "vue", 'share': 3 },
-          { 'stack': "spring", 'share': 6 },
-          { 'stack': "오우", 'share': 90 },
-          { 'stack': 4123, 'share': 12 },
-          { 'stack': 3123, 'share': 15 },
         ]
       }
       this.chartSettings = {
@@ -174,7 +180,8 @@ export default {
         })
       }
     })
-    this.getPortFolioInfo()    
+    this.getPortFolioInfo()
+    setTimeout(this.stopLoading, 2000);
   },
   methods:{
     getPortFolioInfo() {
@@ -188,13 +195,33 @@ export default {
         .then(({data}) => {
           console.log(data)
           this.projectInfo = data.reverse()
+          for(let i=0; i<this.projectInfo.length; i++){
+            L:for(let j=0; j<this.projectInfo[i].stacks.length; j++){
+              for(let k=0; k<this.chartData.rows.length; k++){
+                if(this.chartData.rows[k].stack === this.projectInfo[i].stacks[j].stack){
+                  this.chartData.rows[k].share++
+                  continue L
+                }
+              }
+              this.chartData.rows.push({'stack': this.projectInfo[i].stacks[j].stack, 'share': 1})
+            }
+          }
         })
       })
     },
-    pd(data){
+    projectDetailVisible(data){
       this.projectdetail = !this.projectdetail
       this.title = data.title
       this.content = data.content
+    },
+    addCertificateVisible(){
+      this.inputCertificate = !this.inputCertificate
+    },
+    addSkillVisible(){
+
+    },
+    stopLoading(){
+      this.loading = false;
     }
   }
 }
@@ -368,8 +395,8 @@ export default {
 </style>
 <style>
 .template01detail .el-dialog{
-  width: 80% !important;
-  height: 80% !important;
+  width: 1300px !important;
+  height: 600px !important;
   margin-top: 5% !important;
   overflow: auto;
 }
