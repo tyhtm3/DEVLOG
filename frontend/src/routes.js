@@ -51,14 +51,13 @@ import FindPassword from './pages/FindPassword'
 import WritePost from './pages/WritePost.vue'
 import ProjectDetail from './pages/ProjectDetail.vue'
 import PostDetail from './pages/PostDetail.vue'
-import PortfolioDetail from './pages/PortfolioDetail.vue'
 import NotFound from './pages/error/404.vue'
 import NotFoundSecond from './pages/error/500.vue'
 import PostUpdate from './pages/PostUpdate.vue'
 import ProjectUpdate from './pages/ProjectUpdate.vue'
 import Template01 from './pages/Template01.vue'
-import TemplateYS from './pages/TemplateYS.vue'
-
+import Template02 from './pages/TemplateTimelineA.vue'
+import PortfolioDetail from './pages/TemplateTimelineA.vue'
 import store from './store';
 
 // Routes
@@ -157,14 +156,14 @@ const routes = [
         component: ProjectUpdate
       },
       {
-        path: '/ys',
-        name: 'ys',
-        component: TemplateYS
-      },
-      {
         path: '/blog/portfolio1/:seq',
         name: 'template01',
         component: Template01
+      },
+      {
+        path: '/blog/portfolio2/:seq',
+        name: 'template02',
+        component: Template02
       },
 
 

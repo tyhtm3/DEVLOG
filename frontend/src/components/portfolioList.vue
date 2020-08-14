@@ -36,6 +36,7 @@
                         <!-- <div class="wrap"> -->
                             <button class="fill" @click="goTemplate00(clickedSeq)">resume</button>
                             <button class="fill" @click="goTemplate01(clickedSeq)">4 cards</button>
+                            <button class="fill" @click="goTemplate02(clickedSeq)">timeline-A</button>
                             <!-- <button class="fill" @click="goTemplate00(portfolio.seq)">resume</button>
                             <button class="fill" @click="goTemplate01(portfolio.seq)">4 cards</button> -->
                         <!-- </div> -->
@@ -89,6 +90,7 @@
             this.$router.push('/blog/portfolio1/'+seq)
         },
         goTemplate02(seq){
+          this.$router.push('/blog/portfolio2/'+seq)
         },
         goTemplate04(seq){
         },
