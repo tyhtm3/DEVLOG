@@ -1,8 +1,8 @@
 <template>
   <transition name="el-zoom-in-top">
-    <div class="content-wrapper" style="background: white;padding-left:50px;padding-right:50px">
+    <div class="content-wrapper" style="background: white;">
       <!-- start container-movie : 블로그 배너-->
-      <div class="container-movie" style="top:65px;background: white;">
+      <div class="container-movie" style="top:65px;background: #9ebbcd35;">
         <!-- start profile -->
         <div class="details-profile" >
           <div class="title1" style="display:inline;">
@@ -10,7 +10,6 @@
             <input type="text" style="width:100%; font-size:32px;color:#333333;" id="title" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog" readonly />
             <input type="text" style="width:100%; font-size:13px;color:#959595;" id="detail" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog" readonly />
           </div>
-                
           <div class="title2" style="color:#959595;font-size:18px">
             by {{blogOwnerInfo.nickname}}
             <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
@@ -308,7 +307,11 @@ export default {
 </script>
 <style>
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
-.container-movie{  font-family: 'Noto Sans KR', sans-serif;}
+
+.container-movie{  
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #9ebbcd70;
+  }
 .tag-active {
   background: #DDDDDD;
   border-radius: 20px;
