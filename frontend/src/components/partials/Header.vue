@@ -4,15 +4,15 @@
     <nav class="navbar navbar-static-top">
 		<router-link to="/">
 		<span class="imgswap logo-mini">
-				<img src="../../assets/logo.png" height="50px" style="margin: 15px; margin-left:40px;">		
-				<img src="../../assets/logo_hover.png" height="50px" style="margin: 15px; margin-left:40px;">
+				<img src="../../assets/logo.png" height="40px" style="margin: 15px; margin-left:30px;">		
+				<img src="../../assets/logo_hover.png" height="40px" style="margin: 15px; margin-left:30px;">
 		</span>
 		</router-link>
       <div class="navbar-custom-menu">
 				<span v-if="this.$store.state.isLogin">
 					<el-dropdown class="header-dropdown-devin" trigger="click" style="top: 0px;">
 						<span class="el-dropdown-link">
-							<img :src="this.$store.state.userInfo.profile_img_url" class="cover-profile" style="width:45px; height:45px; border:0px; cursor:pointer;" alt="cover"/>
+							<img :src="this.$store.state.userInfo.profile_img_url" class="cover-profile" style="width:50px; height:50px; border:0px; cursor:pointer;" alt="cover"/>
 							<!-- <img src="static/img/profile.png" class="cover-profile" style="width:45px; height:45px; border:0px; cursor:pointer;" alt="cover"/> -->
 						</span>
 						<el-dropdown-menu slot="dropdown">
@@ -98,5 +98,22 @@ export default {
 .imgswap img:last-child{display:none} 
 .imgswap:hover img:first-child{display:none} 
 .imgswap:hover img:last-child{display:inline-block} 
+.cover-profile:hover{
+  box-shadow: 3px 3px 3px rgba(177, 177, 177, 0.527);
+}
+.menu li:first-child:hover{
+	background-color: #9ebbcd21;
+}
+.menu li:nth-child(2):hover{
+	background-color: #9ebbcd21;
+}
+.menu li:nth-child(3):hover{
+	background-color: #9ebbcd21;
+}
+.el-button.is-plain:focus, .el-button.is-plain:hover{
+	color: #11212E !important;
+	border-color: #9ebbcd !important;
+	box-shadow: 3px 3px 3px #9ebbcd34;
+}
 </style>
 
