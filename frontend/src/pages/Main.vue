@@ -45,7 +45,7 @@
 
                 <div v-for="(tag, index) in tags" v-bind:key="index" style="display:inline-block;" @mouseenter="showCloseButton(index)" @mouseleave="hideCloseButton(index)">
                 <!-- <span class="cover" > -->
-                <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:20px; margin:10px;">
+                <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:20px; margin:10px; line-height:50px;">
                   #{{tag.tag}}
                 </span>
                 <span @click="deleteTag(index)" class="hideDeleteButton ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
@@ -84,19 +84,17 @@
                     </div>
                     <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" >
                       <span class="tag-nest-detail">
-
-
-                      <div @click="tagSearch(tag.tag)" v-for="(tag,index) in project.tags" :key="index" style="display:inline-block;" >
-                      <span class="tag" :class="{'active': itemsContains(tag.tag)}" style="font-size:17px; margin-right:8px;float:left;">
+                      <div @click="tagSearch(tag.tag)" v-for="(tag,index) in project.tags" :key="index" style="display:inline-block; " >
+                      <span class="tag" :class="{'active': itemsContains(tag.tag)}" style="font-size:17px; margin-right:8px;float:left;line-height:25px!important;">
                         #{{tag.tag}}
                       </span>
                       </div>
                       <span class="tag donotshow"></span>
-
-
                       </span>
+                      <sapn class=".tag-nest-copy">
                       <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-heart"></i> {{ project.like_count }} </span>
                       <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
+                      </sapn>
                     </div>
                   </div>
                 </el-carousel-item>
@@ -515,14 +513,18 @@ $( '.topimg' ).click( function() {
     font-size: 36px;
   }
   .el-tooltip__popper[x-placement^=bottom] .popper__arrow::after {
-      border-bottom-color: #9ebbcd  !important;
+      /* border-bottom-color: #9ebbcd  !important; */
+      border-bottom-color: #11212E  !important;
+      
     }
   .el-tooltip__popper[x-placement^=bottom] .popper__arrow{
-      border-bottom-color: #9ebbcd  !important;
+      /* border-bottom-color: #9ebbcd  !important; */
+      border-bottom-color: #11212E  !important;
   }
   .draw_share_atooltip{
       /* background: transparent !important; */
-      background: #9ebbcd !important;
+      /* background: #9ebbcd !important; */
+      background: #11212E !important;
   }
 </style>
 <style lang="scss" scoped>
@@ -685,9 +687,6 @@ $( '.topimg' ).click( function() {
   margin-bottom: 5px;
   margin-top: 5px;
 }
-.tag{
-  line-height:50px;
-}
 .tag:hover{
   box-shadow: 1px 1px 3px rgba(199, 199, 199, 0.4);
 }
@@ -700,6 +699,8 @@ $( '.topimg' ).click( function() {
   width:100%; 
   overflow:scroll;
 }
+
+// 포스트 태그 하단 스크롤바 
 .posttag-nest::-webkit-scrollbar {
   width: 7px;
 }
@@ -714,31 +715,23 @@ $( '.topimg' ).click( function() {
   background-color: transparent;
   border-radius: 30px;
 }
-</style>
 
+// 프로젝트 태그 하단 스크롤바 
 
-
-
-<style lang="scss">
-
-.tag-copy{
-  background: transparent;
-  border-radius: 10px;
-  padding: 3px 0px;
-  font-size: 14px;
-  margin-right: 5px;
-  line-height: 50px;
-  float: right;
-}
 .tag-nest-detail{
   white-space:nowrap; 
   display:inline-block; 
   width:70%; 
   overflow:scroll;
 }
-// .tag-nest-detail::-webkit-scrollbar {
-//     display: none;
-// }
+.tag-nest-copy{
+  white-space:nowrap; 
+  display:inline-block; 
+  width:30%; 
+  overflow:scroll;
+  margin-bottom: 100px;
+}
+
 .tag-nest-detail::-webkit-scrollbar {
   width: 7px;
 }
@@ -754,4 +747,20 @@ $( '.topimg' ).click( function() {
   border-radius: 30px;
   // box-shadow: inset 0px 0px 3px transparent;
 }
+</style>
+
+
+
+
+<style lang="scss">
+.tag-copy{
+  background: transparent;
+  border-radius: 10px;
+  padding: 3px 0px;
+  font-size: 14px;
+  margin-right: 5px;
+  line-height: 50px;
+  float: right;
+}
+
 </style>
