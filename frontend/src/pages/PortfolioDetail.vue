@@ -95,7 +95,7 @@
                         <h3>{{project.start_date.substr(0,7)}}</h3>
                         <section >
                           <ul>
-                            <li><img :src="project.img_url" height="250" width="400"></li>
+                            <li><img :src="project.img_url" height="200"></li>
                             <li><span style="margin-right:15px;">프로젝트명&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{project.title}}</span></li>
                             <li><span style="margin-right:15px">개발기간&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{project.start_date}}~{{project.finish_date}}</span></li>
                             <li><span style="margin-right:15px">프로젝트요약</span><span>{{project.summary}}</span></li>
