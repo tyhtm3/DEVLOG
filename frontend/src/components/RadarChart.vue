@@ -21,7 +21,7 @@
               borderWidth: 1,
               backgroundColor: 'rgba(54, 162, 235, 0.2)',
              
-              data: [10,40,100]
+              data: [100,100,100,100,100,100,100,100,100]
             }
           ]
         },
@@ -32,11 +32,11 @@
       }
     },
     created(){
-       this.chartData.labels=this.label
-       
     },
     mounted () {
-      this.renderChart(this.chartData, this.options)
+      setTimeout(()=>{
+      this.chartData.labels=this.label
+      this.renderChart(this.chartData, this.options)},1000)
     }
   }
 </script>
