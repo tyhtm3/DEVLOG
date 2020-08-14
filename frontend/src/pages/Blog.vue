@@ -75,6 +75,7 @@
           </div>
         </div>
       </div>
+    <a href="#" class="top"><i class="material-icons" id="to-top">arrow_upward</i></a>
     </div>
   </transition>
 </template>
@@ -310,8 +311,39 @@ export default {
     }
   }
 }
+$( window ).scroll( function() {
+	if ( $( this ).scrollTop() > 200 ) {
+		$( '.top' ).fadeIn();
+	} else {
+		$( '.top' ).fadeOut();
+	}
+} );
+
+$( '.top' ).click( function() {
+  $( 'html, body' ).animate( { scrollTop : 0}, 400 );
+  return false;
+} );
 </script>
 <style>
+  html {
+    scroll-behavior: smooth;
+  }
+  a.top {
+    position: fixed;
+    right: 7%;
+    bottom: 20%;
+    display: none;
+    background-color: #9EBBCD;
+    border-radius: 50%;
+    width:48px;
+    height:48px;
+    text-align: center;
+    line-height: 44px;
+  }
+  #to-top{
+    vertical-align: middle;
+    font-size: 36px;
+  }
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 .col-md-12{
   padding-right: 10%;
