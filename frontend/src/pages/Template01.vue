@@ -46,21 +46,66 @@
   <el-dialog class="template01detail" title="About Me" :visible.sync="aboutmedetail">
     <div class="row">
       <div class="col-lg-1"></div>
-      <div class="col-lg-10" style="margin-top:5%">
-        <img :src="this.portfolioInfo.profile_img_url" style="width:150px; height:150px;">
-        
+      <div class="col-lg-10" style="margin-top:3%">
+        <span class="col-lg-3">
+          <img :src="this.portfolioInfo.profile_img_url" style="width:150px; height:200px;">
+          <h3>{{ portfolioInfo.name }} </h3>
+          <p><i class="material-icons" style="margin-right:10px;">phone_android</i>{{ portfolioInfo.tel }}</p>
+          <p><i class="material-icons" style="margin-right:10px;">email</i>oyes9316@naver.com</p>
+          <p><i class="material-icons" style="margin-right:10px;">chat_bubble</i>kakao ID : cl07</p>
+        </span>
+        <span class="col-lg-4">
+          <span>CERTIFICATE</span><span style="float:right">+</span>
+          <el-card class="box-card" style="width:100%; margin-top:10px">
+            <div v-for="(item, index) in certifications" :key="index" class="text item">
+              <span style="margin-right:20%">{{ item.date }}/</span>
+              <span>{{ item.name }}</span>
+            </div>
+          </el-card>
+          <br><br>
+          <span>DEVELOMENT SKILLS</span><span style="float:right">+</span>
+          <ul class="listProgram" style="padding:0px">
+            <li>Java
+              <div class="bar"> 
+                <div class="value p60"></div>
+              </div>
+            </li>
+            <li>C#
+              <div class="bar"> 
+                <div class="value p40"></div>
+              </div>
+            </li>
+            <li>Ruby on Rails
+              <div class="bar"> 
+                <div class="value p30"></div>
+              </div>
+            </li>
+            <li>SQL
+              <div class="bar">
+                <div class="value p70"></div>
+              </div>
+            </li>
+            <li>React
+              <div class="bar">
+                <div class="value p20"></div>
+              </div>
+            </li>
+            <li>Html/Css/Js
+              <div class="bar">
+                <div class="value p70"></div>
+              </div>
+            </li>
+          </ul>
+        </span>
+        <span class="col-lg-5">
+              <ve-pie :data="chartData" :settings="chartSettings"></ve-pie>
+        </span>
       </div>
       <div class="col-lg-1"></div>
     </div>
     <div class="row">
       <div class="col-lg-1"></div>
       <div class="col-lg-10" style="margin-top:1%">
-        <h3>{{ portfolioInfo.name }} </h3>
-        <p><i class="material-icons" style="margin-right:5px;"> phone_android</i>{{ portfolioInfo.tel }}</p>
-        <p><i class="material-icons" style="margin-right:5px;"> email</i>oyes9316@naver.com</p>
-        <p><i class="material-icons" style="margin-right:5px;"> chat_bubble</i>kakao ID : cl07</p>
-        
-        
       </div>
       <div class="col-lg-1"></div>
     </div>
@@ -90,10 +135,30 @@ export default {
       projectdetail: false,
       title: '',
       content: '',
+      certifications : [
+        {
+          date: 2017,
+          name: '정보처리기사'
+        },
+      ],
     }
   },
   created() {
     this.seq_portfolio = this.$route.params.seq
+    this.chartData = {
+        columns: ['Stack'],
+        rows: [
+          { 'stack': "vue", 'share': 3 },
+          { 'stack': "spring", 'share': 6 },
+          { 'stack': "오우", 'share': 90 },
+          { 'stack': 4123, 'share': 12 },
+          { 'stack': 3123, 'share': 15 },
+        ]
+      }
+      this.chartSettings = {
+        dimension: 'stack',
+        metrics: 'share'
+      }
   },
   mounted() {
     $(".main-header").css('display','none')
@@ -251,9 +316,59 @@ export default {
   filter: grayscale(100%);
 }
 </style>
+<style scoped>
+.listProgram .bar {
+  width: 150px;
+  height: 10px;
+  border: 2px solid #FF7168;
+  border-radius: 5px;
+}
+
+.listProgram li {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+          align-items: center;
+  padding-top: 10px;
+}
+.value {
+  width: 0%;
+  height: 100%;
+  background-color: #FF7168;
+}
+.value .p10 {
+  width: 10%;
+}
+.value.p20 {
+  width: 20%;
+}
+.value.p30 {
+  width: 30%;
+}
+.value.p40 {
+  width: 40%;
+}
+.value.p50 {
+  width: 50%;
+}
+.value.p60 {
+  width: 60%;
+}
+.value.p70 {
+  width: 70%;
+}
+.value.p80 {
+  width: 80%;
+}
+.value.p90 {
+  width: 90%;
+}
+</style>
 <style>
 .template01detail .el-dialog{
-  width: 70% !important;
+  width: 80% !important;
   height: 80% !important;
   margin-top: 5% !important;
   overflow: auto;

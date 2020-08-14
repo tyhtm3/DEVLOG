@@ -32,7 +32,7 @@
   module.exports = {
     created: function () {
       this.chartData = {
-        columns: ['One', 'Samsung', 'Apple'],
+        columns: ['One', 'Front', 'Back', 'ETC'],
         rows: [
           { 'One': '1', 'Samsung': 123, 'Apple': 300 },
           { 'One': '2', 'Samsung': 1223, 'Apple': 600 },

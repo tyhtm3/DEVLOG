@@ -23,8 +23,12 @@
           &nbsp;{{post.like_count}}
         </li>
         <li class="pull-right" v-if="post.seq_blog==seq_user">
-          <span style="cursor:pointer" @click="updatePost(post.seq)">수정 </span>&nbsp;|&nbsp;
-          <span style="cursor:pointer" @click="deletePost(post.seq)"> 삭제</span>
+          <span style="cursor:pointer" @click="updatePost(post.seq)">수정</span>&nbsp;|&nbsp;
+          <span style="cursor:pointer" @click="deletePost(post.seq)">삭제</span>&nbsp;|&nbsp;
+          <span style="cursor:pointer" @click="savePost(post.seq)">저장</span>
+        </li>
+        <li class="pull-right" v-else>
+          <span style="cursor:pointer" @click="savePost(post.seq)">저장</span>
         </li>
       </ul>
       <!-- 헤더 끝 -->               
@@ -65,108 +69,121 @@
   </transition>
 </template>
 <script>
-  import Comment from '../components/detailComment'
-  import http from '../util/http-common'
-  export default {
-    components: {
-      Comment
-    },
-    data: function () {
-        return { 
-          seq: '',
-          post:'',
-          postUser:'',
-          isLike:'',
-          commentCnt:'',
-          tag: [],
-          seq_user: this.$store.state.userInfo.seq,
-          basicurl: '/blog/',
-          blogurl:'',
-          url:'',
+import Comment from '../components/detailComment'
+import http from '../util/http-common'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
+export default {
+  components: {
+    Comment
+  },
+  data: function () {
+      return { 
+        seq: '',
+        post:'',
+        postUser:'',
+        isLike:'',
+        commentCnt:'',
+        tag: [],
+        seq_user: this.$store.state.userInfo.seq,
+        basicurl: '/blog/',
+        blogurl:'',
+        url:'',
 
-        }
+      }
+  },
+  created(){
+    this.seq= this.$route.params.seq
+    this.getInfo(this.seq)
+  },
+  methods: {
+      tagSearch(tag){
+      this.$store.commit('setSearchTag',tag)
+      // 블로그 메인 -> 디테일페이지 -> 태그검색 -> 블로그메인
+      if(this.$store.state.previousUrl.indexOf('blog')>0){
+          this.$router.push('/blog/'+this.blogurl)
+      }
+      // 피드 -> 디테일페이지 -> 태그검색 -> 피드
+      else{
+          this.$router.push('/')
+      }
     },
-    created(){
-      this.seq= this.$route.params.seq
-      this.getInfo(this.seq)
-    },
-    methods: {
-       tagSearch(tag){
-        this.$store.commit('setSearchTag',tag)
-        // 블로그 메인 -> 디테일페이지 -> 태그검색 -> 블로그메인
-        if(this.$store.state.previousUrl.indexOf('blog')>0){
-            this.$router.push('/blog/'+this.blogurl)
-        }
-        // 피드 -> 디테일페이지 -> 태그검색 -> 피드
-        else{
-            this.$router.push('/')
-        }
-      },
-      getInfo(seq){
-        // 포스트 불러오기.
-        http.get('post/'+seq)
-        .then(({data}) => {
-            this.post=data
-            // 포스트 작성자 정보 불러오기.
-            http.get('user/'+data.seq_blog)
-            .then(({data}) => {
-              this.postUser=data
-              this.blogurl = this.postUser.id
-              this.url=this.basicurl+this.blogurl
-            }) 
-         })
-        // 댓글 개수 불러오기
-         http.get('postcomment/count/'+seq)
-                .then(({data}) => {
-                this.commentCnt = data;
-         }) 
-        // 태그 불러오기
-         http.get('posttag/'+seq)
-                .then(({data}) => {
-                this.tag = data;
-         })
-         // 좋아요 여부 불러오기
-        http.get(`postlike/${seq}`)
-                .then(({data}) => {
-                if(data.length==0){
-                  this.isLike=false
-                }else{
-                  this.isLike=true
-                }
-         })
-      },
-       // 좋아요
-      like(){
-        http.post('postlike/',{seq_post:this.seq})
-                .then(({data}) => {
-                this.post.like_count+=1
+    getInfo(seq){
+      // 포스트 불러오기.
+      http.get('post/'+seq)
+      .then(({data}) => {
+          this.post=data
+          // 포스트 작성자 정보 불러오기.
+          http.get('user/'+data.seq_blog)
+          .then(({data}) => {
+            this.postUser=data
+            this.blogurl = this.postUser.id
+            this.url=this.basicurl+this.blogurl
+          }) 
+        })
+      // 댓글 개수 불러오기
+        http.get('postcomment/count/'+seq)
+              .then(({data}) => {
+              this.commentCnt = data;
+        }) 
+      // 태그 불러오기
+        http.get('posttag/'+seq)
+              .then(({data}) => {
+              this.tag = data;
+        })
+        // 좋아요 여부 불러오기
+      http.get(`postlike/${seq}`)
+              .then(({data}) => {
+              if(data.length==0){
+                this.isLike=false
+              }else{
                 this.isLike=true
-         })
-      },
-      // 좋아요 취소
-      cancelLike(){
-        http.get(`postlike/${this.seq}`)
-                .then(({data}) => {
-                http.delete(`postlike/${data.seq}`).then(({data})=>{
-                  this.post.like_count-=1
-                  this.isLike=false
-                })
-         })
-      },
-      // 포스트 삭제
-      deletePost(seq){
-         http.delete('post/'+seq)
-        .then(({data}) => {
-            this.$message.success('게시글이 삭제되었습니다.')
-            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
-         })
-      },
-      // 포스트 수정 미구현
-      updatePost(seq){
-        this.$router.push('/blog/post-update/'+seq)
-      },
-   },
-  }
+              }
+        })
+    },
+      // 좋아요
+    like(){
+      http.post('postlike/',{seq_post:this.seq})
+              .then(({data}) => {
+              this.post.like_count+=1
+              this.isLike=true
+        })
+    },
+    // 좋아요 취소
+    cancelLike(){
+      http.get(`postlike/${this.seq}`)
+              .then(({data}) => {
+              http.delete(`postlike/${data.seq}`).then(({data})=>{
+                this.post.like_count-=1
+                this.isLike=false
+              })
+        })
+    },
+    // 포스트 삭제
+    deletePost(seq){
+        http.delete('post/'+seq)
+      .then(({data}) => {
+          this.$message.success('게시글이 삭제되었습니다.')
+          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
+        })
+    },
+    // 포스트 수정
+    updatePost(seq){
+      this.$router.push('/blog/post-update/'+seq)
+    },
+    savePost(){
+      //Vue.js 는 window 객체에 직접 할당해야 함.
+      window.html2canvas = html2canvas
+      html2canvas($('.content-wrapper')[0])
+      .then(function(canvas) {
+        let pdf = new jsPDF('p', 'mm', 'a4')
+        let imgData = canvas.toDataURL('image/png');
+        pdf.addImage(imgData, 'PNG', 0, 0)
+        pdf.save('sample-file.pdf')
+      })
+    }
+  },
+}
 </script>
 <style scoped>
 
