@@ -160,7 +160,11 @@
                 </div>
                 <!-- <hr style="clear:both"> -->
               </div>
-            <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+            <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
+              <div slot="no-results" style="color:#11212E; padding:50px">
+              마지막 글입니다.
+              </div>
+            </infinite-loading>
             </div>
             <!-- end post list -->  
             <div v-else style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
@@ -168,10 +172,16 @@
             </div>> 
             
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
-          
           </div>
         </div>
       </div>
+          
+          <!-- <a href="#" class="topimg"><img src="../assets/top.png" height="24px !important">TOP</a> -->
+          <!-- <a href="#" class="topimg"><img src="../assets/top2.png" height="24px !important">맨 위로</a> -->
+          <el-tooltip class="item" effect="dark" content="상단으로" placement="bottom" popper-class="draw_share_atooltip">
+            <a href="#" class="topimg"><img src="../assets/top3.png" height="48px"></a>
+          </el-tooltip>
+          
     </div>
   </transition>
 </template>
@@ -470,10 +480,51 @@ export default {
     },
     hideCloseButton(index){
       $(".hideDeleteButton").eq(index).hide();
+    },
     }
   }
+$( window ).scroll( function() {
+	if ( $( this ).scrollTop() > 200 ) {
+		$( '.topimg' ).fadeIn();
+	} else {
+		$( '.topimg' ).fadeOut();
 }
+} );
+
+$( '.topimg' ).click( function() {
+  $( 'html, body' ).animate( { scrollTop : 0}, 400 );
+  return false;
+} );
 </script>
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+  a.topimg{
+    position: fixed;
+    right: 7%;
+    bottom: 20%;
+    display: none;
+    width:48px;
+    height:48px;
+    text-align: center;
+    color:#11212E
+  }
+  #to-top{
+    vertical-align: middle;
+    font-size: 36px;
+  }
+  .el-tooltip__popper[x-placement^=bottom] .popper__arrow::after {
+      border-bottom-color: #9ebbcd  !important;
+    }
+  .el-tooltip__popper[x-placement^=bottom] .popper__arrow{
+      border-bottom-color: #9ebbcd  !important;
+  }
+  .draw_share_atooltip{
+      /* background: transparent !important; */
+      background: #9ebbcd !important;
+  }
+</style>
 <style lang="scss" scoped>
 .row {
   padding: 40px;
