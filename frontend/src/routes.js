@@ -58,6 +58,7 @@ import ProjectUpdate from './pages/ProjectUpdate.vue'
 import Template01 from './pages/Template01.vue'
 import Template02 from './pages/TemplateTimelineA.vue'
 import PortfolioDetail from './pages/TemplateTimelineA.vue'
+import Template03 from './pages/Template03.vue'
 import store from './store';
 
 // Routes
@@ -165,7 +166,11 @@ const routes = [
         name: 'template02',
         component: Template02
       },
-
+      {
+        path: '/blog/portfolio3/:seq',
+        name: 'template03',
+        component: Template03
+      },
 
 
       ///////////////////////////
