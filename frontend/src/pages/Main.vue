@@ -91,10 +91,9 @@
                       </div>
                       <span class="tag donotshow"></span>
                       </span>
-                      <sapn class=".tag-nest-copy">
-                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-heart"></i> {{ project.like_count }} </span>
-                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
-                      </sapn>
+                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block; line-height:25px!important;"><i class="ti-heart"></i> {{ project.like_count }} </span>
+                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block; line-height:25px!important;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
+               
                     </div>
                   </div>
                 </el-carousel-item>
@@ -724,13 +723,7 @@ $( '.topimg' ).click( function() {
   width:70%; 
   overflow:scroll;
 }
-.tag-nest-copy{
-  white-space:nowrap; 
-  display:inline-block; 
-  width:30%; 
-  overflow:scroll;
-  margin-bottom: 100px;
-}
+
 
 .tag-nest-detail::-webkit-scrollbar {
   width: 7px;
