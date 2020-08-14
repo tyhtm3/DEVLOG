@@ -3,7 +3,7 @@
     <div class="content-wrapper" style="background: white;">
       <!-- start banner carousel -->
       <div class="carousel">
-        <el-carousel indicator-position="outside" height='500px'>
+        <el-carousel indicator-position="outside" height='400px'>
           <el-carousel-item class="img-resize">
             <img class="img-resize" src="../../docs/static/img/test1.jpg">
           </el-carousel-item>
@@ -60,7 +60,8 @@
               <el-tooltip  class="pull-right" v-if="seq_user>0" :content="disclosure?'전체 글 보기':'이웃 글 보기'" placement="right">
               <el-switch @change="neighborSearch" v-model="disclosure" on-color="#13ce66" off-color="#ff4949" :on-value="2" :off-value="1"> </el-switch>
               </el-tooltip>
-
+              <span v-if="searchTags.length>0" @click="tagSearchClear()" class="pull-right tag" style="line-height:16px; padding:3px; background-color: #9EBBCD; border-radius:7px">전체 태그 해제</span>
+              <!-- <span v-if="searchTags.length>0" @click="deleteAlltags()" class="pull-right tag" style="line-height:16px; padding:3px; background-color: #EEEEEE; border-radius:7px">전체 태그 삭제</span> -->
               <br><br><br>
 
               <!-- start project list -->
@@ -121,6 +122,7 @@
                     <h2 class="title-1line">{{ post.title }}</h2>
                     <ul class="list-inline blog-devin-tag">  
                       <li>
+                      &nbsp;
                       <span class="tag-copy2" ><i class="ti-pencil"></i> {{ post.regtime }}&nbsp;</span>
                       <span class="tag-copy2" >&nbsp;<i class="ti-comment-alt"></i>&nbsp;{{ post.comment_count }} </span>
                       <span class="tag-copy2" >&nbsp;<i class="ti-heart"></i>&nbsp;{{ post.like_count }} </span>
@@ -167,12 +169,10 @@
             <div v-else style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
                 조건에 일치하는 글이 존재하지 않습니다.
             </div>> 
-            
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
           </div>
         </div>
       </div>
-          
           <!-- <a href="#" class="topimg"><img src="../assets/top.png" height="24px !important">TOP</a> -->
           <!-- <a href="#" class="topimg"><img src="../assets/top2.png" height="24px !important">맨 위로</a> -->
           <el-tooltip class="item" effect="dark" content="상단으로" placement="bottom" popper-class="draw_share_atooltip">
@@ -250,6 +250,7 @@ export default {
       // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
       var index = this.searchTags.indexOf(tag)
       var idx = this.activeIndex.indexOf(index)
+      // alert(index + "/" + idx);
       if(index<0){
         this.searchTags.push(tag)
         this.activeIndex.push(index)
@@ -257,10 +258,18 @@ export default {
         this.searchTags.splice(index,1)
         this.activeIndex.splice(idx,1)
       }
-    
      // 선택한 태그로 재검색 (합집합)
     this.limit=0
     this.getPostandproject();
+    },
+    tagSearchClear(){
+      while(this.searchTags.length>0){
+        this.searchTags.splice(0,1)
+        this.activeIndex.splice(-1,1)
+      }
+      console.log(this.searchTags);
+      console.log(this.activeIndex);
+      
     },
     // 프로젝트와 포스트 검색 초기화
     getPostandproject(){
@@ -455,6 +464,9 @@ export default {
           this.inputtag=''
         }
     },
+    deleteAlltags(){
+      // 할거면 전체 태그 삭제할건지 confirm하는거 먼저 나온 뒤 전체삭제
+    },
     deleteTag(index) {
       // 로그인 - 유저태그에서 삭제 : 비로그인 - 화면에서만 삭제
       if(this.seq_user>0){
@@ -626,7 +638,7 @@ $( '.topimg' ).click( function() {
 }
 .img-resize{
   // width:100%;
-  height:100% !important;
+  height:380px !important;
   text-align: center !important;
   // background-image:url('../../docs/static/img/ba.png');
   // background-position:center;
@@ -668,8 +680,14 @@ $( '.topimg' ).click( function() {
 .active {
   background-color:    #DDDDDD;
 }
+.row{
+  box-shadow: 1px 1px 15px rgba(160, 160, 160, 0.137);
+  padding:20px;
+  margin:20px;
+  border-radius: 5px;
+}
 .row:hover{
-  box-shadow: 15px 15px 15px rgba(121, 106, 106, 0.4);
+  box-shadow: 15px 15px 15px rgba(124, 123, 123, 0.4);
 }
 .blog-devin-tag li{
   margin-right: 0px;
