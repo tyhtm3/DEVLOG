@@ -1,10 +1,11 @@
 <template>
 	<transition name="el-zoom-in-top">
-    <!-- <div class="content-wrapper"> -->
+    <div class="content-wrapper"  >
+      <!-- style="background-color:#9ebbcd34" -->
       <!-- start Main content -->
-      <section class="content" style="padding-top:0px">
-        <!-- <div class="box"> -->
-          <div class="box-body" style="align:center; min-height:400px; max-width:800px; margin:auto; background-color:yellow;">
+      <section class="content" >
+        <div class="box">
+          <div class="box-body" style="align:center; min-height:400px; max-width:800px; margin:auto;">
 						<div class="col-sm-12">
 							<br>
 							<br>
@@ -52,9 +53,9 @@
               <el-button :plain="true" @click="signout">탈퇴</el-button>
 						</div>
           </div>
-        <!-- </div> -->
+        </div>
       </section>
-    <!-- </div> -->
+    </div>
 	</transition>
 </template>
 
@@ -210,3 +211,9 @@ export default {
   },
 }
 </script>
+<style scoped>
+.content{
+  padding-top:110px;
+}
+
+</style>
