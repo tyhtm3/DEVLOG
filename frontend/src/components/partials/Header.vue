@@ -2,11 +2,12 @@
   <header class="main-header">
     <!-- Logo -->
     <nav class="navbar navbar-static-top">
-      <span class="logo-mini">
-        <router-link to="/">
-        <img src="../../assets/logo2.png" height="50px" style="margin-left:30px; margin-top:15px">
-        </router-link>
-      </span>
+		<router-link to="/">
+		<span class="imgswap logo-mini">
+				<img src="../../assets/logo.png" height="50px" style="margin: 15px; margin-left:40px;">		
+				<img src="../../assets/logo_hover.png" height="50px" style="margin: 15px; margin-left:40px;">
+		</span>
+		</router-link>
       <div class="navbar-custom-menu">
 				<span v-if="this.$store.state.isLogin">
 					<el-dropdown class="header-dropdown-devin" trigger="click" style="top: 0px;">
@@ -93,3 +94,9 @@ export default {
 	},
 }
 </script>
+<style> 
+.imgswap img:last-child{display:none} 
+.imgswap:hover img:first-child{display:none} 
+.imgswap:hover img:last-child{display:inline-block} 
+</style>
+
