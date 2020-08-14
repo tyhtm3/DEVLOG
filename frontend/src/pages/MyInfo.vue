@@ -1,6 +1,6 @@
 <template>
 	<transition name="el-zoom-in-top">
-    <div class="content-wrapper"  >
+    <!-- <div class="content-wrapper"  > -->
       <!-- style="background-color:#9ebbcd34" -->
       <!-- start Main content -->
       <section class="content" >
@@ -55,7 +55,7 @@
           </div>
         </div>
       </section>
-    </div>
+    <!-- </div> -->
 	</transition>
 </template>
 

@@ -66,8 +66,14 @@
       </div>
       <!-- end container-movie -->
       <div class="box">
-        <blog-content v-bind:searchTags="searchTags" v-if="!followerpage"></blog-content>
-        <follower v-else></follower>
+        <div class="box-body" style="min-height:400px;">
+          <div class="col-sm-12">
+            <div class="col-sm-10" style="margin: 0 auto; float: none;">
+            <blog-content v-bind:searchTags="searchTags" v-if="!followerpage"></blog-content>
+            <follower v-else></follower>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </transition>
@@ -307,7 +313,10 @@ export default {
 </script>
 <style>
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
-
+.col-md-12{
+  padding-right: 10%;
+  padding-left: 10%;
+}
 .container-movie{  
   font-family: 'Noto Sans KR', sans-serif;
   background-color: #9ebbcd70;
