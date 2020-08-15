@@ -162,7 +162,6 @@ export default {
         for(var i=0; i<this.tags.length; i++){
           if(this.tags[i] === this.tag){
             this.tag = '';
-            
             return
           }
         }
@@ -189,17 +188,10 @@ export default {
 }
 </script> 
 
-<style>
-#editor .ql-editor{
-  min-height: 400px !important;
+<style scoped>
+.pjt-title{
+  padding-top: 20px;
 }
-/* 
-.inputtag::before{
-  background-color: red;
-  content: "#" !important;
-  padding-right:500px;
-} */
-
 .inputtag{
   opacity:0.5;
   border:solid;

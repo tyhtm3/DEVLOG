@@ -35,9 +35,7 @@
         </div>
 
         <div>
-          <!-- <span class="tag-copy material-icons">local_offer</span> -->
           <div v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="display:inline-block;">
-          <!-- :class="{'tag-active': itemsContains(tag.tag)}" -->
           <span class="tag" id="blogmaintag" @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" >
             #{{tag.tag}}
           </span>
@@ -45,13 +43,6 @@
           style="font-size:3px;color:#333333;padding:0px;margin-left:-35px;"></span>
           </div>
         </div>
- 
-            <!-- 블로그 태그 -->
-        <!-- <span @click="tagSearch(tag.tag)" :class="{'tag-active': itemsContains(tag.tag)}"
-        style="padding:5px; margin:2px; ">
-          #{{tag.tag}}
-          <span v-show="getIsAdminMode" @click="deleteTag(tag.seq)" class="ti-close" style="position:absolute; font-size:3px; color:#333333;"></span>
-        </span> -->
         
         <span v-if="getIsAdminMode">
           <span v-if="searchBar">
