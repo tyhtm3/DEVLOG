@@ -145,18 +145,18 @@ import http from '../util/http-common'
         this.imageUrl = 'http://'.concat(res)
       },
       beforeAvatarUpload(file) {
-
         const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
         const isLt10M = file.size / 1024 / 1024 < 10;
 
-        if (!isJPG) {
-          this.$message.error('Profile image must be JPG format!');
+        if (!(isPNG || isJPG)) {
+          this.$message.error('Image must be JPG or PNG format!1');
         }
         if (!isLt10M) {
-          this.$message.error('Profile image size can not exceed 10MB!');
+          this.$message.error('Image size can not exceed 10MB!');
         }
-        return isJPG && isLt10M;
-      }
+        return (isJPG || isPNG) && isLt10M;
+      },
     },
   }
 

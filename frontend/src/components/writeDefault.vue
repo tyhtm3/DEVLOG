@@ -154,16 +154,17 @@ export default {
 
     },
     beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt10M = file.size / 1024 / 1024 < 10;
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt10M = file.size / 1024 / 1024 < 10;
 
-        if (!isJPG) {
-          this.$message.error('Image must be JPG format!');
-        }
-        if (!isLt10M) {
-          this.$message.error('Image size can not exceed 10MB!');
-        }
-        return isJPG && isLt10M;
+      if (!(isPNG || isJPG)) {
+        this.$message.error('Image must be JPG or PNG format!1');
+      }
+      if (!isLt10M) {
+        this.$message.error('Image size can not exceed 10MB!');
+      }
+      return (isJPG || isPNG) && isLt10M;
     },
     addTag() {
       if(this.tag != ''){
