@@ -115,7 +115,7 @@
                 1. 포스트 타이틀 1줄만 출력 : title-1line class 로 css수정
             -->
             <div v-if="postList.length>0" class="col-sm-8" style="margin: 0 auto; float: none;">
-              <div class="row" v-for="(post,index) in postList" :key="index">
+              <div class="row" v-for="(post,index) in postList" :key="index" style="cursor:pointer">
                 <!-- 추후에 시간되면 left 전체에 @click 걸고 태그 버튼만 z인덱스 주기-->
                 <div class="left">
                   <div class="left-part" @click="goDetailPost(post.seq)">
@@ -365,46 +365,6 @@ export default {
         },1000)
       })
     },
-    // 프로젝트로부터 코멘트 개수와 태그 불러오기
-    // getprojectCommentTag(data){
-    //   // console.log("this.projectList");
-    //   // console.log(this.projectList);
-    //   // console.log("데이터길이" + datad.length)
-    //   for(var i=0; i<data.length; i++){
-    //     this.getProjectComments(i)
-    //     this.getProjectTags(i)
-    //   }
-    //   this.projectComment.push(null);
-    //   this.projectTag.push(null);
-    // },
-    // getProjectComments(i){
-    //   if(i<this.projectList.length){
-    //     http.get('postcomment/count/'+this.projectList[i].seq, {headers: {
-    //     'Content-type': 'application/json',
-    //     Authorization : this.$store.state.token,
-    //     }})
-    //     .then(({data}) => {
-    //     // console.log(i+"번째 댓글: ");
-    //     this.projectComment[i] = data;
-    //     // console.log(data);
-    //     // console.log(this.projectComment[i]);
-    //     });
-    //   }
-    // },
-    // getProjectTags(i){
-    //   if(i<this.projectList.length){
-    //   http.get('posttag/'+this.projectList[i].seq, {headers: {
-    //     'Content-type': 'application/json',
-    //     Authorization : this.$store.state.token,
-    //     }})
-    //     .then(({data}) => {
-    //     // console.log(i+"번째 글 태그: ");
-    //     this.projectTag[i] = data.slice(0,3);
-    //     // console.log(data);
-    //     // console.log(this.projectTag[i]);
-    //     });
-    //   }
-    // },
     removeTag(text){
       text = text.replace(/<br\/>/ig, "\n")
       text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")

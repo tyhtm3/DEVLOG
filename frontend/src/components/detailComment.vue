@@ -109,8 +109,14 @@
             type: 'error',
             message: '메세지를 입력해주세요.'
           })
-        }else{
-          console.log(this.insertContent)
+        }
+        else if(!this.isBlank(this.insertContent)){
+          this.$message({
+            type: 'error',
+            message: '메세지를 입력해주세요.'
+          })
+        }
+        else{
           http.post('postcomment',{content:this.insertContent,seq_post:this.seq,seq_user:this.seq_user}, {headers: {'Authorization': this.$store.state.token,}})
                   .then(({data}) => {
                 //댓글 입력하고 리스트 업데이트
@@ -162,6 +168,11 @@
       },
       moveBlog(id){
         this.$router.push('../'+id)
+      },
+      isBlank(text){
+        text = text.replace(/<(\/br|br)([^>]*)>/gi,"");
+        text = text.replace(/<(\/p|p)([^>]*)>/gi,"");
+        return text
       }
    },
   }
