@@ -763,7 +763,7 @@ $( '.topimg' ).click( function() {
 
 
 
-<style lang="scss">
+<style scoped lang="scss">
 .tag-copy{
   background: transparent;
   border-radius: 10px;

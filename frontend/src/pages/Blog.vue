@@ -33,25 +33,36 @@
             </div>
           </div>
         </div>
-        
 
-          <div style="margin-left:60px;">    
-            <!-- 블로그 태그 -->
-            <span @click="tagSearch(tag.tag)" :class="{'tag-active': itemsContains(tag.tag)}"
-            v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="padding:5px; margin:2px; cursor:pointer">
-              #{{tag.tag}}
-              <span v-show="getIsAdminMode" @click="deleteTag(tag.seq)" class="ti-close" style="position:absolute; font-size:3px; color:#333333;"></span>
-            </span>
-           
-            <span v-if="getIsAdminMode">
-              <span v-if="searchBar">
-                <input v-on:keyup.enter="addTag" v-model="tag" placeholder="#">
-              </span>
-              <span v-if="addIcon" style="position: absolute; cursor:pointer;" @click="tagInputVisible">
-                <i class="material-icons">add_circle_outline</i>
-              </span>
-            </span>
+        <div>
+          <!-- <span class="tag-copy material-icons">local_offer</span> -->
+          <div v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="display:inline-block;">
+          <!-- :class="{'tag-active': itemsContains(tag.tag)}" -->
+          <span class="tag" id="blogmaintag" @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" >
+            #{{tag.tag}}
+          </span>
+          <span v-show="getIsAdminMode" @click="deleteTag(tag.seq)" class="hideDeleteButton ti-close pull-top pull-right" 
+          style="font-size:3px;color:#333333;padding:0px;margin-left:-35px;"></span>
           </div>
+        </div>
+ 
+            <!-- 블로그 태그 -->
+        <!-- <span @click="tagSearch(tag.tag)" :class="{'tag-active': itemsContains(tag.tag)}"
+        style="padding:5px; margin:2px; ">
+          #{{tag.tag}}
+          <span v-show="getIsAdminMode" @click="deleteTag(tag.seq)" class="ti-close" style="position:absolute; font-size:3px; color:#333333;"></span>
+        </span> -->
+        
+        <span v-if="getIsAdminMode">
+          <span v-if="searchBar">
+            <input v-on:keyup.enter="addTag" v-model="tag" placeholder="#">
+          </span>
+          <span v-if="addIcon" style="position: absolute; cursor:pointer;" @click="tagInputVisible">
+            <i class="material-icons">add_circle_outline</i>
+          </span>
+        </span>
+
+
           <div class="column4" v-if= "getIsLogin">
             <span v-if="isAdmin">
               <router-link to="../writePost">
@@ -345,7 +356,7 @@ export default {
   });
 
 </script>
-<style>
+<style scoped>
   html {
     scroll-behavior: smooth;
   }
@@ -370,6 +381,7 @@ export default {
     padding-left: 10%;
   }
   .container-movie{  
+    height: 400px;
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #9ebbcd70;
     }
@@ -417,6 +429,44 @@ export default {
   }
 
   /* 블로그 메인 상단 수정 UI */
+  .details-profile{
+    padding-right:15% !important;
+    padding-left:15% !important;
+    padding-bottom:60px;
+  }
+  .description-profile{
+    height:auto !important;
+  }
+  #blogmaintag{
+    font-size:18px; 
+    line-height:40px; 
+    cursor:pointer; 
+    /* margin-left:-8px; 
+    margin-right:12px;  */
+    padding:3px 8px !important;
+  }
+  .tag{
+    background-color: transparent!important;
+    color:gray;
+    border-radius:40px;
+    height:20px!important;
+    /* background-color: #9EBBCD !important; */
+  }
+  .tag:hover{
+    /* background-color:#9EBBCD !important; */
+    height:16px;
+    background-color:#ddd !important;
+    box-shadow: 1px 1px 3px rgba(199, 199, 199, 0.4);
+  }
+  /* .tag-copy{
+    background: transparent;
+    padding: 3px 0px;
+    line-height: 50px;
+     font-size:20px; 
+     color:#B1B0AC;
+     float: left;
+     margin:0px;
+  } */
 
   /* chrome input에 자동 채워지는 배경 색상 글자 색상 변경 */
   input:-webkit-autofill,
