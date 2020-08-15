@@ -3,7 +3,7 @@
     <div class="content-wrapper" style="background: white;">
       <!-- start banner carousel -->
       <div class="carousel">
-        <el-carousel indicator-position="outside" height='500px'>
+        <el-carousel indicator-position="outside" height='400px'>
           <el-carousel-item class="img-resize">
             <img class="img-resize" src="../../docs/static/img/test1.jpg">
           </el-carousel-item>
@@ -45,7 +45,7 @@
 
                 <div v-for="(tag, index) in tags" v-bind:key="index" style="display:inline-block;" @mouseenter="showCloseButton(index)" @mouseleave="hideCloseButton(index)">
                 <!-- <span class="cover" > -->
-                <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:20px; margin:10px;">
+                <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:20px; margin:10px; line-height:50px;">
                   #{{tag.tag}}
                 </span>
                 <span @click="deleteTag(index)" class="hideDeleteButton ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
@@ -60,7 +60,8 @@
               <el-tooltip  class="pull-right" v-if="seq_user>0" :content="disclosure?'전체 글 보기':'이웃 글 보기'" placement="right">
               <el-switch @change="neighborSearch" v-model="disclosure" on-color="#13ce66" off-color="#ff4949" :on-value="2" :off-value="1"> </el-switch>
               </el-tooltip>
-
+              <span v-if="searchTags.length>0" @click="tagSearchClear()" class="pull-right tag" style="line-height:16px; padding:3px; background-color: #9EBBCD; border-radius:7px">전체 태그 해제</span>
+              <!-- <span v-if="searchTags.length>0" @click="deleteAlltags()" class="pull-right tag" style="line-height:16px; padding:3px; background-color: #EEEEEE; border-radius:7px">전체 태그 삭제</span> -->
               <br><br><br>
 
               <!-- start project list -->
@@ -84,19 +85,16 @@
                     </div>
                     <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px;" >
                       <span class="tag-nest-detail">
-
-
-                      <div @click="tagSearch(tag.tag)" v-for="(tag,index) in project.tags" :key="index" style="display:inline-block;" >
-                      <span class="tag" :class="{'active': itemsContains(tag.tag)}" style="font-size:17px; margin-right:8px;float:left;">
+                      <div @click="tagSearch(tag.tag)" v-for="(tag,index) in project.tags" :key="index" style="display:inline-block; " >
+                      <span class="tag" :class="{'active': itemsContains(tag.tag)}" style="font-size:17px; margin-right:8px;float:left;line-height:25px!important;">
                         #{{tag.tag}}
                       </span>
                       </div>
                       <span class="tag donotshow"></span>
-
-
                       </span>
-                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-heart"></i> {{ project.like_count }} </span>
-                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
+                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block; line-height:25px!important;"><i class="ti-heart"></i> {{ project.like_count }} </span>
+                      <span class="tag-copy" @click="goDetailProject(project.seq)" style="display:inline-block; line-height:25px!important;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
+               
                     </div>
                   </div>
                 </el-carousel-item>
@@ -124,6 +122,7 @@
                     <h2 class="title-1line">{{ post.title }}</h2>
                     <ul class="list-inline blog-devin-tag">  
                       <li>
+                      &nbsp;
                       <span class="tag-copy2" ><i class="ti-pencil"></i> {{ post.regtime }}&nbsp;</span>
                       <span class="tag-copy2" >&nbsp;<i class="ti-comment-alt"></i>&nbsp;{{ post.comment_count }} </span>
                       <span class="tag-copy2" >&nbsp;<i class="ti-heart"></i>&nbsp;{{ post.like_count }} </span>
@@ -160,18 +159,26 @@
                 </div>
                 <!-- <hr style="clear:both"> -->
               </div>
-            <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+            <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
+              <div slot="no-results" style="color:#11212E; padding:50px">
+              마지막 글입니다.
+              </div>
+            </infinite-loading>
             </div>
             <!-- end post list -->  
             <div v-else style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
                 조건에 일치하는 글이 존재하지 않습니다.
             </div>> 
-            
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
-          
           </div>
         </div>
       </div>
+          <!-- <a href="#" class="topimg"><img src="../assets/top.png" height="24px !important">TOP</a> -->
+          <!-- <a href="#" class="topimg"><img src="../assets/top2.png" height="24px !important">맨 위로</a> -->
+          <el-tooltip class="item" effect="dark" content="상단으로" placement="bottom" popper-class="draw_share_atooltip">
+            <a href="#" class="topimg"><img src="../assets/top3.png" height="48px"></a>
+          </el-tooltip>
+          
     </div>
   </transition>
 </template>
@@ -243,6 +250,7 @@ export default {
       // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
       var index = this.searchTags.indexOf(tag)
       var idx = this.activeIndex.indexOf(index)
+      // alert(index + "/" + idx);
       if(index<0){
         this.searchTags.push(tag)
         this.activeIndex.push(index)
@@ -250,10 +258,18 @@ export default {
         this.searchTags.splice(index,1)
         this.activeIndex.splice(idx,1)
       }
-    
      // 선택한 태그로 재검색 (합집합)
     this.limit=0
     this.getPostandproject();
+    },
+    tagSearchClear(){
+      while(this.searchTags.length>0){
+        this.searchTags.splice(0,1)
+        this.activeIndex.splice(-1,1)
+      }
+      console.log(this.searchTags);
+      console.log(this.activeIndex);
+      
     },
     // 프로젝트와 포스트 검색 초기화
     getPostandproject(){
@@ -448,6 +464,9 @@ export default {
           this.inputtag=''
         }
     },
+    deleteAlltags(){
+      // 할거면 전체 태그 삭제할건지 confirm하는거 먼저 나온 뒤 전체삭제
+    },
     deleteTag(index) {
       // 로그인 - 유저태그에서 삭제 : 비로그인 - 화면에서만 삭제
       if(this.seq_user>0){
@@ -470,10 +489,55 @@ export default {
     },
     hideCloseButton(index){
       $(".hideDeleteButton").eq(index).hide();
+    },
     }
   }
+$( window ).scroll( function() {
+	if ( $( this ).scrollTop() > 200 ) {
+		$( '.topimg' ).fadeIn();
+	} else {
+		$( '.topimg' ).fadeOut();
 }
+} );
+
+$( '.topimg' ).click( function() {
+  $( 'html, body' ).animate( { scrollTop : 0}, 400 );
+  return false;
+} );
 </script>
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+  a.topimg{
+    position: fixed;
+    right: 7%;
+    bottom: 20%;
+    display: none;
+    width:48px;
+    height:48px;
+    text-align: center;
+    color:#11212E
+  }
+  #to-top{
+    vertical-align: middle;
+    font-size: 36px;
+  }
+  .el-tooltip__popper[x-placement^=bottom] .popper__arrow::after {
+      /* border-bottom-color: #9ebbcd  !important; */
+      border-bottom-color: #11212E  !important;
+      
+    }
+  .el-tooltip__popper[x-placement^=bottom] .popper__arrow{
+      /* border-bottom-color: #9ebbcd  !important; */
+      border-bottom-color: #11212E  !important;
+  }
+  .draw_share_atooltip{
+      /* background: transparent !important; */
+      /* background: #9ebbcd !important; */
+      background: #11212E !important;
+  }
+</style>
 <style lang="scss" scoped>
 .row {
   padding: 40px;
@@ -574,7 +638,7 @@ export default {
 }
 .img-resize{
   // width:100%;
-  height:100% !important;
+  height:380px !important;
   text-align: center !important;
   // background-image:url('../../docs/static/img/ba.png');
   // background-position:center;
@@ -616,8 +680,14 @@ export default {
 .active {
   background-color:    #DDDDDD;
 }
+.row{
+  box-shadow: 1px 1px 15px rgba(160, 160, 160, 0.137);
+  padding:20px;
+  margin:20px;
+  border-radius: 5px;
+}
 .row:hover{
-  box-shadow: 15px 15px 15px rgba(121, 106, 106, 0.4);
+  box-shadow: 15px 15px 15px rgba(124, 123, 123, 0.4);
 }
 .blog-devin-tag li{
   margin-right: 0px;
@@ -634,9 +704,6 @@ export default {
   margin-bottom: 5px;
   margin-top: 5px;
 }
-.tag{
-  line-height:50px;
-}
 .tag:hover{
   box-shadow: 1px 1px 3px rgba(199, 199, 199, 0.4);
 }
@@ -649,6 +716,8 @@ export default {
   width:100%; 
   overflow:scroll;
 }
+
+// 포스트 태그 하단 스크롤바 
 .posttag-nest::-webkit-scrollbar {
   width: 7px;
 }
@@ -663,31 +732,17 @@ export default {
   background-color: transparent;
   border-radius: 30px;
 }
-</style>
 
+// 프로젝트 태그 하단 스크롤바 
 
-
-
-<style lang="scss">
-
-.tag-copy{
-  background: transparent;
-  border-radius: 10px;
-  padding: 3px 0px;
-  font-size: 14px;
-  margin-right: 5px;
-  line-height: 50px;
-  float: right;
-}
 .tag-nest-detail{
   white-space:nowrap; 
   display:inline-block; 
   width:70%; 
   overflow:scroll;
 }
-// .tag-nest-detail::-webkit-scrollbar {
-//     display: none;
-// }
+
+
 .tag-nest-detail::-webkit-scrollbar {
   width: 7px;
 }
@@ -703,4 +758,20 @@ export default {
   border-radius: 30px;
   // box-shadow: inset 0px 0px 3px transparent;
 }
+</style>
+
+
+
+
+<style scoped lang="scss">
+.tag-copy{
+  background: transparent;
+  border-radius: 10px;
+  padding: 3px 0px;
+  font-size: 14px;
+  margin-right: 5px;
+  line-height: 50px;
+  float: right;
+}
+
 </style>

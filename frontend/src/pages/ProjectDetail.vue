@@ -69,7 +69,7 @@
                   </div>
                   <div class="col-sm-9">
                     <div v-for="(stack,index) in stack" :key="index">
-                      <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
+                      <img class="media-object pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="height: 64px;margin-right:20px;">
                     </div>
                   </div>
                 </div>
