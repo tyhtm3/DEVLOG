@@ -467,8 +467,28 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #project-editor .ql-editor{
   min-height: 400px;
+}
+.pjt-title{
+  padding-top: 20px;
+}
+.inputtag{
+  opacity:0.5;
+  border:solid;
+  border-top:1px;
+  border-left:1px;
+  border-right:1px;
+  border-color: rgba(143, 143, 143, 0.432);
+  border-width: 0.1px;
+  width:135px;
+}
+.inputtag:hover{
+  opacity:0.8;
+}
+.inputtag:focus{
+  opacity:0.8;
+  outline: none;
 }
 </style>
