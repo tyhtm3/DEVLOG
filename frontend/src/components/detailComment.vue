@@ -94,46 +94,9 @@
         .then(({data}) => {
           this.comments=data;
           console.log(this.comments);
-          // alert("코맨트 갯수: " + this.comments.length);
-          // for(var i=0; i<data.length; i++){
-          //   this.getCommentUser(i);
-          // }
          })
       },
-     
-     // getCommentUser(i){
-      //   // console.log(this.comments[i].seq_user);
-      //   http.get('user/'+this.comments[i].seq_user)
-      //     .then(({data}) => {
-      //       console.log(i + "번째 데이터 : ");
-      //       console.log(data);
-      //         // this.test.push({data[i].seq_user:data});
-      //       // this.test.push(i);
-      //       // console.log((data));
-      //         // this.commentUser.push(data);
-              
-      //       this.commentUser[i]=data;
-      //        this.commentUser.push(null);
-      //     });
 
-
-      //   //  console.log((data));
-      //   // 댓글을 작성한 사용자 정보를 불러오기
-      //   // alert("데이터길이" + data.length);
-      //   // for(var i=0; i<this.comments.length; i++){
-      //   // for(let comment in this.comments){
-      //   //   console.log(this.comments[comment].seq_user);
-      //   //   http.get('user/'+this.comments[comment].seq_user)
-      //   //     .then(({data}) => {
-      //   //       console.log(i + "번째 데이터 : ");
-      //   //       console.log(data);
-      //   //         // this.test.push({data[i].seq_user:data});
-      //   //       // this.test.push(i);
-      //   //       // console.log((data));
-      //   //         this.commentUser.push(data);
-      //   //     });
-      //   // }
-      // },
       // 댓글 입력
       insertComment(){
         if(!this.getIsLogin){
@@ -147,6 +110,7 @@
             message: '메세지를 입력해주세요.'
           })
         }else{
+          console.log(this.insertContent)
           http.post('postcomment',{content:this.insertContent,seq_post:this.seq,seq_user:this.seq_user}, {headers: {'Authorization': this.$store.state.token,}})
                   .then(({data}) => {
                 //댓글 입력하고 리스트 업데이트

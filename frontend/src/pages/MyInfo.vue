@@ -217,3 +217,32 @@ export default {
 }
 
 </style>
+<style scoped>
+.avatar-uploader2 .el-upload {
+    top: 90px;
+    left: 500px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: absolute;
+    overflow: hidden;
+  }
+  .avatar-uploader2 .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 168px;
+    height: 168px;
+    line-height: 34px;
+    text-align: center;
+  }
+  .avatar {
+    width: 168px;
+    height: 168px;
+  }
+  .avatar-uploader-icon {
+    transform: translate(0%, 40%);
+  }
+</style>

@@ -14,6 +14,7 @@
 									<dt>이름</dt>
                   <dd>
                     <el-input v-model="name" style="width: 50%; border: 0px"></el-input>
+                    <el-tooltip class="item" effect="dark" content="사진 비율 : 3x4" placement="right">
                     <el-upload
                     class="avatar-uploader"
                     action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
@@ -23,6 +24,7 @@
                     <img v-if="imageUrl" :src="imageUrl" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
+                    </el-tooltip>
                   </dd>
                   <dt>연락처</dt>
                   <dd><el-input v-model="tel" style="width: 50%;"></el-input></dd>
@@ -465,7 +467,6 @@ export default {
   .el-transfer{
     width: auto;
     float: left;
-    /* background-color: red; */
   }
   /* .nextToTransfer{
   } */
