@@ -6,34 +6,34 @@
         <!-- start profile -->
         <div class="details-profile" >
           <div class="title1" style="display:inline;">
-            <!-- input length 바꾸게 하는것 -->
-            <input type="text" style="width:100%; font-size:32px;color:#333333;" id="title" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog" readonly />
-            <input type="text" style="width:100%; font-size:13px;color:#959595;" id="detail" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog" readonly />
+            <!-- input length 바꾸게 하는것, font-size 수정시 자바스크립트 input box 수정하는 부분도 수정해야함.-->
+            <input id="title"  type="text" style="font-size:32px; color:#333333;" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog"  :placeholder=titleplaceholder readonly /><br>
+            <input id="detail" type="text" style="font-size:15px; color:#959595; padding-top:5px;" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog"  :placeholder=contentplaceholder readonly />
           </div>
-          <div class="title2" style="color:#959595;font-size:18px">
+          <div class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
             by {{blogOwnerInfo.nickname}}
-            <!-- 일단은 블로그 주인 프로필 이미지 주소로 받아오게 함. 바꿔야돼-->
-            <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" />
+            <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
             <!-- <span>Web Designer</span> -->
           </div>
-        </div>
-        <div class="description-profile">
+          <div class="description-profile" style="max-width:700px">
           <div class="column2">
             <div class="row"> 
               <div class="col-xs-12 col-sm-3 emphasis">
-                <h2><strong>{{blogOwnerNumOfProject}}</strong></h2>
-                <p> <small>Projects</small> </p>
+                <h2 style="margin:0px">{{blogOwnerNumOfProject}}</h2>
+                <p> <small>Project</small> </p>
               </div>
               <div class="col-xs-12 col-sm-3 emphasis">
-                <h2><strong>{{blogOwnerNumOfPost}}</strong></h2>
+                <h2 style="margin:0px" >{{blogOwnerNumOfPost}}</h2>
                 <p> <small>Post</small> </p>
               </div>
               <div class="col-sm-3 emphasis" style="cursor:pointer;" @click="follower">
-                <h2><strong >{{blogOwnerNumOfNeighbor}}</strong></h2>
-                <p><small>Follow </small></p>
+                <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
+                <p><small>Follow</small></p>
               </div>
             </div>
           </div>
+        </div>
+        
 
           <div style="margin-left:60px;">    
             <!-- 블로그 태그 -->
@@ -96,6 +96,19 @@ export default {
       'getIsLogin'
     ])
   },
+  watch:{
+    // 관리자버튼 활성화시, 블로그명, 블로그 소개에 아무 내용 없을 경우 placeholder 표시
+    // 관리자버튼 비활성화시 placeholder 없애기
+    getIsAdminMode:function(){
+      if(this.getIsAdminMode){
+        this.titleplaceholder='블로그명을 입력하세요.'
+        this.contentplaceholder='블로그 소개를 입력하세요.'
+      }else{
+        this.titleplaceholder='블로그 제목 무조건 있어야됨. 예외처리돼서 이 메세지가 보이면 안됨. '
+        this.contentplaceholder=''
+      }
+    }
+  },
   data: () => {
     return { 
       alterTitleFlag: false,
@@ -115,6 +128,8 @@ export default {
       searchBar: false,
       addIcon: true,
       tag: '',
+      titleplaceholder:'',
+      contentplaceholder:''
     }
   },
   created() {
@@ -122,24 +137,27 @@ export default {
     this.getBlogOwnerInfo();
   },
   mounted() {
+    /* 블로그 상단 input박스 길이 조절 */
     if(this.blogOwnerId === this.getUserInfo.id)
       this.isAdmin = true
     this.$store.commit('setIsAdminMode', false)
     $('#title').attr('readonly', true);
     $('#detail').attr('readonly', true);
-
     $('#title').on('keydown', function(e){
       var value = $('#title').val();
-      $('.title1').append('<div id="virtual_dom" style="display:inline; font-size:40px">' + value + '</div>');
+      $('.title1').append('<div id="virtual_dom" style="display:inline; font-size:34px">' + value + '</div>');
       var inputWidth =  $('#virtual_dom').width();
+      if(inputWidth<34)
+        inputWidth=310;
       $('#title').css('width', inputWidth); 
       $('#virtual_dom').remove();
     })
-
     $('#detail').on('keydown', function(e){
       var value2 = $('#detail').val();
-      $('.title1').append('<div id="virtual_dom2" style="display:inline; font-size:15px">' + value2 + '</div>');
+      $('.title1').append('<div id="virtual_dom2" style="display:inline; font-size:17px">' + value2 + '</div>');
       var inputWidth2 =  $('#virtual_dom2').width();
+      if(inputWidth2<17)
+        inputWidth2=180;
       $('#detail').css('width', inputWidth2); 
       $('#virtual_dom2').remove();
     })
@@ -311,18 +329,21 @@ export default {
     }
   }
 }
-$( window ).scroll( function() {
-	if ( $( this ).scrollTop() > 200 ) {
-		$( '.top' ).fadeIn();
-	} else {
-		$( '.top' ).fadeOut();
-	}
-} );
 
-$( '.top' ).click( function() {
-  $( 'html, body' ).animate( { scrollTop : 0}, 400 );
-  return false;
-} );
+// jQuery
+  $( window ).scroll( function() {
+    if ( $( this ).scrollTop() > 200 ) {
+      $( '.top' ).fadeIn();
+    } else {
+      $( '.top' ).fadeOut();
+    }
+  } );
+
+  $('.top').click(function() {
+    $( 'html, body' ).animate( { scrollTop : 0}, 400 );
+    return false;
+  });
+
 </script>
 <style>
   html {
@@ -344,20 +365,19 @@ $( '.top' ).click( function() {
     vertical-align: middle;
     font-size: 36px;
   }
-@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
-.col-md-12{
-  padding-right: 10%;
-  padding-left: 10%;
-}
-.container-movie{  
-  font-family: 'Noto Sans KR', sans-serif;
-  background-color: #9ebbcd70;
+  .col-md-12{
+    padding-right: 10%;
+    padding-left: 10%;
   }
-.tag-active {
-  background: #DDDDDD;
-  border-radius: 20px;
-}
-.column4{
+  .container-movie{  
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #9ebbcd70;
+    }
+  .tag-active {
+    background: #DDDDDD;
+    border-radius: 20px;
+  }
+  .column4{
     float: right;
     margin-right: 40px;
   }
@@ -379,47 +399,75 @@ $( '.top' ).click( function() {
     margin-right: 4px;
     line-height: 35px;
     cursor: pointer;
-}
-.tagspecial:hover {
-    background: #ddd;
-}
-.tag-active {
-    background: #ddd;
-}
-@font-face {
-font-family: 'NotoKrL';
-font-style: normal;
-font-weight: 100;
-src: local('Noto Sans Light'), local('NotoSans-Light'), url(/fonts/NotoSans-Light.eot);
-src: url(/fonts/NotoSans-Light.eot?#iefix) format('embedded-opentype'),
-url(/fonts/NotoSans-Light.woff2) format('woff2'),
-url(/fonts/NotoSans-Light.woff) format('woff');;
-}
-@font-face {
-font-family: 'NotoKrR';
-font-style: normal;
-font-weight: 300;
-src: local('Noto Sans Regular'), local('NotoSans-Regular'), url(/fonts/NotoSans-Regular.eot);
-src: url(/fonts/NotoSans-Regular.eot?#iefix) format('embedded-opentype'),
-url(/fonts/NotoSans-Regular.woff2) format('woff2'),
-url(/fonts/NotoSans-Regular.woff) format('woff');
-}
-@font-face {
-font-family: 'NotoKrM';
-font-style: normal;
-font-weight: 500;
-src: local('Noto Sans Medium'), local('NotoSans-Medium'), url(/fonts/NotoSans-Medium.eot);
-src: url(/fonts/NotoSans-Medium.eot?#iefix) format('embedded-opentype'),
-url(/fonts/NotoSans-Medium.woff2) format('woff2'),
-url(/fonts/NotoSans-Medium.woff) format('woff');
-}
-@font-face {
-font-family: 'NotoKrB';
-font-style: normal;
-font-weight: 700;
-src: local('Noto Sans Bold'), local('NotoSans-Bold'), url(/fonts/NotoSans-Bold.eot);
-src: url(/fonts/NotoSans-Bold.eot?#iefix) format('embedded-opentype'),
-url(/fonts/NotoSans-Bold.woff2) format('woff2'),
-url(/fonts/NotoSans-Bold.woff) format('woff');
-}
+  }
+  .tagspecial:hover {
+      background: #ddd;
+  }
+  .tag-active {
+      background: #ddd;
+  }
+
+  /* 블로그 메인 상단 profile box UI */
+  .details-profile .title1{
+    font-size:0px !important;
+    margin:0px !important;
+  }
+  .column2{
+    padding-left:0px !important;
+  }
+
+  /* 블로그 메인 상단 수정 UI */
+
+  /* chrome input에 자동 채워지는 배경 색상 글자 색상 변경 */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-transition: background-color 9999s ease-out;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: #333333 !important;
+  }
+  
+
+
+
+  /* font */
+  @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+  @font-face {
+  font-family: 'NotoKrL';
+  font-style: normal;
+  font-weight: 100;
+  src: local('Noto Sans Light'), local('NotoSans-Light'), url(/fonts/NotoSans-Light.eot);
+  src: url(/fonts/NotoSans-Light.eot?#iefix) format('embedded-opentype'),
+  url(/fonts/NotoSans-Light.woff2) format('woff2'),
+  url(/fonts/NotoSans-Light.woff) format('woff');;
+  }
+  @font-face {
+  font-family: 'NotoKrR';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Noto Sans Regular'), local('NotoSans-Regular'), url(/fonts/NotoSans-Regular.eot);
+  src: url(/fonts/NotoSans-Regular.eot?#iefix) format('embedded-opentype'),
+  url(/fonts/NotoSans-Regular.woff2) format('woff2'),
+  url(/fonts/NotoSans-Regular.woff) format('woff');
+  }
+  @font-face {
+  font-family: 'NotoKrM';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Noto Sans Medium'), local('NotoSans-Medium'), url(/fonts/NotoSans-Medium.eot);
+  src: url(/fonts/NotoSans-Medium.eot?#iefix) format('embedded-opentype'),
+  url(/fonts/NotoSans-Medium.woff2) format('woff2'),
+  url(/fonts/NotoSans-Medium.woff) format('woff');
+  }
+  @font-face {
+  font-family: 'NotoKrB';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Noto Sans Bold'), local('NotoSans-Bold'), url(/fonts/NotoSans-Bold.eot);
+  src: url(/fonts/NotoSans-Bold.eot?#iefix) format('embedded-opentype'),
+  url(/fonts/NotoSans-Bold.woff2) format('woff2'),
+  url(/fonts/NotoSans-Bold.woff) format('woff');
+  }
 </style>
