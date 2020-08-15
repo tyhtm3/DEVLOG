@@ -13,7 +13,7 @@
 								<dl class="dl-horizontal-profile">
 									<dt>이름</dt>
                   <dd>
-                    <el-input v-model="name" style="width: 40%; border: 0px"></el-input>
+                    <el-input v-model="name" style="width: 50%; border: 0px"></el-input>
                     <el-upload
                     class="avatar-uploader"
                     action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
@@ -25,12 +25,12 @@
                     </el-upload>
                   </dd>
                   <dt>연락처</dt>
-                  <dd><el-input v-model="tel" style="width: 40%;"></el-input></dd>
+                  <dd><el-input v-model="tel" style="width: 50%;"></el-input></dd>
                   <dt>이메일</dt>
-									<dd><el-input v-model="email" style="width: 40%;"></el-input></dd>
+									<dd><el-input v-model="email" style="width: 50%;"></el-input></dd>
                   <dt>GIT 주소</dt>
 									<dd>
-                    <el-input v-model="giturl" style="width: 70%;">
+                    <el-input v-model="giturl" style="width: 50%;">
                       <template slot="prepend">https://</template>
                     </el-input>
                   </dd>
@@ -108,7 +108,7 @@
                     </div>
                     <div class="row" v-if="projectInfoList[0].github_url">
                       <div class="col-sm-4">
-                      <p>Github</p>
+                      <p>Git</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content"><a href="#" @click="goUrl(projectInfoList[0].github_url)">{{projectInfoList[0].github_url}}</a></p>
@@ -116,7 +116,7 @@
                     </div>
                     <div class="row" v-if="projectInfoList[0].etc_url">
                       <div class="col-sm-4">
-                      <p>참고 Url</p>
+                      <p>기타 Url</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">{{projectInfoList[0].etc_url}}</p>
@@ -124,7 +124,7 @@
                     </div>
                     <div class="row" v-if="projectInfoList[0].rep_url">
                       <div class="col-sm-4">
-                      <p>참조 Url</p>
+                      <p>참고 Url</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">{{projectInfoList[0].rep_url}}</p>
@@ -436,8 +436,8 @@ export default {
     vertical-align: middle;    
   }
   .avatar-uploader .el-upload {
-    top: 110px;
-    left: 70%;
+    top: 120px;
+    left: 75%;
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
@@ -450,14 +450,14 @@ export default {
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 168px;
-    height: 168px;
-    line-height: 168px;
+    width: 100px;
+    height: 150px;
+    line-height: 200px;
     text-align: center;
   }
   .avatar {
-    width: 168px;
-    height: 168px;
+    width: 150px;
+    height: 200px;
   }
   .avatar-uploader-icon {
     transform: translate(0%, 40%);

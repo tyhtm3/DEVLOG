@@ -67,7 +67,7 @@
 
         <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">* Github url</p>
+          <p class="pull-right">* Git url</p>
         </div>
         <div class="col-sm-9">
           <el-input style="padding:10px;" v-model="github_url"> </el-input>
@@ -76,7 +76,7 @@
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">참고 url</p>
+          <p class="pull-right">기타 url</p>
         </div>
         <div class="col-sm-9">
           <el-input style="padding:10px;" v-model="etc_url"> </el-input>
@@ -85,7 +85,7 @@
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">참조 url</p>
+          <p class="pull-right">참고 url</p>
         </div>
         <div class="col-sm-9">
           <el-input style="padding:10px;" v-model="rep_url"> </el-input>
