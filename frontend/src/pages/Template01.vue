@@ -54,18 +54,19 @@
           <p><i class="ti-comment" style="margin-right:10px;"></i>kakao ID : cl07</p>
         </span>
         <span class="col-lg-4">
-          <span>CERTIFICATE</span>
+          <span>CERTIFICATION</span>
           <span style="float:right">
-            <i class="ti-plus" style="cursor:pointer" @click="addCertificateVisible"></i>
+            <i class="ti-plus" style="cursor:pointer" @click="addCertificationVisible"></i>
           </span>
           <el-card class="box-card" style="width:100%; margin-top:10px">
             <div v-for="(item, index) in certifications" :key="index" class="text item">
-              <span style="width:30%; display:inline-block;">{{ item.date }}/</span>
+              <span style="width:30%; display:inline-block;">{{ item.date }}</span>
               <span>{{ item.name }}</span>
+              <span class="pull-right" @click="deleteCertification(index)"><i class="ti-trash"></i></span>
             </div>
-            <div v-show="inputCertificate">
-              <span><input size="5" placeholder="취득년도"></span>
-              <span><input placeholder="자격증"></span>
+            <div v-show="inputCertification">
+              <span><input size="5" placeholder="취득년도" v-model="certification.date"></span>
+              <span><input placeholder="자격증" v-on:keyup.enter="addCertification" v-model="certification.name"></span>
             </div>
           </el-card>
           <br><br>
@@ -74,37 +75,18 @@
             <i class="ti-plus" style="cursor:pointer" @click="addSkillVisible"></i>
           </span>
           <ul class="listProgram" style="padding:0px">
-            <li>Java
-              <div class="bar"> 
-                <div class="value p60"></div>
-              </div>
-            </li>
-            <li>C#
-              <div class="bar"> 
-                <div class="value p40"></div>
-              </div>
-            </li>
-            <li>Ruby on Rails
-              <div class="bar"> 
-                <div class="value p30"></div>
-              </div>
-            </li>
-            <li>SQL
+            <li v-for="(item, index) in skills" :key="index">
+              <span style="width:100px">{{ item.name }}</span>
               <div class="bar">
-                <div class="value p70"></div>
+                <div :class="item.value"></div>
               </div>
-            </li>
-            <li>React
-              <div class="bar">
-                <div class="value p20"></div>
-              </div>
-            </li>
-            <li>Html/Css/Js
-              <div class="bar">
-                <div class="value p70"></div>
-              </div>
+              <span class="pull-right" @click="deleteSkill(index)"><i class="ti-trash"></i></span>
             </li>
           </ul>
+          <div v-show="inputSkill">
+              <span><input placeholder="개발 스킬" v-model="skill.name"></span>
+              <span><input size="10" placeholder="숙련도(1~10)" v-on:keyup.enter="addSkill" v-model="skill.value"></span>
+            </div>
         </span>
         <span class="col-lg-5">
           <ve-pie :data="chartData" :settings="chartSettings"></ve-pie>
@@ -146,12 +128,39 @@ export default {
       content: '',
       certifications : [
         {
-          date: 2017,
+          date: '2018.04.',
           name: '정보처리기사'
         },
+        {
+          date: '2019.06.',
+          name: 'CCNP'
+        },
       ],
+      skills: [
+        {
+          name: 'Java',
+          value: 'value p60'
+        },
+        {
+          name: 'C#',
+          value: 'value p70'
+        },
+        {
+          name: 'JavaScript',
+          value: 'value p30'
+        }
+      ],
+      certification: {
+        date: '',
+        name: ''
+      },
+      skill: {
+        name: '',
+        value: ''
+      },
       loading: true,
-      inputCertificate: false,
+      inputCertification: false,
+      inputSkill: false,
     }
   },
   created() {
@@ -214,15 +223,36 @@ export default {
       this.title = data.title
       this.content = data.content
     },
-    addCertificateVisible(){
-      this.inputCertificate = !this.inputCertificate
+    addCertificationVisible(){
+      this.inputCertification = !this.inputCertification
+    },
+    addCertification(){
+      // DB에 자격증 추가하는 코드 구현해야 함
+      this.certifications.push(this.certification)
+      this.certification = {}
+      this.addCertificationVisible()
+    },
+    deleteCertification(index){
+      // DB에 자격증 제거하는 코드 구현해야 함
+      this.certifications.splice(index, 1)  
     },
     addSkillVisible(){
-
+      this.inputSkill = !this.inputSkill
+    },
+    addSkill(){
+      // DB에 스킬 추가하는 코드 구현 해야 함
+      this.skill.value = 'value p'+this.skill.value+'0'
+      console.log(this.skill.value)
+      this.skills.push(this.skill)
+      this.skill = {}
+      this.addSkillVisible()
+    },
+    deleteSkill(index){
+      this.skills.splice(index, 1)
     },
     stopLoading(){
       this.loading = false;
-    }
+    },
   }
 }
 </script>
@@ -365,7 +395,7 @@ export default {
   height: 100%;
   background-color: #FF7168;
 }
-.value .p10 {
+.value.p10 {
   width: 10%;
 }
 .value.p20 {
@@ -391,6 +421,9 @@ export default {
 }
 .value.p90 {
   width: 90%;
+}
+.value.p100 {
+  width: 100%;
 }
 </style>
 <style>
