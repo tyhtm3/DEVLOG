@@ -48,7 +48,7 @@
                 <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:20px; margin:10px; line-height:50px;">
                   #{{tag.tag}}
                 </span>
-                <span @click="deleteTag(index)" class="hideDeleteButton ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
+                <span @click="deleteTag(index)" class="delete-tag-button hideDeleteButton ti-close pull-top pull-right" ></span>
                 <!-- </span> -->
                 </div>
 
@@ -160,14 +160,14 @@
                 <!-- <hr style="clear:both"> -->
               </div>
             <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
-              <div slot="no-results" style="color:#11212E; padding:50px">
-              마지막 글입니다.
-              </div>
+                <!-- <div slot="spinner" style="color:#11212E; padding:50px">로딩중</div> -->
+                <div slot="no-more" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
+                <div slot="no-results" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
             </infinite-loading>
             </div>
             <!-- end post list -->  
             <div v-else style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
-                조건에 일치하는 글이 존재하지 않습니다.
+                조건에 일치하는 포스트가 존재하지 않습니다.
             </div>> 
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
           </div>
@@ -269,8 +269,10 @@ export default {
       }
       console.log(this.searchTags);
       console.log(this.activeIndex);
-      this.limit=0
-      this.getPostandproject();
+
+      // 충돌난부분인데 냅둬야되지않나?
+      // this.limit=0
+      // this.getPostandproject();
       
     },
     // 프로젝트와 포스트 검색 초기화
@@ -471,28 +473,82 @@ $( '.topimg' ).click( function() {
   return false;
 } );
 </script>
+
 <style>
+/* 전역 css */
+   /* 스크롤 부드럽게 내리기  */
   html {
     scroll-behavior: smooth;
   }
+
+  /* 우측 하단 top 버튼 - 남색*/
   a.topimg{
     position: fixed;
     right: 7%;
-    bottom: 20%;
+    bottom: 10%;
     display: none;
     width:48px;
     height:48px;
     text-align: center;
     color:#11212E
   }
-  #to-top{
+  /* #to-top{
     vertical-align: middle;
     font-size: 36px;
+  } */
+
+  /* 프로젝트 태그 하단 스크롤바  */
+  .tag-nest-detail{
+    white-space:nowrap; 
+    display:inline-block; 
+    width:70%; 
+    overflow:scroll;
   }
+  .tag-nest-detail::-webkit-scrollbar {
+    width: 5px;
+  }
+  .tag-nest-detail::-webkit-scrollbar-thumb {
+    width: 2px;
+    background-color: rgb(212, 211, 211);
+    border-radius: 30px;
+    background-clip: padding-box;
+    border: 3px solid transparent;
+  }
+  .tag-nest-detail::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 30px;
+    width:5px;
+    /* box-shadow: inset 0px 0px 3px transparent; */
+  }
+
+  .left > .posttag-nest{
+    white-space:nowrap; 
+    display:inline-block; 
+    width:100%; 
+    overflow:scroll;
+  }
+  /* 포스트 태그 하단 스크롤바  */
+  .posttag-nest::-webkit-scrollbar {
+    width: 5px;
+  }
+  .posttag-nest::-webkit-scrollbar-thumb {
+    width: 1px;
+    background-color:  rgb(212, 211, 211);
+    border-radius: 30px;
+    background-clip: padding-box;
+    border: 3px solid transparent;
+  }
+  .posttag-nest::-webkit-scrollbar-track {
+    width:5px;
+    background-color: transparent;
+    border-radius: 30px;
+  }
+
+
+  /* 말풍선 */
   .el-tooltip__popper[x-placement^=bottom] .popper__arrow::after {
       /* border-bottom-color: #9ebbcd  !important; */
       border-bottom-color: #11212E  !important;
-      
     }
   .el-tooltip__popper[x-placement^=bottom] .popper__arrow{
       /* border-bottom-color: #9ebbcd  !important; */
@@ -503,8 +559,38 @@ $( '.topimg' ).click( function() {
       /* background: #9ebbcd !important; */
       background: #11212E !important;
   }
+
+  /* 태그 삭제 */
+  .delete-tag-button{
+    /* style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;" */
+    font-size:8px;
+    color:#333333;
+    padding:0px;
+    margin-left:-35px;
+  }
+  .delete-tag-button:hover{
+    color:black;
+    font-weight: bold;
+    font-size: 9px;
+  }
+
+   /* chrome input에 자동 채워지는 배경 색상 글자 색상 변경 */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-transition: background-color 9999s ease-out;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: #333333 !important;
+  }
+
+  
 </style>
+
+
 <style lang="scss" scoped>
+// 지역 css
 .row {
   padding: 40px;
   // box-shadow: 2px 2px 2px rgba(226, 223, 223, 0.4);
@@ -644,7 +730,7 @@ $( '.topimg' ).click( function() {
   -webkit-box-orient: vertical;
 }
 .active {
-  background-color:    #DDDDDD;
+  background-color:    #DDD;
 }
 .row{
   box-shadow: 1px 1px 15px rgba(160, 160, 160, 0.137);
@@ -676,56 +762,9 @@ $( '.topimg' ).click( function() {
 .donotshow{
   visibility:hidden;
 }
-.left > .posttag-nest{
-  white-space:nowrap; 
-  display:inline-block; 
-  width:100%; 
-  overflow:scroll;
-}
-
-// 포스트 태그 하단 스크롤바 
-.posttag-nest::-webkit-scrollbar {
-  width: 7px;
-}
-.posttag-nest::-webkit-scrollbar-thumb {
-  width: 1px;
-  background-color:  rgb(212, 211, 211);
-  border-radius: 30px;
-  background-clip: padding-box;
-  border: 7px solid transparent;
-}
-.posttag-nest::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-radius: 30px;
-}
-
-// 프로젝트 태그 하단 스크롤바 
-
-.tag-nest-detail{
-  white-space:nowrap; 
-  display:inline-block; 
-  width:70%; 
-  overflow:scroll;
-}
 
 
-.tag-nest-detail::-webkit-scrollbar {
-  width: 7px;
-}
-.tag-nest-detail::-webkit-scrollbar-thumb {
-  width: 1px;
-  background-color: rgb(212, 211, 211);
-  border-radius: 30px;
-  background-clip: padding-box;
-  border: 7px solid transparent;
-}
-.tag-nest-detail::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-radius: 30px;
-  // box-shadow: inset 0px 0px 3px transparent;
-}
 </style>
-
 
 
 
