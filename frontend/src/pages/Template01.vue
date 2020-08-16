@@ -3,7 +3,7 @@
 <!--  지원하는 직무에 적합한 3개의
 핵심 프로젝트를 어필하는데 적합한 템플릿 -->
 
-<section id="timelineTemplate">
+<section id="timelineTemplate" v-loading="loading">
 
   <!-- about me 시작 -->
   <div class="tl-item" @click="aboutmedetail=true">
@@ -19,8 +19,7 @@
   <!-- about me 끝 -->
   
   <!-- project 시작 -->
-  <div class="tl-item" v-for="(project, index) in projectInfo" :key="index" @click="pd(project)">
-    <!-- projectdetail=true -->
+  <div class="tl-item" v-for="(project, index) in projectInfo" :key="index" @click="projectDetailVisible(project)">
     <div class="tl-bg" :style="'background-image: url('+project.img_url+')'"  ></div>
     <div class="tl-year">
       <p class="f2 heading--sanSerif">{{ project.title }}</p>
@@ -46,21 +45,58 @@
   <el-dialog class="template01detail" title="About Me" :visible.sync="aboutmedetail">
     <div class="row">
       <div class="col-lg-1"></div>
-      <div class="col-lg-10" style="margin-top:5%">
-        <img :src="this.portfolioInfo.profile_img_url" style="width:150px; height:150px;">
-        
+      <div class="col-lg-10" style="margin-top:30px">
+        <span class="col-lg-3">
+          <img :src="this.portfolioInfo.profile_img_url" style="width:150px; height:200px;">
+          <h3>{{ portfolioInfo.name }} </h3>
+          <p><i class="ti-mobile" style="margin-right:10px;"></i>{{ portfolioInfo.tel }}</p>
+          <p><i class="ti-email" style="margin-right:10px;"></i>{{ portfolioInfo.email }}</p>
+          <p><i class="ti-comment" style="margin-right:10px;"></i>kakao ID : cl07</p>
+        </span>
+        <span class="col-lg-4">
+          <span>CERTIFICATION</span>
+          <span style="float:right">
+            <i class="ti-plus" style="cursor:pointer" @click="addCertificationVisible"></i>
+          </span>
+          <el-card class="box-card" style="width:100%; margin-top:10px">
+            <div v-for="(item, index) in certifications" :key="index" class="text item">
+              <span style="width:30%; display:inline-block;">{{ item.date }}</span>
+              <span>{{ item.name }}</span>
+              <span class="pull-right" @click="deleteCertification(index)"><i class="ti-trash"></i></span>
+            </div>
+            <div v-show="inputCertification">
+              <span><input size="5" placeholder="취득년도" v-model="certification.date"></span>
+              <span><input placeholder="자격증" v-on:keyup.enter="addCertification" v-model="certification.name"></span>
+            </div>
+          </el-card>
+          <br><br>
+          <span>DEVELOMENT SKILLS</span>
+          <span style="float:right">
+            <i class="ti-plus" style="cursor:pointer" @click="addSkillVisible"></i>
+          </span>
+          <ul class="listProgram" style="padding:0px">
+            <li v-for="(item, index) in skills" :key="index">
+              <span style="width:100px">{{ item.name }}</span>
+              <div class="bar">
+                <div :class="item.value"></div>
+              </div>
+              <span class="pull-right" @click="deleteSkill(index)"><i class="ti-trash"></i></span>
+            </li>
+          </ul>
+          <div v-show="inputSkill">
+              <span><input placeholder="개발 스킬" v-model="skill.name"></span>
+              <span><input size="10" placeholder="숙련도(1~10)" v-on:keyup.enter="addSkill" v-model="skill.value"></span>
+            </div>
+        </span>
+        <span class="col-lg-5">
+          <ve-pie :data="chartData" :settings="chartSettings"></ve-pie>
+        </span>
       </div>
       <div class="col-lg-1"></div>
     </div>
     <div class="row">
       <div class="col-lg-1"></div>
       <div class="col-lg-10" style="margin-top:1%">
-        <h3>{{ portfolioInfo.name }} </h3>
-        <p><i class="material-icons" style="margin-right:5px;"> phone_android</i>{{ portfolioInfo.tel }}</p>
-        <p><i class="material-icons" style="margin-right:5px;"> email</i>oyes9316@naver.com</p>
-        <p><i class="material-icons" style="margin-right:5px;"> chat_bubble</i>kakao ID : cl07</p>
-        
-        
       </div>
       <div class="col-lg-1"></div>
     </div>
@@ -90,10 +126,54 @@ export default {
       projectdetail: false,
       title: '',
       content: '',
+      certifications : [
+        {
+          date: '2018.04.',
+          name: '정보처리기사'
+        },
+        {
+          date: '2019.06.',
+          name: 'CCNP'
+        },
+      ],
+      skills: [
+        {
+          name: 'Java',
+          value: 'value p60'
+        },
+        {
+          name: 'C#',
+          value: 'value p70'
+        },
+        {
+          name: 'JavaScript',
+          value: 'value p30'
+        }
+      ],
+      certification: {
+        date: '',
+        name: ''
+      },
+      skill: {
+        name: '',
+        value: ''
+      },
+      loading: true,
+      inputCertification: false,
+      inputSkill: false,
     }
   },
   created() {
     this.seq_portfolio = this.$route.params.seq
+    this.chartData = {
+        columns: ['Stack'],
+        rows: [
+        ]
+      }
+      this.chartSettings = {
+        dimension: 'stack',
+        metrics: 'share'
+      }
   },
   mounted() {
     $(".main-header").css('display','none')
@@ -109,7 +189,8 @@ export default {
         })
       }
     })
-    this.getPortFolioInfo()    
+    this.getPortFolioInfo()
+    setTimeout(this.stopLoading, 2000);
   },
   methods:{
     getPortFolioInfo() {
@@ -123,14 +204,55 @@ export default {
         .then(({data}) => {
           console.log(data)
           this.projectInfo = data.reverse()
+          for(let i=0; i<this.projectInfo.length; i++){
+            L:for(let j=0; j<this.projectInfo[i].stacks.length; j++){
+              for(let k=0; k<this.chartData.rows.length; k++){
+                if(this.chartData.rows[k].stack === this.projectInfo[i].stacks[j].stack){
+                  this.chartData.rows[k].share++
+                  continue L
+                }
+              }
+              this.chartData.rows.push({'stack': this.projectInfo[i].stacks[j].stack, 'share': 1})
+            }
+          }
         })
       })
     },
-    pd(data){
+    projectDetailVisible(data){
       this.projectdetail = !this.projectdetail
       this.title = data.title
       this.content = data.content
-    }
+    },
+    addCertificationVisible(){
+      this.inputCertification = !this.inputCertification
+    },
+    addCertification(){
+      // DB에 자격증 추가하는 코드 구현해야 함
+      this.certifications.push(this.certification)
+      this.certification = {}
+      this.addCertificationVisible()
+    },
+    deleteCertification(index){
+      // DB에 자격증 제거하는 코드 구현해야 함
+      this.certifications.splice(index, 1)  
+    },
+    addSkillVisible(){
+      this.inputSkill = !this.inputSkill
+    },
+    addSkill(){
+      // DB에 스킬 추가하는 코드 구현 해야 함
+      this.skill.value = 'value p'+this.skill.value+'0'
+      console.log(this.skill.value)
+      this.skills.push(this.skill)
+      this.skill = {}
+      this.addSkillVisible()
+    },
+    deleteSkill(index){
+      this.skills.splice(index, 1)
+    },
+    stopLoading(){
+      this.loading = false;
+    },
   }
 }
 </script>
@@ -251,10 +373,63 @@ export default {
   filter: grayscale(100%);
 }
 </style>
+<style scoped>
+.listProgram .bar {
+  width: 150px;
+  height: 10px;
+  border: 2px solid #FF7168;
+  border-radius: 5px;
+}
+
+.listProgram li {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+          align-items: center;
+  padding-top: 10px;
+}
+.value {
+  width: 0%;
+  height: 100%;
+  background-color: #FF7168;
+}
+.value.p10 {
+  width: 10%;
+}
+.value.p20 {
+  width: 20%;
+}
+.value.p30 {
+  width: 30%;
+}
+.value.p40 {
+  width: 40%;
+}
+.value.p50 {
+  width: 50%;
+}
+.value.p60 {
+  width: 60%;
+}
+.value.p70 {
+  width: 70%;
+}
+.value.p80 {
+  width: 80%;
+}
+.value.p90 {
+  width: 90%;
+}
+.value.p100 {
+  width: 100%;
+}
+</style>
 <style>
 .template01detail .el-dialog{
-  width: 70% !important;
-  height: 80% !important;
+  width: 1300px !important;
+  height: 600px !important;
   margin-top: 5% !important;
   overflow: auto;
 }

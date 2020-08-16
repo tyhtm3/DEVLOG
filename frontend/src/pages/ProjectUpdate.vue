@@ -68,7 +68,7 @@
 
                 <div class="row">
                 <div class="col-sm-2 pjt-title">
-                  <p class="pull-right">* Github url</p>
+                  <p class="pull-right">* Git url</p>
                 </div>
                 <div class="col-sm-9">
                   <el-input style="padding:10px;" v-model="github_url"> </el-input>
@@ -77,7 +77,7 @@
 
               <div class="row">
                 <div class="col-sm-2 pjt-title">
-                  <p class="pull-right">참고 url</p>
+                  <p class="pull-right">기타 url</p>
                 </div>
                 <div class="col-sm-9">
                   <el-input style="padding:10px;" v-model="etc_url"> </el-input>
@@ -86,7 +86,7 @@
 
               <div class="row">
                 <div class="col-sm-2 pjt-title">
-                  <p class="pull-right">참조 url</p>
+                  <p class="pull-right">참고 url</p>
                 </div>
                 <div class="col-sm-9">
                   <el-input style="padding:10px;" v-model="rep_url"> </el-input>
@@ -467,8 +467,28 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #project-editor .ql-editor{
   min-height: 400px;
+}
+.pjt-title{
+  padding-top: 20px;
+}
+.inputtag{
+  opacity:0.5;
+  border:solid;
+  border-top:1px;
+  border-left:1px;
+  border-right:1px;
+  border-color: rgba(143, 143, 143, 0.432);
+  border-width: 0.1px;
+  width:135px;
+}
+.inputtag:hover{
+  opacity:0.8;
+}
+.inputtag:focus{
+  opacity:0.8;
+  outline: none;
 }
 </style>

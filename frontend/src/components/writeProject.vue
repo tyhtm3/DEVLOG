@@ -55,10 +55,10 @@
         </div>
         <div class="col-sm-9">
           <div v-for="(role2,index) in roles" :key="index"><span><el-input  style="padding:10px;" type="textarea" :rows="2" :value="role2" readonly></el-input></span>
-          <div class="ti-minus pull-bottom pull-right" style="transform:scale(1.6)" @click="deleteRole(index)"></div>
+          <div class="ti-minus pull-bottom pull-right" @click="deleteRole(index)"></div>
           </div>
           <el-input style="padding:10px;" type="textarea" :rows="4" placeholder="PROJECT ROLE" v-model="role"> </el-input>
-          <div class="ti-plus pull-bottom pull-right"style="transform:scale(1.6)" @click="addRole"></div>
+          <div class="ti-plus pull-bottom pull-right" @click="addRole"></div>
         </div>
       </div>
       <hr>
@@ -67,7 +67,7 @@
 
         <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">* Github url</p>
+          <p class="pull-right">* Git url</p>
         </div>
         <div class="col-sm-9">
           <el-input style="padding:10px;" v-model="github_url"> </el-input>
@@ -76,7 +76,7 @@
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">참고 url</p>
+          <p class="pull-right">기타 url</p>
         </div>
         <div class="col-sm-9">
           <el-input style="padding:10px;" v-model="etc_url"> </el-input>
@@ -85,7 +85,7 @@
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">참조 url</p>
+          <p class="pull-right">참고 url</p>
         </div>
         <div class="col-sm-9">
           <el-input style="padding:10px;" v-model="rep_url"> </el-input>
@@ -110,7 +110,6 @@
           <span v-html="htmlTag">
           </span>
           # <input class="inputtag" v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그를 입력해주세요.">
-          <!-- <input v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그 입력 "> -->
         </div>
       </div><hr>
 
@@ -128,7 +127,7 @@
           <img v-if="img_url" :src="img_url" style="width:100%; height:100%; vertical-align:top">
           <i v-else slot="default" class="el-icon-plus"></i>
           </el-upload>
-          </div>
+        </div>
       </div><hr>
 
       <div class="row">
@@ -380,15 +379,16 @@ components: {
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
       const isLt10M = file.size / 1024 / 1024 < 10;
 
-      if (!isJPG) {
-        this.$message.error('Image must be JPG format!');
+      if (!(isPNG || isJPG)) {
+        this.$message.error('Image must be JPG or PNG format!1');
       }
       if (!isLt10M) {
         this.$message.error('Image size can not exceed 10MB!');
       }
-      return isJPG && isLt10M;
+      return (isJPG || isPNG) && isLt10M;
     },
     filterMethod(query, item) {
       return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
@@ -401,10 +401,26 @@ components: {
 #project-editor .ql-editor{
   min-height: 400px;
 }
+</style>
+<style scoped>
 .pjt-title{
   padding-top: 20px;
 }
-.plus{
- height: 50px;
+.inputtag{
+  opacity:0.5;
+  border:solid;
+  border-top:1px;
+  border-left:1px;
+  border-right:1px;
+  border-color: rgba(143, 143, 143, 0.432);
+  border-width: 0.1px;
+  width:135px;
+}
+.inputtag:hover{
+  opacity:0.8;
+}
+.inputtag:focus{
+  opacity:0.8;
+  outline: none;
 }
 </style>

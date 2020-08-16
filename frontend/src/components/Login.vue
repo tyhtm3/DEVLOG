@@ -7,18 +7,18 @@
 			<div class="body">
 				<input v-model="id" id="id" placeholder="id" type="text"/>
 				<input v-model="password" type="password" id="password" placeholder="password"/>
-				<button class="normal" @click="login">login</button><p/>
-				<button class="kakao" @click="kakaoLogin">kakao</button><button  id="naverIdLogin" class="naver">NAVER</button><p/>
+				<button class="normal" @click="login">로그인</button><p/>
+				<button class="kakao" @click="kakaoLogin">kakao</button><button id="naverIdLogin" class="naver">NAVER</button><p/>
 				<!-- <button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button> -->
-				<p class="message">Not registered?
-					<router-link to="/signup">
-						Create an account
+				<p class="message">
+					<span class="pull-left">
+					<router-link to="/findpw"><i class="dripicons-lock"></i>아이디·비밀번호 찾기
 					</router-link>
-				</p>	
-				<p class="message">Forgot password?
-					<router-link to="/findpw">
-						Find password
+					</span>
+					<span class="pull-right">
+					<router-link to="/signup"><i class="dripicons-user"></i>회원가입
 					</router-link>
+					</span>
 				</p>
 			</div>
 		</div> 
@@ -174,12 +174,23 @@ export default {
 	display: inline;
 }
 
-.form button:hover,
-.form button:active,
-.form button:focus {
+.form .normal:hover,
+.form .normal:active,
+.form .normal:focus {
   background: #424242;
 }
 
+.form .kakao:hover,
+.form .kakao:active,
+.form .kakao:focus {
+  background: #d8ca00;
+}
+
+.form .naver:hover,
+.form .naver:active,
+.form .naver:focus {
+  background: #238d00;
+}
 .form .message {
   margin: 15px 0 0;
   color: #b3b3b3;

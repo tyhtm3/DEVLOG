@@ -13,7 +13,8 @@
 								<dl class="dl-horizontal-profile">
 									<dt>이름</dt>
                   <dd>
-                    <el-input v-model="name" style="width: 40%; border: 0px"></el-input>
+                    <el-input v-model="name" style="width: 50%; border: 0px"></el-input>
+                    <el-tooltip class="item" effect="dark" content="사진 비율 : 3x4" placement="right">
                     <el-upload
                     class="avatar-uploader"
                     action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
@@ -23,14 +24,15 @@
                     <img v-if="imageUrl" :src="imageUrl" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
+                    </el-tooltip>
                   </dd>
                   <dt>연락처</dt>
-                  <dd><el-input v-model="tel" style="width: 40%;"></el-input></dd>
+                  <dd><el-input v-model="tel" style="width: 50%;"></el-input></dd>
                   <dt>이메일</dt>
-									<dd><el-input v-model="email" style="width: 40%;"></el-input></dd>
+									<dd><el-input v-model="email" style="width: 50%;"></el-input></dd>
                   <dt>GIT 주소</dt>
 									<dd>
-                    <el-input v-model="giturl" style="width: 70%;">
+                    <el-input v-model="giturl" style="width: 50%;">
                       <template slot="prepend">https://</template>
                     </el-input>
                   </dd>
@@ -108,7 +110,7 @@
                     </div>
                     <div class="row" v-if="projectInfoList[0].github_url">
                       <div class="col-sm-4">
-                      <p>Github</p>
+                      <p>Git</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content"><a href="#" @click="goUrl(projectInfoList[0].github_url)">{{projectInfoList[0].github_url}}</a></p>
@@ -116,7 +118,7 @@
                     </div>
                     <div class="row" v-if="projectInfoList[0].etc_url">
                       <div class="col-sm-4">
-                      <p>참고 Url</p>
+                      <p>기타 Url</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">{{projectInfoList[0].etc_url}}</p>
@@ -124,7 +126,7 @@
                     </div>
                     <div class="row" v-if="projectInfoList[0].rep_url">
                       <div class="col-sm-4">
-                      <p>참조 Url</p>
+                      <p>참고 Url</p>
                       </div>
                       <div class="col-sm-8">
                       <p class="pjt-content">{{projectInfoList[0].rep_url}}</p>
@@ -220,13 +222,6 @@
               </div>
               <el-button @click="makePortfolio" style="float:right; margin-bottom: 20px">포트폴리오 생성</el-button>
 
-              
-              <!-- <div class="one">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-                <div class="two">BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-                  <div class="three">CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-                  </div>
-                </div>
-              </div> -->
 						</div> 
           </div>
           <!--/myCarousel-->
@@ -366,6 +361,7 @@ export default {
       // alert(this.includedProject);
       http
       .post('portfolio', {
+        email: this.email,
         content: this.portfolioContent,
         disclosure: this.portfolioDisclosure,
         github_url: this.giturl,
@@ -422,16 +418,17 @@ export default {
       this.imageUrl = 'http://'.concat(res)
     },
     beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt10M = file.size / 1024 / 1024 < 10;
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt10M = file.size / 1024 / 1024 < 10;
 
-        if (!isJPG) {
-          this.$message.error('Image must be JPG format!');
-        }
-        if (!isLt10M) {
-          this.$message.error('Image size can not exceed 10MB!');
-        }
-        return isJPG && isLt10M;
+      if (!(isPNG || isJPG)) {
+        this.$message.error('Image must be JPG or PNG format!1');
+      }
+      if (!isLt10M) {
+        this.$message.error('Image size can not exceed 10MB!');
+      }
+      return (isJPG || isPNG) && isLt10M;
     },
   }
 }
@@ -442,8 +439,8 @@ export default {
     vertical-align: middle;    
   }
   .avatar-uploader .el-upload {
-    top: 110px;
-    left: 70%;
+    top: 120px;
+    left: 75%;
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
@@ -456,14 +453,14 @@ export default {
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 168px;
-    height: 168px;
-    line-height: 168px;
+    width: 100px;
+    height: 150px;
+    line-height: 200px;
     text-align: center;
   }
   .avatar {
-    width: 168px;
-    height: 168px;
+    width: 150px;
+    height: 200px;
   }
   .avatar-uploader-icon {
     transform: translate(0%, 40%);
@@ -471,7 +468,6 @@ export default {
   .el-transfer{
     width: auto;
     float: left;
-    /* background-color: red; */
   }
   /* .nextToTransfer{
   } */

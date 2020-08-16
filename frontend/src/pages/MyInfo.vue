@@ -1,6 +1,6 @@
 <template>
 	<transition name="el-zoom-in-top">
-    <div class="content-wrapper"  >
+    <!-- <div class="content-wrapper"  > -->
       <!-- style="background-color:#9ebbcd34" -->
       <!-- start Main content -->
       <section class="content" >
@@ -55,7 +55,7 @@
           </div>
         </div>
       </section>
-    </div>
+    <!-- </div> -->
 	</transition>
 </template>
 
@@ -198,16 +198,17 @@ export default {
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
       const isLt10M = file.size / 1024 / 1024 < 10;
 
-      if (!isJPG) {
-        this.$message.error('Profile image must be JPG format!');
+      if (!(isPNG || isJPG)) {
+        this.$message.error('Image must be JPG or PNG format!1');
       }
       if (!isLt10M) {
-        this.$message.error('Profile image size can not exceed 10MB!');
+        this.$message.error('Image size can not exceed 10MB!');
       }
-      return isJPG && isLt10M;
-    }
+      return (isJPG || isPNG) && isLt10M;
+    },
   },
 }
 </script>
@@ -216,4 +217,33 @@ export default {
   padding-top:110px;
 }
 
+</style>
+<style scoped>
+.avatar-uploader2 .el-upload {
+    top: 90px;
+    left: 500px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: absolute;
+    overflow: hidden;
+  }
+  .avatar-uploader2 .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 168px;
+    height: 168px;
+    line-height: 34px;
+    text-align: center;
+  }
+  .avatar {
+    width: 168px;
+    height: 168px;
+  }
+  .avatar-uploader-icon {
+    transform: translate(0%, 40%);
+  }
 </style>
