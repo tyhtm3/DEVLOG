@@ -2,8 +2,6 @@ package com.ssafy.devlog.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.ssafy.devlog.dto.Project;
 
 public interface ProjectService {
