@@ -10,11 +10,19 @@
             <input id="title"  type="text" style="font-size:32px; color:#333333;" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog"  :placeholder=titleplaceholder readonly /><br>
             <input id="detail" type="text" style="font-size:15px; color:#959595; padding-top:5px;" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog"  :placeholder=contentplaceholder readonly />
           </div>
-          <div class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
-            by {{blogOwnerInfo.nickname}}
-            <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
-            <!-- <span>Web Designer</span> -->
-          </div>
+          <div v-if="!isAdmin" class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
+              <span class="show-blog-owner-nickname">by {{blogOwnerInfo.nickname}}</span>
+              <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
+              <!-- <span>Web Designer</span> -->
+            </div>
+          <router-link v-if="isAdmin" to="/myinfo">
+            <div class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
+              <span class="show-blog-owner-nickname">by {{blogOwnerInfo.nickname}}</span>
+              <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
+              <!-- <span>Web Designer</span> -->
+            </div>
+          </router-link>
+          
           <div class="description-profile" style="max-width:700px">
           <div class="column2">
             <div class="row"> 
@@ -348,9 +356,7 @@ export default {
 
 </script>
 <style scoped>
-  html {
-    scroll-behavior: smooth;
-  }
+
   a.top {
     position: fixed;
     right: 7%;
@@ -410,10 +416,21 @@ export default {
       background: #ddd;
   }
 
+  /* 스크롤 부드럽게 내리기  */
+  html {
+    scroll-behavior: smooth;
+  }
+
   /* 블로그 메인 상단 profile box UI */
   .details-profile .title1{
     font-size:0px !important;
     margin:0px !important;
+  }
+  .details-profile .title2 span{
+    all: unset;
+  }
+  #show-blog-owner-nickname:hover{
+    box-shadow: 3px 3px 3px rgba(177, 177, 177, 0.527);
   }
   .column2{
     padding-left:0px !important;
