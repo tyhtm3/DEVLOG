@@ -392,7 +392,7 @@ export default {
     padding-left: 10%;
   }
   .container-movie{  
-    height: 500px;
+    height: 425px;
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #9ebbcd70;
     }

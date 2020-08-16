@@ -494,21 +494,21 @@ $( '.topimg' ).click( function() {
     display:inline-block; 
     width:70%; 
     overflow:scroll;
-    margin-bottom:20px;
   }
   .tag-nest-detail::-webkit-scrollbar {
-    width: 7px;
+    width: 5px;
   }
   .tag-nest-detail::-webkit-scrollbar-thumb {
     width: 2px;
     background-color: rgb(212, 211, 211);
     border-radius: 30px;
     background-clip: padding-box;
-    /* border: 1px solid transparent; */
+    border: 3px solid transparent;
   }
   .tag-nest-detail::-webkit-scrollbar-track {
     background-color: transparent;
     border-radius: 30px;
+    width:5px;
     /* box-shadow: inset 0px 0px 3px transparent; */
   }
 
@@ -517,20 +517,20 @@ $( '.topimg' ).click( function() {
     display:inline-block; 
     width:100%; 
     overflow:scroll;
-    margin-bottom:20px;
   }
   /* 포스트 태그 하단 스크롤바  */
   .posttag-nest::-webkit-scrollbar {
-    width: 7px;
+    width: 5px;
   }
   .posttag-nest::-webkit-scrollbar-thumb {
     width: 1px;
     background-color:  rgb(212, 211, 211);
     border-radius: 30px;
     background-clip: padding-box;
-    border: 7px solid transparent;
+    border: 3px solid transparent;
   }
   .posttag-nest::-webkit-scrollbar-track {
+    width:5px;
     background-color: transparent;
     border-radius: 30px;
   }
