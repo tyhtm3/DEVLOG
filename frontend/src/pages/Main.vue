@@ -269,6 +269,8 @@ export default {
       }
       console.log(this.searchTags);
       console.log(this.activeIndex);
+      this.limit=0
+      this.getPostandproject();
       
     },
     // 프로젝트와 포스트 검색 초기화
@@ -280,20 +282,18 @@ export default {
       if(this.$refs.infiniteLoading){
         this.$refs.infiniteLoading.stateChanger.reset(); 
       }
+      
       http.post('/project/feed', {
       seq_user:this.seq_user ,
       disclosure: this.disclosure?2:1,
-      offset: 0,
-      limit: 10,
       tag: this.searchTags.length==0?null:this.searchTags
-    }, {headers: {
+      }, {headers: {
         'Content-type': 'application/json',
         Authorization : this.$store.state.token,
         }})
-    .then(({data}) => {
+      .then(({data}) => {
       this.projectList = data;
-      // this.getprojectCommentTag(data)
-    })
+      })
     http
     .post('/post/feed', {
        seq_user:this.seq_user , 
@@ -437,12 +437,18 @@ export default {
         this.$message({
                 type: 'success',
                 message: '관심 태그가 삭제되었습니다.'
-              });   
-        // var idx = this.searchTags.indexOf(this.tags[index].tag)
-        // this.searchTags.splice(idx,1)      
+              });       
         })
       }
-      this.tags.splice(index,1)   
+      
+      var idx = this.searchTags.indexOf(this.tags[index].tag)
+      this.searchTags.splice(idx,1)  
+      this.tags.splice(index,1) 
+
+      // 선택 되어있는채로 삭제시 선택 해제 후 재검색
+      
+      this.limit=0
+      this.getPostandproject();
     },
     showCloseButton(index){
       $(".hideDeleteButton").eq(index).show();
