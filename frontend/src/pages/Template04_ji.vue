@@ -19,15 +19,15 @@
           <div class="about">
             <h3>About Me</h3>
             <!-- 간단한 자기소개 : portfolioInfo.introduction"-->
-            <!-- <p v-text="portfolioInfo.introduction"></p> -->
-            <p v-text=tempintroduction />
+            <p v-text="portfolioMoreInfo.introduction"></p>
+            <!-- <p v-text=tempintroduction /> -->
           </div>
           <div class="contact">
             <h3>Contact Me</h3>
             <div class="call"><a :href=telstr><i class="ti-mobile"></i><span v-text="portfolioInfo.tel" ></span></a></div>
             <!-- <address id="getaddress"/> -->
             <!-- <div class="address"><a :href=addstr><i class="ti-map-alt"></i><span>{{portfolioInfo.address}}</span></a> -->
-            <div class="address"><a :href=addstr target="_blank"><i class="ti-map-alt"></i><span>{{tempaddress}}</span></a></div>
+            <div class="address"><a :href=addstr target="_blank"><i class="ti-map-alt"></i><span>{{portfolioMoreInfo.address}}</span></a></div>
             <div class="email"><a :href=portfolioInfo.email><i class="ti-email"></i><span>{{portfolioInfo.email}}</span></a></div>
             <div class="website"><a :href=gitstr target="_blank"> <i class="ti-github"></i><span>{{portfolioInfo.github_url}}</span></a></div>
           </div>
@@ -59,10 +59,10 @@
               <!-- <li><span>Technical Consultant -<br>Web Design</span><small>Fiserv</small><small>Apr 2018 - Now</small></li>
               <li><span>Web Designer</span><small>Lynden</small><small>Jan 2018 - Apr 2018</small></li>
               <li><span>Intern - Web Design</span><small>Lynden</small><small>Aug 2017 - Dec 2017</small></li> -->
-              <li  v-for="(experience,index) in tempexperiences" v-bind:key="index">
+              <li  v-for="(experience,index) in experiences" v-bind:key="index">
                 <span v-text=experience.position />
                 <small v-text=experience.company />
-                <small><span v-text=experience.start /> - <span v-text=experience.start /></small>
+                <small><span v-text=experience.start /> ~ <span v-if="experience.end" v-text=experience.end /><span v-else>재직중</span></small>
               </li>
             </ul>
           </div>
@@ -72,7 +72,7 @@
               <!-- <li><span>Bachelor of Science<br>Web Design and Development</span><small>BYU-Idaho</small><small>Jan. 2016 - Apr. 2018</small></li>
               <li><span>Computer Science</span><small>Edmonds Community College</small><small>Sept. 2014 - Dec. 2015</small></li>
               <li><span>High School</span><small>Henry M. Jackson High School</small><small>Jan. 2013 - Jun. 2015</small></li> -->
-              <li  v-for="(education,index) in tempeducations" v-bind:key="index">
+              <li  v-for="(education,index) in educations" v-bind:key="index">
                 <span v-text=education.major />
                 <small v-text=education.name />
                 <small><span v-text=education.start /> - <span v-text=education.start /></small>
@@ -83,7 +83,7 @@
           <!-- /api/portfolio/skill/{seq_post_portfolio} 에 이미지 url 추가 가능하면 ㄱㄱ  -->
           <div class="skills-prog">
             <h3><i class="fas fa-code"></i>Programming Skills</h3>
-            {{programmingSkills}}
+            <!-- {{programmingSkills}} -->
             <ul>
               <li><span>HTML5</span>
                 <div class="skills-bar" data-percent="100">
@@ -196,10 +196,12 @@
     },
     data: function () {
         return { 
-          portfolioInfo:'',
+          portfolioInfo:[],
+          portfolioMoreInfo:[],
           projects:[],
           programmingSkills:[],
-
+          experiences:[],
+          educations:[],
 
 
 
@@ -207,9 +209,8 @@
           telstr:'',
           addstr:'',
           gitstr:'',
+
           // 임시변수
-          tempintroduction: '풀스택 개발자를 꿈꾸는 SSAFY 교육생입니다. 주 언어는 Java이고 학부생시절 C와 C++을 활용한 프로젝트도 다수 진행했습니다. 호주 인턴 경험이 있으며 QA 직무를 수행했습니다.',
-          tempaddress:'경기도 용인시 기흥구',
           tempsocials:[{
                         link: 'https://www.facebook.com/ ',
                         icon: 'ti-facebook '
@@ -222,30 +223,26 @@
                       },{
                         link: 'https://www.linkedin.com/in/',
                         icon: 'ti-linkedin '
+                      },{
+                        link: 'https://www.pinterest.com/',
+                        icon: 'ti-pinterest-alt '
+                      },{
+                        link: 'https://www.linkedin.com/in/',
+                        icon: 'ti-linkedin '
                       }
                       ],
-          tempexperiences:[{
-                          position: '웹디자인',
-                          company: '삼성전자',
-                          start:  '2020-04',
-                          end:  '현재', // 이거 표현 어케해야될지 모르겠음 2999-99로 되어있으면 현재?
-                        },{
-                          position: '개발자',
-                          company: '구글',
-                          start:  '2018-04',
-                          end:  '2020-03', 
-                        },{
-                          position: '웹디자인',
-                          company: '삼성전자',
-                          start:  '2020-04',
-                          end:  '현재', // 이거 표현 어케해야될지 모르겠음 2999-99로 되어있으면 현재?
-                        },{
-                          position: '개발자',
-                          company: '구글',
-                          start:  '2018-04',
-                          end:  '2020-03', 
-                        }
-                        ],
+          // tempexperiences:[{
+          //                 position: '웹디자인',
+          //                 company: '삼성전자',
+          //                 start:  '2020-04',
+          //                 end:  '현재', // 이거 표현 어케해야될지 모르겠음 2999-99로 되어있으면 현재?
+          //               },{
+          //                 position: '개발자',
+          //                 company: '구글',
+          //                 start:  '2018-04',
+          //                 end:  '2020-03', 
+          //               }
+          //               ],
           tempeducations:[{
                           major: '컴퓨터소프트웨어학과',
                           name: '광운대학교',
@@ -261,17 +258,21 @@
                           name: '내정중학교',
                           start:  '2010-02',
                           end:  '2008-07',
-                        },{
-                          major: '중학교',
-                          name: 'AOBA JAPAN INTERNATIONAL SCHOOL',
-                          start:  '2008-06',
-                          end:  '2005-05',
-                          }
+                        }
+                        // ,{
+                        //   major: '중학교',
+                        //   name: 'AOBA JAPAN INTERNATIONAL SCHOOL',
+                        //   start:  '2008-06',
+                        //   end:  '2005-05',
+                        //   }
                         ]
         }
     },
     created(){ 
       this.getPortfolioInfo(this.$route.params.seq);
+      this.getPortfolioMoreInfo(this.$route.params.seq);
+      this.getExperiences(this.$route.params.seq);
+      this.getEducations(this.$route.params.seq);
       this.getProgrammingSkills(this.$route.params.seq);
       this.getProjectsInfo(this.$route.params.seq);
     },
@@ -281,7 +282,7 @@
       // 임시
       var link = $('#getaddress').append("<a href='http://maps.google.com/maps?q="+this.tempaddress+"' target='_blank'>"+ this.tempaddress+"</a>")
       $(".skills-prog li").find(".skills-bar").each(function(i) {
-        alert("들어옴");
+        // alert("들어옴");
         $(this)
           .find(".bar")
           .delay(i * 150)
@@ -344,14 +345,33 @@
         http.get('portfolio/'+seq)
         .then(({data}) => {
             this.portfolioInfo=data;
-
             // 입력받은 데이터 가공
             this.telstr="tel:"+data.tel;
             this.gitstr="https://"+data.github_url;
+            
 
             //임시
-            this.addstr="http://maps.google.com/maps?q="+this.tempaddress; 
-            // this.addstr="http://maps.google.com/maps?q="+data.address;
+            // this.addstr="http://maps.google.com/maps?q="+this.tempaddress; 
+            
+         })
+      },
+      getPortfolioMoreInfo(seq){
+        http.get('portfolio/info/'+seq)
+        .then(({data}) => {
+            this.portfolioMoreInfo=data;
+            this.addstr="http://maps.google.com/maps?q="+data.address;
+         })
+      },
+      getExperiences(seq){
+         http.get('portfolio/info/experience/'+seq)
+        .then(({data}) => {
+            this.experiences=data;
+         })
+      },
+      getEducations(seq){
+         http.get('portfolio/info/education/'+seq)
+        .then(({data}) => {
+            this.educations=data;
          })
       },
       getProgrammingSkills(seq){
@@ -454,7 +474,8 @@ h3 {
 }
 
 .resume {
-  width: 960px;
+  width: 1080px;
+  // width: 960px;
   background: $darkest-blue;
   color: $white;
   margin: 20px auto;
@@ -476,7 +497,7 @@ h3 {
   padding-bottom: 0;
 }
 .resume .base {
-  width: 30%;
+  width: 40%;
   padding: 30px 15px;
   background: $darker-blue;
   color: $white;
