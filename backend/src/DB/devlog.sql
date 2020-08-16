@@ -140,4 +140,23 @@ CREATE TABLE `post_like`(
     FOREIGN KEY (`seq_user`) REFERENCES `user` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `post_portfolio_certification`(
+    `seq` int primary key auto_increment,
+    `seq_post_portfolio` int not null,
+    `certification` varchar(256),
+    FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `post_portfolio_skill`(
+    `seq` int primary key auto_increment,
+    `seq_post_portfolio` int not null,
+    `skill` varchar(256),
+    FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `post_portfolio_language`(
+    `seq` int primary key auto_increment,
+    `seq_post_portfolio` int not null,
+    `language` varchar(256),
+    FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
