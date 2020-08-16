@@ -154,6 +154,7 @@ export default {
   created() {
     this.blogOwnerId= this.$route.params.id;
     this.getBlogOwnerInfo();
+    this.getFromDetailSearchTag();
     this.followtext = 'Follow';
   },
   mounted() {
@@ -183,6 +184,17 @@ export default {
     })
   },
   methods: {
+    getFromDetailSearchTag(){
+        var tag = this.$store.state.searchTag
+        if(tag!=null){
+        this.tag = tag
+        this.addTag()
+        this.searchTags.push(tag)
+        var index = this.searchTags.indexOf(tag)
+        this.activeIndex.push(index)
+        this.$store.commit('setSearchTag',null)
+        }
+    },
     changeFollowText(){
       this.followtext = '이웃관리';
     },
