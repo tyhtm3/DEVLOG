@@ -22,6 +22,7 @@
 		<mapper resource="mappers/PortfolioSkillMapper.xml" /> 
 		<mapper resource="mappers/PortfolioLanguageMapper.xml" /> 
 		<mapper resource="mappers/PortfolioInfoMapper.xml" /> 
+		<mapper resource="mappers/SocialiconMapper.xml" /> 
 	</mappers>
 </configuration>
 
