@@ -21,6 +21,7 @@
 		<mapper resource="mappers/PortfolioCertificationMapper.xml" /> 
 		<mapper resource="mappers/PortfolioSkillMapper.xml" /> 
 		<mapper resource="mappers/PortfolioLanguageMapper.xml" /> 
+		<mapper resource="mappers/PortfolioInfoMapper.xml" /> 
 	</mappers>
 </configuration>
 
