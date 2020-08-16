@@ -48,7 +48,7 @@
                 <span @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" class="tag" style="font-size:20px; margin:10px; line-height:50px;">
                   #{{tag.tag}}
                 </span>
-                <span @click="deleteTag(index)" class="hideDeleteButton ti-close pull-top pull-right" style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;"></span>
+                <span @click="deleteTag(index)" class="delete-tag-button hideDeleteButton ti-close pull-top pull-right" ></span>
                 <!-- </span> -->
                 </div>
 
@@ -464,10 +464,15 @@ $( '.topimg' ).click( function() {
   return false;
 } );
 </script>
+
 <style>
+/* 전역 css */
+   /* 스크롤 부드럽게 내리기  */
   html {
     scroll-behavior: smooth;
   }
+
+  /* 우측 하단 top 버튼 */
   a.topimg{
     position: fixed;
     right: 7%;
@@ -482,10 +487,59 @@ $( '.topimg' ).click( function() {
     vertical-align: middle;
     font-size: 36px;
   }
+
+  /* 프로젝트 태그 하단 스크롤바  */
+  .tag-nest-detail{
+    white-space:nowrap; 
+    display:inline-block; 
+    width:70%; 
+    overflow:scroll;
+    margin-bottom:20px;
+  }
+  .tag-nest-detail::-webkit-scrollbar {
+    width: 7px;
+  }
+  .tag-nest-detail::-webkit-scrollbar-thumb {
+    width: 2px;
+    background-color: rgb(212, 211, 211);
+    border-radius: 30px;
+    background-clip: padding-box;
+    /* border: 1px solid transparent; */
+  }
+  .tag-nest-detail::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 30px;
+    /* box-shadow: inset 0px 0px 3px transparent; */
+  }
+
+  .left > .posttag-nest{
+    white-space:nowrap; 
+    display:inline-block; 
+    width:100%; 
+    overflow:scroll;
+    margin-bottom:20px;
+  }
+  /* 포스트 태그 하단 스크롤바  */
+  .posttag-nest::-webkit-scrollbar {
+    width: 7px;
+  }
+  .posttag-nest::-webkit-scrollbar-thumb {
+    width: 1px;
+    background-color:  rgb(212, 211, 211);
+    border-radius: 30px;
+    background-clip: padding-box;
+    border: 7px solid transparent;
+  }
+  .posttag-nest::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 30px;
+  }
+
+
+  /* 말풍선 */
   .el-tooltip__popper[x-placement^=bottom] .popper__arrow::after {
       /* border-bottom-color: #9ebbcd  !important; */
       border-bottom-color: #11212E  !important;
-      
     }
   .el-tooltip__popper[x-placement^=bottom] .popper__arrow{
       /* border-bottom-color: #9ebbcd  !important; */
@@ -496,8 +550,38 @@ $( '.topimg' ).click( function() {
       /* background: #9ebbcd !important; */
       background: #11212E !important;
   }
+
+  /* 태그 삭제 */
+  .delete-tag-button{
+    /* style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;" */
+    font-size:8px;
+    color:#333333;
+    padding:0px;
+    margin-left:-35px;
+  }
+  .delete-tag-button:hover{
+    color:black;
+    font-weight: bold;
+    font-size: 9px;
+  }
+
+   /* chrome input에 자동 채워지는 배경 색상 글자 색상 변경 */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-transition: background-color 9999s ease-out;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: #333333 !important;
+  }
+
+  
 </style>
+
+
 <style lang="scss" scoped>
+// 지역 css
 .row {
   padding: 40px;
   // box-shadow: 2px 2px 2px rgba(226, 223, 223, 0.4);
@@ -669,52 +753,8 @@ $( '.topimg' ).click( function() {
 .donotshow{
   visibility:hidden;
 }
-.left > .posttag-nest{
-  white-space:nowrap; 
-  display:inline-block; 
-  width:100%; 
-  overflow:scroll;
-}
 
-// 포스트 태그 하단 스크롤바 
-.posttag-nest::-webkit-scrollbar {
-  width: 7px;
-}
-.posttag-nest::-webkit-scrollbar-thumb {
-  width: 1px;
-  background-color:  rgb(212, 211, 211);
-  border-radius: 30px;
-  background-clip: padding-box;
-  border: 7px solid transparent;
-}
-.posttag-nest::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-radius: 30px;
-}
-</style>
-<style>
-/* 프로젝트 태그 하단 스크롤바  */
-.tag-nest-detail{
-  white-space:nowrap; 
-  display:inline-block; 
-  width:70%; 
-  overflow:scroll;
-}
-.tag-nest-detail::-webkit-scrollbar {
-  width: 7px;
-}
-.tag-nest-detail::-webkit-scrollbar-thumb {
-  width: 1px;
-  background-color: rgb(212, 211, 211);
-  border-radius: 30px;
-  background-clip: padding-box;
-  border: 7px solid transparent;
-}
-.tag-nest-detail::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-radius: 30px;
-  /* box-shadow: inset 0px 0px 3px transparent; */
-}
+
 </style>
 
 

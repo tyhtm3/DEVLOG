@@ -43,7 +43,7 @@
           </div>
 
 
-          <div>              
+          <div class="tag-nest-detail" style="padding-top:10px;  width:100%; overflow:auto">              
             <div id="blogmaintag-block" style="display:inline-block;">
               <!-- 태그 입력 받는곳 -->
               <span v-if="getIsAdminMode&&addIcon" id="blogmaintag" class="search tag ti-plus " @click="tagInputVisible" style="border:solid; padding:3px!important; margin-left:18px; background-color:transparent!important; color:lightgray">
@@ -60,8 +60,7 @@
             <span :class="{'active': itemsContains(tag.tag)}" id="blogmaintag" class="tag" @click="tagSearch(tag.tag)" >
               #{{tag.tag}}
             </span>
-            <span v-show="getIsAdminMode" @click="deleteTag(tag.seq, tag.tag)" class="hideDeleteButton ti-close pull-top pull-right" 
-            style="font-size:3px;color:#333333;padding:0px;margin-left:-35px;"></span>
+            <span v-show="getIsAdminMode" @click="deleteTag(tag.seq, tag.tag)" class="delete-tag-button hideDeleteButton ti-close pull-top pull-right"></span>
             </div>
           </div>
           <div class="column4" v-if= "getIsLogin">
@@ -372,7 +371,6 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-
   a.top {
     position: fixed;
     right: 7%;
@@ -394,7 +392,7 @@ export default {
     padding-left: 10%;
   }
   .container-movie{  
-    height: 400px;
+    height: 500px;
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #9ebbcd70;
     }
@@ -424,12 +422,6 @@ export default {
   .tagspecial:hover {
       background: #ddd;
   }
-  
-  /* 스크롤 부드럽게 내리기  */
-  html {
-    scroll-behavior: smooth;
-  }
-
   /* 블로그 메인 상단 profile box UI */
   .details-profile .title1{
     font-size:0px !important;
@@ -445,7 +437,7 @@ export default {
     padding-left:0px !important;
   }
 
-  /* 블로그 메인 상단 수정 UI */
+  /* 블로그 메인 관리 UI */
   .details-profile{
     padding-right:15% !important;
     padding-left:15% !important;
@@ -459,27 +451,24 @@ export default {
     line-height:40px; 
     cursor:pointer;
     margin-left:10px;
-    
-    // background-color: greenyellow !important;
-    /*
-    margin-right:12px;  */
     padding:3px 8px !important;
   }
   #blogmaintag-block:first-child{
     margin-left:-18px;
   }
   .tag{
-    // background-color: transparent!important;
     color:gray;
     border-radius:40px;
     height:20px!important;
-    /* background-color: #9EBBCD !important; */
   }
   .tag:hover{
-    /* background-color:#9EBBCD !important; */
     height:16px;
     background-color:#ddd !important;
+    /* background-color:#9EBBCD !important; */
     box-shadow: 1px 1px 3px rgba(199, 199, 199, 0.4);
+  }
+  .active{
+    background-color: #DDD;
   }
   .tag-copy{
     background: transparent;
@@ -489,19 +478,6 @@ export default {
     color:#B1B0AC;
     float: left;
     margin:0px;
-  }
-  .active{
-    background-color: #DDD;
-  }
-  /* chrome input에 자동 채워지는 배경 색상 글자 색상 변경 */
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
-  transition: background-color 5000s ease-in-out 0s;
-  -webkit-transition: background-color 9999s ease-out;
-    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
-    -webkit-text-fill-color: #333333 !important;
   }
   
   /* 관리자모드 UI */
