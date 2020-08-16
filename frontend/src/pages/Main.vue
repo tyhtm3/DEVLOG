@@ -472,21 +472,21 @@ $( '.topimg' ).click( function() {
     scroll-behavior: smooth;
   }
 
-  /* 우측 하단 top 버튼 */
+  /* 우측 하단 top 버튼 - 남색*/
   a.topimg{
     position: fixed;
     right: 7%;
-    bottom: 20%;
+    bottom: 10%;
     display: none;
     width:48px;
     height:48px;
     text-align: center;
     color:#11212E
   }
-  #to-top{
+  /* #to-top{
     vertical-align: middle;
     font-size: 36px;
-  }
+  } */
 
   /* 프로젝트 태그 하단 스크롤바  */
   .tag-nest-detail{

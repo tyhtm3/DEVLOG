@@ -34,10 +34,14 @@
                   <h2 style="margin:0px" >{{blogOwnerNumOfPost}}</h2>
                   <p> <small>Post</small> </p>
                 </div>
-                <div class="col-sm-3 emphasis" style="cursor:pointer;" @click="follower">
-                  <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
-                  <p><small>Follow</small></p>
-                </div>
+                <!-- <el-tooltip class="item" effect="dark" content="이웃관리" placement="right" popper-class="draw_share_atooltip"> -->
+                  <div class="col-sm-3 emphasis" id="follower" style="cursor:pointer;" @click="follower" @mouseenter="changeFollowText" @mouseleave="undoFollowText">
+                    <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
+                    <p><small id="followertext" v-text="followtext"></small></p>
+                    <!-- 이웃관리라는 문구가 뭔가 안이쁨...-->
+                  </div>
+                <!-- </el-tooltip> -->
+               
               </div>
             </div>
           </div>
@@ -86,7 +90,10 @@
           </div>
         </div>
       </div>
-    <a href="#" class="top"><i class="material-icons" id="to-top">arrow_upward</i></a>
+      <el-tooltip class="item" effect="dark" content="상단으로" placement="bottom" popper-class="draw_share_atooltip">
+        <a href="#" class="topimg"><img src="../assets/top3.png" height="48px"></a>
+      </el-tooltip>
+    <!-- <a href="#" class="top"><i class="material-icons" id="to-top">arrow_upward</i></a> -->
     </div>
   </transition>
 </template>
@@ -140,12 +147,14 @@ export default {
       addIcon: true,
       tag: '',
       titleplaceholder:'',
-      contentplaceholder:''
+      contentplaceholder:'',
+      followtext:''
     }
   },
   created() {
     this.blogOwnerId= this.$route.params.id;
     this.getBlogOwnerInfo();
+    this.followtext = 'Follow';
   },
   mounted() {
     /* 블로그 상단 input박스 길이 조절 */
@@ -174,6 +183,12 @@ export default {
     })
   },
   methods: {
+    changeFollowText(){
+      this.followtext = '이웃관리';
+    },
+    undoFollowText(){
+      this.followtext = 'Follow';
+    },
      // 태그 누를때마다 검색
     tagSearch(tag){
       // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
@@ -370,23 +385,26 @@ export default {
   });
 
 </script>
+<style scoped>
+  /* 말풍선 css 약간 수정*/
+  .el-tooltip__popper[x-placement^=right] .popper__arrow::after {
+      border-right-color: #9ebbcd  !important;
+      /* border-bottom-color: #11212E  !important; */
+    }
+  .el-tooltip__popper[x-placement^=right] .popper__arrow{
+      border-right-color: #9ebbcd  !important;
+      /* border-bottom-color: #11212E  !important; */
+  }
+  .draw_share_atooltip{
+      /* background: transparent !important; */
+      background: #9ebbcd !important;
+      /* background: #11212E !important; */
+  }
+</style>
+
+
 <style lang="scss" scoped>
-  a.top {
-    position: fixed;
-    right: 7%;
-    bottom: 20%;
-    display: none;
-    background-color: #9EBBCD;
-    border-radius: 50%;
-    width:48px;
-    height:48px;
-    text-align: center;
-    line-height: 44px;
-  }
-  #to-top{
-    vertical-align: middle;
-    font-size: 36px;
-  }
+
   .col-md-12{
     padding-right: 10%;
     padding-left: 10%;
@@ -436,6 +454,10 @@ export default {
   .column2{
     padding-left:0px !important;
   }
+  #follower:hover #followertext{ 
+    font-weight: bold;
+    color:gray;
+  }
 
   /* 블로그 메인 관리 UI */
   .details-profile{
@@ -480,6 +502,10 @@ export default {
     margin:0px;
   }
   
+
+
+
+
   /* 관리자모드 UI */
   .inputtag{
   opacity:0.5;
