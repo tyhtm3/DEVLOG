@@ -692,17 +692,15 @@ $( '.topimg' ).click( function() {
   background-color: transparent;
   border-radius: 30px;
 }
-
-// 프로젝트 태그 하단 스크롤바 
-
+</style>
+<style>
+/* 프로젝트 태그 하단 스크롤바  */
 .tag-nest-detail{
   white-space:nowrap; 
   display:inline-block; 
   width:70%; 
   overflow:scroll;
 }
-
-
 .tag-nest-detail::-webkit-scrollbar {
   width: 7px;
 }
@@ -716,10 +714,9 @@ $( '.topimg' ).click( function() {
 .tag-nest-detail::-webkit-scrollbar-track {
   background-color: transparent;
   border-radius: 30px;
-  // box-shadow: inset 0px 0px 3px transparent;
+  /* box-shadow: inset 0px 0px 3px transparent; */
 }
 </style>
-
 
 
 
