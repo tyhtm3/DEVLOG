@@ -26,6 +26,7 @@
                             <!-- <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span>  -->
                         </div>
                     </div>
+                    
                     <!-- 템플릿 선택 dialog 시작 -->
                     <el-dialog
                     title="select template"
@@ -37,6 +38,7 @@
                             <button class="fill" @click="goTemplate00(clickedSeq)">resume</button>
                             <button class="fill" @click="goTemplate01(clickedSeq)">4 cards</button>
                             <button class="fill" @click="goTemplate02(clickedSeq)">timeline-A</button>
+                            <button class="fill" @click="goTemplate05(clickedSeq)">Simple</button>
                             <!-- <button class="fill" @click="goTemplate00(portfolio.seq)">resume</button>
                             <button class="fill" @click="goTemplate01(portfolio.seq)">4 cards</button> -->
                         <!-- </div> -->
@@ -93,7 +95,12 @@ export default {
         goTemplate02(seq){
           this.$router.push('/blog/portfolio2/'+seq)
         },
+        goTemplate03(seq){
+        },
         goTemplate04(seq){
+        },
+        goTemplate05(seq){
+          this.$router.push('/blog/portfolio5/'+seq)
         },
         removeTag(text){
         text = text.replace(/<br\/>/ig, "\n");

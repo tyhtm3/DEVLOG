@@ -37,7 +37,7 @@ export default {
     const that = this
     const naverLogin = new naver.LoginWithNaverId({
 		clientId: 'RSKBTL31UOSpdlckpmTt',
-		callbackUrl:'http://localhost:8080/naver/',
+		callbackUrl:'http://i3a402.p.ssafy.io/naver/',
 		  isPopup: true,
 		  loginButton:{
 			  color:'green',

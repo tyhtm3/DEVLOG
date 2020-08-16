@@ -15,7 +15,6 @@ import locale from 'element-ui/lib/locale/lang/en'
 // Resource logic
 Vue.use(Resource)
 Vue.http.options.emulateJSON = true
-
 Vue.use(VueRouter)
 Vue.use(Bars)
 Vue.use(ElementUI, { locale })
