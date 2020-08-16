@@ -5,6 +5,7 @@ public class PortfolioCertification {
 	private int seq_post_portfolio;
 	private String certification;
 	private String date;
+	
 	public int getSeq() {
 		return seq;
 	}
