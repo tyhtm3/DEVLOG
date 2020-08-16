@@ -91,20 +91,24 @@ export default {
   methods: {
     getNeighborList(){
       http
-      .get('/userneighbor/')
+      .get('/userneighbor/'
+      ,{headers: { Authorization : this.$store.state.token,}}
+      )
       .then(({data}) => {
         this.neighborList = data
         for (let i=0; i<data.length; i++){
           
           // 이웃의 정보 불러오기
           http
-          .get('/user/' + this.neighborList[i].seq_neighbor)
+          .get('/user/' + this.neighborList[i].seq_neighbor
+          ,{headers: { Authorization : this.$store.state.token,}})
           .then(({data}) => { 
             this.requestneighborinfoList[i] = data
 
             // 이웃의 댓글목록과 댓글수 불러오기
             http
-            .get('postcomment/neighbor/' +data.seq)
+            .get('postcomment/neighbor/' +data.seq
+            ,{headers: { Authorization : this.$store.state.token,}})
             .then(({data}) => {
               this.neighborComment[i] = data.length
               this.neighborCommentData[i] = data
@@ -131,7 +135,8 @@ export default {
         data:{
             seq_neighbor: this.requestneighborinfoList[index].seq
           }
-      })
+      },{headers: { Authorization : this.$store.state.token,}}
+      )
       .then(({ data }) => {
         this.$message({
           type: 'error',

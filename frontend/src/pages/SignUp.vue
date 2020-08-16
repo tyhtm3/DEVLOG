@@ -41,11 +41,15 @@
                   <dd><el-input v-model="tel" style="width: 70%;"></el-input></dd>
                   <dt>생년월일</dt>
                   <dd><el-date-picker v-model="birth" type="date"></el-date-picker></dd>
-                  <dt>url</dt>
+                  <dt>Giturl</dt>
 									<dd>
                     <el-input v-model="url" style="width: 70%;">
                       <template slot="prepend">https://</template>
                     </el-input>
+                    
+                    <el-tooltip  class="pull-right"  content="포트폴리오 생성시 자동으로 데이터를 입력해줍니다!" placement="right">
+                      <img src="http://i3a402.p.ssafy.io/images/question.png" alt="?" width="15px" height="15px" style="margin-top:1px;">
+                    </el-tooltip>
                   </dd>
 								</dl>
             	</div>

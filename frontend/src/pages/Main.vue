@@ -269,7 +269,7 @@ export default {
       }
       console.log(this.searchTags);
       console.log(this.activeIndex);
-      
+      this.getPostandproject();
     },
     // 프로젝트와 포스트 검색 초기화
     getPostandproject(){
