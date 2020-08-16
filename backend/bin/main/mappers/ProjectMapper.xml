@@ -31,7 +31,7 @@
 		</if>
 		and <![CDATA[regtime <= now()]]>
 		ORDER BY regtime desc
-		LIMIT 6
+		LIMIT 6 OFFSET 0
 	</select>
 	   
 	

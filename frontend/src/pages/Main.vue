@@ -242,6 +242,8 @@ export default {
     this.limit=0
     this.getPostandproject();
     },
+    // 프로젝트 가져오기
+    // 포스트 가져오기
     // 프로젝트와 포스트 검색 초기화
     getPostandproject(){
       this.projectComment= [] 
@@ -251,20 +253,18 @@ export default {
       if(this.$refs.infiniteLoading){
         this.$refs.infiniteLoading.stateChanger.reset(); 
       }
+      
       http.post('/project/feed', {
       seq_user:this.seq_user ,
       disclosure: this.disclosure?2:1,
-      offset: 0,
-      limit: 10,
       tag: this.searchTags.length==0?null:this.searchTags
-    }, {headers: {
+      }, {headers: {
         'Content-type': 'application/json',
         Authorization : this.$store.state.token,
         }})
-    .then(({data}) => {
+      .then(({data}) => {
       this.projectList = data;
-      // this.getprojectCommentTag(data)
-    })
+      })
     http
     .post('/post/feed', {
        seq_user:this.seq_user , 
@@ -336,46 +336,6 @@ export default {
         },1000)
       })
     },
-    // 프로젝트로부터 코멘트 개수와 태그 불러오기
-    // getprojectCommentTag(data){
-    //   // console.log("this.projectList");
-    //   // console.log(this.projectList);
-    //   // console.log("데이터길이" + datad.length)
-    //   for(var i=0; i<data.length; i++){
-    //     this.getProjectComments(i)
-    //     this.getProjectTags(i)
-    //   }
-    //   this.projectComment.push(null);
-    //   this.projectTag.push(null);
-    // },
-    // getProjectComments(i){
-    //   if(i<this.projectList.length){
-    //     http.get('postcomment/count/'+this.projectList[i].seq, {headers: {
-    //     'Content-type': 'application/json',
-    //     Authorization : this.$store.state.token,
-    //     }})
-    //     .then(({data}) => {
-    //     // console.log(i+"번째 댓글: ");
-    //     this.projectComment[i] = data;
-    //     // console.log(data);
-    //     // console.log(this.projectComment[i]);
-    //     });
-    //   }
-    // },
-    // getProjectTags(i){
-    //   if(i<this.projectList.length){
-    //   http.get('posttag/'+this.projectList[i].seq, {headers: {
-    //     'Content-type': 'application/json',
-    //     Authorization : this.$store.state.token,
-    //     }})
-    //     .then(({data}) => {
-    //     // console.log(i+"번째 글 태그: ");
-    //     this.projectTag[i] = data.slice(0,3);
-    //     // console.log(data);
-    //     // console.log(this.projectTag[i]);
-    //     });
-    //   }
-    // },
     removeTag(text){
       text = text.replace(/<br\/>/ig, "\n")
       text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
@@ -445,12 +405,18 @@ export default {
         this.$message({
                 type: 'success',
                 message: '관심 태그가 삭제되었습니다.'
-              });   
-        // var idx = this.searchTags.indexOf(this.tags[index].tag)
-        // this.searchTags.splice(idx,1)      
+              });       
         })
       }
-      this.tags.splice(index,1)   
+      
+      var idx = this.searchTags.indexOf(this.tags[index].tag)
+      this.searchTags.splice(idx,1)  
+      this.tags.splice(index,1) 
+
+      // 선택 되어있는채로 삭제시 선택 해제 후 재검색
+      
+      this.limit=0
+      this.getPostandproject();
     },
     showCloseButton(index){
       $(".hideDeleteButton").eq(index).show();
