@@ -77,7 +77,7 @@
             Project
           </div>
             <div class="container-timeline" style="margin: auto; width:900px">
-              <div id="timeline">
+              <div id="timeline" style="margin-left: 25%;">
                 <div>
                 <section class="year" v-for="(project,index) in projects" :key="index" >
                   <h3>{{project.start_date.substr(0,7)}}</h3>
@@ -221,32 +221,16 @@
               this.chartData.rows.push(rows)
             } 
           }
+          this.projects.sort(this.customSort) 
          })
       },
-    //   // 프로젝트 삭제
-    //   deleteProject(seq){
-    //     http.delete('portfolio/'+seq)
-    //     .then(({data}) => {
-    //         alert('프로젝트가 삭제되었습니다.')
-    //         this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
-    //      })
-    //   },
-    //   // 프로젝트 수정 미구현
-    //   updateProject(){
-        
-    //   },
-    //   // Url로 이동
-    //   goUrl(url){
-    //     window.open(url, '_blank');
-    //   },
-    //    removeTag(text){
-    //   text = text.replace(/<br\/>/ig, "\n")
-    //   text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
-    //   // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
-    //   return text
-    // },
+      customSort(a, b) {
+        if(a.start_date == b.start_date){
+          return 0
+          }
+          return a.start_date > b.start_date ? 1 : -1; }
    },
-  }
+}        
   function dateDiff(_date1, _date2) {
     var diffDate_1 = _date1 instanceof Date ? _date1 :new Date(_date1);
     var diffDate_2 = _date2 instanceof Date ? _date2 :new Date(_date2);
@@ -263,7 +247,7 @@
 }
 h4 {
   position: relative;
-  top: 0rem;
+  top: 0.5rem;
   right: 5rem;
   color: #333;
   margin: 0;

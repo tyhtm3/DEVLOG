@@ -27,10 +27,14 @@
 											</router-link>
 										</li>
 										<li> <i class="ti-home"></i>
-											<router-link :to="{ name: 'blog', params: { id: this.getUserInfo.id }}">
+											<!-- <router-link :to="{ name: 'blog', params: { id: this.getUserInfo.id }}">
 												<h3 style="margin-top: 9px;">내 블로그<span class="text-yellow fontello-record"></span></h3>
 												<p></p>
-											</router-link>
+											</router-link> -->
+											<a :href="$router.resolve({name: 'blog',params:{id:this.getUserInfo.id}}).href">
+												<h3 style="margin-top: 9px;">내 블로그<span class="text-yellow fontello-record"></span></h3>
+												<p></p>
+											</a>
 										</li>
 										<li> <i class="ti-power-off"></i>
 											<a style="cursor:pointer;" @click="logout">
@@ -114,6 +118,9 @@ export default {
 	color: #11212E !important;
 	border-color: #9ebbcd !important;
 	box-shadow: 3px 3px 3px #9ebbcd34;
+}
+div.slimScrollDiv{
+	height: 160px !important;
 }
 </style>
 
