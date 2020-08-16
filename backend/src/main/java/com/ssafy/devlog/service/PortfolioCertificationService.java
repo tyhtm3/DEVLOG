@@ -8,6 +8,6 @@ import com.ssafy.devlog.dto.PortfolioCertification;
 public interface PortfolioCertificationService {
 	
 	public List<PortfolioCertification> selectAllPortfolioCertification(int seq_post_portfolio);
-	public int insertPortfolioCertification(int seq_post_portfolio,List<String> certification);
+	public int insertPortfolioCertification(int seq_post_portfolio,List<Object> certification);
 	public int deletePortfolioCertification(int seq_post_portfolio);
 }
