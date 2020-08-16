@@ -100,7 +100,7 @@ export default {
           
           // 이웃의 정보 불러오기
           http
-          .get('/user/' + this.neighborList[i].seq_neighbor
+          .get('/user/' + this.neighborList[i].seq_user
           ,{headers: { Authorization : this.$store.state.token,}})
           .then(({data}) => { 
             this.requestneighborinfoList[i] = data
