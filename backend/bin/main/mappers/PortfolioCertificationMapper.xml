@@ -11,10 +11,10 @@
 	
 	<!-- 포트폴리오에 자격증을 추가한다.  -->
 	<insert id="insertPortfolioCertification">
-		insert into post_portfolio_certification( seq_post_portfolio, certification)
+		insert into post_portfolio_certification( seq_post_portfolio, certification, acq_date)
 		values 
 		<foreach collection="certification" item="item" separator=",">
-		(#{seq_post_portfolio}, #{item} )
+		(#{seq_post_portfolio}, #{item.certification}, #{item.acq_date} )
 		</foreach>
 	</insert>
 	

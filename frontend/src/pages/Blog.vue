@@ -59,10 +59,10 @@
               
             </div>
             <div id="blogmaintag-block" v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="display:inline-block;">
-            <span :class="{'active': itemsContains(tag.tag)}" id="blogmaintag" class="tag" @click="tagSearch(tag.tag)" >
-              #{{tag.tag}}
-            </span>
-            <span v-show="getIsAdminMode" @click="deleteTag(tag.seq, tag.tag)" class="delete-tag-button hideDeleteButton ti-close pull-top pull-right"></span>
+              <span :class="{'active': itemsContains(tag.tag)}" id="blogmaintag" class="tag" @click="tagSearch(tag.tag)" >
+                #{{tag.tag}}
+              </span>
+              <span v-show="getIsAdminMode" @click="deleteTag(tag.seq, tag.tag)" class="delete-tag-button hideDeleteButton ti-close pull-top pull-right"></span>
             </div>
           </div>
           <div class="column4" v-if= "getIsLogin">
@@ -181,6 +181,17 @@ export default {
     })
   },
   methods: {
+    getFromDetailSearchTag(){
+        var tag = this.$store.state.searchTag
+        if(tag!=null){
+        this.tag = tag
+        this.addTag()
+        this.searchTags.push(tag)
+        var index = this.searchTags.indexOf(tag)
+        this.activeIndex.push(index)
+        this.$store.commit('setSearchTag',null)
+        }
+    },
     changeFollowText(){
       this.followtext = '구독관리';
     },
@@ -488,7 +499,7 @@ export default {
     box-shadow: 1px 1px 3px rgba(199, 199, 199, 0.4);
   }
   .active{
-    background-color: #DDD;
+    background-color: #ddd;
   }
   .tag-copy{
     background: transparent;

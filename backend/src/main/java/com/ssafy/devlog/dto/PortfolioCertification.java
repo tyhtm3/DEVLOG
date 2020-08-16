@@ -4,6 +4,8 @@ public class PortfolioCertification {
 	private int seq;
 	private int seq_post_portfolio;
 	private String certification;
+	private String date;
+	
 	public int getSeq() {
 		return seq;
 	}
@@ -22,11 +24,18 @@ public class PortfolioCertification {
 	public void setCertification(String certification) {
 		this.certification = certification;
 	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
 	
-	public PortfolioCertification(int seq, int seq_post_portfolio, String certification) {
+	public PortfolioCertification(int seq, int seq_post_portfolio, String certification, String date) {
 		this.seq = seq;
 		this.seq_post_portfolio = seq_post_portfolio;
 		this.certification = certification;
+		this.date = date;
 	}
 	
 }

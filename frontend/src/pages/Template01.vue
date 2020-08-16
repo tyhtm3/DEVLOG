@@ -60,13 +60,13 @@
           </span>
           <el-card class="box-card" style="width:100%; margin-top:10px">
             <div v-for="(item, index) in certifications" :key="index" class="text item">
-              <span style="width:30%; display:inline-block;">{{ item.date }}</span>
-              <span>{{ item.name }}</span>
+              <span style="width:30%; display:inline-block;">{{ item.acq_date }}</span>
+              <span>{{ item.certification }}</span>
               <span class="pull-right" @click="deleteCertification(index)"><i class="ti-trash"></i></span>
             </div>
             <div v-show="inputCertification">
-              <span><input size="5" placeholder="취득년도" v-model="certification.date"></span>
-              <span><input placeholder="자격증" v-on:keyup.enter="addCertification" v-model="certification.name"></span>
+              <span><input size="5" placeholder="취득년도" v-model="certification.acq_date"></span>
+              <span><input placeholder="자격증" v-on:keyup.enter="addCertification" v-model="certification.certification"></span>
             </div>
           </el-card>
           <br><br>
@@ -76,16 +76,16 @@
           </span>
           <ul class="listProgram" style="padding:0px">
             <li v-for="(item, index) in skills" :key="index">
-              <span style="width:100px">{{ item.name }}</span>
+              <span style="width:100px">{{ item.skill }}</span>
               <div class="bar">
-                <div :class="item.value"></div>
+                <div :class="item.level"></div>
               </div>
               <span class="pull-right" @click="deleteSkill(index)"><i class="ti-trash"></i></span>
             </li>
           </ul>
           <div v-show="inputSkill">
-              <span><input placeholder="개발 스킬" v-model="skill.name"></span>
-              <span><input size="10" placeholder="숙련도(1~10)" v-on:keyup.enter="addSkill" v-model="skill.value"></span>
+              <span><input placeholder="개발 스킬" v-model="skill.skill"></span>
+              <span><input size="10" placeholder="숙련도(1~10)" v-on:keyup.enter="addSkill" v-model="skill.level"></span>
             </div>
         </span>
         <span class="col-lg-5">
@@ -126,33 +126,11 @@ export default {
       projectdetail: false,
       title: '',
       content: '',
-      certifications : [
-        {
-          date: '2018.04.',
-          name: '정보처리기사'
-        },
-        {
-          date: '2019.06.',
-          name: 'CCNP'
-        },
-      ],
-      skills: [
-        {
-          name: 'Java',
-          value: 'value p60'
-        },
-        {
-          name: 'C#',
-          value: 'value p70'
-        },
-        {
-          name: 'JavaScript',
-          value: 'value p30'
-        }
-      ],
+      certifications : [],
+      skills: [],
       certification: {
-        date: '',
-        name: ''
+        acq_date: '',
+        certification: ''
       },
       skill: {
         name: '',
@@ -197,12 +175,20 @@ export default {
       http
       .get('portfolio/'+this.seq_portfolio)
       .then(({data}) => {
-        console.log(data)
         this.portfolioInfo = data
+        http
+        .get('portfolio/certification/'+this.seq_portfolio)
+        .then(({data}) => {
+          this.certifications = data
+        })
+        http
+        .get('portfolio/skill/'+this.seq_portfolio)
+        .then(({data}) => {
+          this.skills = data
+        })
         http
         .get('portfoliopjt/'+this.seq_portfolio)
         .then(({data}) => {
-          console.log(data)
           this.projectInfo = data.reverse()
           for(let i=0; i<this.projectInfo.length; i++){
             L:for(let j=0; j<this.projectInfo[i].stacks.length; j++){
@@ -227,28 +213,46 @@ export default {
       this.inputCertification = !this.inputCertification
     },
     addCertification(){
-      // DB에 자격증 추가하는 코드 구현해야 함
       this.certifications.push(this.certification)
       this.certification = {}
       this.addCertificationVisible()
+      console.log(this.certifications)
+      http
+      .post('/portfolio/certification', {
+        seq_post_portfolio: this.portfolioInfo.seq,
+        certification: this.certifications
+      })
     },
     deleteCertification(index){
-      // DB에 자격증 제거하는 코드 구현해야 함
-      this.certifications.splice(index, 1)  
+      this.certifications.splice(index, 1)
+      http
+      .post('/portfolio/certification', {
+        seq_post_portfolio: this.portfolioInfo.seq,
+        certification: this.certifications
+      })
     },
     addSkillVisible(){
       this.inputSkill = !this.inputSkill
     },
     addSkill(){
-      // DB에 스킬 추가하는 코드 구현 해야 함
-      this.skill.value = 'value p'+this.skill.value+'0'
-      console.log(this.skill.value)
+      this.skill.level = 'value p'+this.skill.level+'0'
       this.skills.push(this.skill)
       this.skill = {}
       this.addSkillVisible()
+      console.log(this.skills)
+      http
+      .post('portfolio/skill', {
+        seq_post_portfolio: this.portfolioInfo.seq,
+        skill: this.skills
+      })
     },
     deleteSkill(index){
       this.skills.splice(index, 1)
+      http
+      .post('portfolio/skill', {
+        seq_post_portfolio: this.portfolioInfo.seq,
+        skill: this.skills
+      })
     },
     stopLoading(){
       this.loading = false;
