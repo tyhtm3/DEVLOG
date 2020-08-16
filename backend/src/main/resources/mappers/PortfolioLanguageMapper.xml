@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.devlog.mapper.PortfolioLanguageMapper">
+
+	<!-- 포트폴리오의 모든 언어를 반환한다  -->
+	<select id="selectAllPortfolioLanguage" resultType="PortfolioLanguage">
+		select *
+		from post_portfolio_language
+        where seq_post_portfolio = #{seq_post_portfolio}
+	</select>
+	
+	<!-- 포트폴리오에 언어를 추가한다.  -->
+	<insert id="insertPortfolioLanguage">
+		insert into post_portfolio_language( seq_post_portfolio, language,level)
+		values 
+		<foreach collection="language" item="item" separator=",">
+		(#{seq_post_portfolio}, #{item.language} , #{item.level} )
+		</foreach>
+	</insert>
+	
+	<!-- 포트폴리오의 언어를 삭제한다. -->
+	<delete id="deletePortfolioLanguage">
+		delete from post_portfolio_language
+		where seq_post_portfolio= #{seq_post_portfolio}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
