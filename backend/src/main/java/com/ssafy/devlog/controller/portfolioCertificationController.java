@@ -40,11 +40,11 @@ public class portfolioCertificationController {
 		return new ResponseEntity<List<PortfolioCertification>>(portfolioCertificationService.selectAllPortfolioCertification(seq_post_portfolio), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "포트폴리오의 자격증을 입력하거나 수정한다. { \"seq_post_portfolio\" : 395 , \"certification\" : [\"정보처리기사\",\"컴활 1급\",\"Opic IH\"] } ", response = String.class)
+	@ApiOperation(value = "포트폴리오의 자격증을 입력하거나 수정한다. { \"seq_post_portfolio\" : 395 , \"certification\" : [{\"certification\" : \"정보처리기사\",\"acq_date\" : \"2018-10\"}] } ", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> updatePortfolioCertification(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("updatePortfolioCertification - 호출");
-		List<String> certification = (List<String>)params.get("certification");
+		List<Object> certification = (List<Object>)params.get("certification");
 		int seq_post_portfolio = (int)params.get("seq_post_portfolio");
 		portfolioCertificationService.deletePortfolioCertification(seq_post_portfolio);
 		if(certification==null)

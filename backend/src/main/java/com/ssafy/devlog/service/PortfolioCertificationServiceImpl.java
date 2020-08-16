@@ -21,7 +21,7 @@ public class PortfolioCertificationServiceImpl implements PortfolioCertification
 	}
 	
 	@Override
-	public int insertPortfolioCertification(int seq_post_portfolio,List<String> certification) {
+	public int insertPortfolioCertification(int seq_post_portfolio,List<Object> certification) {
 		return portfolioCertificationMapper.insertPortfolioCertification(seq_post_portfolio, certification);
 	}
 

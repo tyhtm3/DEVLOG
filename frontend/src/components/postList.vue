@@ -2,45 +2,49 @@
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 포스트 출력 -->
-            <div class="delete" @click="deletePost" v-show="adminMode">
-                <i class="ti-trash"></i> 삭제
-            </div>
-            <div class="row">
-                <div class="col-md-4" v-for="(post,index) in postList" :key="index" style="height:534px;">
-                    <span v-show="adminMode">
-                        <input class="delete-box" :id=post.seq type="checkbox" :value=post.seq v-model="deleteList" />
-                        <label :for=post.seq></label>
-                    </span>
-                    <div class="well-media" style="cursor:pointer;">
-                        <div class="vendor" @click="goDetail(post.seq)">
-                            <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
-                            <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
-                        </div>
-                        <div class="video-text" @click="goDetail(post.seq)">
-                            <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{post.title}}</h2>
-                            <p class="content-3line" style="color:black;">{{ removeTag(post.content) }}</p>
-                        </div>
-                        <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px; ">
-
-                        <span class = "tag-nest-detail">
-                            <!-- 태그 갖고오기-->
-                            <span v-for="(tag,index) in post.tags" :key="index"  class="tag"  @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}"
-                            style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
-                            <!-- 여백 -->
-                            <span class="tag donotshow"></span>
+                <div class="delete" @click="deletePost" v-show="adminMode">
+                    <i class="ti-trash"></i> 삭제
+                </div>
+                <div class="row">
+                    <div class="col-md-4" v-for="(post,index) in postList" :key="index" style="height:534px;">
+                        <span v-show="adminMode">
+                            <input class="delete-box" :id=post.seq type="checkbox" :value=post.seq v-model="deleteList" />
+                            <label :for=post.seq></label>
                         </span>
+                        <div class="well-media" style="cursor:pointer;">
+                            <div class="vendor" @click="goDetail(post.seq)">
+                                <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
+                                <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                            </div>
+                            <div class="video-text" @click="goDetail(post.seq)">
+                                <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{post.title}}</h2>
+                                <p class="content-3line" style="color:black;">{{ removeTag(post.content) }}</p>
+                            </div>
+                            <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px; ">
+
+                            <span class = "tag-nest-detail">
+                                <!-- 태그 갖고오기-->
+                                <span v-for="(tag,index) in post.tags" :key="index"  class="tag"  @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}"
+                                style="font-size:17px; margin-right:8px;">#{{tag.tag}}</span>
+                                <!-- 여백 -->
+                                <span class="tag donotshow"></span>
+                            </span>
 
 
-                        <!-- 좋아요, 코멘트 수 -->
-                        <span class="tag-copy" style="display:inline-block;"><i class="ti-heart"></i> {{ post.like_count }} </span>
-                        <span class="tag-copy" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ post.comment_count }} </span>
+                            <!-- 좋아요, 코멘트 수 -->
+                            <span class="tag-copy" style="display:inline-block;"><i class="ti-heart"></i> {{ post.like_count }} </span>
+                            <span class="tag-copy" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ post.comment_count }} </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
-            <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
-            </infinite-loading>
+                <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
+                <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
+                <!-- <div slot="spinner" style="color:#11212E; padding:50px">로딩중</div> -->
+                <div v-if="postList.length>page" slot="no-results" style="color:#11212E; padding:50px">마지막 포스트입니다.</div>
+                <div v-else slot="no-results" style="color:#11212E; padding:50px">조건에 일치하는 포스트가 존재하지 않습니다.</div>
+                <div slot="no-more" style="color:#11212E; padding:50px">마지막 포스트입니다.</div>
+                </infinite-loading>
         </section>
     </transition>
 </template>
