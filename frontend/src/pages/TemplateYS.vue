@@ -1,155 +1,192 @@
 <template>
-
-<section id="ysTemplate">
-
-<div id="container">
-  <div id ="main">
-    <br><br><br><br>
-    <hr>
-    <br>
-    <br>
-    <ul style="margin-left : 20%">
-      <li>
-    <div id="profile_img">
-    <img class="pull-left" alt="profile_img" :src='blogOwnerInfo.profile_img_url' width="160px" height="160px">
-    </div>  
-      </li>
-    <br><br>
-    <li>&emsp;이름 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{blogOwnerInfo.name}}( {{blogOwnerInfo.birthday.substr(0,11)}} )</li>
-    <li>&emsp;연락처 &nbsp;&nbsp;: {{blogOwnerInfo.tel}}</li>
-    <li>&emsp;Github    : https://github.com/C9Boom7</li>
-    </ul>
-    <br>
-    
-      <!-- Main content -->
-    <section class="content">
-      <hr>
-      <div class="box-body no-pad padding-fifthin" style="display: block;">
-        <div class="events-nest ">
-          <div class="wrap-no-pad padding-fifthin">
-            <div class="row">
-              <div class="col-sm-6 bor-right bor-bottom">
-                <div class="devin-table-dash centered pad-box">
-                  <div class="palette-Pink-500 text value">{{projects.length}}<strong>개</strong></div>
-                  <div class="label">프로젝트</div>
-                </div>
-              </div>
-              <div class="col-sm-6 bor-bottom">
-                <div class="devin-table-dash centered pad-box"> 
-                  <div class="palette-Purple-500 text value">{{totaldays}}<strong>일</strong></div>
-                  <div class="label">개발 기간</div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6 bor-right">
-                <div class="devin-table-dash centered pad-box"> 
-                  <div class="value palette-Deep-Purple-500 text">{{chartData.rows.length}}<strong>개</strong></div>
-                  <div class="label">기술 스택</div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="devin-table-dash centered pad-box"> 
-                  <div class="value palette-Light-Blue-500 text">{{likeCount}}<strong>개</strong></div>
-                  <div class="label">좋아요</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-          <div class="col-md-12">
-              <!-- Default box -->
-              <div class="box">
-                  <div class="box-body" id="box-pie">
-                      <ve-pie :data="chartData" :settings="chartSettings" :id="box-pie"></ve-pie>
-                      <h4 style="text-align : center">Project TechStack</h4>
-                  </div>
-                  <!-- /.box-body -->
-              </div>
-          </div>
-      </div>
-    </section>
-  
-  <div class="box-body" style="min-height:400px;">
-    <div class="container-timeline">
-      <div class="header-timeline">
-        <img src="http://i3a402.p.ssafy.io/images/project.png" height="64" width="64">
-        <h1>프로젝트</h1>
-        <h2>A timeline that shows my project history</h2>
-        <br>
-        <br>
+  <transition name="el-zoom-in-top">
+    <!-- <section id="ysTemplate"> -->
+    <div class="content-wrapper">
+      <div id="container">
+      <!-- <div id ="main"> -->
+        <div style="padding-top:50px;">
         <hr>
-      </div>
-        <div class="item-timeline">
-          <div id="timeline">
-            <div>
-              <section class="year" v-for="(project,index) in projects" :key="index">
-                <h3>{{project.start_date.substr(0,7)}}</h3>
-                <section>
-                  <ul>
-                  <li><img :src="project.img_url" height="250" width="400"></li>
-                  </ul>
-                </section>
-                <section>
-                  <h4>프로젝트명</h4>
-                  <ul>
-                    <li>{{project.title}}</li>
-                  </ul>
-                </section>
-                <section>
-                  <h4>개발기간</h4>
-                  <ul>
-                    <li>{{project.start_date}}~{{project.finish_date}}</li>
-                  </ul>
-                </section>
-                <section>
-                  <h4>프로젝트요약</h4>
-                  <ul>
-                    <li>{{project.summary}}</li>
-                  </ul>
-                </section>
-                <section>
-                  <h4>역할</h4>
-                  <ul>
-                    <li v-for="(role,index) in project.roles" :key="index">
-                      {{role.role}}
-                    </li>
-                  </ul>
-                </section>
-                <section>
-                  <h4>기술스택</h4>
-                  <ul>
-                    <li>
-                      <img v-for="(stack,index) in project.stacks" :key="index" class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
-                    </li>
-                  </ul>
-                </section>
-                <br>
-                <section>
-                  <h4>관련링크</h4>
-                  <ul>
-                    <li><a :href="project.github_url">{{project.github_url}}</a> </li>
-                  </ul>
-                </section>
-                <section>
-                  <h4>프로젝트 더보기</h4>
-                  <ul>
-                    <li><a :href="project.etc_url">{{project.etc_url}}</a> </li>  
-                  </ul>
-                </section>
-              </section>
+        </div>
+        <!-- <br><br><br><br> -->
+        <div class="header-block">
+          <div class="header-middle">
+            <div class="left-header" style="float:left">
+              <div class="pf3-profile-image">
+              <img class="pull-left" alt="profile_img" :src='blogOwnerInfo.profile_img_url' width="160px" height="160px">
+              </div>  
+            </div>
+            <div class="right-header" style="float:left">
+              <div class="pf3-profile-text">
+              <el-row style="margin:0px">
+                <el-col :span="6"><div>이름</div></el-col>
+                <el-col :span="18"><div>: {{blogOwnerInfo.name}}</div></el-col>
+              </el-row>
+              <el-row v-if="blogOwnerInfo.birthday" style="margin:0px">
+                <el-col :span="6"><div >생년월일</div></el-col>
+                <el-col :span="18"><div>: {{blogOwnerInfo.birthday.substr(0,11)}}</div></el-col>
+              </el-row>
+              <el-row style="margin:0px">
+                <el-col :span="6"><div>연락처</div></el-col>
+                <el-col :span="18"><div>: {{blogOwnerInfo.tel}}</div></el-col>
+              </el-row>
+              <el-row style="margin:0px">
+                <el-col :span="6"><div>Github</div></el-col>
+                <el-col :span="18"><div>: {{blogOwnerInfo.github_url}}</div></el-col>
+              </el-row>
+              </div>
             </div>
           </div>
         </div>
-      </div>  
+        <!-- <div class="col-sm-12">
+          <div class="col-xs-12 col-sm-12 profile-name">
+            <dl class="dl-horizontal-profile">
+              <dt style="padding:8px 0px; width:80px" >이름</dt>
+              <dd style="width: 40%;">
+                <el-text style="width: 40%;" disabled>{{blogOwnerInfo.name}}( {{blogOwnerInfo.birthday.substr(0,11)}} )</el-text>
+              </dd>
+              <dt style="padding:8px 0px; width:80px">연락처</dt>
+              <dd style="width: 40%;">
+                <el-text style="width: 40%;" disabled>{{blogOwnerInfo.tel}}</el-text>
+              </dd>
+              <dt style="padding:8px 0px; width:80px">Github</dt>
+              <dd style="width: 40%;">
+                <el-text style="width: 40%;">{{blogOwnerInfo.github_url}}</el-text>
+              </dd>
+            </dl>
+          </div>
+        </div> -->
+        
+        
+          <!-- Main content -->
+        <section class="content">
+          <hr>
+          <div class="box-body no-pad padding-fifthin" style="display: block;">
+            <div class="events-nest ">
+              <div class="wrap-no-pad padding-fifthin">
+                <div class="row">
+                  <div class="col-sm-6 bor-right bor-bottom">
+                    <div class="devin-table-dash centered pad-box">
+                      <div class="palette-Pink-500 text value">{{projects.length}}<strong>개</strong></div>
+                      <div class="label">프로젝트</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 bor-bottom">
+                    <div class="devin-table-dash centered pad-box"> 
+                      <div class="palette-Purple-500 text value">{{totaldays}}<strong>일</strong></div>
+                      <div class="label">개발 기간</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6 bor-right">
+                    <div class="devin-table-dash centered pad-box"> 
+                      <div class="value palette-Deep-Purple-500 text">{{chartData.rows.length}}<strong>개</strong></div>
+                      <div class="label">기술 스택</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="devin-table-dash centered pad-box"> 
+                      <div class="value palette-Light-Blue-500 text">{{likeCount}}<strong>개</strong></div>
+                      <div class="label">좋아요</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-md-12">
+                  <!-- Default box -->
+                  <div class="box">
+                      <div class="box-body" id="box-pie">
+                          <ve-pie :data="chartData" :settings="chartSettings" :id="box-pie"></ve-pie>
+                          <h4 style="text-align : center">Project TechStack</h4>
+                      </div>
+                      <!-- /.box-body -->
+                  </div>
+              </div>
+          </div>
+        </section>
+      
+      <div class="box-body" style="min-height:400px;">
+        <div class="container-timeline">
+          <div class="header-timeline">
+            <img src="http://i3a402.p.ssafy.io/images/project.png" height="64" width="64">
+            <h1>프로젝트</h1>
+            <h2>A timeline that shows my project history</h2>
+            <br>
+            <br>
+            <hr>
+          </div>
+            <div class="item-timeline">
+              <div id="timeline">
+                <div>
+                  <section class="year" v-for="(project,index) in projects" :key="index">
+                    <h3>{{project.start_date.substr(0,7)}}</h3>
+                    <section>
+                      <ul>
+                      <li><img :src="project.img_url" height="250" width="400"></li>
+                      </ul>
+                    </section>
+                    <section>
+                      <h4>프로젝트명</h4>
+                      <ul>
+                        <li>{{project.title}}</li>
+                      </ul>
+                    </section>
+                    <section>
+                      <h4>개발기간</h4>
+                      <ul>
+                        <li>{{project.start_date}}~{{project.finish_date}}</li>
+                      </ul>
+                    </section>
+                    <section>
+                      <h4>프로젝트요약</h4>
+                      <ul>
+                        <li>{{project.summary}}</li>
+                      </ul>
+                    </section>
+                    <section>
+                      <h4>역할</h4>
+                      <ul>
+                        <li v-for="(role,index) in project.roles" :key="index">
+                          {{role.role}}
+                        </li>
+                      </ul>
+                    </section>
+                    <section>
+                      <h4>기술스택</h4>
+                      <ul>
+                        <li>
+                          <img v-for="(stack,index) in project.stacks" :key="index" class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
+                        </li>
+                      </ul>
+                    </section>
+                    <br>
+                    <section>
+                      <h4>관련링크</h4>
+                      <ul>
+                        <li><a :href="project.github_url">{{project.github_url}}</a> </li>
+                      </ul>
+                    </section>
+                    <section>
+                      <h4>프로젝트 더보기</h4>
+                      <ul>
+                        <li><a :href="project.etc_url">{{project.etc_url}}</a> </li>  
+                      </ul>
+                    </section>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>  
+        </div>
+      <!-- </div> -->
+      </div>
     </div>
-  </div>
-  </div>
-</section>
- 
+    <!-- </section> -->
+  </transition>
 </template>
 
 <script>
@@ -223,7 +260,7 @@ export default {
               this.chartData.rows.push(rows)
             } 
           }
-          http.get('/user/'+this.projects[0].seq_blog)
+          http.get('portfolio/'+this.seq_portfolio)
           .then(({data})=>{
             this.blogOwnerInfo = data;
           })
@@ -250,10 +287,69 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-#container{
-  background-color: #E6E6E6;
+.content-wrapper{
+ background: white !important;
 }
+#container{
+  position: relative;
+  margin-left : 10%;
+  margin-right : 10%;
+  background-color :whitesmoke;
+}
+.header-block{
+  padding: 50px;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+  // background-color: #4db84d;
+}
+.header-middle{  
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate( -50%, -50% );
+  // min-width: 800px;
+}
+.pf3-profile-image{
+  padding: 10px;
+  float:left; 
+  text-align: center;
+  color:black;
+  font-size:80px;
+}
+.pf3-profile-text{
+  padding: 10px;
+  vertical-align:middle;
+  float:left; 
+  text-align: left;
+  color:black;
+  font-size:20px;
+  min-width: 300px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #main{
   position: relative;
   margin-left : 20%;

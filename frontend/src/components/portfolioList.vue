@@ -21,9 +21,7 @@
                             <p class="content-3line" style="color:black;">{{ removeTag(portfolio.content) }}</p>
                         </div>
                         <div class="tag-nest" style="block:inline"> 
-                            <span class="tag">#SpringBoot</span>
-                            <!-- <span class="tag">#Vue.js</span>
-                            <span class="tag">#css</span> -->
+                            <span class="tag">#Portfolio</span>
                             <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{portfolio.like_count}} </span>
                             <!-- <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span>  -->
                         </div>
@@ -37,7 +35,10 @@
                     <div style="text-align:center">
                         <!-- <div class="wrap"> -->
                             <button class="fill" @click="goTemplate00(clickedSeq)">resume</button>
-                            <button class="fill" @click="goTemplate01">4 cards</button>
+                            <button class="fill" @click="goTemplate01(clickedSeq)">4 cards</button>
+                            <button class="fill" @click="goTemplate02(clickedSeq)">timeline-A</button>
+                            <!-- <button class="fill" @click="goTemplate00(portfolio.seq)">resume</button>
+                            <button class="fill" @click="goTemplate01(portfolio.seq)">4 cards</button> -->
                         <!-- </div> -->
                     </div>
                     </el-dialog>
@@ -48,33 +49,33 @@
     </transition>
 </template>
 <script>
-  import http from '../util/http-common'
-  export default {
+import http from '../util/http-common'
+export default {
     name: 'portfolioList',
     data(){
-		return{
-			// 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
-			offset: 0,
-			limit: 10,
-			portfolioList: [],
-			comment: [],
-			counter: 0,
-			deleteList: [],
-			deleteSuccess: true,
-      selectDialogVisible: false,
-      clickedSeq:''
-		}
+        return{
+            // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
+            offset: 0,
+            limit: 10,
+            portfolioList: [],
+            comment: [],
+            counter: 0,
+            deleteList: [],
+            deleteSuccess: true,
+            selectDialogVisible: false,
+            clickedSeq:''
+        }
     },
     created(){
-		this.getportfolioList();
+        this.getportfolioList();
     },
     computed: {
-		adminMode() {
-    		return this.$store.getters.getIsAdminMode
-		},
-	  	visitBlogSeq() {
-			return this.$store.getters.getvisitBlogSeq 
-		}
+        adminMode() {
+            return this.$store.getters.getIsAdminMode
+        },
+          visitBlogSeq() {
+          return this.$store.getters.getvisitBlogSeq 
+        }
     },
     methods:{
         setPortfolioSeq(seq){
@@ -86,9 +87,11 @@
             this.$router.push(`/blog/portfolio/${seq}`)
         },
         goTemplate01(seq){
-            this.$router.push(`/template01`)
+			// window.open(`/blog/portfolio1/${seq}`)
+            this.$router.push('/blog/portfolio1/'+seq)
         },
         goTemplate02(seq){
+          this.$router.push('/blog/portfolio2/'+seq)
         },
         goTemplate04(seq){
         },
@@ -98,22 +101,22 @@
         return text
         },
         getportfolioList(){
-			http.get('user/id/'+this.$route.params.id)
+        http.get('user/id/'+this.$route.params.id)
             .then(({data})=>{
                 http.get('portfolio/blog/'+data.seq+'/'+data.seq+'/'+this.offset+'/'+this.limit)
-				.then(({ data }) => {
-					this.portfolioList = data;
-					for(var i=0; i<this.portfolioList.length; i++){
-						http.get('postcomment/'+this.portfolioList[i].seq)
-						.then(({data}) => {
-							this.comment.push(data.length);
-						});
-					}
-				})
+        .then(({ data }) => {
+          this.portfolioList = data;
+          for(var i=0; i<this.portfolioList.length; i++){
+            http.get('postcomment/'+this.portfolioList[i].seq)
+            .then(({data}) => {
+              this.comment.push(data.length);
+            });
+          }
+        })
             })
         },
         deletePortfolio(){
-             if(this.deleteList.length === 0){
+              if(this.deleteList.length === 0){
                 this.$message({
                     type: 'info',
                     message: '선택한 포트폴리오가 없습니다.',
@@ -151,7 +154,7 @@
             }
         }
     }
-  }
+}
 </script>
 <style scoped>
 .tag-copy{
@@ -203,49 +206,49 @@
 }
 /* checkbox 디자인 */
 input[type="checkbox"] { 
-  display: none;
+ 	 display: none;
  }
  
 input[type="checkbox"] + label {
-  display: inline;
-  position: absolute;
-  top: 25px;
-  left: 40px;
-  z-index: 1;
-  font: 14px/20px 'Open Sans', Arial, sans-serif;
-  color: #222;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+	display: inline;
+	position: absolute;
+	top: 25px;
+	left: 40px;
+	z-index: 1;
+	font: 14px/20px 'Open Sans', Arial, sans-serif;
+	color: #222;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 }
  
 input[type="checkbox"] + label:last-child { margin-bottom: 0; }
  
 input[type="checkbox"] + label:before {
-  content: '';
-  display: block;
-  width: 20px;
-  height: 20px;
-  border: 1px solid #6cc0e5;
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: .6;
-  -webkit-transition: all .12s, border-color .08s;
-  transition: all .12s, border-color .08s;
+	content: '';
+	display: block;
+	width: 20px;
+	height: 20px;
+	border: 1px solid #6cc0e5;
+	position: absolute;
+	left: 0;
+	top: 0;
+	opacity: .6;
+	-webkit-transition: all .12s, border-color .08s;
+	transition: all .12s, border-color .08s;
 }
  
 input[type="checkbox"]:checked + label:before {
-  width: 10px;
-  top: -5px;
-  left: 5px;
-  border-radius: 0;
-  opacity: 1;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
+	width: 10px;
+	top: -5px;
+	left: 5px;
+	border-radius: 0;
+	opacity: 1;
+	border-top-color: transparent;
+	border-left-color: transparent;
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 
 </style>
@@ -255,110 +258,101 @@ input[type="checkbox"]:checked + label:before {
 
 .fill:hover,
 .fill:focus {
-  box-shadow: inset 0 0 0 2em var(--hover);
+ 	box-shadow: inset 0 0 0 2em var(--hover);
 }
 
 // Animate the size, outside
 .pulse:hover,
 .pulse:focus {
-  animation: pulse 1s;
-  box-shadow: 0 0 0 2em rgba(#fff, 0);
+	animation: pulse 1s;
+	box-shadow: 0 0 0 2em rgba(#fff, 0);
 }
 
 @keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 var(--hover);
-  }
+	0% {
+		box-shadow: 0 0 0 0 var(--hover);
+	}
 }
 
 // Stack multiple shadows, one from the left, the other from the right
 .close:hover,
 .close:focus {
-  box-shadow: inset -3.5em 0 0 0 var(--hover), inset 3.5em 0 0 0 var(--hover);
+  	box-shadow: inset -3.5em 0 0 0 var(--hover), inset 3.5em 0 0 0 var(--hover);
 }
 
 // Size can also be negative; see how it's smaller than the element
 .raise:hover,
 .raise:focus {
-  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
-  transform: translateY(-0.25em);
+	box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+	transform: translateY(-0.25em);
 }
 
 // Animating from the bottom
 .up:hover,
 .up:focus {
-  box-shadow: inset 0 -3.25em 0 0 var(--hover);
+  	box-shadow: inset 0 -3.25em 0 0 var(--hover);
 }
 
 // And from the left
 .slide:hover,
 .slide:focus {
-  box-shadow: inset 6.5em 0 0 0 var(--hover);
+  	box-shadow: inset 6.5em 0 0 0 var(--hover);
 }
 
 // Multiple shadows, one on the outside, another on the inside
 .offset {
-  box-shadow: 0.3em 0.3em 0 0 var(--color), inset 0.3em 0.3em 0 0 var(--color);
+	box-shadow: 0.3em 0.3em 0 0 var(--color), inset 0.3em 0.3em 0 0 var(--color);
 
-  &:hover,
-  &:focus {
-    box-shadow: 0 0 0 0 var(--hover), inset 6em 3.5em 0 0 var(--hover);
-  }
+	&:hover,
+	&:focus {
+		box-shadow: 0 0 0 0 var(--hover), inset 6em 3.5em 0 0 var(--hover);
+	}
 }
 
 //=== Set button colors
 // If you wonder why use Sass vars or CSS custom properties...
 // Make a map with the class names and matching colors
 $colors: (
-  fill: gray,
-  pulse: #ef6eae,
-  close: #ff7f82,
-  raise: #ffa260,
-  up: #e4cb58,
-  slide: #8fc866,
-  offset: #19bc8b
+	fill: gray,
+	pulse: #ef6eae,
+	close: #ff7f82,
+	raise: #ffa260,
+	up: #e4cb58,
+	slide: #8fc866,
+	offset: #19bc8b
 );
 
 // Sass variables compile to a static string; CSS variables are dynamic and inherited
 // Loop through the map and set CSS custom properties using Sass variables
 @each $button, $color in $colors {
-  .#{$button} {
-    --color: #{$color};
-    --hover: #{adjust-hue($color, 45deg)};
-  }
+	.#{$button} {
+		--color: #{$color};
+		--hover: #{adjust-hue($color, 45deg)};
+	}
 }
 
 // Now every button will have different colors as set above. We get to use the same structure, only changing the custom properties.
 button {
-  color: var(--color);
-  transition: 0.25s;
+	color: var(--color);
+	transition: 0.25s;
 
-  &:hover,
-  &:focus {
-    border-color: var(--hover);
-    color: #fff;
-  }
+	&:hover,
+	&:focus {
+		border-color: var(--hover);
+		color: #fff;
+	}
 }
 
 
 // Basic button styles
 button {
-  background: none;
-  border: 2px solid;
-  font: inherit;
-  line-height: 1;
-  margin: 0.5em;
-  padding: 1em 2em;
+	background: none;
+	border: 2px solid;
+	font: inherit;
+	line-height: 1;
+	margin: 0.5em;
+	padding: 1em 2em;
 }
-
-// h1 {
-//   font-weight: 400;
-// }
-
-// code {
-//   color: #e4cb58;
-//   font: inherit;
-// }
 
 </style>
 

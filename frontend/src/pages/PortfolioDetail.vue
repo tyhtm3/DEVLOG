@@ -1,32 +1,12 @@
 <template>
   <transition name="el-zoom-in-top">
     <div class="content-wrapper" style="background: white;">
-      <br><br><br><br>
+      <br><br><br>
       <!-- <div>
-        <br>{{basicinfo.seq}}: 71,
-        <br>{{basicinfo.seq_blog}}: 4,
-        <br>{{basicinfo.title}}: "삼성 제출 포트폴리오",
-        <br>{{basicinfo.regtime}}: "2020-07-31 02:45:10",
-        <br>{{basicinfo.disclosure}}: 1,
-        <br>{{basicinfo.like_count}}: 101,
-        <br>{{basicinfo.img_url}}: "",
-        <br>{{basicinfo.name}}: "손명지",
-        <br>{{basicinfo.profile_img_url}}: null,
-        <br>{{basicinfo.github_url}}: "github.com",
-        <br>{{basicinfo.birthday}}: "1994-04-03",
-        <br>{{basicinfo.content}}: "입력예정" 
+        {{basicinfo}}
         <br><br><br>
-        <br>{{portfolioUser.seq}}: 4,
-        <br>{{portfolioUser.id}}: "ssafy",
-        <br>{{portfolioUser.password}}: "ssafy",
-        <br>{{portfolioUser.email}}: "ssafy@gmail.com",
-        <br>{{portfolioUser.nickname}}: "명묭",
-        <br>{{portfolioUser.name}}: "손명지",
-        <br>{{portfolioUser.tel}}: "01040393449",
-        <br>{{portfolioUser.profile_img_url}}: "static/img/profile.png",
-        <br>{{portfolioUser.github_url}}: "github.com",
-        <br>{{portfolioUser.birthday}}: null
-      </div>   -->
+        {{portfolioUser}}
+      </div>  -->
        <!-- start banner carousel -->
       <div class="header-block">
          <!-- <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
@@ -40,17 +20,142 @@
               <li><a></a></li>
               <li class="pull-right" v-if="basicinfo.seq_blog==seq_user"><span class="ti-pencil"></span>&nbsp;{{basicinfo.regtime}} &nbsp; | <a href="#"> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
           </ul>
-          <div class="header-image">
-          <img v-if="true" style="block:inline;" src="http://api.randomuser.me/portraits/women/22.jpg" class="avatar">
-          <img v-else src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" class="avatar">
+          <div v-if="basicinfo.profile_img_url" class="header-image">
+          <img style="block:inline;" :src='basicinfo.profile_img_url' class="avatar">
           </div>
-          <div class="header-text" >
-            <p style="font-size:70px;"><b>{{basicinfo.name}}</b></p>
-            <i class="ti-mobile" style="font-size:40px;"/> {{portfolioUser.tel}}<br>
-            <i class="ti-email" style="font-size:40px;"/> {{portfolioUser.email}}<br>
-            <i class="ti-link" style="font-size:40px;"/> {{portfolioUser.github_url}}<br>
+          <div class="nextToAvater" >
+            <div class="header-text" :class="{ 'header-text-noImage' : !basicinfo.profile_img_url }" style="padding-left:30px!important">
+            <p style="font-size:50px;"><b>{{basicinfo.name}}</b></p>
+            <i class="ti-mobile" style="font-size:30px;"/> {{basicinfo.tel}}<br>
+            <i class="ti-email" style="font-size:30px;"/> {{basicinfo.email}}<br>
+            <i class="ti-link" style="font-size:30px;"/> {{basicinfo.github_url}}<br>
+            </div>
           </div>
       </div>
+      <div class="main-block">
+        <hr><div style="margin-bottom:15px; font-size:20px; text-align:center">SUMMARY</div><hr>
+          <div class="box-body no-pad padding-fifthin" style="display: block;">
+            <div class="events-nest ">
+              <div class="wrap-no-pad padding-fifthin">
+                <div class="row">
+                  <div class="col-sm-6 bor-right bor-bottom">
+                    <div class="devin-table-dash centered pad-box">
+                      <div class="palette-Pink-500 text value">{{projects.length}}<strong>개</strong></div>
+                      <div class="label">프로젝트</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 bor-bottom">
+                    <div class="devin-table-dash centered pad-box"> 
+                      <div class="palette-Purple-500 text value">{{totaldays}}<strong>일</strong></div>
+                      <div class="label">개발 기간</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6 bor-right">
+                    <div class="devin-table-dash centered pad-box"> 
+                      <div class="value palette-Deep-Purple-500 text">{{chartData.rows.length}}<strong>개</strong></div>
+                      <div class="label">기술 스택</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="devin-table-dash centered pad-box"> 
+                      <div class="value palette-Light-Blue-500 text">{{likeCount}}<strong>개</strong></div>
+                      <div class="label">좋아요</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <hr><div style="font-size:20px; text-align:center">Project TechStack</div><hr> -->
+          <hr><div style="font-size:20px; text-align:center">프로젝트 기술 스택</div><hr>
+          <div class="row">
+              <div class="col-md-12">
+                      <div class="box-body" id="box-pie">
+                          <ve-pie :data="chartData" :settings="chartSettings" :id="box-pie"></ve-pie>
+                          <!-- <h4 style="text-align : center">Project TechStack</h4> -->
+                      </div>
+              </div>
+          </div>
+          <hr><div style="margin-bottom:15px; font-size:20px; text-align:center">프로젝트</div><hr>
+          <!-- <div class="box-body" style="min-height:400px;"> -->
+            <div class="container-timeline" style="margin: auto; width:900px">
+              <!-- <div class="header-timeline">
+                <img src="http://i3a402.p.ssafy.io/images/project.png" height="64" width="64">
+                <h1>프로젝트</h1>
+                <h2>A timeline that shows my project history</h2>
+                <br>
+                <br>
+                <hr>
+              </div> -->
+                  <div id="timeline">
+                    <div>
+                      <section class="year" v-for="(project,index) in projects" :key="index">
+                        <h3>{{project.start_date.substr(0,7)}}</h3>
+                        <section >
+                          <ul>
+                            <li><img :src="project.img_url" height="200"></li>
+                            <li><span style="margin-right:15px;">프로젝트명&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{project.title}}</span></li>
+                            <li><span style="margin-right:15px">개발기간&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{project.start_date}}~{{project.finish_date}}</span></li>
+                            <li><span style="margin-right:15px">프로젝트요약</span><span>{{project.summary}}</span></li>
+                            <li v-if="project.roles.length>0"><span style="margin-right:15px">역할
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                              <span v-for="(role,index) in project.roles" :key="index"> {{role.role}}</span></li>
+                            <li v-if="project.stacks.length>0"><span style="margin-right:15px">기술스택&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                            <li v-if="project.stacks.length>0" style="height: 64px">
+                            <span v-for="(stack,index) in project.stacks" :key="index" >
+                              <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
+                            </span>
+                            </li>
+                            <li><span style="margin-right:15px">GIT 주소&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span><a :href="project.github_url">{{project.github_url}}</a></span></li>
+                            <li v-if="project.etc_url"><span style="margin-right:15px">관련링크&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span><a :href="project.etc_url">{{project.etc_url}}</a> </span></li>
+                            <li><span style="margin-right:15px;"><a href="#"><b>프로젝트 더보기</b></a></span></li>
+                          </ul>
+                        </section>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          <!-- </div> -->
+
+
+
+
+
+
+        <!-- <div class="row">
+          <div class="col-md-6" style="height:100px; text-align: center;  vertical-align:middle;
+          border-right: thin solid gray;
+          border-bottom: thin solid gray;
+          ">
+              1<strong>개</strong><br>프로젝트
+          </div>
+          <div class="col-md-6" style="height:100px; text-align: center;  vertical-align:middle;
+          border-left: thin solid gray;
+          border-bottom: thin solid gray;
+          ">
+              1<strong>개</strong><br>프로젝트
+          </div>
+        </div>
+        <div class="row" style="justify:center; align:middle;">
+          <div class="col-md-6" style="height:100px; text-align: center;  vertical-align:middle;;
+          border-top: thin solid gray;
+          border-right: thin solid gray;
+          ">
+              <div style="background-color:green;">1<strong>개</strong><br>프로젝트</div>
+          </div>
+          <div class="col-md-6" style="height:100px; text-align: center;
+          border-top: thin solid gray;
+          border-left: thin solid gray;
+          
+          ">
+              <div>1<strong>개</strong><br>프로젝트</div>
+          </div>
+        </div> -->
+
+
       <!-- end banner carousel -->
 
               
@@ -63,18 +168,14 @@
                         <li class="pull-right" v-if="project.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
                     </ul> -->
               <!-- 헤더 끝 -->               
-                <div class="box">
+                <!-- <div class="box">
                   <div class="row">
                     <div class="col-sm-12">
                       <div class="blog-list-nest">
                         <div v-for="(project,index) in projects" v-bind:key="index" class="blog-list-content">
-
-                            <!-- 프로젝트 썸네일 -->
                             <div class="pull-right" style="width:22%;margin-top:-2px;">
                             <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                             </div>
-                            <!-- 프로젝트 정보 :  프로젝트 명 / 프로젝트 개요 / 개발기간 / 기술스택 / 역할 / URL / 설명-->
-                                
                             <div class="row pjt-margin" style="margin-top:100px;">
                               <div class="col-sm-3">
                               <p class="pjt-title">프로젝트 제목</p>
@@ -145,9 +246,6 @@
                             </div>
 
                             <p style="margin-top:50px;margin-bottom:50px;" v-html="project.content"></p><hr>  
-
-                            <!--  프로젝트 정보 끝 -->
-                            <!-- 프로젝트 태그 -->
                             <p class="pull-left">
                               <span v-for="(tag, index) in tag" v-bind:key="index" class="tag">
                               #{{tag.tag}}
@@ -156,11 +254,7 @@
                             <div style="clear:both;"></div>
                         </div>
                       </div>
-                    </div>
-                      <!--  END OF BLOG CONTENT -->
-                  </div>
-                </div>
-            <!-- /.content -->
+                    </div> -->
     </div>
   </transition>
 </template>
@@ -173,15 +267,30 @@
     },
     data: function () {
         return { 
+          totaldays:0,
+          likeCount:0,
+          projects:[],
+          chartData : {},
+          chartSettings : {},
+
           basicinfo:'',
           portfolioUser:'',
-          projects:[],
           tag: [],
           stack: [],
           seq_user: this.$store.state.userInfo.seq,
         }
     },
-    created(){
+    created(){ 
+      this.chartData = {
+        rows: [
+        ]
+      }
+      this.chartSettings = {
+        dimension: 'stack',
+        metrics: 'rate'
+      }
+      this.stacks = [
+      ]
       this.getBasicInfo(this.$route.params.seq);
       this.getPortfolioInfo(this.$route.params.seq);
     },
@@ -203,64 +312,147 @@
         http.get('portfoliopjt/'+seq)
         .then(({data}) => {
             this.projects=data
+            for(var i=0;i<data.length;i++){
+            //좋아요 개수 추가
+            this.likeCount += data[i].like_count
+            console.log(this.likeCount)
+            //개발기간 추가
+            this.totaldays += (dateDiff(data[i].finish_date, data[i].start_date))
+            //스택 개수 반복
+            for(var j=0;j<data[i].stacks.length;j++){
+              var rows = new Object()
+              rows.stack = data[i].stacks[j].stack
+              rows.rate = 1
+              var found = false;
+              //이미 들어온 데이터 확인하면서 중복이면 숫자 증가
+              for(var k = 0; k < this.chartData.rows.length; k++) {
+                if (this.chartData.rows[k].stack == rows.stack) {
+                  found = true;
+                 this.chartData.rows[k].rate += 1
+                break;
+                }
+              }
+              //새로 들어온거면 1로 추가
+              if(!found)
+              this.chartData.rows.push(rows)
+            } 
+          }
          })
       },
-      // 프로젝트 삭제
-      deleteProject(seq){
-        http.delete('portfolio/'+seq)
-        .then(({data}) => {
-            alert('프로젝트가 삭제되었습니다.')
-            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
-         })
-      },
-      // 프로젝트 수정 미구현
-      updateProject(){
+    //   // 프로젝트 삭제
+    //   deleteProject(seq){
+    //     http.delete('portfolio/'+seq)
+    //     .then(({data}) => {
+    //         alert('프로젝트가 삭제되었습니다.')
+    //         this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
+    //      })
+    //   },
+    //   // 프로젝트 수정 미구현
+    //   updateProject(){
         
-      },
-      // Url로 이동
-      goUrl(url){
-        window.open(url, '_blank');
-      },
-       removeTag(text){
-      text = text.replace(/<br\/>/ig, "\n")
-      text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
-      // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
-      return text
-    },
+    //   },
+    //   // Url로 이동
+    //   goUrl(url){
+    //     window.open(url, '_blank');
+    //   },
+    //    removeTag(text){
+    //   text = text.replace(/<br\/>/ig, "\n")
+    //   text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
+    //   // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
+    //   return text
+    // },
    },
   }
+  function dateDiff(_date1, _date2) {
+    var diffDate_1 = _date1 instanceof Date ? _date1 :new Date(_date1);
+    var diffDate_2 = _date2 instanceof Date ? _date2 :new Date(_date2);
+    diffDate_1 =new Date(diffDate_1.getFullYear(), diffDate_1.getMonth()+1, diffDate_1.getDate());
+    diffDate_2 =new Date(diffDate_2.getFullYear(), diffDate_2.getMonth()+1, diffDate_2.getDate());
+    var diff = Math.abs(diffDate_2.getTime() - diffDate_1.getTime());
+    diff = Math.ceil(diff / (1000 * 3600 * 24));
+    return diff;
+}   
 </script>
-<style scoped>
-
-a:link { color: #B1B0AC; text-decoration: none;}
-a:visited { color: #B1B0AC;; text-decoration: none;}
-a:hover { color: black; text-decoration: bold;}
+<style lang="scss" scoped>
+#timeline h3{
+  right: 14rem;
+}
+#timeline{
+  margin:auto;
+}
+#timeline section.year section ul li:not(:first-child){
+  width: 600px;
+}
 .header-block{
   height: 500px;
   overflow: hidden;
   position: relative;
-  background-color: #F0F0ED;
+  background-color: transparent;
 }
+.main-block{
+  position: relative;
+  margin-left : 20%;
+  margin-right : 20%;
+  background-color :transparent;
+}
+.label{
+  font-size: 14px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a:link { color: #B1B0AC; text-decoration: none;}
+a:visited { color: #B1B0AC;; text-decoration: none;}
+a:hover { color: black; text-decoration: bold;}
+
 .header-image{
   float:left; 
   text-align: center;
   position: absolute;
   top: 50%;
-  left: 20%;
+  left: 30%;
   transform: translate( 0%, -50% );
   color:black;
   font-size:80px;
 }
 .header-text{
+  vertical-align:middle;
   float:right; 
-  margin-left:100px;
+  /* margin-left:100px; */
   text-align: left;
   position: absolute;
   top: 50%;
-  left: 40%;
+  left: 45%;
   transform: translate( 0%, -50% );
   color:black;
   font-size:40px;
+  min-width: 500px;
+}
+.header-text-noImage{
+  left: 50%;
+  margin-left: 0px;
+  transform: translate( -50%, -50% );
 }
 .box{
    padding-left:300px;
@@ -271,16 +463,20 @@ a:hover { color: black; text-decoration: bold;}
 
 }
 .pjt-title{
-  font-size:18px;
+  font-size:14px;
 }
 .pjt-content{
   margin-top:-2px;
-  font-size:14px;
+  font-size:12px;
   word-spacing: 2px;
   line-height:30px;
 }
 .avatar{
-  width:250%;
-  height:250%;
+  width:auto;
+  height:250px;
+}
+.nextToAvater{
+  min-width: 500px;
+  height:250px;
 }
 </style>

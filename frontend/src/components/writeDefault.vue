@@ -106,39 +106,47 @@ export default {
   },
   methods:{
     write(){
-      if(this.postInfo.disclosure === "전체공개")
-        this.postInfo.disclosure = 1
-      else if(this.postInfo.disclosure === "이웃공개")
-        this.postInfo.disclosure = 2
-      else
-        this.postInfo.disclosure = 3
-      http
-      .post('./post', {      
-        seq_blog: this.$store.getters.getUserInfo.seq,
-        title: this.postInfo.title,
-        content: this.postInfo.content,
-        disclosure: this.postInfo.disclosure,
-        img_url: this.postInfo.img_url
-      })
-      .then(({data}) => {
-        console.log(data)
-        if(this.tags.length==0)
-          this.postInfo.tags = null
+      if(this.postInfo.title === ''){
+        this.$message.warning('포스트 제목을 입력해 주세요.')
+      }
+      else if(this.postInfo.content === ''){
+        this.$message.warning('포스트 내용을 입력해 주세요.')
+      }
+      else{
+        if(this.postInfo.disclosure === "전체공개")
+          this.postInfo.disclosure = 1
+        else if(this.postInfo.disclosure === "이웃공개")
+          this.postInfo.disclosure = 2
         else
-          this.postInfo.tags = this.tags
+          this.postInfo.disclosure = 3
         http
-        .post('./posttag', {
-          seq_post: data,
-          tag: this.postInfo.tags
+        .post('./post', {      
+          seq_blog: this.$store.getters.getUserInfo.seq,
+          title: this.postInfo.title,
+          content: this.postInfo.content,
+          disclosure: this.postInfo.disclosure,
+          img_url: this.postInfo.img_url
         })
-        .then(({data})=>{
-          this.$message({
-            type: 'success',
-            message: '포스팅 완료.'
-          });
-          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
+        .then(({data}) => {
+          console.log(data)
+          if(this.tags.length==0)
+            this.postInfo.tags = null
+          else
+            this.postInfo.tags = this.tags
+          http
+          .post('./posttag', {
+            seq_post: data,
+            tag: this.postInfo.tags
+          })
+          .then(({data})=>{
+            this.$message({
+              type: 'success',
+              message: '포스팅 완료.'
+            });
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
+          })
         })
-      })
+      }
     },
     handleAvatarSuccess(res, file) {
 
@@ -146,23 +154,23 @@ export default {
 
     },
     beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt10M = file.size / 1024 / 1024 < 10;
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt10M = file.size / 1024 / 1024 < 10;
 
-        if (!isJPG) {
-          this.$message.error('Image must be JPG format!');
-        }
-        if (!isLt10M) {
-          this.$message.error('Image size can not exceed 10MB!');
-        }
-        return isJPG && isLt10M;
+      if (!(isPNG || isJPG)) {
+        this.$message.error('Image must be JPG or PNG format!1');
+      }
+      if (!isLt10M) {
+        this.$message.error('Image size can not exceed 10MB!');
+      }
+      return (isJPG || isPNG) && isLt10M;
     },
     addTag() {
       if(this.tag != ''){
         for(var i=0; i<this.tags.length; i++){
           if(this.tags[i] === this.tag){
             this.tag = '';
-            
             return
           }
         }
@@ -189,17 +197,10 @@ export default {
 }
 </script> 
 
-<style>
-#editor .ql-editor{
-  min-height: 400px !important;
+<style scoped>
+.pjt-title{
+  padding-top: 20px;
 }
-/* 
-.inputtag::before{
-  background-color: red;
-  content: "#" !important;
-  padding-right:500px;
-} */
-
 .inputtag{
   opacity:0.5;
   border:solid;

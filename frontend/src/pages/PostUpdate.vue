@@ -119,38 +119,46 @@ export default {
   },
   methods:{
     write(){
-      if(this.postInfo.disclosure === "전체공개")
-        this.postInfo.disclosure = 1
-      else if(this.postInfo.disclosure === "이웃공개")
-        this.postInfo.disclosure = 2
-      else
-        this.postInfo.disclosure = 3
-      http
-      .put('/post', {
-        seq: this.$route.params.seq,
-        title: this.postInfo.title,
-        content: this.postInfo.content,
-        disclosure: this.postInfo.disclosure,
-        img_url: this.postInfo.img_url
-      })
-      .then(({data}) => {
-        if(this.tags.length==0)
-          this.postInfo.tags = null
+      if(this.postInfo.title === ''){
+        this.$message.warning('포스트 제목을 입력해 주세요.')
+      }
+      else if(this.postInfo.content === ''){
+        this.$message.warning('포스트 내용을 입력해 주세요.')
+      }
+      else{
+        if(this.postInfo.disclosure === "전체공개")
+          this.postInfo.disclosure = 1
+        else if(this.postInfo.disclosure === "이웃공개")
+          this.postInfo.disclosure = 2
         else
-          this.postInfo.tags = this.tags
+          this.postInfo.disclosure = 3
         http
-        .post('/posttag', {
-          seq_post: this.postInfo.seq,
-          tag: this.postInfo.tags
+        .put('/post', {
+          seq: this.$route.params.seq,
+          title: this.postInfo.title,
+          content: this.postInfo.content,
+          disclosure: this.postInfo.disclosure,
+          img_url: this.postInfo.img_url
         })
-        .then(({data})=>{
-          this.$message({
-            type: 'success',
-            message: '포스트 수정 완료'
-          });
-          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
+        .then(({data}) => {
+          if(this.tags.length==0)
+            this.postInfo.tags = null
+          else
+            this.postInfo.tags = this.tags
+          http
+          .post('/posttag', {
+            seq_post: this.postInfo.seq,
+            tag: this.postInfo.tags
+          })
+          .then(({data})=>{
+            this.$message({
+              type: 'success',
+              message: '포스트 수정 완료'
+            });
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
+          })
         })
-      })
+      }
     },
     handleAvatarSuccess(res, file) {
 
@@ -228,8 +236,28 @@ export default {
 }
 </script> 
 
-<style>
+<style scoped>
+.pjt-title{
+  padding-top: 20px;
+}
 #editor .ql-editor{
   min-height: 400px !important;
+}
+.inputtag{
+  opacity:0.5;
+  border:solid;
+  border-top:1px;
+  border-left:1px;
+  border-right:1px;
+  border-color: rgba(143, 143, 143, 0.432);
+  border-width: 0.1px;
+  width:135px;
+}
+.inputtag:hover{
+  opacity:0.8;
+}
+.inputtag:focus{
+  opacity:0.8;
+  outline: none;
 }
 </style>
