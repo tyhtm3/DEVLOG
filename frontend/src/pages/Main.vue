@@ -160,14 +160,14 @@
                 <!-- <hr style="clear:both"> -->
               </div>
             <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
-              <div slot="no-results" style="color:#11212E; padding:50px">
-              마지막 글입니다.
-              </div>
+                <!-- <div slot="spinner" style="color:#11212E; padding:50px">로딩중</div> -->
+                <div slot="no-more" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
+                <div slot="no-results" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
             </infinite-loading>
             </div>
             <!-- end post list -->  
             <div v-else style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px; text-align:center">
-                조건에 일치하는 글이 존재하지 않습니다.
+                조건에 일치하는 포스트가 존재하지 않습니다.
             </div>> 
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
           </div>
