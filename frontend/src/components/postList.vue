@@ -317,6 +317,6 @@ input[type="checkbox"]:checked + label:before {
   transform: rotate(45deg);
 }
 .active {
-  background-color:    #DDDDDD;
+  background-color:    #DDD;
 }
 </style>

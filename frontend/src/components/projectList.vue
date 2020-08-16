@@ -296,6 +296,9 @@ input[type="checkbox"]:checked + label:before {
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+.active {
+  background-color:    #DDD;
+}
 </style>
 <style lang="scss" >
 
