@@ -3,13 +3,15 @@
       <!-- Main content -->
       <!-- <section class="content"> -->
         <div class="container-chat clearfix"> 
+
           <div class="col-md-12">
             <br>
             <div style="text-align:center"></div>
                 <!-- <input class="delete-box" :id=index type="checkbox" :value=post.seq " /> -->
                     <!-- <label :for=index></label>전체선택 -->
-              <el-button :plain="true" @click="unfollowmode" type="info" v-bind:class="{ active: isActive}">이웃끊기</el-button>
-              <el-button :plain="true" type="danger">차단</el-button>
+              <el-button :plain="true" @click="unfollowmode" v-bind:class="{ active: isActive}">구독 끊기</el-button>
+              <!-- <el-button :plain="true" type="danger">차단</el-button> -->
+              <el-button :plain="true" @click="follower2" style="float:right">구독 관리 종료</el-button>
             </div>
 
           <div class="people-list" id="people-list">
@@ -26,8 +28,7 @@
                     </p>댓글 수 {{neighborComment[index]}}
                   </span>
                 </span>
-                <el-button :plain="true" @click="deleteneighbor(index)" v-if="isActive" type="danger" style="margin-top:10px;">이웃 삭제</el-button>
-            
+                <el-button :plain="true" @click="deleteneighbor(index)" v-if="isActive" type="danger" style="margin-top:10px;">구독 취소</el-button>
               </li>
             </ul>
 
@@ -89,6 +90,9 @@ export default {
     this.getNeighborList();
   },
   methods: {
+    follower2() {
+       this.$parent.follower();
+    },
     getNeighborList(){
       http
       .get('/userneighbor/')
@@ -96,13 +100,13 @@ export default {
         this.neighborList = data
         for (let i=0; i<data.length; i++){
           
-          // 이웃의 정보 불러오기
+          // 구독 정보 불러오기
           http
           .get('/user/' + this.neighborList[i].seq_neighbor)
           .then(({data}) => { 
             this.requestneighborinfoList[i] = data
 
-            // 이웃의 댓글목록과 댓글수 불러오기
+            // 구독 댓글목록과 댓글수 불러오기
             http
             .get('postcomment/neighbor/' +data.seq)
             .then(({data}) => {
@@ -118,7 +122,7 @@ export default {
       this.selectedName = this.requestneighborinfoList[index].name
       this.selectedImg = this.requestneighborinfoList[index].profile_img_url
       this.selectedRegtime = this.neighborList[index].regtime
-      // 선택된 이웃의 댓글 정보
+      // 선택된 구독 댓글 정보
       this.neighborCommentList = this.neighborCommentData[index]
     },
     unfollowmode() {
@@ -135,9 +139,9 @@ export default {
       .then(({ data }) => {
         this.$message({
           type: 'error',
-          message: '이웃 목록에서 삭제 되었습니다.',
+          message: '구독을 취소합니다.',
         });
-        // 이웃 삭제 후 이웃 리스트 갱신
+        // 구독 삭제 후 구독 리스트 갱신
         this.neighborList = []
         this.requestneighborinfoList = []
         this.neighborComment = []

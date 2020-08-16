@@ -10,50 +10,61 @@
             <input id="title"  type="text" style="font-size:32px; color:#333333;" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog"  :placeholder=titleplaceholder readonly /><br>
             <input id="detail" type="text" style="font-size:15px; color:#959595; padding-top:5px;" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog"  :placeholder=contentplaceholder readonly />
           </div>
-          <div class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
-            by {{blogOwnerInfo.nickname}}
-            <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
-            <!-- <span>Web Designer</span> -->
-          </div>
+          <div v-if="!isAdmin" class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
+              <span class="show-blog-owner-nickname">by {{blogOwnerInfo.nickname}}</span>
+              <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
+              <!-- <span>Web Designer</span> -->
+            </div>
+          <router-link v-if="isAdmin" to="/myinfo">
+            <div class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
+              <span class="show-blog-owner-nickname">by {{blogOwnerInfo.nickname}}</span>
+              <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
+              <!-- <span>Web Designer</span> -->
+            </div>
+          </router-link>
+          
           <div class="description-profile" style="max-width:700px">
-          <div class="column2">
-            <div class="row"> 
-              <div class="col-xs-12 col-sm-3 emphasis">
-                <h2 style="margin:0px">{{blogOwnerNumOfProject}}</h2>
-                <p> <small>Project</small> </p>
-              </div>
-              <div class="col-xs-12 col-sm-3 emphasis">
-                <h2 style="margin:0px" >{{blogOwnerNumOfPost}}</h2>
-                <p> <small>Post</small> </p>
-              </div>
-              <div class="col-sm-3 emphasis" style="cursor:pointer;" @click="follower">
-                <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
-                <p><small>Follow</small></p>
+            <div class="column2">
+              <div class="row"> 
+                <div class="col-xs-12 col-sm-3 emphasis">
+                  <h2 style="margin:0px">{{blogOwnerNumOfProject}}</h2>
+                  <p> <small>프로젝트</small> </p>
+                </div>
+                <div class="col-xs-12 col-sm-3 emphasis">
+                  <h2 style="margin:0px" >{{blogOwnerNumOfPost}}</h2>
+                  <p> <small>포스트</small> </p>
+                </div>
+                <div class="col-sm-3 emphasis" id="follower" style="cursor:pointer;" @click="follower" @mouseenter="changeFollowText" @mouseleave="undoFollowText">
+                  <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
+                  <p><small id="followertext" v-text="followtext"></small></p>
+                  <!-- 이웃관리라는 문구가 뭔가 안이쁨...-->
+                </div>
+               
               </div>
             </div>
           </div>
-        </div>
 
-        <div>
-          <div v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="display:inline-block;">
-          <span class="tag" id="blogmaintag" @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" >
-            #{{tag.tag}}
-          </span>
-          <span v-show="getIsAdminMode" @click="deleteTag(tag.seq)" class="hideDeleteButton ti-close pull-top pull-right" 
-          style="font-size:3px;color:#333333;padding:0px;margin-left:-35px;"></span>
+
+          <div class="tag-nest-detail" style="padding-top:10px;  width:100%; overflow:auto">              
+            <div id="blogmaintag-block" style="display:inline-block;">
+              <!-- 태그 입력 받는곳 -->
+              <span v-if="getIsAdminMode&&addIcon" id="blogmaintag" class="search tag ti-plus " @click="tagInputVisible" style="border:solid; padding:3px!important; margin-left:18px; background-color:transparent!important; color:lightgray">
+              </span>
+              <span v-if="getIsAdminMode&&searchBar" id="blogmaintag" class="search tag ti-close" @click="tagInputNotVisible" style="border:solid; padding:3px!important; margin-left:18px; background-color:transparent!important; color:lightgray">
+              </span>
+              <span v-if="getIsAdminMode&&searchBar" class="search" id="demo-2" style="font-size:18px;">
+                # <input v-on:keyup.enter="addTag" v-model="tag" class="inputtag" placeholder="태그를 입력해주세요."  style="width:170px">
+              </span>
+              <!-- + 버튼 -->
+              
+            </div>
+            <div id="blogmaintag-block" v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="display:inline-block;">
+            <span :class="{'active': itemsContains(tag.tag)}" id="blogmaintag" class="tag" @click="tagSearch(tag.tag)" >
+              #{{tag.tag}}
+            </span>
+            <span v-show="getIsAdminMode" @click="deleteTag(tag.seq, tag.tag)" class="delete-tag-button hideDeleteButton ti-close pull-top pull-right"></span>
+            </div>
           </div>
-        </div>
-        
-        <span v-if="getIsAdminMode">
-          <span v-if="searchBar">
-            <input v-on:keyup.enter="addTag" v-model="tag" placeholder="#">
-          </span>
-          <span v-if="addIcon" style="position: absolute; cursor:pointer;" @click="tagInputVisible">
-            <i class="material-icons">add_circle_outline</i>
-          </span>
-        </span>
-
-
           <div class="column4" v-if= "getIsLogin">
             <span v-if="isAdmin">
               <router-link to="../writePost">
@@ -61,7 +72,7 @@
               </router-link>
               <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>&nbsp;
             </span>
-            <span v-else @click="subscribe">이웃 <i class="ti-link"></i></span>&nbsp;
+            <span v-else @click="subscribe">구독<i class="ti-link"></i></span>&nbsp;
           </div>
         </div>
         <!-- end profile -->
@@ -72,12 +83,15 @@
           <div class="col-sm-12">
             <div class="col-sm-10" style="margin: 0 auto; float: none;">
             <blog-content v-bind:searchTags="searchTags" v-if="!followerpage"></blog-content>
-            <follower v-else></follower>
+            <follower v-else ></follower>
             </div>
           </div>
         </div>
       </div>
-    <a href="#" class="top"><i class="material-icons" id="to-top">arrow_upward</i></a>
+      <el-tooltip class="item" effect="dark" content="상단으로" placement="bottom" popper-class="draw_share_atooltip">
+        <a href="#" class="topimg"><img src="../assets/top3.png" height="48px"></a>
+      </el-tooltip>
+    <!-- <a href="#" class="top"><i class="material-icons" id="to-top">arrow_upward</i></a> -->
     </div>
   </transition>
 </template>
@@ -131,12 +145,14 @@ export default {
       addIcon: true,
       tag: '',
       titleplaceholder:'',
-      contentplaceholder:''
+      contentplaceholder:'',
+      followtext:''
     }
   },
   created() {
     this.blogOwnerId= this.$route.params.id;
     this.getBlogOwnerInfo();
+    this.followtext = '구독자';
   },
   mounted() {
     /* 블로그 상단 input박스 길이 조절 */
@@ -165,15 +181,24 @@ export default {
     })
   },
   methods: {
+    changeFollowText(){
+      this.followtext = '구독관리';
+    },
+    undoFollowText(){
+      this.followtext = '구독자';
+    },
      // 태그 누를때마다 검색
     tagSearch(tag){
       // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
       var index = this.searchTags.indexOf(tag)
       var idx = this.activeIndex.indexOf(index)
+      
       if(index<0){
+        console.log("태그 검색 시작: " + index + " / " + idx);
         this.searchTags.push(tag)
         this.activeIndex.push(index)
       }else{
+        console.log("태그 검색 제거: " + index + " / " + idx);
         this.searchTags.splice(index,1)
         this.activeIndex.splice(idx,1)
       }
@@ -227,7 +252,8 @@ export default {
         $('#setting').css('color','#B1B0AC');
         $('#title').attr('readonly', true);
         $('#detail').attr('readonly', true);
-        
+        this.searchBar = false
+        this.addIcon = true
       }
       else{
         this.$message({
@@ -278,7 +304,7 @@ export default {
             .then(({ data }) => {
               this.$message({
                 type: 'success',
-                message: '이웃 목록에 추가 되었습니다.',
+                message: this.blogOwnerInfo.nickname+'님의 블로그를 구독합니다.',
               });
             })
           }
@@ -291,7 +317,7 @@ export default {
             .then(({ data }) => {
               this.$message({
                 type: 'error',
-                message: '이웃 목록에서 삭제 되었습니다.',
+                message: '구독을 취소합니다.',
               });
             })
             .catch(({ error }) => {
@@ -305,6 +331,10 @@ export default {
       this.searchBar = true
       this.addIcon = false
     },
+    tagInputNotVisible(){
+      this.searchBar = false
+      this.addIcon = true
+    },
     addTag(){
       http
       .post('blogtag', {
@@ -317,8 +347,10 @@ export default {
         this.tag = ''
         this.getBlogOwnerInfo()
       })
+      console.log(this.searchTags);
+      console.log(this.activeIndex);
     },
-    deleteTag(seq){
+    deleteTag(seq, tag){
       http
       .delete('blogtag/'+seq)
       .then(({data}) => {
@@ -326,6 +358,10 @@ export default {
           type: 'success',
           message: '태그가 삭제되었습니다.',
         });
+        // 지워진 태그가 search에 포함되어있으면 search도 삭제
+        if(this.searchTags.indexOf(tag)>-1){
+          this.tagSearch(tag);
+        }
         this.getBlogOwnerInfo()
       })
     }
@@ -348,38 +384,34 @@ export default {
 
 </script>
 <style scoped>
-  html {
-    scroll-behavior: smooth;
+  /* 말풍선 css 약간 수정*/
+  .el-tooltip__popper[x-placement^=right] .popper__arrow::after {
+      border-right-color: #9ebbcd  !important;
+      /* border-bottom-color: #11212E  !important; */
+    }
+  .el-tooltip__popper[x-placement^=right] .popper__arrow{
+      border-right-color: #9ebbcd  !important;
+      /* border-bottom-color: #11212E  !important; */
   }
-  a.top {
-    position: fixed;
-    right: 7%;
-    bottom: 20%;
-    display: none;
-    background-color: #9EBBCD;
-    border-radius: 50%;
-    width:48px;
-    height:48px;
-    text-align: center;
-    line-height: 44px;
+  .draw_share_atooltip{
+      /* background: transparent !important; */
+      background: #9ebbcd !important;
+      /* background: #11212E !important; */
   }
-  #to-top{
-    vertical-align: middle;
-    font-size: 36px;
-  }
+</style>
+
+
+<style lang="scss" scoped>
+
   .col-md-12{
     padding-right: 10%;
     padding-left: 10%;
   }
   .container-movie{  
-    height: 400px;
+    height: 425px;
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #9ebbcd70;
     }
-  .tag-active {
-    background: #DDDDDD;
-    border-radius: 20px;
-  }
   .column4{
     float: right;
     margin-right: 40px;
@@ -406,20 +438,26 @@ export default {
   .tagspecial:hover {
       background: #ddd;
   }
-  .tag-active {
-      background: #ddd;
-  }
-
   /* 블로그 메인 상단 profile box UI */
   .details-profile .title1{
     font-size:0px !important;
     margin:0px !important;
   }
+  .details-profile .title2 span{
+    all: unset;
+  }
+  #show-blog-owner-nickname:hover{
+    box-shadow: 3px 3px 3px rgba(177, 177, 177, 0.527);
+  }
   .column2{
     padding-left:0px !important;
   }
+  #follower:hover #followertext{ 
+    font-weight: bold;
+    color:gray;
+  }
 
-  /* 블로그 메인 상단 수정 UI */
+  /* 블로그 메인 관리 UI */
   .details-profile{
     padding-right:15% !important;
     padding-left:15% !important;
@@ -431,46 +469,59 @@ export default {
   #blogmaintag{
     font-size:18px; 
     line-height:40px; 
-    cursor:pointer; 
-    /* margin-left:-8px; 
-    margin-right:12px;  */
+    cursor:pointer;
+    margin-left:10px;
     padding:3px 8px !important;
   }
+  #blogmaintag-block:first-child{
+    margin-left:-18px;
+  }
   .tag{
-    background-color: transparent!important;
     color:gray;
     border-radius:40px;
     height:20px!important;
-    /* background-color: #9EBBCD !important; */
   }
   .tag:hover{
-    /* background-color:#9EBBCD !important; */
     height:16px;
     background-color:#ddd !important;
+    /* background-color:#9EBBCD !important; */
     box-shadow: 1px 1px 3px rgba(199, 199, 199, 0.4);
   }
-  /* .tag-copy{
+  .active{
+    background-color: #DDD;
+  }
+  .tag-copy{
     background: transparent;
     padding: 3px 0px;
     line-height: 50px;
-     font-size:20px; 
-     color:#B1B0AC;
-     float: left;
-     margin:0px;
-  } */
-
-  /* chrome input에 자동 채워지는 배경 색상 글자 색상 변경 */
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
-  transition: background-color 5000s ease-in-out 0s;
-  -webkit-transition: background-color 9999s ease-out;
-    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
-    -webkit-text-fill-color: #333333 !important;
+    font-size:20px; 
+    color:#B1B0AC;
+    float: left;
+    margin:0px;
   }
   
 
+
+
+
+  /* 관리자모드 UI */
+  .inputtag{
+  opacity:0.5;
+  border:solid;
+  border-top:1px;
+  border-left:1px;
+  border-right:1px;
+  border-color: rgba(143, 143, 143, 0.432);
+  border-width: 0.1px;
+  width:135px;
+  }
+  .inputtag:hover{
+    opacity:0.8;
+  }
+  .inputtag:focus{
+    opacity:0.8;
+    outline: none;
+  }
 
 
   /* font */
