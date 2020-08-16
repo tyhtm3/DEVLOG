@@ -8,7 +8,6 @@
 							<div class="col-xs-12 col-sm-12" style="padding:0px">
                 <hr>
                   <div style="margin-bottom:15px; font-size:20px;"><b>개인정보 입력</b></div>
-                  <!-- <div style="margin-bottom:15px; font-size:20px; text-align:center"><b>개인정보 입력</b></div> -->
                   <hr>
 								<dl class="dl-horizontal-profile">
 									<dt>이름</dt>
@@ -41,12 +40,10 @@
                  <div class="col-xs-12 col-sm-12" style="padding:0px">
                   <hr>
                   <div style="margin-bottom:15px; font-size:20px"><b>프로젝트 정보 입력</b></div>
-                  <!-- <div style="margin-bottom:15px; font-size:20px; text-align:center"><b>프로젝트 정보 입력</b></div> -->
                   <hr>
                 </div>
                 <div>
                 <!-- 왼쪽 프로젝트 선택 부분 -->
-                <!-- <div><p id="titleid">프로젝트 선택</p></div> -->
                 <section class="selectProject">
                   <el-transfer
                     style="margin-bottom: 30px"

@@ -54,11 +54,19 @@
           <p class="pull-right">* 역할</p>
         </div>
         <div class="col-sm-9">
-          <div v-for="(role2,index) in roles" :key="index"><span><el-input  style="padding:10px;" type="textarea" :rows="2" :value="role2" readonly></el-input></span>
-          <div class="ti-minus pull-bottom pull-right" @click="deleteRole(index)"></div>
+          <div v-for="(role2,index) in roles" :key="index">
+              <span @click="deleteRole(index)" style="cursor:pointer;">
+            <el-tooltip class="item" effect="dark" content="클릭시 제거됩니다." placement="right">
+                <el-input style="padding:10px;" type="textarea" :rows="2" :value="role2" readonly></el-input>
+            </el-tooltip>
+              </span>
+          <div class="pull-right" style="padding:0px 10px 0px 10px;">
+          </div>
           </div>
           <el-input style="padding:10px;" type="textarea" :rows="4" placeholder="PROJECT ROLE" v-model="role"> </el-input>
-          <div class="ti-plus pull-bottom pull-right" @click="addRole"></div>
+          <div class="pull-right" style="padding:0px 10px 0px 10px;">
+            <el-button @click="addRole">추가</el-button>
+          </div>
         </div>
       </div>
       <hr>
