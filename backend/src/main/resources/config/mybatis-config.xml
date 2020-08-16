@@ -18,6 +18,9 @@
 		<mapper resource="mappers/ProjectStackMapper.xml" />
 		<mapper resource="mappers/PortfolioMapper.xml" />
 		<mapper resource="mappers/PortfolioProjectMapper.xml" /> 
+		<mapper resource="mappers/PortfolioCertificationMapper.xml" /> 
+		<mapper resource="mappers/PortfolioSkillMapper.xml" /> 
+		<mapper resource="mappers/PortfolioLanguageMapper.xml" /> 
 	</mappers>
 </configuration>
 
