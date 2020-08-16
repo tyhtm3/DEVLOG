@@ -43,37 +43,27 @@
           </div>
 
 
-          <div>
-
-               <!-- 기존에 있던거 -->
-              <!-- <span v-if="getIsAdminMode">
-                <span v-if="searchBar">
-                  <input v-on:keyup.enter="addTag" v-model="tag" placeholder="#">
-                </span>
-                <span v-if="addIcon" style="position: absolute; cursor:pointer;" @click="tagInputVisible">
-                  <i class="material-icons">add_circle_outline</i>
-                </span>
-              </span> -->
-              
+          <div>              
             <div id="blogmaintag-block" style="display:inline-block;">
-              <span v-if="getIsAdminMode&&searchBar" class="search" id="demo-2" style="font-size:18px; margin-left:18px;">
+              <!-- 태그 입력 받는곳 -->
+              <span v-if="getIsAdminMode&&addIcon" id="blogmaintag" class="search tag ti-plus " @click="tagInputVisible" style="border:solid; padding:3px!important; margin-left:18px; background-color:transparent!important; color:lightgray">
+              </span>
+              <span v-if="getIsAdminMode&&searchBar" id="blogmaintag" class="search tag ti-close" @click="tagInputNotVisible" style="border:solid; padding:3px!important; margin-left:18px; background-color:transparent!important; color:lightgray">
+              </span>
+              <span v-if="getIsAdminMode&&searchBar" class="search" id="demo-2" style="font-size:18px;">
                 # <input v-on:keyup.enter="addTag" v-model="tag" class="inputtag" placeholder="태그를 입력해주세요."  style="width:170px">
               </span>
-              <span v-if="getIsAdminMode&&addIcon" id="blogmaintag" class="search tag ti-plus " @click="tagInputVisible" style="border:solid; padding:3px!important; margin-left:18px">
-              </span>
+              <!-- + 버튼 -->
+              
             </div>
             <div id="blogmaintag-block" v-for="(tag, index) in blogOwnerMainTags" v-bind:key="index" style="display:inline-block;">
-            <span id="blogmaintag" class="tag" @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" >
+            <span :class="{'active': itemsContains(tag.tag)}" id="blogmaintag" class="tag" @click="tagSearch(tag.tag)" >
               #{{tag.tag}}
             </span>
-            <span v-show="getIsAdminMode" @click="deleteTag(tag.seq)" class="hideDeleteButton ti-close pull-top pull-right" 
+            <span v-show="getIsAdminMode" @click="deleteTag(tag.seq, tag.tag)" class="hideDeleteButton ti-close pull-top pull-right" 
             style="font-size:3px;color:#333333;padding:0px;margin-left:-35px;"></span>
             </div>
           </div>
-        
-          
-
-
           <div class="column4" v-if= "getIsLogin">
             <span v-if="isAdmin">
               <router-link to="../writePost">
@@ -190,10 +180,13 @@ export default {
       // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
       var index = this.searchTags.indexOf(tag)
       var idx = this.activeIndex.indexOf(index)
+      
       if(index<0){
+        console.log("태그 검색 시작: " + index + " / " + idx);
         this.searchTags.push(tag)
         this.activeIndex.push(index)
       }else{
+        console.log("태그 검색 제거: " + index + " / " + idx);
         this.searchTags.splice(index,1)
         this.activeIndex.splice(idx,1)
       }
@@ -326,6 +319,10 @@ export default {
       this.searchBar = true
       this.addIcon = false
     },
+    tagInputNotVisible(){
+      this.searchBar = false
+      this.addIcon = true
+    },
     addTag(){
       http
       .post('blogtag', {
@@ -338,8 +335,10 @@ export default {
         this.tag = ''
         this.getBlogOwnerInfo()
       })
+      console.log(this.searchTags);
+      console.log(this.activeIndex);
     },
-    deleteTag(seq){
+    deleteTag(seq, tag){
       http
       .delete('blogtag/'+seq)
       .then(({data}) => {
@@ -347,6 +346,10 @@ export default {
           type: 'success',
           message: '태그가 삭제되었습니다.',
         });
+        // 지워진 태그가 search에 포함되어있으면 search도 삭제
+        if(this.searchTags.indexOf(tag)>-1){
+          this.tagSearch(tag);
+        }
         this.getBlogOwnerInfo()
       })
     }
@@ -368,7 +371,7 @@ export default {
   });
 
 </script>
-<style scoped>
+<style lang="scss" scoped>
 
   a.top {
     position: fixed;
@@ -395,10 +398,6 @@ export default {
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #9ebbcd70;
     }
-  .tag-active {
-    background: #DDDDDD;
-    border-radius: 20px;
-  }
   .column4{
     float: right;
     margin-right: 40px;
@@ -425,10 +424,7 @@ export default {
   .tagspecial:hover {
       background: #ddd;
   }
-  .tag-active {
-      background: #ddd;
-  }
-
+  
   /* 스크롤 부드럽게 내리기  */
   html {
     scroll-behavior: smooth;
@@ -463,6 +459,8 @@ export default {
     line-height:40px; 
     cursor:pointer;
     margin-left:10px;
+    
+    // background-color: greenyellow !important;
     /*
     margin-right:12px;  */
     padding:3px 8px !important;
@@ -471,7 +469,7 @@ export default {
     margin-left:-18px;
   }
   .tag{
-    background-color: transparent!important;
+    // background-color: transparent!important;
     color:gray;
     border-radius:40px;
     height:20px!important;
@@ -492,7 +490,9 @@ export default {
     float: left;
     margin:0px;
   }
-
+  .active{
+    background-color: #DDD;
+  }
   /* chrome input에 자동 채워지는 배경 색상 글자 색상 변경 */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,

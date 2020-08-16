@@ -269,7 +269,6 @@ export default {
       }
       console.log(this.searchTags);
       console.log(this.activeIndex);
-      
     },
     // 프로젝트와 포스트 검색 초기화
     getPostandproject(){
@@ -638,7 +637,7 @@ $( '.topimg' ).click( function() {
   -webkit-box-orient: vertical;
 }
 .active {
-  background-color:    #DDDDDD;
+  background-color:    #DDD;
 }
 .row{
   box-shadow: 1px 1px 15px rgba(160, 160, 160, 0.137);
