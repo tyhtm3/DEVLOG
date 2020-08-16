@@ -57,7 +57,7 @@ import NotFoundSecond from './pages/error/500.vue'
 import PostUpdate from './pages/PostUpdate.vue'
 import ProjectUpdate from './pages/ProjectUpdate.vue'
 import Template01 from './pages/Template01.vue'
-import Template03 from './pages/Template03.vue'
+import Template05 from './pages/Template05.vue'
 import store from './store';
 
 // Routes
@@ -151,9 +151,9 @@ const routes = [
         component: Template01
       },
       {
-        path: '/template03/:seq',
-        name: 'template03',
-        component: Template03
+        path: '/template05/:seq',
+        name: 'template05',
+        component: Template05
       },
       {
         path: '/blog/post-update/:seq',

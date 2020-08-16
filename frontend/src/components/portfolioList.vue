@@ -40,7 +40,7 @@
                         <!-- <div class="wrap"> -->
                             <button class="fill" @click="goTemplate00(portfolio.seq)">resume</button>
                             <button class="fill" @click="goTemplate01">4 cards</button>
-                            <button class="fill" @click="goTemplate03(417)">JUHYEON</button>
+                            <button class="fill" @click="goTemplate05(portfolio.seq)">JUHYEON</button>
                         <!-- </div> -->
                     </div>
                     </el-dialog>
@@ -88,9 +88,11 @@
         goTemplate02(seq){
         },
         goTemplate03(seq){
-            this.$router.push(`/template03/${seq}`)
         },
         goTemplate04(seq){
+        },
+        goTemplate05(seq){
+          this.$router.push(`/template05/${seq}`)
         },
         removeTag(text){
         text = text.replace(/<br\/>/ig, "\n");
