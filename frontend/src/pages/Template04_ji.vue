@@ -34,21 +34,7 @@
           <div class="follow">
             <h3>Follow Me</h3>
             <div class="box" style="background-color:transparent; ">
-              <!-- <a href="#" target="_blank"><i class="ti-facebook"></i></a>
-              <a href="#" target="_blank"><i class="ti-instagram "></i></a>
-              <a href="#" target="_blank"><i class="ti-pinterest-alt "></i></a>
-              <a href="#" target="_blank"><i class="ti-linkedin "></i></a> -->
-
-              <!-- 기타 주소로 입력받은 주소 앞부분이 https://www.facebook.com/ 랑 일치하면 facebook으로 인식해서 넣기! 이런식으로 아래 4개 넣어주면 될듯.. -->
-              <!-- 
-                https://www.facebook.com/  
-                https://www.instagram.com/
-                https://www.pinterest.com/
-                https://www.linkedin.com/in/
-              -->
-              
-              <!-- <a v-for="(social,index) in socials" v-bind:key="index" :href=social.link target="_blank"><i :class=social.icon></i></a>\ -->
-              <a v-for="(social,index) in tempsocials" v-bind:key="index" :href=social.link target="_blank"><i :class=social.icon></i></a>
+              <a v-for="(social,index) in socials" v-bind:key="index" :href=social.link target="_blank"><i :class=social.icon></i></a>
             </div>
           </div>
         </div>
@@ -79,8 +65,8 @@
 
           <!-- /api/portfolio/skill/{seq_post_portfolio} 에 이미지 url 추가 가능하면 ㄱㄱ  -->
           <div class="skills-prog">
-            <h3><i class="fas fa-code"></i>Programming Skills</h3>
-            <ul>
+            <h3><i class="material-icons">code</i>Programming Skills</h3>
+            <ul >
               <li v-for="(programmingSkill,index) in programmingSkills" v-bind:key="index" >
                 <span>{{programmingSkill.skill}}</span>
                 <div class="skills-bar" :data-percent=programmingSkill.level>
@@ -93,50 +79,25 @@
 
 
           <div class="skills-soft">
-            <h3><i class="fas fa-bezier-curve"></i>Language Skills</h3>
+            <h3><i class="material-icons">language</i>Language Skills</h3>
             <ul>
               <li v-for="(languageSkill,index) in languageSkills" v-bind:key="index" :data-percent=languageSkill.level>
-                <svg viewbox="0 0 100 100">
+                <svg viewbox="0 0 100 100" height="100">
                   <circle cx="50" cy="50" r="45"></circle>
                   <circle class="cbar" cx="50" cy="50" r="45"></circle>
                 </svg><span v-text=languageSkill.language /><small></small>
               </li>
-              <!-- <li data-percent="90">
-                <svg viewbox="0 0 100 100">
-                  <circle cx="50" cy="50" r="45"></circle>
-                  <circle class="cbar" cx="50" cy="50" r="45"></circle>
-                </svg><span>Illustrator</span><small></small>
-              </li>
-              <li data-percent="75">
-                <svg viewbox="0 0 100 100">
-                  <circle cx="50" cy="50" r="45"></circle>
-                  <circle class="cbar" cx="50" cy="50" r="45"></circle>
-                </svg><span>Photoshop</span><small></small>
-              </li>
-              <li data-percent="85">
-                <svg viewbox="0 0 100 100">
-                  <circle cx="50" cy="50" r="45"></circle>
-                  <circle class="cbar" cx="50" cy="50" r="45"></circle>
-                </svg><span>InDesign</span><small></small>
-              </li>
-              <li data-percent="65">
-                <svg viewbox="0 0 100 100">
-                  <circle cx="50" cy="50" r="45"></circle>
-                  <circle class="cbar" cx="50" cy="50" r="45"></circle>
-                </svg><span>Dreamweaver</span><small></small>
-              </li>-->
             </ul>
           </div> 
-          <!-- <div class="interests">
-            <h3><i class="fas fa-star"></i>Interests</h3>
-            <div class="interests-items">
-              <div class="art"><i class="fas fa-palette"></i><span>Art</span></div>
-              <div class="art"><i class="fas fa-book"></i><span>Books</span></div>
-              <div class="movies"><i class="fas fa-film"></i><span>Movies</span></div>
-              <div class="music"><i class="fas fa-headphones"></i><span>Music</span></div>
-              <div class="games"><i class="fas fa-gamepad"></i><span>Games</span></div>
-            </div>
-          </div> -->
+
+          <!-- <div class="certifications"> -->
+          <div class="skills-soft" v-if="certifications">
+            <h3><i class="material-icons" v-text=certificationicon></i>Certification</h3>
+                <span v-for="(certification, index) in certifications" v-bind:key="index" class="tag" style="font-size:20px; margin:10px; line-height:50px; " @click="goToWebsite(certification.certification)">
+                  <span style="width:30%">#{{certification.certification}}</span>
+                  <span style="width:60%">{{certification.date}}</span><br>
+                </span>
+          </div>
         </div>
       </div>
     </div>
@@ -154,91 +115,625 @@
           portfolioInfo:[],
           portfolioMoreInfo:[],
           projects:[],
+          socials:[],
           programmingSkills:[],
           languageSkills:[],
           experiences:[],
           educations:[],
-
-
-
+          certifications:[],
+          certificationicon:[],
+          testCertificationLink:[
+{key:'금형기술사',value:'0012'},
+{key:'유체기계기술사',value:'0030'},
+{key:'기계제작기술사',value:'0041'},
+{key:'차량기술사',value:'0050'},
+{key:'산업기계기술사',value:'0060'},
+{key:'공조냉동기계기술사',value:'0071'},
+{key:'건설기계기술사',value:'0080'},
+{key:'철야금기술사',value:'0090'},
+{key:'비철야금기술사',value:'0100'},
+{key:'금속재료기술사',value:'0110'},
+{key:'표면처리기술사',value:'0120'},
+{key:'금속가공기술사',value:'0130'},
+{key:'고분자제품기술사',value:'0190'},
+{key:'공업화학기술사',value:'0201'},
+{key:'화학장치설비기술사',value:'0210'},
+{key:'화학공장설계기술사',value:'0220'},
+{key:'발송배전기술사',value:'0230'},
+{key:'전기응용기술사',value:'0250'},
+{key:'철도신호기술사',value:'0261'},
+{key:'공업계측제어기술사',value:'0270'},
+{key:'전자계산기기술사',value:'0280'},
+{key:'전자응용기술사',value:'0301'},
+{key:'선박설계기술사',value:'0320'},
+{key:'선박건조기술사',value:'0330'},
+{key:'선박기계기술사',value:'0351'},
+{key:'항공기체기술사',value:'0360'},
+{key:'항공기관기술사',value:'0370'},
+{key:'토질및기초기술사',value:'0390'},
+{key:'토목구조기술사',value:'0400'},
+{key:'항만및해안기술사',value:'0410'},
+{key:'도로및공항기술사',value:'0420'},
+{key:'철도기술사',value:'0430'},
+{key:'철도차량기술사',value:'0431'},
+{key:'전기철도기술사',value:'0432'},
+{key:'수자원개발기술사',value:'0451'},
+{key:'상하수도기술사',value:'0460'},
+{key:'농어업토목기술사',value:'0470'},
+{key:'토목시공기술사',value:'0480'},
+{key:'토목품질시험기술사',value:'0481'},
+{key:'건축구조기술사',value:'0490'},
+{key:'건축기계설비기술사',value:'0501'},
+{key:'건축전기설비기술사',value:'0502'},
+{key:'건축시공기술사',value:'0510'},
+{key:'건축품질시험기술사',value:'0511'},
+{key:'방사기술사',value:'0520'},
+{key:'방적기술사',value:'0530'},
+{key:'제포기술사',value:'0540'},
+{key:'염색가공기술사',value:'0550'},
+{key:'생사기술사',value:'0560'},
+{key:'의류기술사',value:'0561'},
+{key:'지하자원개발기술사',value:'0570'},
+{key:'탐사기술사',value:'0580'},
+{key:'지하자원처리기술사',value:'0590'},
+{key:'화약류관리기술사',value:'0591'},
+{key:'정보관리기술사',value:'0601'},
+{key:'전자계산조직응용기술사',value:'0620'},
+{key:'정보통신기술사',value:'0621'},
+{key:'도시계획기술사',value:'0650'},
+{key:'조경기술사',value:'0670'},
+{key:'측량및지형공간정보기술사',value:'0680'},
+{key:'지적기술사',value:'0690'},
+{key:'해양기술사',value:'0700'},
+{key:'수산양식기술사',value:'0701'},
+{key:'어로기술사',value:'0702'},
+{key:'기계안전기술사',value:'0710'},
+{key:'화공안전기술사',value:'0720'},
+{key:'전기안전기술사',value:'0730'},
+{key:'건설안전기술사',value:'0740'},
+{key:'소방설비기술사',value:'0750'},
+{key:'산업위생관리기술사',value:'0751'},
+{key:'가스기술사',value:'0752'},
+{key:'공장관리기술사',value:'0760'},
+{key:'품질관리기술사',value:'0770'},
+{key:'포장기술사',value:'0780'},
+{key:'세라믹기술사',value:'0790'},
+{key:'식품기술사',value:'0800'},
+{key:'산림기술사',value:'0801'},
+{key:'비파괴검사기술사',value:'0802'},
+{key:'수산제조기술사',value:'0810'},
+{key:'응용지질기술사',value:'0820'},
+{key:'지구물리기술사',value:'0830'},
+{key:'종자기술사',value:'0840'},
+{key:'시설원예기술사',value:'0841'},
+{key:'축산기술사',value:'0851'},
+{key:'임산가공기술사',value:'0860'},
+{key:'기계공정설계기술사',value:'0870'},
+{key:'원자력발전기술사',value:'0880'},
+{key:'핵연료기술사',value:'0900'},
+{key:'방사선관리기술사',value:'0910'},
+{key:'대기관리기술사',value:'0920'},
+{key:'수질관리기술사',value:'0930'},
+{key:'소음진동기술사',value:'0940'},
+{key:'농화학기술사',value:'0950'},
+{key:'교통기술사',value:'0951'},
+{key:'제품디자인기술사',value:'0960'},
+{key:'폐기물처리기술사',value:'0970'},
+{key:'일반기계기사',value:'1021'},
+{key:'용접기사',value:'1022'},
+{key:'농업기계기사',value:'1023'},
+{key:'사출금형설계기사',value:'1024'},
+{key:'프레스금형설계기사',value:'1025'},
+{key:'철도차량기사',value:'1030'},
+{key:'건설기계기사',value:'1040'},
+{key:'건설기계정비기사',value:'1050'},
+{key:'메카트로닉스기사',value:'1060'},
+{key:'자동차정비기사',value:'1070'},
+{key:'기계공정설계기사',value:'1080'},
+{key:'치공구설계기사',value:'1090'},
+{key:'정밀측정기사',value:'1093'},
+{key:'금속기사(재료분야)',value:'1101'},
+{key:'금속기사(제련분야)',value:'1102'},
+{key:'금속기사(가공분야)',value:'1103'},
+{key:'화공기사',value:'1110'},
+{key:'공업화학기사',value:'1120'},
+{key:'화약류제조기사',value:'1130'},
+{key:'화약류관리기사',value:'1140'},
+{key:'전기기사',value:'1150'},
+{key:'전기공사기사',value:'1160'},
+{key:'전자기사',value:'1170'},
+{key:'전파통신기사',value:'1190'},
+{key:'전파전자기사',value:'1191'},
+{key:'정보통신기사',value:'1192'},
+{key:'무선설비기사',value:'1200'},
+{key:'조선기사',value:'1220'},
+{key:'항공기사',value:'1240'},
+{key:'토목기사',value:'1250'},
+{key:'실내건축기사',value:'1282'},
+{key:'방직기사',value:'1291'},
+{key:'염색가공기사',value:'1292'},
+{key:'방사기사',value:'1293'},
+{key:'의류기사',value:'1301'},
+{key:'정보처리기사',value:'1320'},
+{key:'전자계산기기사',value:'1321'},
+{key:'전자계산기조직응용기사',value:'1322'},
+{key:'원자력기사',value:'1330'},
+{key:'열관리기사',value:'1340'},
+{key:'도시계획기사',value:'1350'},
+{key:'조경기사',value:'1370'},
+{key:'측량및지형공간정보기사',value:'1380'},
+{key:'지적기사',value:'1390'},
+{key:'인쇄기사',value:'1391'},
+{key:'해양환경기사',value:'1401'},
+{key:'해양자원개발기사',value:'1402'},
+{key:'해양공학기사',value:'1403'},
+{key:'해양생산관리기사',value:'1404'},
+{key:'산업안전기사',value:'1431'},
+{key:'건설안전기사',value:'1440'},
+{key:'광산보안기사',value:'1450'},
+{key:'지하수기사',value:'1460'},
+{key:'자동차검사기사',value:'1470'},
+{key:'가스기사',value:'1471'},
+{key:'산업위생관리기사',value:'1472'},
+{key:'공정관리기사',value:'1490'},
+{key:'품질관리기사',value:'1500'},
+{key:'포장기사',value:'1511'},
+{key:'제품디자인기사',value:'1512'},
+{key:'광학기사',value:'1513'},
+{key:'세라믹기사',value:'1520'},
+{key:'식품기사',value:'1530'},
+{key:'수산제조기사',value:'1540'},
+{key:'응용지질기사',value:'1550'},
+{key:'승강기기사',value:'1555'},
+{key:'종자기사',value:'1560'},
+{key:'식물보호기사　　　',value:'1562'},
+{key:'산림공학기사　　　',value:'1564'},
+{key:'산림경영기사',value:'1565'},
+{key:'임업종묘기사',value:'1570'},
+{key:'축산기사',value:'1581'},
+{key:'임산가공기사',value:'1590'},
+{key:'기상기사',value:'1600'},
+{key:'방사선비파괴검사기사',value:'1611'},
+{key:'초음파비파괴검사기사',value:'1612'},
+{key:'자기비파괴검사기사',value:'1613'},
+{key:'침투비파괴검사기사',value:'1614'},
+{key:'와전류비파괴검사기사',value:'1615'},
+{key:'누설비파괴검사기사',value:'1617'},
+{key:'수산양식기사',value:'1625'},
+{key:'어병기사',value:'1626'},
+{key:'건축기사',value:'1630'},
+{key:'어로기사',value:'1631'},
+{key:'건축설비기사',value:'1632'},
+{key:'공업계측제어기사',value:'1640'},
+{key:'농화학기사',value:'1650'},
+{key:'대기환경기사',value:'1661'},
+{key:'수질환경기사',value:'1662'},
+{key:'소음진동기사',value:'1663'},
+{key:'공조냉동기계기사',value:'1730'},
+{key:'철도신호기사',value:'1740'},
+{key:'전기철도기사',value:'1741'},
+{key:'건설재료시험기사',value:'1750'},
+{key:'교통기사',value:'1751'},
+{key:'철도보선기사',value:'1760'},
+{key:'시설원예기사',value:'1780'},
+{key:'시각디자인기사',value:'1790'},
+{key:'생물공학기사',value:'1800'},
+{key:'제판기사',value:'1810'},
+{key:'소방설비기사(기계분야)',value:'1900'},
+{key:'소방설비기사(전기분야)',value:'1910'},
+{key:'폐기물처리기사',value:'1950'},
+{key:'기계조립산업기사',value:'2011'},
+{key:'판금산업기사',value:'2012'},
+{key:'제관산업기사',value:'2013'},
+{key:'생산기계산업기사',value:'2025'},
+{key:'용접산업기사',value:'2026'},
+{key:'농업기계산업기사',value:'2027'},
+{key:'사출금형산업기사',value:'2028'},
+{key:'프레스금형산업기사',value:'2029'},
+{key:'철도차량산업기사',value:'2030'},
+{key:'기계설계산업기사',value:'2031'},
+{key:'전산응용가공산업기사',value:'2032'},
+{key:'윤활관리산업기사',value:'2033'},
+{key:'생산자동화산업기사',value:'2034'},
+{key:'기계정비산업기사',value:'2035'},
+{key:'건설기계산업기사',value:'2040'},
+{key:'배관설비산업기사',value:'2041'},
+{key:'철도동력차기관정비산업기사',value:'2042'},
+{key:'철도동력차전기정비산업기사',value:'2043'},
+{key:'객화차정비산업기사',value:'2044'},
+{key:'열차조작산업기사',value:'2045'},
+{key:'보일러산업기사',value:'2046'},
+{key:'영사산업기사',value:'2047'},
+{key:'건설기계정비산업기사',value:'2050'},
+{key:'메카트로닉스산업기사',value:'2060'},
+{key:'자동차정비산업기사',value:'2070'},
+{key:'치공구설계산업기사',value:'2090'},
+{key:'금속재료산업기사',value:'2101'},
+{key:'금속제련산업기사',value:'2102'},
+{key:'정밀측정산업기사',value:'2104'},
+{key:'주조산업기사',value:'2105'},
+{key:'표면처리산업기사',value:'2106'},
+{key:'공업화학산업기사',value:'2112'},
+{key:'고분자제품제조산업기사',value:'2113'},
+{key:'화약류제조산업기사',value:'2120'},
+{key:'위험물관리산업기사',value:'2121'},
+{key:'화약류관리산업기사',value:'2130'},
+{key:'광산보안산업기사',value:'2135'},
+{key:'지하수산업기사',value:'2136'},
+{key:'전기산업기사',value:'2140'},
+{key:'전기공사산업기사',value:'2150'},
+{key:'전기기기산업기사',value:'2151'},
+{key:'철도신호산업기사',value:'2160'},
+{key:'전자산업기사',value:'2170'},
+{key:'전파통신산업기사',value:'2190'},
+{key:'전파전자산업기사',value:'2191'},
+{key:'정보통신산업기사',value:'2192'},
+{key:'사무자동화산업기사',value:'2193'},
+{key:'방송통신산업기사',value:'2194'},
+{key:'무선설비산업기사',value:'2200'},
+{key:'통신선로산업기사',value:'2210'},
+{key:'조선산업기사',value:'2220'},
+{key:'항공산업기사',value:'2230'},
+{key:'토목산업기사',value:'2240'},
+{key:'건축일반시공산업기사',value:'2251'},
+{key:'조적산업기사',value:'2252'},
+{key:'건축목공산업기사',value:'2253'},
+{key:'목재창호산업기사',value:'2254'},
+{key:'방직산업기사',value:'2261'},
+{key:'섬유가공산업기사',value:'2262'},
+{key:'방사산업기사',value:'2263'},
+{key:'섬유디자인산업기사',value:'2264'},
+{key:'섬유기계산업기사',value:'2265'},
+{key:'편물산업기사',value:'2266'},
+{key:'양복산업기사',value:'2267'},
+{key:'한복산업기사',value:'2268'},
+{key:'굴착산업기사',value:'2279'},
+{key:'실내건축산업기사',value:'2282'},
+{key:'정보처리산업기사',value:'2290'},
+{key:'정보기술산업기사',value:'2291'},
+{key:'패션디자인산업기사',value:'2301'},
+{key:'조경산업기사',value:'2320'},
+{key:'전자계산기산업기사',value:'2321'},
+{key:'전자계산기조직응용산업기사',value:'2322'},
+{key:'지적기능산업기사',value:'2323'},
+{key:'측량및지형공간정보산업기사',value:'2330'},
+{key:'지적산업기사',value:'2340'},
+{key:'해양조사산업기사',value:'2350'},
+{key:'산업안전산업기사',value:'2381'},
+{key:'건설안전산업기사',value:'2390'},
+{key:'인쇄산업기사',value:'2391'},
+{key:'승강기산업기사',value:'2395'},
+{key:'자동차검사산업기사',value:'2410'},
+{key:'공정관리산업기사',value:'2420'},
+{key:'포장산업기사',value:'2431'},
+{key:'제품디자인산업기사',value:'2432'},
+{key:'시각디자인산업기사',value:'2434'},
+{key:'세라믹산업기사',value:'2440'},
+{key:'식품산업기사',value:'2450'},
+{key:'수산제조산업기사',value:'2460'},
+{key:'종자산업기사',value:'2470'},
+{key:'가스산업기사',value:'2471'},
+{key:'산업위생관리산업기사',value:'2472'},
+{key:'시설원예산업기사',value:'2473'},
+{key:'임업종묘산업기사',value:'2480'},
+{key:'산림산업기사',value:'2481'},
+{key:'축산산업기사',value:'2491'},
+{key:'임산가공산업기사',value:'2500'},
+{key:'수산양식산업기사',value:'2520'},
+{key:'잠수산업기사',value:'2521'},
+{key:'건축산업기사',value:'2530'},
+{key:'건축설비산업기사',value:'2531'},
+{key:'공업계측제어산업기사',value:'2540'},
+{key:'품질관리산업기사',value:'2550'},
+{key:'피아노조율산업기사',value:'2551'},
+{key:'식물보호산업기사　　　',value:'2562'},
+{key:'산림공학산업기사',value:'2564'},
+{key:'산림경영산업기사',value:'2565'},
+{key:'대기환경산업기사',value:'2571'},
+{key:'수질환경산업기사',value:'2572'},
+{key:'소음진동산업기사',value:'2573'},
+{key:'공조냉동기계산업기사',value:'2590'},
+{key:'건설재료시험산업기사',value:'2600'},
+{key:'철도보선산업기사',value:'2610'},
+{key:'방사선비파괴검사산업기사',value:'2611'},
+{key:'초음파비파괴검사산업기사',value:'2612'},
+{key:'자기비파괴검사산업기사',value:'2613'},
+{key:'침투비파괴검사산업기사',value:'2614'},
+{key:'와전류비파괴검사산업기사',value:'2615'},
+{key:'누설비파괴검사산업기사',value:'2616'},
+{key:'어로산업기사',value:'2631'},
+{key:'계량전기산업기사',value:'2703'},
+{key:'계량기계산업기사',value:'2713'},
+{key:'계량물리산업기사',value:'2720'},
+{key:'교통산업기사',value:'2751'},
+{key:'귀금속가공산업기사',value:'2760'},
+{key:'목공예산업기사',value:'2770'},
+{key:'도자기공예산업기사',value:'2771'},
+{key:'자수산업기사',value:'2772'},
+{key:'소방설비산업기사(기계분야)',value:'2900'},
+{key:'소방설비산업기사(전기분야)',value:'2910'},
+{key:'폐기물처리산업기사',value:'2950'},
+{key:'열관리산업기사',value:'2960'},
+{key:'조리산업기사',value:'2970'},
+{key:'직업상담사1급',value:'9510'},
+{key:'직업상담사2급',value:'9511'},
+{key:'사회조사분석사1급',value:'9520'},
+{key:'사회조사분석사2급',value:'9521'},
+{key:'기계가공기능장',value:'3021'},
+{key:'금형제작기능장',value:'3061'},
+{key:'배관기능장',value:'3081'},
+{key:'판금제관기능장',value:'3095'},
+{key:'용접기능장',value:'3100'},
+{key:'자동차정비기능장',value:'3110'},
+{key:'건설기계정비기능장',value:'3120'},
+{key:'기계정비기능장',value:'3121'},
+{key:'항공정비기능장',value:'3122'},
+{key:'철도차량정비기능장',value:'3150'},
+{key:'보일러기능장',value:'3170'},
+{key:'섬유기계기능장',value:'3185'},
+{key:'주조기능장',value:'3200'},
+{key:'표면처리기능장',value:'3210'},
+{key:'금속재료기능장',value:'3221'},
+{key:'제선기능장',value:'3230'},
+{key:'제강기능장',value:'3240'},
+{key:'압연기능장',value:'3270'},
+{key:'위험물관리기능장',value:'3360'},
+{key:'가스기능장',value:'3375'},
+{key:'전기기기기능장',value:'3380'},
+{key:'전기공사기능장',value:'3390'},
+{key:'전자기기기능장',value:'3410'},
+{key:'건축목재시공기능장',value:'3611'},
+{key:'건축일반시공기능장',value:'3621'},
+{key:'염색기능장',value:'3671'},
+{key:'귀금속가공기능장',value:'3770'},
+{key:'산림기능장',value:'3861'},
+{key:'통신설비기능장',value:'3920'},
+{key:'조리기능장',value:'3922'},
+{key:'제과기능장',value:'3923'},
+{key:'미용장',value:'3924'},
+{key:'이용장',value:'3925'},
+{key:'선반기능사',value:'6010'},
+{key:'수치제어선반기능사',value:'6011'},
+{key:'밀링기능사',value:'6030'},
+{key:'수치제어밀링기능사',value:'6031'},
+{key:'연삭기능사',value:'6040'},
+{key:'기계조립기능사',value:'6042'},
+{key:'프레스금형기능사',value:'6100'},
+{key:'사출금형기능사',value:'6110'},
+{key:'정밀측정기능사',value:'6120'},
+{key:'기계제도기능사',value:'6150'},
+{key:'전산응용기계제도기능사',value:'6151'},
+{key:'일반판금기능사',value:'6160'},
+{key:'타출판금기능사',value:'6170'},
+{key:'제관기능사',value:'6190'},
+{key:'철골구조물기능사',value:'6200'},
+{key:'건축배관기능사',value:'6213'},
+{key:'공업배관기능사',value:'6214'},
+{key:'전기용접기능사',value:'6220'},
+{key:'특수용접기능사',value:'6222'},
+{key:'가스용접기능사',value:'6230'},
+{key:'시계수리기능사',value:'6240'},
+{key:'자동차정비기능사',value:'6281'},
+{key:'자동차차체수리기능사',value:'6285'},
+{key:'항공기체정비기능사',value:'6291'},
+{key:'항공기관정비기능사',value:'6292'},
+{key:'항공장비정비기능사',value:'6293'},
+{key:'항공전자정비기능사',value:'6294'},
+{key:'건설기계기관정비기능사',value:'6296'},
+{key:'건설기계차체정비기능사',value:'6297'},
+{key:'농기계정비기능사',value:'6300'},
+{key:'농기계운전기능사',value:'6301'},
+{key:'공조냉동기계기능사',value:'6320'},
+{key:'가스기능사',value:'6335'},
+{key:'철도동력차기관정비기능사',value:'6340'},
+{key:'철도동력차전기정비기능사',value:'6350'},
+{key:'열차조작기능사',value:'6360'},
+{key:'객화차정비기능사',value:'6370'},
+{key:'축로기능사',value:'6381'},
+{key:'인발기능사',value:'6382'},
+{key:'보일러취급기능사',value:'6391'},
+{key:'열처리기능사',value:'6420'},
+{key:'주조기능사',value:'6461'},
+{key:'전기도금기능사',value:'6480'},
+{key:'특수도금기능사',value:'6481'},
+{key:'금속재료시험기능사',value:'6490'},
+{key:'제선기능사',value:'6500'},
+{key:'제강기능사(전로작업)',value:'6511'},
+{key:'제강기능사(전기로작업)',value:'6513'},
+{key:'제강기능사(연속주조작업)',value:'6514'},
+{key:'원형기능사',value:'6530'},
+{key:'열간압연기능사',value:'6541'},
+{key:'냉간압연기능사',value:'6542'},
+{key:'단조기능사',value:'6550'},
+{key:'화학분석기능사',value:'6560'},
+{key:'고분자제품제조기능사',value:'6642'},
+{key:'플라스틱성형가공기능사',value:'6651'},
+{key:'플라스틱성형가공기능사',value:'6652'},
+{key:'세라믹기능사',value:'6655'},
+{key:'위험물관리기능사(1류)',value:'6691'},
+{key:'위험물관리기능사(2류)',value:'6692'},
+{key:'위험물관리기능사(3류)',value:'6693'},
+{key:'위험물관리기능사(4류)',value:'6694'},
+{key:'위험물관리기능사(5류)',value:'6695'},
+{key:'위험물관리기능사(6류)',value:'6696'},
+{key:'전기공사기능사',value:'6760'},
+{key:'철도신호기능사',value:'6770'},
+{key:'전기철도기능사',value:'6771'},
+{key:'전자기기기능사',value:'6790'},
+{key:'석공예기능사',value:'6792'},
+{key:'전자계산기기능사',value:'6801'},
+{key:'무선설비기능사',value:'6880'},
+{key:'전파통신기능사',value:'6890'},
+{key:'전파전자기능사',value:'6891'},
+{key:'정보기기운용기능사',value:'6892'},
+{key:'전산응용조선제도기능사',value:'6910'},
+{key:'선체건조기능사',value:'6920'},
+{key:'정보처리기능사',value:'6921'},
+{key:'선체의장기능사',value:'6950'},
+{key:'선박기관정비기능사',value:'6960'},
+{key:'토목제도기능사',value:'6970'},
+{key:'측량기능사',value:'6980'},
+{key:'석공기능사',value:'6990'},
+{key:'보선기능사',value:'7010'},
+{key:'콘크리트기능사',value:'7020'},
+{key:'방수기능사',value:'7030'},
+{key:'포장기능사',value:'7040'},
+{key:'건축제도기능사',value:'7060'},
+{key:'전산응용건축제도기능사',value:'7061'},
+{key:'조적기능사',value:'7070'},
+{key:'철근기능사',value:'7080'},
+{key:'목재창호기능사',value:'7101'},
+{key:'금속재창호기능사',value:'7102'},
+{key:'미장기능사',value:'7110'},
+{key:'비계기능사',value:'7120'},
+{key:'기계정비기능사',value:'7121'},
+{key:'건축목공기능사',value:'7130'},
+{key:'건설재료시험기능사',value:'7132'},
+{key:'가구제작기능사',value:'7140'},
+{key:'건축도장기능사',value:'7150'},
+{key:'유리시공기능사',value:'7151'},
+{key:'실내건축기능사',value:'7152'},
+{key:'온수온돌기능사',value:'7161'},
+{key:'거푸집기능사',value:'7170'},
+{key:'도배기능사',value:'7180'},
+{key:'타일기능사',value:'7210'},
+{key:'방적기능사',value:'7241'},
+{key:'직기조정기능사',value:'7282'},
+{key:'염색기능사(침염)',value:'7301'},
+{key:'염색기능사(날염)',value:'7302'},
+{key:'직물가공기능사',value:'7310'},
+{key:'섬유제도디자인기능사',value:'7311'},
+{key:'시추기능사',value:'7330'},
+{key:'광산차량기계운전기능사',value:'7371'},
+{key:'광산환경기능사',value:'7372'},
+{key:'광산보안기능사(기계분야)',value:'7383'},
+{key:'광산보안기능사(전기분야)',value:'7384'},
+{key:'광산보안기능사(화약분야)',value:'7385'},
+{key:'광산보안기능사(채광분야)',value:'7388'},
+{key:'패세공기능사',value:'7431'},
+{key:'칠기기능사',value:'7432'},
+{key:'금속공예기능사',value:'7440'},
+{key:'금속도장기능사',value:'7450'},
+{key:'귀금속가공기능사',value:'7460'},
+{key:'방사선비파괴검사기능사',value:'7471'},
+{key:'초음파비파괴검사기능사',value:'7472'},
+{key:'자기비파괴검사기능사',value:'7473'},
+{key:'침투비파괴검사기능사',value:'7474'},
+{key:'와전류비파괴검사기능사',value:'7475'},
+{key:'누설비파괴검사기능사',value:'7477'},
+{key:'목공예기능사',value:'7480'},
+{key:'축산기능사',value:'7481'},
+{key:'식육처리기능사',value:'7482'},
+{key:'평판인쇄기능사',value:'7524'},
+{key:'전자조판기능사',value:'7532'},
+{key:'사진제판기능사　　　　　　',value:'7534'},
+{key:'스크린인쇄기능사',value:'7536'},
+{key:'농산식품가공기능사',value:'7591'},
+{key:'축산식품가공기능사',value:'7592'},
+{key:'수산식품가공기능사',value:'7593'},
+{key:'어로기능사',value:'7611'},
+{key:'잠수기능사',value:'7612'},
+{key:'종자기능사',value:'7620'},
+{key:'임업종묘기능사',value:'7630'},
+{key:'버섯종균기능사',value:'7631'},
+{key:'산림기능사',value:'7632'},
+{key:'식물보호기능사',value:'7633'},
+{key:'목재가공기능사',value:'7641'},
+{key:'펄프제지기능사',value:'7642'},
+{key:'목질재료기능사',value:'7643'},
+{key:'지적기능사',value:'7650'},
+{key:'도화기능사',value:'7660'},
+{key:'항공사진기능사',value:'7670'},
+{key:'광학기능사',value:'7671'},
+{key:'지도제작기능사',value:'7680'},
+{key:'수산양식기능사',value:'7700'},
+{key:'통신선로기능사',value:'7720'},
+{key:'한복기능사',value:'7723'},
+{key:'방송통신기능사',value:'7730'},
+{key:'통신기기기능사',value:'7745'},
+{key:'보일러시공기능사',value:'7760'},
+{key:'전기기기기능사',value:'7780'},
+{key:'공업계측제어기능사',value:'7790'},
+{key:'축소사진기능사',value:'7792'},
+{key:'사진기능사',value:'7795'},
+{key:'컴퓨터그래픽스운용기능사',value:'7796'},
+{key:'편물기능사(수편물)',value:'7801'},
+{key:'편물기능사(기계편물)',value:'7802'},
+{key:'자수기능사(수자수)',value:'7811'},
+{key:'자수기능사(기계자수)',value:'7812'},
+{key:'계량기계기능사',value:'7831'},
+{key:'계량물리기능사',value:'7832'},
+{key:'계량전기기능사',value:'7833'},
+{key:'자동차검사기능사',value:'7860'},
+{key:'기중기운전기능사',value:'7861'},
+{key:'굴삭기운전기능사',value:'7862'},
+{key:'불도우저운전기능사',value:'7863'},
+{key:'천정기중기운전기능사',value:'7864'},
+{key:'로우더운전기능사',value:'7866'},
+{key:'아스팔트믹싱플랜트운전기능사',value:'7867'},
+{key:'준설선운전기능사',value:'7868'},
+{key:'로울러운전기능사',value:'7871'},
+{key:'모우터그레이더운전기능사',value:'7872'},
+{key:'아스팔트피니셔운전기능사',value:'7873'},
+{key:'지게차운전기능사',value:'7875'},
+{key:'공기압축기운전기능사',value:'7876'},
+{key:'가구도장기능사',value:'7887'},
+{key:'광고도장기능사',value:'7888'},
+{key:'보석가공기능사',value:'7889'},
+{key:'도자기공예기능사',value:'7890'},
+{key:'인장공예기능사',value:'7891'},
+{key:'제과기능사',value:'7892'},
+{key:'제빵기능사',value:'7893'},
+{key:'양복기능사',value:'7894'},
+{key:'양장기능사',value:'7895'},
+{key:'채소재배기능사',value:'7897'},
+{key:'과수재배기능사',value:'7898'},
+{key:'화훼재배기능사',value:'7899'},
+{key:'조경기능사',value:'7900'},
+{key:'시설원예기능사',value:'7901'},
+{key:'조화공예기능사',value:'7903'},
+{key:'신발류제조기능사',value:'7904'},
+{key:'미용사',value:'7907'},
+{key:'이용사',value:'7908'},
+{key:'한식조리기능사',value:'7910'},
+{key:'양식조리기능사',value:'7911'},
+{key:'일식조리기능사',value:'7912'},
+{key:'중식조리기능사',value:'7913'},
+{key:'복어조리기능사',value:'7914'},
+{key:'조주기능사',value:'7916'},
+{key:'피아노조율기능사',value:'7917'},
+{key:'환경기능사',value:'7918'},
+{key:'영사기능사',value:'7920'},
+{key:'양화장치운전기능사',value:'7930'},
+{key:'승강기기능사',value:'7940'},
+{key:'표구기능사',value:'7950'},
+{key:'세탁기능사',value:'7960'},
+{key:'화약취급기능사',value:'7970'},
+{key:'보석감정사',value:'7980'}],
+          
+          
           introstr:'',
           telstr:'',
           addstr:'',
           gitstr:'',
-
-          // 임시변수
-          tempsocials:[{
-                        link: 'https://www.facebook.com/ ',
-                        icon: 'ti-facebook '
-                      },{
-                        link: 'https://www.instagram.com/',
-                        icon: 'ti-instagram '
-                      },{
-                        link: 'https://www.pinterest.com/',
-                        icon: 'ti-pinterest-alt '
-                      },{
-                        link: 'https://www.linkedin.com/in/',
-                        icon: 'ti-linkedin '
-                      },{
-                        link: 'https://www.pinterest.com/',
-                        icon: 'ti-pinterest-alt '
-                      },{
-                        link: 'https://www.linkedin.com/in/',
-                        icon: 'ti-linkedin '
-                      }
-                      ],
-          // tempexperiences:[{
-          //                 position: '웹디자인',
-          //                 company: '삼성전자',
-          //                 start:  '2020-04',
-          //                 end:  '현재', // 이거 표현 어케해야될지 모르겠음 2999-99로 되어있으면 현재?
-          //               },{
-          //                 position: '개발자',
-          //                 company: '구글',
-          //                 start:  '2018-04',
-          //                 end:  '2020-03', 
-          //               }
-          //               ],
-          // tempeducations:[{
-          //                 major: '컴퓨터소프트웨어학과',
-          //                 name: '광운대학교',
-          //                 start:  '2018-02',
-          //                 end:  '2013-03',
-          //               },{
-          //                 major: '고등학교',
-          //                 name: '분당고등학교',
-          //                 start:  '2013-02',
-          //                 end:  '2010-03',
-          //                 },{
-          //                 major: '중학교',
-          //                 name: '내정중학교',
-          //                 start:  '2010-02',
-          //                 end:  '2008-07',
-          //               }
-                        // ,{
-                        //   major: '중학교',
-                        //   name: 'AOBA JAPAN INTERNATIONAL SCHOOL',
-                        //   start:  '2008-06',
-                        //   end:  '2005-05',
-                        //   }
-                        // ]
+          certistr:'',
         }
     },
     created(){ 
       this.getPortfolioInfo(this.$route.params.seq);
       this.getPortfolioMoreInfo(this.$route.params.seq);
+      this.getSocials(this.$route.params.seq);
       this.getExperiences(this.$route.params.seq);
       this.getEducations(this.$route.params.seq);
       this.getProgrammingSkills(this.$route.params.seq);
       this.getLanguageSkills(this.$route.params.seq);
+      this.getCertifications(this.$route.params.seq);
       this.getProjectsInfo(this.$route.params.seq);
     },
     updated(){
       // 주소 입력, portfolioInfo.address
       // var link = $('#getaddress').append("<a href='http://maps.google.com/maps?q="+this.portfolioMoreInfo.address+"' target='_blank'>"+ this.portfolioMoreInfo.address+"</a>")
       $(".skills-prog li").find(".skills-bar").each(function(i) {
-        // alert(i);
-        // alert("들어옴");
         $(this)
           .find(".bar")
           .delay(i * 150)
@@ -259,6 +754,7 @@
         circle = $(this).children(".cbar");
         r = circle.attr("r");
         c = Math.PI * (r * 2);
+        console.log(c);
         percent = $(this)
           .parent()
           .data("percent")*20;
@@ -304,11 +800,6 @@
             // 입력받은 데이터 가공
             this.telstr="tel:"+data.tel;
             this.gitstr="https://"+data.github_url;
-            
-
-            //임시
-            // this.addstr="http://maps.google.com/maps?q="+this.tempaddress; 
-            
          })
       },
       getPortfolioMoreInfo(seq){
@@ -316,6 +807,12 @@
         .then(({data}) => {
             this.portfolioMoreInfo=data;
             this.addstr="http://maps.google.com/maps?q="+data.address;
+         })
+      },
+      getSocials(seq){
+         http.get('portfolio/info/social/'+seq)
+        .then(({data}) => {
+            this.socials=data;
          })
       },
       getExperiences(seq){
@@ -342,11 +839,31 @@
             this.languageSkills=data;
          })
       },
+      getCertifications(seq){
+        http.get('portfolio/certification/'+seq)
+        .then(({data}) => {
+            this.certifications=data;
+            if(data.length>9)
+              this.certificationicon = 'filter_9_plus';
+            else
+              this.certificationicon = 'filter_'+data.length;            
+         })
+      },
       getProjectsInfo(seq){
         http.get('portfoliopjt/'+seq)
         .then(({data}) => {
             this.projects=data
          })
+      },
+      goToWebsite(certi){
+        console.log(certi);
+        for(var i=0; i<this.testCertificationLink.length; i++)
+        {
+          if(this.testCertificationLink[i].key==certi){
+            child = window.open("http://www.q-net.or.kr/crf005.do?id=crf00505&gSite=Q&gId=&jmCd="+this.testCertificationLink[i].value+"&examInstiCd=1","child");
+          }
+        }
+
       },
    },
   }
@@ -356,7 +873,6 @@
 </script>
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css?family=Montserrat");
-
 // $darkest-blue: #1a237e;
 // $darker-blue: #283593;
 // $dark-blue: #303f9f;
@@ -386,9 +902,10 @@ $yellow: #bea231;
 // $yellow: #9EBBCD;
 
 // @charset "UTF-8";
-// * {
-//   outline: none;
-// }
+
+* {
+  outline: none;
+}
 
 *,
 *:before,
@@ -787,12 +1304,12 @@ h3 {
 .resume .func .skills-soft ul li span {
   top: 40%;
 }
-.resume .func .interests {
+.resume .func .certifications {
   background: $darker-blue;
   margin: 15px 0 0;
   padding: 15px;
 }
-.resume .func .interests-items {
+.resume .func .certifications-items {
   box-sizing: border-box;
   padding: 0 0 15px;
   width: 100%;
@@ -800,7 +1317,7 @@ h3 {
   display: flex;
   justify-content: space-between;
 }
-.resume .func .interests-items div {
+.resume .func .certifications-items div {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -809,14 +1326,14 @@ h3 {
   height: 100px;
   border-radius: 50%;
 }
-.resume .func .interests-items div:hover i {
+.resume .func .certifications-items div:hover i {
   transform: scale(1.2);
 }
-.resume .func .interests-items div:hover span {
+.resume .func .certifications-items div:hover span {
   color: $yellow;
   transition-duration: 0.3s;
 }
-.resume .func .interests-items div i {
+.resume .func .certifications-items div i {
   font-size: 45px;
   width: 60px;
   height: 60px;
@@ -824,27 +1341,10 @@ h3 {
   color: $orange;
   transition-duration: 0.3s;
 }
-.resume .func .interests-items div span {
+.resume .func .certifications-items div span {
   display: block;
 }
-
-</style>>
-.content{
-  padding-top:65px;
-  width:80%;
-  min-height:1000px;
-  background-color: beige;
-}
-.content-left{
-  float: left;
-  background-color: rgb(179, 179, 158);
-  width: 60%;
-  min-height:1000px;
-}
-.content-right{
-  float: right;
-  background-color: rgb(245, 245, 186);
-  width: 40%;
-  min-height:1000px;
+.tag:hover{
+  background-color: $yellow;
 }
 </style>
