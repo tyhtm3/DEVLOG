@@ -28,19 +28,17 @@
               <div class="row"> 
                 <div class="col-xs-12 col-sm-3 emphasis">
                   <h2 style="margin:0px">{{blogOwnerNumOfProject}}</h2>
-                  <p> <small>Project</small> </p>
+                  <p> <small>프로젝트</small> </p>
                 </div>
                 <div class="col-xs-12 col-sm-3 emphasis">
                   <h2 style="margin:0px" >{{blogOwnerNumOfPost}}</h2>
-                  <p> <small>Post</small> </p>
+                  <p> <small>포스트</small> </p>
                 </div>
-                <!-- <el-tooltip class="item" effect="dark" content="이웃관리" placement="right" popper-class="draw_share_atooltip"> -->
-                  <div class="col-sm-3 emphasis" id="follower" style="cursor:pointer;" @click="follower" @mouseenter="changeFollowText" @mouseleave="undoFollowText">
-                    <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
-                    <p><small id="followertext" v-text="followtext"></small></p>
-                    <!-- 이웃관리라는 문구가 뭔가 안이쁨...-->
-                  </div>
-                <!-- </el-tooltip> -->
+                <div class="col-sm-3 emphasis" id="follower" style="cursor:pointer;" @click="follower" @mouseenter="changeFollowText" @mouseleave="undoFollowText">
+                  <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
+                  <p><small id="followertext" v-text="followtext"></small></p>
+                  <!-- 이웃관리라는 문구가 뭔가 안이쁨...-->
+                </div>
                
               </div>
             </div>
@@ -74,7 +72,7 @@
               </router-link>
               <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>&nbsp;
             </span>
-            <span v-else @click="subscribe">이웃 <i class="ti-link"></i></span>&nbsp;
+            <span v-else @click="subscribe">구독<i class="ti-link"></i></span>&nbsp;
           </div>
         </div>
         <!-- end profile -->
@@ -85,7 +83,7 @@
           <div class="col-sm-12">
             <div class="col-sm-10" style="margin: 0 auto; float: none;">
             <blog-content v-bind:searchTags="searchTags" v-if="!followerpage"></blog-content>
-            <follower v-else></follower>
+            <follower v-else ></follower>
             </div>
           </div>
         </div>
@@ -154,8 +152,7 @@ export default {
   created() {
     this.blogOwnerId= this.$route.params.id;
     this.getBlogOwnerInfo();
-    this.getFromDetailSearchTag();
-    this.followtext = 'Follow';
+    this.followtext = '구독자';
   },
   mounted() {
     /* 블로그 상단 input박스 길이 조절 */
@@ -196,10 +193,10 @@ export default {
         }
     },
     changeFollowText(){
-      this.followtext = '이웃관리';
+      this.followtext = '구독관리';
     },
     undoFollowText(){
-      this.followtext = 'Follow';
+      this.followtext = '구독자';
     },
      // 태그 누를때마다 검색
     tagSearch(tag){
@@ -318,7 +315,7 @@ export default {
             .then(({ data }) => {
               this.$message({
                 type: 'success',
-                message: '이웃 목록에 추가 되었습니다.',
+                message: this.blogOwnerInfo.nickname+'님의 블로그를 구독합니다.',
               });
             })
           }
@@ -331,7 +328,7 @@ export default {
             .then(({ data }) => {
               this.$message({
                 type: 'error',
-                message: '이웃 목록에서 삭제 되었습니다.',
+                message: '구독을 취소합니다.',
               });
             })
             .catch(({ error }) => {
