@@ -35,6 +35,7 @@
           <p class="pull-right">* 사용 스택</p>
         </div>
         <div class="col-sm-9">
+      
         <section class="selectProject" style="padding:15px;">
           <el-transfer
             :titles="['ALL STACK', 'YOUR STACK']"
@@ -165,6 +166,29 @@
       
       
       <el-button @click="write" style="float:right">프로젝트 등록</el-button>
+      <el-button-group style="float:right; margin-right:10px;">
+      <el-button @click="save">저장</el-button>
+      <el-button @click="draft"><span style="color:#3c8dbc;">{{drafts.length}}</span></el-button>
+      </el-button-group>
+
+       <!-- 임시보관함 모달창 -->
+      <el-dialog
+                    :visible.sync="selectDialogVisible"
+                    width="40%"
+                    center
+                    >
+                    <h2 style="margin-top:-20px;">임시저장 글</h2>
+                    &nbsp; 총 <span style="color:green;">{{drafts.length}}</span> 개
+                    <div @click="showDraft(index);"  @mouseenter="showDeleteButton(index);" @mouseleave="hideDeleteButton(index);" style="margin-bottom:-20px;" class="draft" v-for="(draft,index) in drafts" :key="index">
+                      <hr>
+                      {{draft.title}}
+                       <span @click="deleteDraft(index);" class="delete-draft-button hideDeleteButton ti-trash pull-bottom pull-right" style="padding-right:20px;"></span>
+                      <br>
+                      <span style="font-size:12px;">{{draft.regtime}}</span>
+                      <br><br>
+                    </div>
+     </el-dialog>
+
     </div>
   </transition>
 </template>
@@ -188,6 +212,7 @@ components: {
       regtime : null,
       img_url : null,
       isImgVisible: false,
+      status : null,
       // 프로젝트 특화 정보
       summary : '',
       start_date : '',
@@ -202,6 +227,14 @@ components: {
       // 역할
       roles : [],
       role: '',
+      
+      start_date_temp: '',
+      finish_date_temp: '',
+      regtime_temp: '',
+
+      // 임시저장
+      drafts: [],
+      selectDialogVisible: false,
     }
   },
 
@@ -217,6 +250,10 @@ components: {
         }
 
      })
+     http
+        .get('./project/draft').then(({data})=>{
+          this.drafts = data;
+     })
  },
   methods : {
     addRole(){
@@ -229,6 +266,164 @@ components: {
     },
     deleteRole(index){
         this.roles.splice(index,1)
+    },
+    // 임시 저장글 클릭시 화면에 나타나게 함
+    showDraft(index){
+      
+      http
+      .get('/project/'+this.drafts[index].seq)
+      .then(({data}) => {
+        console.log(data)
+        if(data.disclosure===1)
+          this.disclosure = '전체공개'
+        else if(data.disclosure===2)
+          this.disclosure = '이웃공개'
+        else
+          this.disclosure = '비공개'
+          
+        this.seq = data.seq
+        this.seq_blog = data.seq_blog
+        this.title = data.title
+        this.content = data.content
+        this.regtime = data.regtime
+        this.regtime_temp = data.regtime
+        this.img_url = data.img_url
+        this.summary = data.summary
+        this.start_date = data.start_date
+        this.start_date_temp = data.start_date
+        this.finish_date = data.finish_date
+        this.finish_date_temp = data.finish_date
+        this.github_url = data.github_url
+        this.etc_url = data.etc_url
+        this.rep_url = data.rep_url
+        this.status = data.status
+        http
+        .get('/posttag/'+this.drafts[index].seq)
+        .then(({data}) => {
+          this.tags = []
+          for(let i=0; i<data.length; i++){
+            this.tags[i] = data[i].tag
+          }
+          this.renew()
+        })
+        http
+        .get('/projectstack/'+this.drafts[index].seq)
+        .then(({data}) => {
+          this.stack = []
+          for(let i=0; i<data.length; i++){
+            this.stack.push(data[i].stack)
+          }
+        })
+        http
+        .get('/projectrole/'+this.drafts[index].seq)
+        .then(({data}) => {
+          for(var i=0;i<data.length;i++){
+              this.roles[i] = data[i].role
+          }
+           this.selectDialogVisible=false;
+        })
+        
+      })
+        
+    },
+    // 임시 저장글 삭제
+    deleteDraft(index){
+       this
+      .$confirm('선택글을 삭제 하시겠습니까?', {
+          confirmButtonText: '삭제',
+          cancelButtonText: '취소',
+          type: 'warning'
+      })
+      .then(() => {
+               http
+               .delete('project/'+this.drafts[index].seq)
+               .then(({data}) => {
+                   this.drafts.splice(index,1)
+                    this.$message({
+                            type: 'success',
+                            message: '선택한 임시 게시물이 삭제 되었습니다.'
+                        });
+               })
+      })
+    },
+    draft(){
+      this.selectDialogVisible=true;
+    },
+    save(){
+     // 필수 입력 확인받기
+        if(this.title==='')
+          this.$message.warning('프로젝트 제목을 입력해 주세요.')
+        else if(this.summary=='')
+          this.$message.warning('프로젝트 개요를 입력해 주세요.')
+        else if(this.start_date==='')
+          this.$message.warning('프로젝트 시작 날짜를 입력해 주세요.')
+        else if(this.stack.length==0)
+          this.$message.warning('사용 스택을 입력해 주세요.')
+        else if(this.roles.length==0)
+          this.$message.warning('프로젝트 역할을 입력해 주세요.')
+        else if(this.github_url==='')
+          this.$message.warning('깃허브 주소를 입력해주세요.')
+         else if(this.img_url==='')
+          this.$message.warning("썸네일을 등록해 주세요")
+        else{
+       
+          if(this.start_date_temp != this.start_date)
+          this.start_date = this.date_to_str(this.start_date)
+          if(this.finish_date_temp != this.finish_date)
+          this.finish_date = this.date_to_str(this.finish_date)
+          if(this.regtime_temp = this.regtime)
+          this.setRegtime()
+          
+          this.setDisclosure()
+          this.setTag()
+          
+          // 프로젝트 등록하기
+          http.post('project', { 
+            seq_blog : this.seq_blog,
+            title:this.title,
+            disclosure:this.disclosure, 
+            img_url : this.img_url, 
+            status : 'draft',
+            regtime:this.regtime,
+            summary : this.summary, 
+            start_date : this.start_date,
+            finish_date : this.finish_date,
+            github_url : this.github_url,
+            etc_url : this.etc_url,
+            rep_url : this.rep_url,
+            content : this.content,
+          })
+          .then(({data}) => {
+          // data = project의 seq
+
+          // 프로젝트 태그 등록하기
+          http
+          .post('./posttag', {
+            seq_post: data,
+            tag: this.tags
+          })
+          // 프로젝트 스택 등록하기
+          
+          for(var i=0; i<this.stack.length; i++){
+            http.post('./projectstack', {
+              seq_post_project: data,
+              stack: this.stack[i]
+            })
+          }
+          // 프로젝트 역할 등록하기
+          http
+          .post('./projectrole', {
+            seq_post_project: data,
+            role: this.roles
+          })
+
+          this.$message({
+            type: 'success',
+            message: '프로젝트 임시 저장 완료.'
+          });
+          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)  
+        })     
+      }
     },
      write(){
       // 필수 입력 확인받기
@@ -249,16 +444,75 @@ components: {
         else{
        
           this.setDisclosure()
-          this.setRegtime()
           this.setTag()
-      
+
+          // 임시저장글을 등록할경우
+          if(this.status=='draft'){  
+          if(this.start_date_temp != this.start_date)
+          this.start_date = this.date_to_str(this.start_date)
+          if(this.finish_date_temp != this.finish_date)
+          this.finish_date = this.date_to_str(this.finish_date)
+          if(this.regtime_temp = this.regtime)
+          this.setRegtime()
+          http
+        .put('project', {
+          content: this.content,
+          disclosure: this.disclosure,
+          etc_url: this.etc_url,
+          github_url: this.github_url,
+          img_url: this.img_url,
+          regtime: this.regtime,
+          seq: this.seq,
+          start_date: this.start_date,
+          summary: this.summary,
+          title: this.title,
+          finish_date: this.finish_date,
+          rep_url: this.rep_url,
+          status : 'published',
+        })
+        .then(({data}) => {
+          // 프로젝트 태그 등록하기
+          http
+          .post('./posttag', {
+            seq_post: this.seq,
+            tag: this.tags
+          })
+
+          http.delete('./projectstack/'+this.seq)
+          .then(()=>{
+              for(var i=0; i<this.stack.length; i++){
+              http.post('./projectstack', {
+                seq_post_project: this.seq,
+                stack: this.stack[i]
+              })
+            }
+          })
+
+          // 프로젝트 역할 등록하기
+          http
+          .post('./projectrole', {
+            seq_post_project: this.seq,
+            role: this.roles
+            })
+          })
+         
+          this.$message({
+            type: 'success',
+            message: '프로젝트 등록 완료.'
+          });
+          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)   
+          }
+          else{
           // 프로젝트 등록하기
+          
+          this.setRegtime()
           http.post('project', { 
             seq_blog : this.seq_blog,
             title:this.title,
             disclosure:this.disclosure, 
             img_url : this.img_url, 
             regtime:this.regtime,
+            status : 'published',
             summary : this.summary, 
             start_date : this.date_to_str(this.start_date),
             finish_date : this.date_to_str(this.finish_date),
@@ -297,6 +551,7 @@ components: {
           });
           this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)  
         })     
+      }
       }
     },
       // 공개 여부 셋팅
@@ -367,12 +622,6 @@ components: {
       if(month<10) month = '0' + month;
       var date = format.getDate();
       if(date<10) date = '0' + date;
-      var hour = format.getHours();
-      if(hour<10) hour = '0' + hour;
-      var min = format.getMinutes();
-      if(min<10) min = '0' + min;
-      var sec = format.getSeconds();
-      if(sec<10) sec = '0' + sec;
       return year + "-" + month + "-" + date + " ";}
       else{
         return null
@@ -400,6 +649,12 @@ components: {
     },
     filterMethod(query, item) {
       return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
+    },
+     showDeleteButton(index){
+      $(".hideDeleteButton").eq(index).show();
+    },
+    hideDeleteButton(index){
+      $(".hideDeleteButton").eq(index).hide();
     },
   }
 }
@@ -431,4 +686,24 @@ components: {
   opacity:0.8;
   outline: none;
 }
+.hideDeleteButton{
+  display:none;
+}
+  /* 임시저장 글 삭제 */
+  .delete-draft-button{
+    /* style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;" */
+    font-size:20px;
+    color:#333333;
+    padding:0px;
+    margin-left:-35px;
+  }
+  .delete-draft-button:hover{
+    color:black;
+    font-weight: bold;
+    font-size:20px;
+  }
+
+  .draft:hover{
+    background-color:#f5f5f5;
+  }
 </style>

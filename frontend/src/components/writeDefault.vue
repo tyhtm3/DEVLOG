@@ -72,7 +72,33 @@
           </el-date-picker>
         </div>
       </div><hr>
+      
       <el-button @click="write" style="float:right">포스트 작성</el-button>
+      
+      <el-button-group style="float:right; margin-right:10px;">
+      <el-button @click="save">저장</el-button>
+      <el-button @click="draft"><span style="color:#3c8dbc;">{{drafts.length}}</span></el-button>
+      </el-button-group>
+
+
+      <!-- 임시보관함 모달창 -->
+      <el-dialog
+                    :visible.sync="selectDialogVisible"
+                    width="40%"
+                    center
+                    >
+                    <h2 style="margin-top:-20px;">임시저장 글</h2>
+                    &nbsp; 총 <span style="color:green;">{{drafts.length}}</span> 개
+                    <div @click="showDraft(index);" style="margin-bottom:-20px;" class="draft" v-for="(draft,index) in drafts" :key="index"  @mouseenter="showDeleteButton(index)" @mouseleave="hideDeleteButton(index)">
+                      <hr>
+                      {{draft.title}}
+                       <span @click="deleteDraft(index);" class="delete-draft-button hideDeleteButton ti-trash pull-bottom pull-right" style="padding-right:20px;"></span>
+                      <br>
+                      <span style="font-size:12px;">{{draft.regtime}}</span>
+                      <br><br>
+                    </div>
+     </el-dialog>
+
     </div>
   </transition>
 </template>
@@ -102,10 +128,65 @@ export default {
       disabled: false,
       tag: '',
       tags: [],
+      // 임시저장
+      drafts: [],
+      selectDialogVisible: false,
     }
   },
+  created() {
+     http
+        .get('./post/draft').then(({data})=>{
+          this.drafts = data;
+        })
+  },
   methods:{
-    write(){
+    // 임시 저장글 클릭시 화면에 나타나게 함
+    showDraft(index){
+      http.get('post/'+this.drafts[index].seq)
+      .then(({data}) => {
+          this.postInfo=data
+          if(this.postInfo.disclosure==1)
+            this.postInfo.disclosure='전체공개'
+          else if(this.postInfo.disclosure=2)
+            this.postInfo.disclosure='이웃공개'
+          else
+            this.postInfo.disclosure='비공개'
+      })
+       // 태그 불러오기
+        http.get('posttag/'+this.drafts[index].seq)
+              .then(({data}) => {
+              for(var i=0; i<data.length; i++){
+              this.tags[i] = data[i].tag
+              }
+              this.renew()
+              this.selectDialogVisible=false;
+        })
+        
+    },
+    // 임시 저장글 삭제
+    deleteDraft(index){
+       this
+      .$confirm('선택글을 삭제 하시겠습니까?', {
+          confirmButtonText: '삭제',
+          cancelButtonText: '취소',
+          type: 'warning'
+      })
+      .then(() => {
+               http
+               .delete('post/'+this.drafts[index].seq)
+               .then(({data}) => {
+                   this.drafts.splice(index,1)
+                    this.$message({
+                            type: 'success',
+                            message: '선택한 임시 게시물이 삭제 되었습니다.'
+                        });
+               })
+      })
+    },
+    draft(){
+      this.selectDialogVisible=true;
+    },
+    save(){
       if(this.postInfo.title === ''){
         this.$message.warning('포스트 제목을 입력해 주세요.')
       }
@@ -125,7 +206,84 @@ export default {
           title: this.postInfo.title,
           content: this.postInfo.content,
           disclosure: this.postInfo.disclosure,
-          img_url: this.postInfo.img_url
+          img_url: this.postInfo.img_url,
+          status: 'draft'
+        })
+        .then(({data}) => {
+          console.log(data)
+          if(this.tags.length==0)
+            this.postInfo.tags = null
+          else
+            this.postInfo.tags = this.tags
+          http
+          .post('./posttag', {
+            seq_post: data,
+            tag: this.postInfo.tags
+          })
+          .then(({data})=>{
+            this.$message({
+              type: 'success',
+              message: '임시저장 완료.'
+            });
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
+          })
+        })
+      }
+    },
+    write(){
+      if(this.postInfo.title === ''){
+        this.$message.warning('포스트 제목을 입력해 주세요.')
+      }
+      else if(this.postInfo.content === ''){
+        this.$message.warning('포스트 내용을 입력해 주세요.')
+      }
+      else{
+        if(this.postInfo.disclosure === "전체공개")
+          this.postInfo.disclosure = 1
+        else if(this.postInfo.disclosure === "이웃공개")
+          this.postInfo.disclosure = 2
+        else
+          this.postInfo.disclosure = 3
+        // 임시저장글을 등록할경우
+        if(this.postInfo.status=='draft'){
+        http
+        .put('/post', {
+          seq: this.postInfo.seq,
+          title: this.postInfo.title,
+          content: this.postInfo.content,
+          disclosure: this.postInfo.disclosure,
+          img_url: this.postInfo.img_url,
+          status: 'published'
+        })
+        .then(({data}) => {
+          if(this.tags.length==0)
+            this.postInfo.tags = null
+          else
+            this.postInfo.tags = this.tags
+          http
+          .post('/posttag', {
+            seq_post: this.postInfo.seq,
+            tag: this.postInfo.tags
+          })
+          .then(({data})=>{
+            this.$message({
+              type: 'success',
+              message: '포스팅 완료'
+            });
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
+          })
+        })
+        }
+        // 새 글을 등록할 경우
+        else{
+        http
+        .post('./post', {      
+          seq_blog: this.$store.getters.getUserInfo.seq,
+          title: this.postInfo.title,
+          content: this.postInfo.content,
+          disclosure: this.postInfo.disclosure,
+          img_url: this.postInfo.img_url,
+          status: 'published'
         })
         .then(({data}) => {
           console.log(data)
@@ -146,7 +304,7 @@ export default {
             this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
           })
         })
-      }
+      }}
     },
     handleAvatarSuccess(res, file) {
 
@@ -192,7 +350,13 @@ export default {
       for(var i=0; i<this.tags.length; i++){
         this.htmlTag = this.htmlTag+'<span class="tag">#'+this.tags[i]+'</span>'
       }
-    }
+    },
+    showDeleteButton(index){
+      $(".hideDeleteButton").eq(index).show();
+    },
+    hideDeleteButton(index){
+      $(".hideDeleteButton").eq(index).hide();
+    },
   }
 }
 </script> 
@@ -218,4 +382,25 @@ export default {
   opacity:0.8;
   outline: none;
 }
+.hideDeleteButton{
+  display:none;
+}
+  /* 임시저장 글 삭제 */
+  .delete-draft-button{
+    /* style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;" */
+    font-size:20px;
+    color:#333333;
+    padding:0px;
+    margin-left:-35px;
+  }
+  .delete-draft-button:hover{
+    color:black;
+    font-weight: bold;
+    font-size:20px;
+  }
+
+  .draft:hover{
+    background-color:#f5f5f5;
+  }
+
 </style>

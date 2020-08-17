@@ -138,7 +138,8 @@ export default {
           title: this.postInfo.title,
           content: this.postInfo.content,
           disclosure: this.postInfo.disclosure,
-          img_url: this.postInfo.img_url
+          img_url: this.postInfo.img_url,
+          status: 'published'
         })
         .then(({data}) => {
           if(this.tags.length==0)

@@ -30,6 +30,7 @@
 			)
 		</if>
 		and <![CDATA[regtime <= now()]]>
+		and status = 'published'
 		ORDER BY regtime desc
 		LIMIT 6 OFFSET 0
 	</select>
@@ -39,7 +40,7 @@
 	<select id="selectProjectCntByBlog" resultType="java.lang.Integer">
 		select count(*)
 		from post inner join post_project on post.seq=post_project.seq
-		where seq_blog = #{seq_blog}
+		where seq_blog = #{seq_blog} and status = 'published'
 		<if test="seq_user != 0">
 		    and (disclosure=1 
 			or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user} ))
@@ -56,7 +57,7 @@
 	<select id="selectProjectByBlog" resultType="Project">
 		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count,post.img_url
 		from post inner join post_project on post.seq=post_project.seq
-		where seq_blog = #{seq_blog}
+		where seq_blog = #{seq_blog} and status = 'published'
 		<if test="seq_user != 0">
 		    and (disclosure=1 
 			or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user} ))
@@ -81,17 +82,27 @@
 	
 	<!-- 프로젝트 상세조회  -->
 	<select id="selectProject" resultType="Project">
-		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count,post.img_url
+		select post_project.*,post.status,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count,post.img_url
 		from post inner join post_project on post.seq=post_project.seq
 		where post.seq = #{seq}
 	</select>
 	
+	
+	<!-- 임시보관 프로젝트 조회  -->
+	<select id="selectDraftProject" resultType="Project">
+	select post_project.*,post.status,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count,post.img_url
+	from post inner join post_project on post.seq=post_project.seq
+	where post.status = 'draft' 
+	order by regtime desc
+	</select>
+	
+	
 	<!-- 프로젝트 기본 정보 등록 -->
 	<insert id="insertPost" useGeneratedKeys="true" keyProperty="seq">
 		insert into post(
-			seq_blog,title,disclosure,img_url,like_count<if test="regtime != null">, regtime</if>
+			seq_blog,title,disclosure,img_url,like_count,status<if test="regtime != null">, regtime</if>
 		) values (
-			#{seq_blog}, #{title}, #{disclosure} , #{img_url}, 0 <if test="regtime != null">, regtime</if>
+			#{seq_blog}, #{title}, #{disclosure} , #{img_url}, 0,#{status} <if test="regtime != null">, regtime</if>
 		)
 	</insert>
 	
@@ -109,7 +120,8 @@
 		update post 
 		   set title = #{title}, 
 		   	   disclosure = #{disclosure},
-		   	   img_url = #{img_url}
+		   	   img_url = #{img_url},
+		   	   status = #{status}
 		   	    <if test="regtime != null">
 		   	    ,regtime = #{regtime}
 		   	    </if>

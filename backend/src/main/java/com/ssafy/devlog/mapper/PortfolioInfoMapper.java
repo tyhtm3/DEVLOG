@@ -13,7 +13,7 @@ import com.ssafy.devlog.dto.PortfolioSocial;
 @Mapper
 public interface PortfolioInfoMapper {
 
-	//introduction, address
+	//introduction, address, objective
 	public PortfolioInfo selectAllPortfolioInfo(int seq_post_portfolio);
 	public int insertPortfolioInfo(PortfolioInfo portfolioInfo);
 	public int deletePortfolioInfo(int seq_post_portfolio);
