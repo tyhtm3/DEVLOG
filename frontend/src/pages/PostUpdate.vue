@@ -19,7 +19,7 @@
                   <p class="pull-right">내용</p>
                 </div>
                 <div class="col-sm-9">
-                  <vue-editor id="project-editor" v-model="postInfo.content" style="padding:10px;"></vue-editor>
+                  <vue-editor id="post-editor" v-model="postInfo.content" style="padding:10px;"></vue-editor>
                 </div>
               </div><hr>
 
@@ -239,9 +239,6 @@ export default {
 <style scoped>
 .pjt-title{
   padding-top: 20px;
-}
-#editor .ql-editor{
-  min-height: 400px !important;
 }
 .inputtag{
   opacity:0.5;
