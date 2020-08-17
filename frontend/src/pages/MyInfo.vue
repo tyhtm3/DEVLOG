@@ -1,61 +1,57 @@
 <template>
 	<transition name="el-zoom-in-top">
-    <!-- <div class="content-wrapper"  > -->
-      <!-- style="background-color:#9ebbcd34" -->
-      <!-- start Main content -->
-      <section class="content" >
-        <div class="box">
-          <div class="box-body" style="align:center; min-height:400px; max-width:800px; margin:auto;">
-						<div class="col-sm-12">
-							<br>
-							<br>
-							<br>
-							<div class="col-xs-12 col-sm-12 profile-name">
-								<h2>정보 수정</h2>
-								<hr>
-								<dl class="dl-horizontal-profile">
-									<dt>*아이디</dt>
-                  <dd>
-                    <el-input v-model="id" style="width: 40%;" disabled></el-input>
-                    <el-upload
-                    class="avatar-uploader2"
-                    action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="profile_img_url" :src="profile_img_url" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                  </dd>
-                  <dt>*비밀번호</dt>
-                  <dd><el-input v-model="password" type="password" style="width: 40%;"></el-input></dd>
-									<dt>*비밀번호 확인</dt>
-                  <dd><el-input v-model="confirm" type="password" style="width: 40%;"></el-input></dd>
-									<dt>*이름</dt>
-                  <dd><el-input v-model="name" style="width: 70%;"></el-input></dd>
-									<dt>닉네임</dt>
-                  <dd><el-input v-model="nickname" style="width: 70%;"></el-input></dd>
-                  <dt>*이메일</dt>
-									<dd><el-input v-model="email" style="width: 70%;"></el-input></dd>
-									<dt>연락처</dt>
-                  <dd><el-input v-model="tel" style="width: 70%;"></el-input></dd>
-                  <dt>생년월일</dt>
-                  <dd><el-date-picker v-model="birthday" type="date"></el-date-picker></dd>
-                  <dt>url</dt>
-									<dd>
-                    <el-input v-model="github_url" style="width: 70%;">
-                      <template slot="prepend">https://</template>
-                    </el-input>
-                  </dd>
-								</dl>
-            	</div>
-              <el-button :plain="true" @click="modify">수정</el-button>
-              <el-button :plain="true" @click="signout">탈퇴</el-button>
-						</div>
+    <section class="content">
+      <div class="box">
+        <div class="box-body" style="align:center; min-height:400px; max-width:800px; margin:auto;">
+          <div class="col-sm-12">
+            <br>
+            <br>
+            <br>
+            <div class="col-xs-12 col-sm-12 profile-name">
+              <h2>정보 수정</h2>
+              <hr>
+              <dl class="dl-horizontal-profile">
+                <dt>*아이디</dt>
+                <dd>
+                  <el-input v-model="id" style="width: 40%;" disabled></el-input>
+                  <el-upload
+                  class="avatar-uploader2"
+                  action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess"
+                  :before-upload="beforeAvatarUpload">
+                  <img v-if="profile_img_url" :src="profile_img_url" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                </dd>
+                <dt>*비밀번호</dt>
+                <dd><el-input v-model="password" type="password" style="width: 40%;"></el-input></dd>
+                <dt>*비밀번호 확인</dt>
+                <dd><el-input v-model="confirm" type="password" style="width: 40%;"></el-input></dd>
+                <dt>*이름</dt>
+                <dd><el-input v-model="name" style="width: 70%;"></el-input></dd>
+                <dt>닉네임</dt>
+                <dd><el-input v-model="nickname" style="width: 70%;"></el-input></dd>
+                <dt>*이메일</dt>
+                <dd><el-input v-model="email" style="width: 70%;"></el-input></dd>
+                <dt>연락처</dt>
+                <dd><el-input v-model="tel" style="width: 70%;"></el-input></dd>
+                <dt>생년월일</dt>
+                <dd><el-date-picker v-model="birthday" type="date"></el-date-picker></dd>
+                <dt>url</dt>
+                <dd>
+                  <el-input v-model="github_url" style="width: 70%;">
+                    <template slot="prepend">https://</template>
+                  </el-input>
+                </dd>
+              </dl>
+            </div>
+            <el-button :plain="true" @click="modify">수정</el-button>
+            <el-button :plain="true" @click="signout">탈퇴</el-button>
           </div>
         </div>
-      </section>
-    <!-- </div> -->
+      </div>
+    </section>
 	</transition>
 </template>
 
@@ -212,38 +208,3 @@ export default {
   },
 }
 </script>
-<style scoped>
-.content{
-  padding-top:110px;
-}
-
-</style>
-<style scoped>
-.avatar-uploader2 .el-upload {
-    top: 90px;
-    left: 500px;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: absolute;
-    overflow: hidden;
-  }
-  .avatar-uploader2 .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 168px;
-    height: 168px;
-    line-height: 34px;
-    text-align: center;
-  }
-  .avatar {
-    width: 168px;
-    height: 168px;
-  }
-  .avatar-uploader-icon {
-    transform: translate(0%, 40%);
-  }
-</style>

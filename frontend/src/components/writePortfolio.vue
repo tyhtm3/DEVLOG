@@ -20,8 +20,8 @@
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    <img v-if="imageUrl" :src="imageUrl" class="avatar2">
+                    <i v-else class="el-icon-plus avatar-uploader-icon2"></i>
                     </el-upload>
                     </el-tooltip>
                   </dd>
@@ -447,7 +447,7 @@ export default {
   .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
   }
-  .avatar-uploader-icon {
+  .avatar-uploader-icon2 {
     font-size: 28px;
     color: #8c939d;
     width: 100px;
@@ -455,7 +455,7 @@ export default {
     line-height: 200px;
     text-align: center;
   }
-  .avatar {
+  .avatar2 {
     width: 150px;
     height: 200px;
   }
@@ -465,19 +465,7 @@ export default {
   .el-transfer{
     width: auto;
     float: left;
-  }
-  /* .nextToTransfer{
-  } */
-  /* .el-checkbox__label:hover{
-    color: red;
-  }
-  */
-  /* .el-transfer-panel__header{
-    padding-left: 10px !important;
-  }
-  .el-transfer-panel__item{
-    padding-left: 10px !important;
-  } */
+  } 
   .el-transfer__buttons{  
     padding: 0px 5px !important;
     /* background-color: green; */
