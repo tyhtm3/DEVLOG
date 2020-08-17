@@ -30,6 +30,7 @@
 			)
 		</if>
 		and <![CDATA[regtime <= now()]]>
+		and status = 'published'
 		ORDER BY regtime desc
 		LIMIT #{limit} OFFSET #{offset} 
 	</select>
@@ -39,7 +40,7 @@
 	<select id="selectPostCntByBlog" resultType="java.lang.Integer">
 		select count(*)
 		from post inner join post_basic on post.seq = post_basic.seq
-		where seq_blog = #{seq_blog}
+		where seq_blog = #{seq_blog} and status = 'published'
 		<if test="seq_user != 0">
 		    and (disclosure=1 
 			or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user} ))
@@ -56,7 +57,7 @@
 	<select id="selectPostByBlog" resultType="Post">
 		select post.*, post_basic.content
 		from post inner join post_basic on post.seq = post_basic.seq
-		where seq_blog = #{seq_blog}
+		where seq_blog = #{seq_blog} and status = 'published'
 		<if test="seq_user != 0">
 		    and (disclosure=1 
 			or (disclosure=2 and seq_blog in (select seq_user from user_neighbor where seq_neighbor= #{seq_user} ))
@@ -74,7 +75,8 @@
         	</foreach>
 			)
 		</if>
-		and (<![CDATA[regtime <= now()]]> or seq_blog = #{seq_user})
+		and (<![CDATA[regtime <= now()]]> 
+		or seq_blog = #{seq_user})
 		ORDER BY regtime desc
 		LIMIT #{limit} OFFSET #{offset} 
 	</select>
@@ -90,7 +92,8 @@
 	<!-- 임시보관 포스트 조회  -->
 	<select id="selectDraftPost" resultType="Post">
 	select post.*, post_basic.content from post inner join post_basic on post.seq = post_basic.seq
-	where post.status = 'draft'
+	where post.status = 'draft' 
+	order by regtime desc
 	</select>
 	
 	<!-- 포스트 기본 정보 등록 -->
@@ -116,7 +119,8 @@
 		update post 
 		   set title = #{title}, 
 		   	   disclosure = #{disclosure},
-		   	   img_url = #{img_url}
+		   	   img_url = #{img_url},
+		   	   status = #{status}
 		   	   <if test="regtime != null">,regtime = #{regtime}</if>
 		 where seq = #{seq}
 	</update>
