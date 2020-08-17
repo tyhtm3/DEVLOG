@@ -1,5 +1,6 @@
 <template>
   <transition name="el-zoom-in-top">
+    <section id="timelineTemplate" v-loading="loading" >
     <div class="content-wrapper" style="background: white;">
       <br><br><br>
       <div class="resume">
@@ -12,7 +13,7 @@
             <div class="info">
               <h1 class="name" v-text="portfolioInfo.name"></h1>
               <!-- 지원 직무 : portfolioInfo.position"-->
-              <h2 class="job"> Frontend Web Designer</h2>
+              <h2 class="job" v-text="portfolioMoreInfo.objective"></h2>
               <!-- <h2 class="job" v-text="portfolioInfo.position"></h2> -->
             </div>
           </div>
@@ -30,10 +31,12 @@
             <div class="address"><a :href=addstr target="_blank"><i class="ti-map-alt"></i><span>{{portfolioMoreInfo.address}}</span></a></div>
             <div class="email"><a :href=portfolioInfo.email><i class="ti-email"></i><span>{{portfolioInfo.email}}</span></a></div>
             <div class="website"><a :href=gitstr target="_blank"> <i class="ti-github"></i><span>{{portfolioInfo.github_url}}</span></a></div>
+            <!-- <div class="website" @click="goBlog(portfolioOwnerInfo.id)"><a href="#"> <i class="ti-home"></i><span>{{devlogurl}}</span></a></div> -->
           </div>
           <div class="follow">
             <h3>Follow Me</h3>
             <div class="box" style="background-color:transparent; ">
+              <a :href=devlogstr><img src="../assets/logo_icon.png"></a>
               <a v-for="(social,index) in socials" v-bind:key="index" :href=social.link target="_blank"><i :class=social.icon></i></a>
             </div>
           </div>
@@ -73,6 +76,7 @@
                   <!-- hover하면 바 옆에 % 나오게 하면 더 좋을듯 -->
                   <div class="bar"/>
                 </div>
+                <small></small>
               </li>
             </ul>
           </div>
@@ -93,14 +97,47 @@
           <!-- <div class="certifications"> -->
           <div class="skills-soft" v-if="certifications">
             <h3><i class="material-icons" v-text=certificationicon></i>Certification</h3>
-                <span v-for="(certification, index) in certifications" v-bind:key="index" class="tag" style="font-size:20px; margin:10px; line-height:50px; " @click="goToWebsite(certification.certification)">
+                <tr v-for="(certification, index) in certifications" v-bind:key="index">
+                  <td style="width:30%"><span class="tag" style="font-size:20px; margin:10px; line-height:40px;" @click="goToWebsite(certification.certification)">#{{certification.certification}}</span></td>
+                  <td style="width:60%; text-align:right">{{certification.date}}</td>
+                  <!-- <td style="width:40%">{{certification.level}}</td> -->
+                  <!-- 자격증에 레벨 있는것도 있지않나? -->
+                </tr>
+                <!-- <span v-for="(certification, index) in certifications" v-bind:key="index" class="tag" style="font-size:20px; margin:10px; line-height:50px; " @click="goToWebsite(certification.certification)">
                   <span style="width:30%">#{{certification.certification}}</span>
                   <span style="width:60%">{{certification.date}}</span><br>
-                </span>
+                </span> -->
           </div>
+          
+          <!-- 프로젝트 경험 -->
+          <div class="project">
+            <h3><i class="fa fa-briefcase"></i>Projects</h3>
+            <ul>
+              <li v-for="(project,index) in projects" v-bind:key="index" @click="goDetailProject(project.seq)">
+                <a href="#"><span v-text=project.title /></a>
+                <!-- <i class="material-icons" style="transform:rotate(135deg); font-size:18px">link</i> -->
+                <small v-text=project.summary />
+                <small><span v-text=project.start_date /> ~ <span v-if="project.finish_date" v-text=project.finish_date /><span v-else>진행중</span></small>
+                <a :href=project.github_url><small v-text=project.github_url>  </small></a>
+                <small v-text=project.etc_url />
+                <small v-text=project.rep_url />
+                <small v-for="(role,i) in project.roles" v-bind:key="i" v-text=role.role>
+                  <!-- 역할
+                  <ul>
+                    <li v-for="(role,i) in project.roles" v-bind:key="i" v-text=role.role></li>
+                  </ul> -->
+                </small>
+                <small v-for="(stack,i) in project.stacks" v-bind:key="i" v-text=stack.stack />
+                
+              </li>
+            </ul>
+          </div>
+         
+
         </div>
       </div>
     </div>
+  </section>
   </transition>
 </template>
 <script>  
@@ -112,6 +149,8 @@
     },
     data: function () {
         return { 
+          loading: true,
+          portfolioOwnerInfo:'',
           portfolioInfo:[],
           portfolioMoreInfo:[],
           projects:[],
@@ -122,6 +161,7 @@
           educations:[],
           certifications:[],
           certificationicon:[],
+
           testCertificationLink:[
 {key:'금형기술사',value:'0012'},
 {key:'유체기계기술사',value:'0030'},
@@ -710,16 +750,20 @@
 {key:'세탁기능사',value:'7960'},
 {key:'화약취급기능사',value:'7970'},
 {key:'보석감정사',value:'7980'}],
-          
-          
           introstr:'',
           telstr:'',
           addstr:'',
           gitstr:'',
+          devlogstr:'',
+          devlogurl:'',
           certistr:'',
         }
     },
     created(){ 
+      $('#element').on('scroll touchmove mousewheel', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      });
       this.getPortfolioInfo(this.$route.params.seq);
       this.getPortfolioMoreInfo(this.$route.params.seq);
       this.getSocials(this.$route.params.seq);
@@ -730,23 +774,32 @@
       this.getCertifications(this.$route.params.seq);
       this.getProjectsInfo(this.$route.params.seq);
     },
+    mounted(){
+      setTimeout(this.stopLoading, 1);
+    },
     updated(){
       // 주소 입력, portfolioInfo.address
       // var link = $('#getaddress').append("<a href='http://maps.google.com/maps?q="+this.portfolioMoreInfo.address+"' target='_blank'>"+ this.portfolioMoreInfo.address+"</a>")
       $(".skills-prog li").find(".skills-bar").each(function(i) {
+        var percent;
+        percent = $(this)
+          .data("data-percent")*20;
+
         $(this)
           .find(".bar")
           .delay(i * 150)
-          .animate({width:$(this).attr("data-percent")*20 + "%"},
-            1000,
+          .animate({width:$(this).attr("data-percent")*20 + "%"}, 
+            2000,
             "linear",
             function() {
               return $(this).css({
-                "transition-duration": ".5s"
+                "transition-duration": "10000s"
               });
             }
           );
+          // 퍼센트 숫자로 띄워보기
       });
+
       $(".skills-soft li")
       .find("svg")
       .each(function(i) {
@@ -793,6 +846,9 @@
       });
     },
     methods: {
+      stopLoading(){
+        this.loading = false;
+      },
       getPortfolioInfo(seq){
         http.get('portfolio/'+seq)
         .then(({data}) => {
@@ -800,6 +856,16 @@
             // 입력받은 데이터 가공
             this.telstr="tel:"+data.tel;
             this.gitstr="https://"+data.github_url;
+            this.getPortfolioOwnerInfo(data.seq_blog);
+         })
+      },
+      getPortfolioOwnerInfo(seq){
+        http.get('user/'+seq)
+        .then(({data}) => {
+            this.portfolioOwnerInfo=data;
+            // 입력받은 데이터 가공
+            this.devlogstr="/blog/"+data.id;
+            this.devlogurl="http://i3a402.p.ssafy.io/blog/"+data.id;
          })
       },
       getPortfolioMoreInfo(seq){
@@ -863,14 +929,17 @@
             child = window.open("http://www.q-net.or.kr/crf005.do?id=crf00505&gSite=Q&gId=&jmCd="+this.testCertificationLink[i].value+"&examInstiCd=1","child");
           }
         }
-
+      },
+      goDetailProject(seq){
+            this.$router.push(`/blog/project/${seq}`)
+      },
+      goBlog(id){
+            this.$router.push(`/blog/${id}`)
       },
    },
   }
-
-  
-
 </script>
+
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css?family=Montserrat");
 // $darkest-blue: #1a237e;
@@ -1079,10 +1148,27 @@ h3 {
   border-radius: 5px;
   transform: rotate(45deg) scale(0.8);
 }
+.resume .base .follow .box a:hover img {
+  background: $yellow;
+  border-radius: 5px;
+  transform: rotate(45deg) scale(0.8);
+}
 .resume .base .follow .box a:hover i::before {
   transform: rotate(-45deg) scale(1.5);
 }
 .resume .base .follow .box i {
+  display: inline-block;
+  font-size: 30px;
+  background: $orange;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  line-height: 60px;
+  color: $darker-blue;
+  margin: 0 10px 10px 10px;
+  transition-duration: 0.3s;
+}
+.resume .base .follow .box img {
   display: inline-block;
   font-size: 30px;
   background: $orange;
@@ -1131,29 +1217,60 @@ h3 {
   transition-duration: 0.3s;
 }
 .resume .func .work,
-.resume .func .edu {
+.resume .func .edu,
+.resume .func .project  {
   float: left;
 }
 .resume .func .work small,
-.resume .func .edu small {
+.resume .func .edu small,
+.resume .func .project small {
   display: block;
   opacity: 0.7;
 }
 .resume .func .work ul li,
-.resume .func .edu ul li {
+.resume .func .edu ul li,
+.resume .func .project ul li  {
   position: relative;
   margin-left: 15px;
   padding-left: 25px;
   padding-bottom: 15px;
 }
+.resume .func .work ul li:first-child span,
+.resume .func .edu ul li:first-child span{
+  font-weight: bold;
+}
+.resume .func .work ul li:first-child small span,
+.resume .func .edu ul li:first-child small span{
+  font-weight: 300;
+}
+
+.resume .func .project ul li span{
+  font-weight: bold;
+  font-size: 20px;
+}
+.resume .func .project ul li small span{
+  font-weight: 300;
+  font-size: small;
+}
+
 .resume .func .work ul li:hover::before,
-.resume .func .edu ul li:hover::before {
+.resume .func .edu ul li:hover::before,
+.resume .func .project ul li:hover::before {
   animation: circle 1.2s infinite;
 }
 .resume .func .work ul li:hover span,
-.resume .func .edu ul li:hover span {
+.resume .func .edu ul li:hover span,
+.resume .func .project ul li:hover span {
   color: $yellow;
+  font-weight: bold;
 }
+.resume .func .work ul li:hover small span ,
+.resume .func .edu ul li:hover small span,
+.resume .func .project ul li:hover small span {
+  color: $white;
+  font-weight: 300;
+}
+
 @keyframes circle {
   from {
     box-shadow: 0 0 0 0px $yellow;
@@ -1163,39 +1280,50 @@ h3 {
   }
 }
 .resume .func .work ul li:first-of-type::before,
-.resume .func .edu ul li:first-of-type::before {
+.resume .func .edu ul li:first-of-type::before,
+.resume .func .project ul li:first-of-type::before {
   width: 10px;
   height: 10px;
   left: 1px;
 }
 .resume .func .work ul li:last-of-type,
-.resume .func .edu ul li:last-of-type {
+.resume .func .edu ul li:last-of-type,
+.resume .func .project ul li:last-of-type {
   padding-bottom: 3px;
 }
 .resume .func .work ul li:last-of-type::after,
-.resume .func .edu ul li:last-of-type::after {
+.resume .func .edu ul li:last-of-type::after,
+.resume .func .project ul li:last-of-type::after {
   border-radius: 1.5px;
 }
 .resume .func .work ul li::before,
 .resume .func .work ul li::after,
 .resume .func .edu ul li::before,
-.resume .func .edu ul li::after {
+.resume .func .edu ul li::after,
+.resume .func .project ul li::before,
+.resume .func .project ul li::after {
   content: "";
   display: block;
   position: absolute;
 }
 .resume .func .work ul li::before,
-.resume .func .edu ul li::before {
+.resume .func .edu ul li::before,
+.resume .func .project ul li::before {
   width: 7px;
   height: 7px;
   border: 3px solid $white;
   background: $orange;
   border-radius: 50%;
   left: 3px;
+  top:5px;
   z-index: 1;
 }
+.resume .func .project ul li::before {
+  top:10px;
+}
 .resume .func .work ul li::after,
-.resume .func .edu ul li::after {
+.resume .func .edu ul li::after,
+.resume .func .project ul li::after {
   width: 3px;
   height: 100%;
   background: $white;
@@ -1203,7 +1331,8 @@ h3 {
   top: 0;
 }
 .resume .func .work ul li span,
-.resume .func .edu ul li span {
+.resume .func .edu ul li span,
+.resume .func .project ul li span {
   transition-duration: 0.3s;
 }
 .resume .func .work {
@@ -1216,6 +1345,12 @@ h3 {
   width: 48%;
   background: $darker-blue;
   padding: 15px;
+}
+.resume .func .project {
+  width: 100%;
+  background: $darker-blue;
+  padding: 15px;
+  margin-top: 15px;
 }
 .resume .func .skills-prog {
   clear: both;
@@ -1347,4 +1482,6 @@ h3 {
 .tag:hover{
   background-color: $yellow;
 }
+
+
 </style>
