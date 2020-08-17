@@ -105,7 +105,7 @@
           <p class="pull-right">추가 설명</p>
         </div>
         <div class="col-sm-9">
-          <vue-editor id="project-editor" v-model="content" style="padding:10px;"></vue-editor>
+          <vue-editor id="project-editor" v-model="content2" style="padding:10px;"></vue-editor>
         </div>
       </div><hr>
       <!--  프로젝트 정보 끝 -->
@@ -195,7 +195,7 @@ components: {
       github_url : '',
       etc_url : null,
       rep_url : null,
-      content : null,
+      content2 : null,
       // 기술스택
       stack : [],
       all_stack : [],
@@ -230,7 +230,7 @@ components: {
     deleteRole(index){
         this.roles.splice(index,1)
     },
-     write(){
+    write(){
       // 필수 입력 확인받기
         if(this.title==='')
           this.$message.warning('프로젝트 제목을 입력해 주세요.')
@@ -251,7 +251,7 @@ components: {
           this.setDisclosure()
           this.setRegtime()
           this.setTag()
-      
+          console.log(this.content)
           // 프로젝트 등록하기
           http.post('project', { 
             seq_blog : this.seq_blog,
@@ -406,6 +406,9 @@ components: {
 </script>
 
 <style>
+#post-editor .ql-editor{
+  min-height: 400px;
+}
 #project-editor .ql-editor{
   min-height: 400px;
 }

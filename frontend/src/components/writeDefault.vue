@@ -15,7 +15,7 @@
           <p class="pull-right">* 내용</p>
         </div>
         <div class="col-sm-9">
-          <vue-editor id="project-editor" v-model="postInfo.content" style="padding:10px;"></vue-editor>
+          <vue-editor id="post-editor" v-model="postInfo.content" style="padding:10px;"></vue-editor>
         </div>
       </div><hr>
 
