@@ -105,7 +105,7 @@
           <p class="pull-right">추가 설명</p>
         </div>
         <div class="col-sm-9">
-          <vue-editor id="project-editor" v-model="content" style="padding:10px;"></vue-editor>
+          <vue-editor  v-model="content" style="padding:10px;"></vue-editor>
         </div>
       </div><hr>
       <!--  프로젝트 정보 끝 -->
@@ -165,6 +165,8 @@
       
       
       <el-button @click="write" style="float:right">프로젝트 등록</el-button>
+      <el-button @click="drafts" style="float:right">임시 보관</el-button>
+      <el-button @click="save" style="float:right">임시 저장</el-button>
     </div>
   </transition>
 </template>
@@ -230,8 +232,8 @@ components: {
     deleteRole(index){
         this.roles.splice(index,1)
     },
-     write(){
-      // 필수 입력 확인받기
+    save(){
+     // 필수 입력 확인받기
         if(this.title==='')
           this.$message.warning('프로젝트 제목을 입력해 주세요.')
         else if(this.summary=='')
@@ -258,6 +260,7 @@ components: {
             title:this.title,
             disclosure:this.disclosure, 
             img_url : this.img_url, 
+            status : 'draft',
             regtime:this.regtime,
             summary : this.summary, 
             start_date : this.date_to_str(this.start_date),
@@ -294,6 +297,76 @@ components: {
           this.$message({
             type: 'success',
             message: '프로젝트 등록 완료.'
+          });
+          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)  
+        })     
+      }
+    },
+     write(){
+      // 필수 입력 확인받기
+        if(this.title==='')
+          this.$message.warning('프로젝트 제목을 입력해 주세요.')
+        else if(this.summary=='')
+          this.$message.warning('프로젝트 개요를 입력해 주세요.')
+        else if(this.start_date==='')
+          this.$message.warning('프로젝트 시작 날짜를 입력해 주세요.')
+        else if(this.stack.length==0)
+          this.$message.warning('사용 스택을 입력해 주세요.')
+        else if(this.roles.length==0)
+          this.$message.warning('프로젝트 역할을 입력해 주세요.')
+        else if(this.github_url==='')
+          this.$message.warning('깃허브 주소를 입력해주세요.')
+         else if(this.img_url==='')
+          this.$message.warning("썸네일을 등록해 주세요")
+        else{
+       
+          this.setDisclosure()
+          this.setRegtime()
+          this.setTag()
+
+          // 프로젝트 등록하기
+          http.post('project', { 
+            seq_blog : this.seq_blog,
+            title:this.title,
+            disclosure:this.disclosure, 
+            img_url : this.img_url, 
+            regtime:this.regtime,
+            status : 'published',
+            summary : this.summary, 
+            start_date : this.date_to_str(this.start_date),
+            finish_date : this.date_to_str(this.finish_date),
+            github_url : this.github_url,
+            etc_url : this.etc_url,
+            rep_url : this.rep_url,
+            content : this.content,
+          })
+          .then(({data}) => {
+          // data = project의 seq
+
+          // 프로젝트 태그 등록하기
+          http
+          .post('./posttag', {
+            seq_post: data,
+            tag: this.tags
+          })
+          // 프로젝트 스택 등록하기
+          
+          for(var i=0; i<this.stack.length; i++){
+            http.post('./projectstack', {
+              seq_post_project: data,
+              stack: this.stack[i]
+            })
+          }
+          // 프로젝트 역할 등록하기
+          http
+          .post('./projectrole', {
+            seq_post_project: data,
+            role: this.roles
+          })
+
+          this.$message({
+            type: 'success',
+            message: '임시저장 완료.'
           });
           this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)  
         })     

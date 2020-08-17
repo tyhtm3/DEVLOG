@@ -35,6 +35,10 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	@Override
+	public List<Post> selectDraftPost(){
+		return postMapper.selectDraftPost();
+	}
+	@Override
 	public int insertPost(Post post){
 		return postMapper.insertPost(post);
 	}

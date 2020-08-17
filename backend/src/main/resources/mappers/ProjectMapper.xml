@@ -89,9 +89,9 @@
 	<!-- 프로젝트 기본 정보 등록 -->
 	<insert id="insertPost" useGeneratedKeys="true" keyProperty="seq">
 		insert into post(
-			seq_blog,title,disclosure,img_url,like_count<if test="regtime != null">, regtime</if>
+			seq_blog,title,disclosure,img_url,like_count,status<if test="regtime != null">, regtime</if>
 		) values (
-			#{seq_blog}, #{title}, #{disclosure} , #{img_url}, 0 <if test="regtime != null">, regtime</if>
+			#{seq_blog}, #{title}, #{disclosure} , #{img_url}, 0,#{status} <if test="regtime != null">, regtime</if>
 		)
 	</insert>
 	

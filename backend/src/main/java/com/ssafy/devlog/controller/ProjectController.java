@@ -61,12 +61,11 @@ public class ProjectController {
 		
 	}
 	
-	@ApiOperation(value = "새로운  프로젝트 입력 ( seq_blog, title, disclosure, summary, start_date, role ) 필수  ", response = String.class)
+	@ApiOperation(value = "새로운  프로젝트 입력 ( seq_blog, title, disclosure, summary, start_date, role, status(draft or published) ) 필수  ", response = String.class)
     @PostMapping
     public ResponseEntity<Integer> insertProject(@RequestBody Project project) {
 
         logger.debug("insertProject - 호출");
-
         // insertPost 이후 Project 객체에 seq 받아오기 위한 작업
         Project pjt = new Project();
         pjt = project;
