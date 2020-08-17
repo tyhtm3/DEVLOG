@@ -15,7 +15,7 @@
           <p class="pull-right">* 내용</p>
         </div>
         <div class="col-sm-9">
-          <vue-editor id="project-editor" v-model="postInfo.content" style="padding:10px;"></vue-editor>
+          <vue-editor id="post-editor" v-model="postInfo.content" style="padding:10px;"></vue-editor>
         </div>
       </div><hr>
 
@@ -155,6 +155,7 @@ export default {
        // 태그 불러오기
         http.get('posttag/'+this.drafts[index].seq)
               .then(({data}) => {
+              this.tags = []
               for(var i=0; i<data.length; i++){
               this.tags[i] = data[i].tag
               }

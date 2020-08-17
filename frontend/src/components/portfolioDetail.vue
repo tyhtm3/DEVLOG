@@ -2,7 +2,7 @@
 <div class="html">
     <div class="media-gallery">
       <figure class="media-post" v-for="(template, index) in templates" :key="index" @click="templateDetail(template.url)">
-        <img :src="template.image" :alt="template.title" width="250" height="200" />
+        <img :src="template.image" :alt="template.title" width="250" height="150" />
         <figcaption>
           <h2 v-if="template.title">{{ template.title }}</h2>
           <em v-if="template.summary">{{ template.summary }}</em>
@@ -19,7 +19,7 @@ export default {
     return {
       templates: [
         {
-          image: 'http://health.chosun.com/site/data/img_dir/2020/05/07/2020050702573_0.jpg',
+          image: '../../static/img/template01.jpg',
           title: "4 card",
           summary: "지원하는 직무에 적합한 3개의 핵심 프로젝트를 어필하는데 적합한 템플릿",
           url: "/blog/portfolio1/"+this.clickedSeq

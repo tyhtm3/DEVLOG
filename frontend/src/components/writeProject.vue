@@ -106,7 +106,7 @@
           <p class="pull-right">추가 설명</p>
         </div>
         <div class="col-sm-9">
-          <vue-editor id="project-editor" v-model="content" style="padding:10px;"></vue-editor>
+          <vue-editor id="project-editor" v-model="content2" style="padding:10px;"></vue-editor>
         </div>
       </div><hr>
       <!--  프로젝트 정보 끝 -->
@@ -220,7 +220,7 @@ components: {
       github_url : '',
       etc_url : null,
       rep_url : null,
-      content : null,
+      content2 : null,
       // 기술스택
       stack : [],
       all_stack : [],
@@ -661,6 +661,9 @@ components: {
 </script>
 
 <style>
+#post-editor .ql-editor{
+  min-height: 400px;
+}
 #project-editor .ql-editor{
   min-height: 400px;
 }
