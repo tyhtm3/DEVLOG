@@ -1,6 +1,7 @@
 <template>
   <transition name="el-zoom-in-top">
     <div class="content-wrapper" style="background: white;">
+      <!-- 틀 잡는중 -->
       <div class="content"> 
         <div class="content-left"> 
           .
