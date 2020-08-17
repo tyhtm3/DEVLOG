@@ -3,7 +3,7 @@
     <div>
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">제목</p>
+          <p class="pull-right">* 제목</p>
         </div>
         <div class="col-sm-9">
           <el-input style="padding:10px;" placeholder="POST TITLE" v-model="postInfo.title"> </el-input>
@@ -12,7 +12,7 @@
 
        <div class="row">
         <div class="col-sm-2 pjt-title" style="height:490px;">
-          <p class="pull-right">내용</p>
+          <p class="pull-right">* 내용</p>
         </div>
         <div class="col-sm-9">
           <vue-editor id="project-editor" v-model="postInfo.content" style="padding:10px;"></vue-editor>

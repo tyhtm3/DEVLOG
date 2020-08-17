@@ -25,11 +25,11 @@
         <li class="pull-right" v-if="post.seq_blog==seq_user">
           <span style="cursor:pointer" @click="updatePost(post.seq)">수정</span>&nbsp;|&nbsp;
           <span style="cursor:pointer" @click="deletePost(post.seq)">삭제</span>&nbsp;|&nbsp;
-          <span style="cursor:pointer" @click="savePost(post.seq)">저장</span>
+          <!-- <span style="cursor:pointer" @click="savePost(post.seq)">저장</span> -->
         </li>
-        <li class="pull-right" v-else>
+        <!-- <li class="pull-right" v-else>
           <span style="cursor:pointer" @click="savePost(post.seq)">저장</span>
-        </li>
+        </li> -->
       </ul>
       <!-- 헤더 끝 -->               
       <div class="box">
@@ -56,10 +56,10 @@
               <comment v-bind:seq="seq"></comment>
             <!-- 댓글 창 끝 -->
 
-            <ul class="pager success">
+            <!-- <ul class="pager success">
               <li class="previous"><a href="#">← Older</a> </li>
               <li class="next disabled"><a href="#">Newer →</a> </li>
-            </ul>
+            </ul> -->
           </div>
           <!--  END OF BLOG CONTENT -->
         </div>

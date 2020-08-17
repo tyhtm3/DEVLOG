@@ -57,7 +57,6 @@ import PostUpdate from './pages/PostUpdate.vue'
 import ProjectUpdate from './pages/ProjectUpdate.vue'
 import Template01 from './pages/Template01.vue'
 import Template02 from './pages/Template02.vue'
-import PortfolioDetail from './pages/PortfolioDetail.vue'
 import Template03 from './pages/Template03.vue'
 import Template04 from './pages/Template04_ji.vue'
 import Template05 from './pages/Template05.vue'
@@ -112,11 +111,6 @@ const routes = [
           store.commit('setPreviousUrl',from.path)
           next()
         }
-      },
-      {
-        path: '/blog/portfolio/:seq',
-        name: 'portfolio-detail',
-        component: PortfolioDetail
       },
       {
         path: '/signup',
