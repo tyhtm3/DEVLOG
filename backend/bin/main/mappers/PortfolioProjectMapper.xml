@@ -7,7 +7,8 @@
 		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count,post.img_url
 		from post inner join post_project on post.seq=post_project.seq
         where post_project.seq in (
-		select seq_post_project from post_portfolio_project where seq_post_portfolio = #{ seq_post_portfolio } );
+		select seq_post_project from post_portfolio_project where seq_post_portfolio = #{ seq_post_portfolio } ) 
+		order by start_date;
 	</select>
 	
 	<!-- 포트폴리오에 프로젝트를 추가한다.  -->
