@@ -183,6 +183,7 @@ export default {
       regtime : null,
       img_url : null,
       isImgVisible: false,
+      status: null,
       // 프로젝트 특화 정보
       summary : '',
       start_date : '',
@@ -270,6 +271,7 @@ export default {
           title: this.title,
           finish_date: this.finish_date,
           rep_url: this.rep_url,
+          status : this.status,
         })
         .then(({data}) => {
           // 프로젝트 태그 등록하기
@@ -436,7 +438,8 @@ export default {
         this.github_url = data.github_url
         this.etc_url = data.etc_url
         this.rep_url = data.rep_url
-     
+        this.status = data.status
+      
         http
         .get('/posttag/'+this.$route.params.seq)
         .then(({data}) => {

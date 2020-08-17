@@ -55,6 +55,7 @@ import NotFound from './pages/error/404.vue'
 import NotFoundSecond from './pages/error/500.vue'
 import PostUpdate from './pages/PostUpdate.vue'
 import ProjectUpdate from './pages/ProjectUpdate.vue'
+import PortfolioUpdate from './pages/PortfolioUpdate.vue'
 import Template01 from './pages/Template01.vue'
 import Template02 from './pages/Template02.vue'
 import Template03 from './pages/Template03.vue'
@@ -151,6 +152,11 @@ const routes = [
         path: '/blog/project-update/:seq',
         name: 'project-update',
         component: ProjectUpdate
+      },
+      {
+        path: '/blog/portfolio-update/:seq',
+        name: 'portfolio-update',
+        component: PortfolioUpdate
       },
       {
         path: '/blog/portfolio1/:seq',

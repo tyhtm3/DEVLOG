@@ -5,6 +5,14 @@ public class PortfolioInfo {
 	private int seq_post_portfolio;
 	private String introduction;
 	private String address;
+	private String objective;
+	
+	public String getObjective() {
+		return objective;
+	}
+	public void setObjective(String objective) {
+		this.objective = objective;
+	}
 	public int getSeq() {
 		return seq;
 	}
@@ -33,13 +41,12 @@ public class PortfolioInfo {
 	public PortfolioInfo() {
 		
 	}
-	
-	public PortfolioInfo(int seq, int seq_post_portfolio, String introduction, String address) {
-		this.seq = seq;
-		this.seq_post_portfolio = seq_post_portfolio;
-		this.introduction = introduction;
-		this.address = address;
+	@Override
+	public String toString() {
+		return "PortfolioInfo [seq=" + seq + ", seq_post_portfolio=" + seq_post_portfolio + ", introduction="
+				+ introduction + ", address=" + address + ", objective=" + objective + "]";
 	}
 	
+
 	
 }

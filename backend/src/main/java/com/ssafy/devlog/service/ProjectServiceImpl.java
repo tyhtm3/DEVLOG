@@ -36,6 +36,11 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 	
 	@Override
+	public List<Project> selectDraftProject(){
+		return projectMapper.selectDraftProject();
+	}
+	
+	@Override
 	public int insertPost(Project project){
 		return projectMapper.insertPost(project);
 	}

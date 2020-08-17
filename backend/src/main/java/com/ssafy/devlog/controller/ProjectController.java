@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.devlog.dto.Post;
 import com.ssafy.devlog.dto.PostTag;
 import com.ssafy.devlog.dto.Project;
 import com.ssafy.devlog.dto.ProjectRole;
@@ -61,12 +62,19 @@ public class ProjectController {
 		
 	}
 	
-	@ApiOperation(value = "새로운  프로젝트 입력 ( seq_blog, title, disclosure, summary, start_date, role ) 필수  ", response = String.class)
+	@ApiOperation(value = "임시 보관 게시글을 반환", response = String.class)
+	@GetMapping(value = "/draft")
+	public ResponseEntity<List<Project>> selectDraftProject() {
+		logger.debug("selectDraftProject - 호출");
+		return new ResponseEntity<List<Project>>(projectService.selectDraftProject(), HttpStatus.OK);
+
+	}
+	
+	@ApiOperation(value = "새로운  프로젝트 입력 ( seq_blog, title, disclosure, summary, start_date, role, status(draft or published) ) 필수  ", response = String.class)
     @PostMapping
     public ResponseEntity<Integer> insertProject(@RequestBody Project project) {
 
         logger.debug("insertProject - 호출");
-
         // insertPost 이후 Project 객체에 seq 받아오기 위한 작업
         Project pjt = new Project();
         pjt = project;
