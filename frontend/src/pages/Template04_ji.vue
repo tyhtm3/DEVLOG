@@ -69,9 +69,6 @@
           <div class="edu">
             <h3><i class="fa fa-graduation-cap"></i>Education</h3>
             <ul>
-              <!-- <li><span>Bachelor of Science<br>Web Design and Development</span><small>BYU-Idaho</small><small>Jan. 2016 - Apr. 2018</small></li>
-              <li><span>Computer Science</span><small>Edmonds Community College</small><small>Sept. 2014 - Dec. 2015</small></li>
-              <li><span>High School</span><small>Henry M. Jackson High School</small><small>Jan. 2013 - Jun. 2015</small></li> -->
               <li  v-for="(education,index) in educations" v-bind:key="index">
                 <span v-text=education.major />
                 <small v-text=education.name />
@@ -83,70 +80,28 @@
           <!-- /api/portfolio/skill/{seq_post_portfolio} 에 이미지 url 추가 가능하면 ㄱㄱ  -->
           <div class="skills-prog">
             <h3><i class="fas fa-code"></i>Programming Skills</h3>
-            <!-- {{programmingSkills}} -->
             <ul>
-              <li><span>HTML5</span>
-                <div class="skills-bar" data-percent="100">
-                  <div class="bar"/>
-                </div>
-              </li>
-              <li v-for="(programmingSkill,index2) in programmingSkills" v-bind:key="index2" >
+              <li v-for="(programmingSkill,index) in programmingSkills" v-bind:key="index" >
                 <span>{{programmingSkill.skill}}</span>
-                <div class="skills-bar" data-percent="1">
+                <div class="skills-bar" :data-percent=programmingSkill.level>
+                  <!-- hover하면 바 옆에 % 나오게 하면 더 좋을듯 -->
                   <div class="bar"/>
                 </div>
               </li>
-              <!-- <li><span>{{programmingSkills[1].skill}}</span>
-                <div class="skills-bar" data-percent="10">
-                  <div class="bar"/>
-                </div>
-              </li> -->
-
-
-
-
-
-              <!-- <li data-percent="95"><span>HTML5</span>
-                <div class="skills-bar">
-                  <div class="bar"></div>
-                </div>
-              </li>
-              <li data-percent="90"><span>CSS3 & SCSS</span>
-                <div class="skills-bar">
-                  <div class="bar"></div>
-                </div>
-              </li>
-              <li data-percent="60"><span>JavaScript</span>
-                <div class="skills-bar">
-                  <div class="bar"></div>
-                </div>
-              </li>
-              <li data-percent="50"><span>jQuery</span>
-                <div class="skills-bar">
-                  <div class="bar"></div>
-                </div>
-              </li>
-              <li data-percent="40"><span>JSON</span>
-                <div class="skills-bar">
-                  <div class="bar"></div>
-                </div>
-              </li>
-              <li data-percent="55"><span>PHP</span>
-                <div class="skills-bar">
-                  <div class="bar"></div>
-                </div>
-              </li>
-              <li data-percent="40"><span>MySQL</span>
-                <div class="skills-bar">
-                  <div class="bar"></div>
-                </div>
-              </li> -->
             </ul>
           </div>
+
+
           <div class="skills-soft">
-            <h3><i class="fas fa-bezier-curve"></i>Software Skills</h3>
+            <h3><i class="fas fa-bezier-curve"></i>Language Skills</h3>
             <ul>
-              <li data-percent="90">
+              <li v-for="(languageSkill,index) in languageSkills" v-bind:key="index" :data-percent=languageSkill.level>
+                <svg viewbox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45"></circle>
+                  <circle class="cbar" cx="50" cy="50" r="45"></circle>
+                </svg><span v-text=languageSkill.language /><small></small>
+              </li>
+              <!-- <li data-percent="90">
                 <svg viewbox="0 0 100 100">
                   <circle cx="50" cy="50" r="45"></circle>
                   <circle class="cbar" cx="50" cy="50" r="45"></circle>
@@ -169,9 +124,9 @@
                   <circle cx="50" cy="50" r="45"></circle>
                   <circle class="cbar" cx="50" cy="50" r="45"></circle>
                 </svg><span>Dreamweaver</span><small></small>
-              </li>
+              </li>-->
             </ul>
-          </div>
+          </div> 
           <!-- <div class="interests">
             <h3><i class="fas fa-star"></i>Interests</h3>
             <div class="interests-items">
@@ -200,6 +155,7 @@
           portfolioMoreInfo:[],
           projects:[],
           programmingSkills:[],
+          languageSkills:[],
           experiences:[],
           educations:[],
 
@@ -243,29 +199,29 @@
           //                 end:  '2020-03', 
           //               }
           //               ],
-          tempeducations:[{
-                          major: '컴퓨터소프트웨어학과',
-                          name: '광운대학교',
-                          start:  '2018-02',
-                          end:  '2013-03',
-                        },{
-                          major: '고등학교',
-                          name: '분당고등학교',
-                          start:  '2013-02',
-                          end:  '2010-03',
-                          },{
-                          major: '중학교',
-                          name: '내정중학교',
-                          start:  '2010-02',
-                          end:  '2008-07',
-                        }
+          // tempeducations:[{
+          //                 major: '컴퓨터소프트웨어학과',
+          //                 name: '광운대학교',
+          //                 start:  '2018-02',
+          //                 end:  '2013-03',
+          //               },{
+          //                 major: '고등학교',
+          //                 name: '분당고등학교',
+          //                 start:  '2013-02',
+          //                 end:  '2010-03',
+          //                 },{
+          //                 major: '중학교',
+          //                 name: '내정중학교',
+          //                 start:  '2010-02',
+          //                 end:  '2008-07',
+          //               }
                         // ,{
                         //   major: '중학교',
                         //   name: 'AOBA JAPAN INTERNATIONAL SCHOOL',
                         //   start:  '2008-06',
                         //   end:  '2005-05',
                         //   }
-                        ]
+                        // ]
         }
     },
     created(){ 
@@ -274,19 +230,19 @@
       this.getExperiences(this.$route.params.seq);
       this.getEducations(this.$route.params.seq);
       this.getProgrammingSkills(this.$route.params.seq);
+      this.getLanguageSkills(this.$route.params.seq);
       this.getProjectsInfo(this.$route.params.seq);
     },
-    mounted(){
+    updated(){
       // 주소 입력, portfolioInfo.address
-      // var link = $('#getaddress').append("<a href='http://maps.google.com/maps?q="+this.portfolioInfo.address+"' target='_blank'>"+ this.portfolioInfo.address+"</a>")
-      // 임시
-      var link = $('#getaddress').append("<a href='http://maps.google.com/maps?q="+this.tempaddress+"' target='_blank'>"+ this.tempaddress+"</a>")
+      // var link = $('#getaddress').append("<a href='http://maps.google.com/maps?q="+this.portfolioMoreInfo.address+"' target='_blank'>"+ this.portfolioMoreInfo.address+"</a>")
       $(".skills-prog li").find(".skills-bar").each(function(i) {
+        // alert(i);
         // alert("들어옴");
         $(this)
           .find(".bar")
           .delay(i * 150)
-          .animate({width:$(this).attr("data-percent") + "%"},
+          .animate({width:$(this).attr("data-percent")*20 + "%"},
             1000,
             "linear",
             function() {
@@ -305,7 +261,7 @@
         c = Math.PI * (r * 2);
         percent = $(this)
           .parent()
-          .data("percent");
+          .data("percent")*20;
         cbar = (100 - percent) / 100 * c;
         circle.css({
           "stroke-dashoffset": c,
@@ -378,6 +334,12 @@
         http.get('portfolio/skill/'+seq)
         .then(({data}) => {
             this.programmingSkills=data;
+         })
+      },
+      getLanguageSkills(seq){
+        http.get('portfolio/language/'+seq)
+        .then(({data}) => {
+            this.languageSkills=data;
          })
       },
       getProjectsInfo(seq){
@@ -469,7 +431,7 @@ h2 {
 h3 {
   color: $orange;
   margin: 10px 0;
-  text-transform: lowercase;
+  // text-transform: lowercase;
   font-size: 1.25em;
 }
 
@@ -543,14 +505,14 @@ h3 {
   margin-top: 10px;
   margin-bottom: 0;
   font-size: 1.75em;
-  text-transform: lowercase;
+  // text-transform: lowercase;
   color: $darkest-blue;
 }
 .resume .base .profile .info .job {
   margin-top: 10px;
   margin-bottom: 0;
   font-size: 1.5em;
-  text-transform: lowercase;
+  // text-transform: lowercase;
   color: $darker-blue;
 }
 .resume .base .contact div {
