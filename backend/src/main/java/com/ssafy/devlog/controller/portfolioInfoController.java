@@ -45,7 +45,7 @@ public class portfolioInfoController {
 		return new ResponseEntity<PortfolioInfo>(portfolioInfoService.selectAllPortfolioInfo(seq_post_portfolio), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "포트폴리오의 기본정보를 입력하거나 수정한다. { \"seq_post_portfolio\" : 395 , \"introduction\" : \"자기소개\",\"address\" : \"서울시 강남구 역삼동 멀티캠퍼스\" } ", response = String.class)
+	@ApiOperation(value = "포트폴리오의 기본정보를 입력하거나 수정한다. { \"seq_post_portfolio\" : 395 , \"introduction\" : \"자기소개\",\"address\" : \"서울시 강남구 역삼동 멀티캠퍼스\" ,\"objective\" : \"희망 직무\"} ", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> updatePortfolioSkill(@RequestBody PortfolioInfo portfolioInfo) throws Exception {
 		logger.debug("updatePortfolioInfo - 호출");
