@@ -152,6 +152,7 @@ export default {
   created() {
     this.blogOwnerId= this.$route.params.id;
     this.getBlogOwnerInfo();
+    this.getFromDetailSearchTag();
     this.followtext = '구독자';
   },
   mounted() {
