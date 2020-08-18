@@ -2,7 +2,15 @@
 <div class="html">
     <div class="media-gallery">
       <figure class="media-post" v-for="(template, index) in templates" :key="index" @click="templateDetail(template.url)">
-        <img :src="template.image" :alt="template.title" width="250" height="150" />
+        
+        <div class="thumbnail-wrapper"> 
+          <div class="thumbnail"> 
+            <div class="centered"> 
+              <img :src="template.image" :alt="template.title" /> 
+            </div> 
+          </div> 
+        </div>
+
         <figcaption>
           <h2 v-if="template.title">{{ template.title }}</h2>
           <em v-if="template.summary">{{ template.summary }}</em>
@@ -31,9 +39,9 @@ export default {
           url: "/blog/portfolio2/"+this.clickedSeq
         },
         {
-          image: 'https://source.unsplash.com/collection/190727/400x400?3',
-          title: "템플릿이름",
-          summary: "설명",
+          image: '../../static/img/template03.png',
+          title: "인포그래픽 템플릿",
+          summary: "당신의 이력과 포트폴리오를 한눈에! 더이상의 구글링은 필요없다! 지원자의 프로젝트, 자격증, 일상 등에 대해 더 알아보고 싶은 인사담당자의 번거로움을 덜어주는 링크형 인포그래픽 템플릿.",
           url: "/blog/portfolio3/"+this.clickedSeq
         },
         {
@@ -58,7 +66,7 @@ export default {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 2rem;
   margin: 10px;
-  max-width: 80vmin;
+  max-width: 160vmin;
 }
 
 .media-post {
@@ -75,4 +83,41 @@ export default {
   h2 { font-size: 1.6rem; line-height: 1; }
   em { font-size: 1rem; }
 }
+.thumbnail-wrappper { 
+  width: 35%; 
+  } 
+.thumbnail { 
+  position: relative; 
+  padding-top: 100%; /* 1:1 ratio */ 
+  overflow: hidden; 
+  border: transparent;
+  } 
+.thumbnail .centered { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  -webkit-transform: translate(50%,50%); 
+  -ms-transform: translate(50%,50%); 
+  transform: translate(50%,50%); 
+  } 
+.thumbnail .centered img { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  max-width: 100%; 
+  height: auto; 
+  -webkit-transform: translate(-50%,-50%); 
+  -ms-transform: translate(-50%,-50%); 
+  transform: translate(-50%,-50%); 
+  }
+
+// 이렇게하고 hover하면 좌우로 이미지 왔다갔다하게되는거
+// .thumbnail-wrappper { 
+//   width: 300px; height: 300px; overflow: hidden; 
+// }
+// .portfolio-thumbnail{
+//   max-height:100%; width:auto;
+// }
 </style>

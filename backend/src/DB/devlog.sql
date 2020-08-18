@@ -144,7 +144,7 @@ CREATE TABLE `post_portfolio_certification`(
     `seq` int primary key auto_increment,
     `seq_post_portfolio` int not null,
     `certification` varchar(256),
-    `acq_date` varchar(20),
+    `date` varchar(20),
     FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

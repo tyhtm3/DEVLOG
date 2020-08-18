@@ -32,10 +32,13 @@
                   <h2 style="margin:0px" >{{blogOwnerNumOfPost}}</h2>
                   <p> <small>포스트</small> </p>
                 </div>
-                <div class="col-sm-3 emphasis" id="follower" style="cursor:pointer;" @click="follower" @mouseenter="changeFollowText" @mouseleave="undoFollowText">
+                <div v-if="isAdmin" class="col-sm-3 emphasis" id="follower" style="cursor:pointer;" @click="follower" @mouseenter="changeFollowText" @mouseleave="undoFollowText">
                   <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
                   <p><small id="followertext" v-text="followtext"></small></p>
-                  <!-- 이웃관리라는 문구가 뭔가 안이쁨...-->
+                </div>
+                <div v-else class="col-sm-3 emphasis" style="cursor:pointer;">
+                  <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
+                  <p><small id="followertext" v-text="followtext"></small></p>
                 </div>
                
               </div>
@@ -70,7 +73,7 @@
               </router-link>
               <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>&nbsp;
             </span>
-            <span v-else @click="subscribe">구독<i class="ti-link"></i></span>&nbsp;
+            <span v-else @click="subscribe(true)">{{subscribemessage}}<i v-if="subscribemessage.length>3" class="ti-unlink"></i><i v-else class="ti-link"></i></span>&nbsp;
           </div>
         </div>
         <!-- end profile -->
@@ -136,6 +139,8 @@ export default {
       blogOwnerMainTags:[],
       followerpage: false,
       isAdmin: '',
+      isSubscribing: '',
+      subscribemessage:'',
       // 태그 검색
       searchTags: [],
       activeIndex: [],
@@ -243,14 +248,13 @@ export default {
       .then(({ data }) => {
           this.blogOwnerNumOfPost = data;
       });
-      http.get('userneighbor/'+this.seq_blog)
-      .then(({ data }) => {
-          this.blogOwnerNumOfNeighbor = data.length;
-      });
       http.get('blogtag/'+this.seq_blog)
       .then(({ data }) => {
         this.blogOwnerMainTags = data;
       });
+      // this.getBlogOwnerNumOfNeighbor(this.seq_blog);
+      // 이웃여부 불러올 때 함
+      this.subscribe(false);
     },
     toggleAdminMode() {
       if(this.getIsAdminMode){
@@ -302,7 +306,7 @@ export default {
     itemsContains(tag) {
       return this.searchTags.indexOf(tag) > -1
     },
-    subscribe() {
+    subscribe(bool) {
       http.get('user/id/'+this.$route.params.id)
       .then(({data})=>{
         http.get('/userneighbor/check/'+data.seq)
@@ -337,7 +341,14 @@ export default {
             })
           }
         })
+          this.getBlogOwnerNumOfNeighbor(data.seq);
       })
+    },
+    getBlogOwnerNumOfNeighbor(seq){
+       http.get('userneighbor/'+seq)
+      .then(({ data }) => {
+          this.blogOwnerNumOfNeighbor = data.length;
+      });
     },
     tagInputVisible(){
       this.searchBar = true
@@ -486,7 +497,7 @@ export default {
     padding:3px 8px !important;
   }
   #blogmaintag-block:first-child{
-    margin-left:-18px;
+    margin-left:-13px;
   }
   .tag{
     color:gray;
