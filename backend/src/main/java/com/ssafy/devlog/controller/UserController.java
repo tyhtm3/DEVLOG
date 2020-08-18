@@ -175,6 +175,8 @@ public class UserController {
 			String root_path = ("/home/ubuntu/");
 			String attach_path = "images/";
 			String filename = dateString + "_" + uploadfile.getOriginalFilename();
+			filename = filename.replaceAll(" ","");
+			filename = filename.replaceAll("\\p{Z}", "");
 
 //			 System.out.println(root_path+attach_path+filename);
 
