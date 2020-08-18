@@ -29,9 +29,10 @@
                     
                     <!-- 템플릿 선택 dialog 시작 -->
                     <el-dialog
-                    title="템플릿을 선택해 주세요."
+                    id="select-template"
+                    title="마음에 드는 템플릿을 골라보세요."
                     :visible.sync="selectDialogVisible"
-                    width="80%"
+                    width="95%"
                     center
                     >
                         <portfolio-detail v-bind:clickedSeq="clickedSeq" style="overflow:auto"></portfolio-detail>
@@ -232,5 +233,13 @@ input[type="checkbox"]:checked + label:before {
 	-webkit-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
+</style>
 
+<style>
+    
+#select-template .el-dialog__title{
+    font-size: 30px!important;
+    font-family: "Noto Sans KR";
+    font-weight: 700;
+}
 </style>
