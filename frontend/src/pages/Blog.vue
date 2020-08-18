@@ -312,36 +312,47 @@ export default {
         http.get('/userneighbor/check/'+data.seq)
         .then(({data}) => {
           if(data.length === 0){
-            http.post('/userneighbor', {
-              seq_neighbor: this.blogOwnerInfo.seq,
-            })
-            .then(({ data }) => {
-              this.$message({
-                type: 'success',
-                message: this.blogOwnerInfo.nickname+'님의 블로그를 구독합니다.'
-              });
-              this.getBlogOwnerInfo()
-            })
-          }
-          else{
-            http.delete('/userneighbor', {
-              data:{
-                seq_neighbor: this.blogOwnerInfo.seq
-              }
-            })
-            .then(({ data }) => {
-              this.$message({
-                type: 'error',
-                message: '구독을 취소합니다.'
+            this.subscribemessage="구독";
+            // 구독하기 버튼 눌러서 함수에 들어온거라면
+            if(bool==true){
+              http.post('/userneighbor', {
+                seq_neighbor: this.blogOwnerInfo.seq,
               })
-              this.getBlogOwnerInfo()
-            })
-            .catch(({ error }) => {
-              console.log(error)
-            })
+              .then(({ data }) => {
+                this.$message({
+                  type: 'success',
+                  message: this.blogOwnerInfo.nickname+'님의 블로그를 구독합니다.',
+                });
+                this.subscribemessage="구독끊기"
+                this.getBlogOwnerInfo()
+              })
+            }
+            // 구독완료
+          }else{
+            this.subscribemessage="구독끊기"
+            // 구독취소 버튼 눌러서 함수에 들어온거라면
+            if(bool==true){
+              http.delete('/userneighbor', {
+                data:{
+                  seq_neighbor: this.blogOwnerInfo.seq
+                }
+              })
+              .then(({ data }) => {
+                this.$message({
+                  type: 'error',
+                  message: '구독을 취소합니다.',
+                });
+                this.subscribemessage="구독"
+                this.getBlogOwnerInfo()
+              })
+              .catch(({ error }) => {
+                console.log(error)
+              })
+            }
+            // 구독취소완료
           }
         })
-          this.getBlogOwnerNumOfNeighbor(data.seq);
+        this.getBlogOwnerNumOfNeighbor(data.seq);
       })
     },
     getBlogOwnerNumOfNeighbor(seq){
