@@ -130,10 +130,10 @@ export default {
           nickname: this.nickname,
           email: this.email,
           tel: this.tel,
-          birthday: this.birthday,
+          birthday: this.date_to_str(this.birthday),
           github_url: this.github_url,
           profile_img_url: this.profile_img_url
-        })
+        },{headers: { Authorization : this.$store.state.token,}})
         .then(({ data }) => {
           this.$store.commit('setUserInfo',
           {
@@ -158,7 +158,7 @@ export default {
         .catch((error) => {
           this.$message({
             type: 'error',
-            message: '정보 수정 도중 발생했습니다.'
+            message: '정보 수정 도중 에러가 발생했습니다.'
           })
         })
       }
@@ -172,7 +172,8 @@ export default {
       })
       .then(() => {
         http
-        .delete('/user/')
+        .delete('/user/'
+        ,{headers: { Authorization : this.$store.state.token,}})
         .then(({ data }) => {
           this.$store.commit('setIsLogin', false)
           this.$store.commit('setUserInfo', {seq:0})
@@ -204,6 +205,15 @@ export default {
         this.$message.error('Image size can not exceed 10MB!');
       }
       return (isJPG || isPNG) && isLt10M;
+    },
+    date_to_str(format){
+      if(format!==''){
+      var year = format.getFullYear();
+      var month = format.getMonth() + 1;
+      if(month<10) month = '0' + month;
+      var date = format.getDate();
+      if(date<10) date = '0' + date;
+      return year + "-" + month + "-" + date}
     },
   },
 }
