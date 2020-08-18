@@ -34,10 +34,13 @@
                   <h2 style="margin:0px" >{{blogOwnerNumOfPost}}</h2>
                   <p> <small>포스트</small> </p>
                 </div>
-                <div class="col-sm-3 emphasis" id="follower" style="cursor:pointer;" @click="follower" @mouseenter="changeFollowText" @mouseleave="undoFollowText">
+                <div v-if="isAdmin" class="col-sm-3 emphasis" id="follower" style="cursor:pointer;" @click="follower" @mouseenter="changeFollowText" @mouseleave="undoFollowText">
                   <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
                   <p><small id="followertext" v-text="followtext"></small></p>
-                  <!-- 이웃관리라는 문구가 뭔가 안이쁨...-->
+                </div>
+                <div v-else class="col-sm-3 emphasis" style="cursor:pointer;">
+                  <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
+                  <p><small id="followertext" v-text="followtext"></small></p>
                 </div>
                
               </div>
