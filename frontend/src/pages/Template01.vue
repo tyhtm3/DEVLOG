@@ -56,12 +56,12 @@
           </span>
           <el-card class="box-card" style="width:100%; margin-top:10px">
             <div v-for="(item, index) in certifications" :key="index" class="text item">
-              <span style="width:30%; display:inline-block;">{{ item.acq_date }}</span>
+              <span style="width:30%; display:inline-block;">{{ item.date }}</span>
               <span>{{ item.certification }}</span>
               <span class="pull-right" @click="deleteCertification(index)"><i class="ti-trash"></i></span>
             </div>
             <div v-show="inputCertification">
-              <span><input size="5" placeholder="취득년도" v-model="certification.acq_date"></span>
+              <span><input size="5" placeholder="취득년도" v-model="certification.date"></span>
               <span><input placeholder="자격증" v-on:keyup.enter="addCertification" v-model="certification.certification"></span>
             </div>
           </el-card>
@@ -125,7 +125,7 @@ export default {
       certifications : [],
       skills: [],
       certification: {
-        acq_date: '',
+        date: '',
         certification: ''
       },
       skill: {
