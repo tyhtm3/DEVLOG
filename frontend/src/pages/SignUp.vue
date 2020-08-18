@@ -84,6 +84,8 @@ import http from '../util/http-common'
       signup() {
         if(this.id==='')
           this.$message.warning('아이디를 입력해 주세요.')
+        else if(!this.validId(this.id))
+          this.$message.warning('아이디는 2자이상 영문과 숫자만 포함할 수 있습니다.')
         else if(this.password==='')
           this.$message.warning('비밀번호를 입력해 주세요.')
         else if(this.confirm==='')
@@ -127,6 +129,10 @@ import http from '../util/http-common'
           })
         }
       },
+      validId: function(id) {
+          return /^[a-z0-9]{2,20}$/.test(id)
+      },
+
       validEmail: function(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);

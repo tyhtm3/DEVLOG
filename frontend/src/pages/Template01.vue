@@ -101,7 +101,7 @@
 
   <!-- project modal 시작 -->
   <el-dialog class="template01detail" :title="title" :visible.sync="projectdetail" style="overflow:auto">
-    <div v-html="content">
+    <div v-html="content" style="text-align:center">
     </div>
   </el-dialog>
   <!-- project modal 끝 -->
@@ -428,7 +428,7 @@ export default {
 </style>
 <style>
 .template01detail .el-dialog{
-  width: 1300px !important;
+  width: 1200px !important;
   height: 600px !important;
   margin-top: 5% !important;
   overflow: auto;
