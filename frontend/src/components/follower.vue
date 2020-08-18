@@ -17,7 +17,7 @@
           <div class="people-list" id="people-list">
             <div class="search">
               <input type="text" v-model="search" placeholder="search follower" /> <i class="fa fa-search"></i> </div>
-           
+           {{neighborList}}
             <ul style="text-align:center" class="list" >
               <li @click="selected(index)" style="cursor:pointer" class="clearfix" v-for="(neighbor, index) in requestneighborinfoList" :key="index" v-show="neighbor.name.includes(search)">
                 <img v-if="neighbor.profile_img_url" :src="neighbor.profile_img_url" style="height:60px;" alt="avatar" />

@@ -51,7 +51,7 @@
           <h3>{{ portfolioInfo.name }} </h3>
           <p><i class="ti-mobile" style="margin-right:10px;"></i>{{ portfolioInfo.tel }}</p>
           <p><i class="ti-email" style="margin-right:10px;"></i>{{ portfolioInfo.email }}</p>
-          <p><i class="ti-comment" style="margin-right:10px;"></i>kakao ID : cl07</p>
+          <p><i class="ti-link" style="margin-right:10px;"></i>{{ portfolioInfo.github_url }}</p>
         </span>
         <span class="col-lg-4">
           <span>CERTIFICATION</span>

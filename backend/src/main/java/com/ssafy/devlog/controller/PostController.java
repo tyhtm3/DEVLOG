@@ -62,7 +62,15 @@ public class PostController {
 
 	}
 
-	@ApiOperation(value = "content, title, disclousre, img_url, regtime(2100-02-02 01:01:01) or null", response = String.class)
+	@ApiOperation(value = "임시 보관 게시글을 반환", response = String.class)
+	@GetMapping(value = "/draft")
+	public ResponseEntity<List<Post>> selectDraftPost() {
+		logger.debug("selectDraftPost - 호출");
+		return new ResponseEntity<List<Post>>(postService.selectDraftPost(), HttpStatus.OK);
+
+	}
+	
+	@ApiOperation(value = "content, title, disclousre, img_url, regtime(2100-02-02 01:01:01) or null, status(draft or published)", response = String.class)
 	@PostMapping
 	public ResponseEntity<Integer> insertPost(@RequestBody Post post) {
 

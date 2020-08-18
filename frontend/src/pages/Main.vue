@@ -271,8 +271,8 @@ export default {
       console.log(this.activeIndex);
 
       // 충돌난부분인데 냅둬야되지않나?
-      // this.limit=0
-      // this.getPostandproject();
+      this.limit=0
+      this.getPostandproject();
       
     },
     // 프로젝트와 포스트 검색 초기화
@@ -512,7 +512,7 @@ $( '.topimg' ).click( function() {
     background-color: rgb(212, 211, 211);
     border-radius: 30px;
     background-clip: padding-box;
-    border: 3px solid transparent;
+    border: 6px solid transparent
   }
   .tag-nest-detail::-webkit-scrollbar-track {
     background-color: transparent;
@@ -536,7 +536,7 @@ $( '.topimg' ).click( function() {
     background-color:  rgb(212, 211, 211);
     border-radius: 30px;
     background-clip: padding-box;
-    border: 3px solid transparent;
+    border: 6px solid transparent;
   }
   .posttag-nest::-webkit-scrollbar-track {
     width:5px;

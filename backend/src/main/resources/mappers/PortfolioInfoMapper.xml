@@ -11,9 +11,9 @@
 	
 	<!-- 포트폴리오에 기본 정보를 추가한다.  -->
 	<insert id="insertPortfolioInfo">
-		insert into post_portfolio_info( seq_post_portfolio, introduction,address)
+		insert into post_portfolio_info( seq_post_portfolio, introduction,address,objective)
 		values 
-		(#{seq_post_portfolio}, #{introduction} , #{address} )
+		(#{seq_post_portfolio}, #{introduction} , #{address}, #{objective} )
 	</insert>
 	
 	<!-- 포트폴리오의 기본 정보를 삭제한다. -->
