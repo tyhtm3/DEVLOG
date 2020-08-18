@@ -75,7 +75,7 @@
               </router-link>
               <span id="setting" @click="toggleAdminMode">관리<i class="ti-settings" style="display:inline"></i></span>&nbsp;
             </span>
-            <span v-else @click="subscribe">구독<i class="ti-link"></i></span>&nbsp;
+            <span v-else @click="subscribe(true)">{{subscribemessage}}<i v-if="subscribemessage.length>3" class="ti-unlink"></i><i v-else class="ti-link"></i></span>&nbsp;
           </div>
         </div>
         <!-- end profile -->
@@ -141,6 +141,8 @@ export default {
       blogOwnerMainTags:[],
       followerpage: false,
       isAdmin: '',
+      isSubscribing: '',
+      subscribemessage:'',
       // 태그 검색
       searchTags: [],
       activeIndex: [],
@@ -248,14 +250,13 @@ export default {
       .then(({ data }) => {
           this.blogOwnerNumOfPost = data;
       });
-      http.get('userneighbor/'+this.seq_blog)
-      .then(({ data }) => {
-          this.blogOwnerNumOfNeighbor = data.length;
-      });
       http.get('blogtag/'+this.seq_blog)
       .then(({ data }) => {
         this.blogOwnerMainTags = data;
       });
+      // this.getBlogOwnerNumOfNeighbor(this.seq_blog);
+      // 이웃여부 불러올 때 함
+      this.subscribe(false);
     },
     toggleAdminMode() {
       if(this.getIsAdminMode){
@@ -307,40 +308,58 @@ export default {
     itemsContains(tag) {
       return this.searchTags.indexOf(tag) > -1
     },
-    subscribe() {
+    subscribe(bool) {
       http.get('user/id/'+this.$route.params.id)
       .then(({data})=>{
         http.get('/userneighbor/check/'+data.seq)
         .then(({data}) => {
           if(data.length === 0){
-            http.post('/userneighbor', {
-              seq_neighbor: this.blogOwnerInfo.seq,
-            })
-            .then(({ data }) => {
-              this.$message({
-                type: 'success',
-                message: this.blogOwnerInfo.nickname+'님의 블로그를 구독합니다.',
-              });
-            })
-          }
-          else{
-            http.delete('/userneighbor', {
-              data:{
-                seq_neighbor: this.blogOwnerInfo.seq
-              }
-            })
-            .then(({ data }) => {
-              this.$message({
-                type: 'error',
-                message: '구독을 취소합니다.',
-              });
-            })
-            .catch(({ error }) => {
-              console.log(error)
-            })
+            this.subscribemessage="구독";
+            // 구독하기 버튼 눌러서 함수에 들어온거라면
+            if(bool==true){
+              http.post('/userneighbor', {
+                seq_neighbor: this.blogOwnerInfo.seq,
+              })
+              .then(({ data }) => {
+                this.$message({
+                  type: 'success',
+                  message: this.blogOwnerInfo.nickname+'님의 블로그를 구독합니다.',
+                });
+                this.subscribemessage="구독끊기"
+              })
+            }
+            // 구독완료
+          }else{
+            this.subscribemessage="구독끊기"
+            // 구독취소 버튼 눌러서 함수에 들어온거라면
+            if(bool==true){
+              http.delete('/userneighbor', {
+                data:{
+                  seq_neighbor: this.blogOwnerInfo.seq
+                }
+              })
+              .then(({ data }) => {
+                this.$message({
+                  type: 'error',
+                  message: '구독을 취소합니다.',
+                });
+                this.subscribemessage="구독"
+              })
+              .catch(({ error }) => {
+                console.log(error)
+              })
+            }
+            // 구독취소완료
           }
         })
+          this.getBlogOwnerNumOfNeighbor(data.seq);
       })
+    },
+    getBlogOwnerNumOfNeighbor(seq){
+       http.get('userneighbor/'+seq)
+      .then(({ data }) => {
+          this.blogOwnerNumOfNeighbor = data.length;
+      });
     },
     tagInputVisible(){
       this.searchBar = true
