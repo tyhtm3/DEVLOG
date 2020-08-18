@@ -207,13 +207,14 @@ export default {
       return (isJPG || isPNG) && isLt10M;
     },
     date_to_str(format){
-      if(format!==''){
+      if(format == null || format == "")
+      return ""
       var year = format.getFullYear();
       var month = format.getMonth() + 1;
       if(month<10) month = '0' + month;
       var date = format.getDate();
       if(date<10) date = '0' + date;
-      return year + "-" + month + "-" + date}
+      return year + "-" + month + "-" + date
     },
   },
 }
