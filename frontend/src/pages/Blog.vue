@@ -13,13 +13,11 @@
           <div v-if="!isAdmin" class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
               <span class="show-blog-owner-nickname">by {{blogOwnerInfo.nickname}}</span>
               <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
-              <!-- <span>Web Designer</span> -->
             </div>
           <router-link v-if="isAdmin" to="/myinfo">
             <div class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
               <span class="show-blog-owner-nickname">by {{blogOwnerInfo.nickname}}</span>
               <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
-              <!-- <span>Web Designer</span> -->
             </div>
           </router-link>
           
@@ -316,8 +314,9 @@ export default {
             .then(({ data }) => {
               this.$message({
                 type: 'success',
-                message: this.blogOwnerInfo.nickname+'님의 블로그를 구독합니다.',
+                message: this.blogOwnerInfo.nickname+'님의 블로그를 구독합니다.'
               });
+              this.getBlogOwnerInfo()
             })
           }
           else{
@@ -329,8 +328,9 @@ export default {
             .then(({ data }) => {
               this.$message({
                 type: 'error',
-                message: '구독을 취소합니다.',
-              });
+                message: '구독을 취소합니다.'
+              })
+              this.getBlogOwnerInfo()
             })
             .catch(({ error }) => {
               console.log(error)

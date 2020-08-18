@@ -21,7 +21,7 @@ export default {
         {
           image: '../../static/img/template01.jpg',
           title: "4 card",
-          summary: "지원하는 직무에 적합한 3개의 핵심 프로젝트를 보여주는 데 적합한 템플릿",
+          summary: "지원하는 직무와 연관된 소수의 프로젝트를 보여주는 데 적합한 템플릿",
           url: "/blog/portfolio1/"+this.clickedSeq
         },
         {

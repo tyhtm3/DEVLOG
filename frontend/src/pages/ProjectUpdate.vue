@@ -1,10 +1,10 @@
 <template>
   <transition name="el-zoom-in-top">
-      <div class="content-wrapper">
+    <div class="content-wrapper">
       <section class="content" style="padding-bottom:30px">
         <div class="box" style="width:70%; margin: 0 auto; float: none;">
           <el-tabs type="border-card">
-            <el-tab-pane label="프로젝 트 수정">
+            <el-tab-pane label="프로젝트 수정">
               <!-- 프로젝트 정보 시작 -->
               <div class="row">
                 <div class="col-sm-2 pjt-title">
