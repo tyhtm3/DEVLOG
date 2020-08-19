@@ -6,7 +6,7 @@
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
-                <div class="col-md-4" v-for="(portfolio,index) in portfolioList" :key="index">
+                <div class="col-md-4" v-for="(portfolio, index) in portfolioList" :key="index">
                     <span v-show="adminMode">
                         <input class="delete-box" :id=portfolio.seq type="checkbox" :value=portfolio.seq v-model="deleteList" />
                         <label :for=portfolio.seq></label>
@@ -33,8 +33,12 @@
                     title="마음에 드는 템플릿을 골라보세요."
                     :visible.sync="selectDialogVisible"
                     width="95%"
-                    center
-                    >
+                    center>
+                        <div class="pull-right" v-if="isAdmin">
+                            <router-link :to="{name:'portfolio-update', params:{seq:portfolio.seq}}">수정</router-link>
+                            <!-- &nbsp;|&nbsp;
+                            <span>삭제</span> -->
+                        </div><br>
                         <portfolio-detail v-bind:clickedSeq="clickedSeq" style="overflow:auto"></portfolio-detail>
                     </el-dialog>
                     <!-- 템플릿 선택 dialog 끝 -->
@@ -62,11 +66,21 @@ export default {
             deleteList: [],
             deleteSuccess: true,
             selectDialogVisible: false,
-            clickedSeq:''
+            clickedSeq:'',
+            isAdmin: false
         }
     },
     created() {
         this.getportfolioList();
+    },
+    mounted() {
+        console.log(this.$route.params.id)
+        console.log(this.$store.getters.getUserInfo.id)
+        if(this.$route.params.id === this.$store.getters.getUserInfo.id){
+
+            this.isAdmin = true
+        }
+        console.log(this.isAdmin)
     },
     computed: {
         adminMode() {
@@ -75,7 +89,6 @@ export default {
     },
     methods:{
         setPortfolioSeq(seq){
-          // alert(seq);
           this.clickedSeq = seq;
         },
         getportfolioList(){

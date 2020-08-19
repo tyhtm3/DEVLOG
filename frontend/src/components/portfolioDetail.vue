@@ -1,9 +1,6 @@
 <template>
 <div class="html">
     <div class="media-gallery">
-      <div class="pull-right">
-        수정 | 삭제
-      </div>
       <figure class="media-post" v-for="(template, index) in templates" :key="index" @click="templateDetail(template.url)">
         
         <div class="thumbnail-wrapper"> 
