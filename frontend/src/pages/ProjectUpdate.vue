@@ -205,8 +205,8 @@ export default {
   },
   created(){
     http.get('stack')
-      .then(({data}) => {
-        for(let i=0; i<data.length; i++){
+    .then(({data}) => {
+      for(let i=0; i<data.length; i++){
         this.all_stack.push({
         label: data[i].stack,
         key:data[i].stack,
@@ -415,7 +415,6 @@ export default {
       http
       .get('/project/'+this.$route.params.seq)
       .then(({data}) => {
-        console.log(data)
         if(data.disclosure===1)
           this.disclosure = '전체공개'
         else if(data.disclosure===2)
@@ -451,6 +450,7 @@ export default {
         http
         .get('/projectstack/'+this.$route.params.seq)
         .then(({data}) => {
+          console.log(data)
           for(let i=0; i<data.length; i++){
             this.stack.push(data[i].stack)
           }

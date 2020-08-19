@@ -13,7 +13,6 @@
 					<el-dropdown class="header-dropdown-devin" trigger="click" style="top: 0px;">
 						<span class="el-dropdown-link">
 							<img :src="this.$store.state.userInfo.profile_img_url" class="cover-profile" style="width:50px; height:50px; border:0px; cursor:pointer;" alt="cover"/>
-							<!-- <img src="static/img/profile.png" class="cover-profile" style="width:45px; height:45px; border:0px; cursor:pointer;" alt="cover"/> -->
 						</span>
 						<el-dropdown-menu slot="dropdown">
 							<ul class="dropdown-menu-devin">
@@ -27,10 +26,6 @@
 											</router-link>
 										</li>
 										<li> <i class="ti-home"></i>
-											<!-- <router-link :to="{ name: 'blog', params: { id: this.getUserInfo.id }}">
-												<h3 style="margin-top: 9px;">내 블로그<span class="text-yellow fontello-record"></span></h3>
-												<p></p>
-											</router-link> -->
 											<a :href="$router.resolve({name: 'blog',params:{id:this.getUserInfo.id}}).href">
 												<h3 style="margin-top: 9px;">내 블로그<span class="text-yellow fontello-record"></span></h3>
 												<p></p>
@@ -81,7 +76,6 @@ export default {
 	mounted() {
 		this.blogurl = this.getUserInfo.seq
 		this.url=this.basicurl+this.blogurl
-		// alert(this.url);
 	},
 	methods: {
 		loginFormOpen(){

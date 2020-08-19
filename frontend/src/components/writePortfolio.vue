@@ -265,39 +265,6 @@ export default {
     this.birth = this.userInfo.birthday,
     this.giturl = this.userInfo.github_url,
     this.imageUrl = this.userInfo.profile_img_url
-    // ,$(".el-tab-pane").click(function(event){
-    //   var targetElement = $(event.target);
-    //   if(targetElement.is(".el-tab-pane")){
-    //     alert("고침");
-    //   }
-    // });
-
-    // divs.forEach(function(div) {
-      //   div.addEventListener('click', logEvent, {
-        //     capture: true // default 값은 false입니다.
-    //   });
-    // });
-
-    // var spans = document.querySelectorAll('span');
-    // spans.forEach(function(span) {
-    //   span.addEventListener('click', logEvent);
-    // });
-
-    // function logEvent(event) {
-    //   event.stopPropagation();
-    //   console.log(event.currentTarget.className); // three
-    // }
-
-
-    //  ,$('.el-tab-pane').on('click', evt => {
-    //   alert("클릭됨!!!");
-    // })
-    // var span = document.querySelector('.el-tab-pane');
-    // span.addEventListener('click', alertspan);
-    // function alertspan(event){
-    //   // console.log(event);
-    //   alert("된다");
-    // }
   },
   methods: {
     filterMethod(query, item) {
@@ -354,6 +321,7 @@ export default {
         tel: this.tel
       })
       .then(({ data }) => {
+        console.log(this.portfolioSeq)
         this.portfolioSeq=data;
         http
         .post('portfoliopjt', {
