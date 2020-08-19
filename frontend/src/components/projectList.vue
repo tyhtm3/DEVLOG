@@ -176,7 +176,7 @@
             }
             else{
                 this
-                .$confirm('삭제하시겠습니까?', {
+                .$confirm('총 '+this.deleteList.length+'개의 프로젝트를 삭제하시겠습니까?', {
                     confirmButtonText: '삭제',
                     cancelButtonText: '취소',
                     type: 'warning'

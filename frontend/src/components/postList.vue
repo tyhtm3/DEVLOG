@@ -168,22 +168,6 @@ export default {
                 })
             })
         },
-        // 포스트로부터 코멘트 개수와 태그 불러오기
-        // getpostCommentTag(data){
-        //     for(var i=0; i<data.length; i++){
-        //         this.postVisible[i] = true;
-        //         // 코멘트
-        //         http.get('postcomment/count/'+data[i].seq)
-        //         .then(({data}) => {
-        //         this.comment.push(data);
-        //         });
-        //         // 태그
-        //         http.get('posttag/'+data[i].seq)
-        //         .then(({data}) => {
-        //         this.tag.push(data.slice(0,3));
-        //         });
-        //     }   
-        // },
         deletePost(){
             if(this.deleteList.length === 0){
                 this.$message({
@@ -193,7 +177,7 @@ export default {
             }
             else{
                 this
-                .$confirm('삭제하시겠습니까?', {
+                .$confirm('총 '+this.deleteList.length+'개의 글을 삭제하시겠습니까?', {
                     confirmButtonText: '삭제',
                     cancelButtonText: '취소',
                     type: 'warning'

@@ -135,7 +135,10 @@ export default {
   },
   created() {
      http
-        .get('./post/draft').then(({data})=>{
+        .get('./post/draft', {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }}).then(({data})=>{
           this.drafts = data;
         })
   },

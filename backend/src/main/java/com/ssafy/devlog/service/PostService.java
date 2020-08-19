@@ -11,7 +11,7 @@ public interface PostService {
 	public int selectPostCntByBlog(int seq_user,int seq_blog);
 	
 	public Post selectPost(int seq);
-	public List<Post> selectDraftPost();
+	public List<Post> selectDraftPost(int seq_blog);
 	public int insertPost(Post post);
 	public int insertPostBasic(Post post);
 	public int updatePost(Post post);

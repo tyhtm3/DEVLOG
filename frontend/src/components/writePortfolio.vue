@@ -203,15 +203,16 @@
               <dd><el-input v-model="portfolioTitle" style="width: 70%;"></el-input></dd>
               <dt>CONTENT</dt>
               <dd><el-input v-model="portfolioContent" style="width: 70%;"></el-input></dd>
-              <dt>공개 여부</dt>
+
+
+             <dt>대표 여부</dt>
               
               <dd>
-                <el-radio-group v-model="portfolioDisclosure">
-                  <el-radio-button label="전체공개"></el-radio-button>
-                  <el-radio-button label="이웃공개"></el-radio-button>
-                  <el-radio-button label="비공개" ></el-radio-button>
-                </el-radio-group>
+              <el-tooltip :content="portfolioRepresentation?'나만 보기':'대표 설정'" placement="right">
+              <el-switch v-model="portfolioRepresentation" on-color="#13ce66" off-color="#ff4949" :on-value="1" :off-value="0"> </el-switch>
+              </el-tooltip>
               </dd>
+
             </dl>
             <hr>
           </div>
@@ -234,8 +235,7 @@ export default {
       portfolioContent:'',
       portfolioTitle:'',
       portfolioSummary:'summary',
-      // portfolioRole:'',
-      portfolioDisclosure: '전체공개',
+      portfolioRepresentation : 0,
       portfolioSeq:'',
       // 개인정보
       seq: '',
@@ -368,19 +368,11 @@ export default {
       })
     },
     makePortfolio() {
-      // alert(this.includedStack);
-      if(this.portfolioDisclosure === "전체공개")
-        this.portfolioDisclosure = 1
-      else if(this.portfolioDisclosure === "이웃공개")
-        this.portfolioDisclosure = 2
-      else
-        this.portfolioDisclosure = 3
-      // alert(this.includedProject);
       http
       .post('portfolio', {
         email: this.email,
         content: this.portfolioContent,
-        disclosure: this.portfolioDisclosure,
+        representation: this.portfolioRepresentation?1:0,
         github_url: this.giturl,
         img_url: this.imageUrl,
         name: this.name,

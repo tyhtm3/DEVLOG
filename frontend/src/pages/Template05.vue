@@ -12,7 +12,7 @@
                       <!-- 1. 배너 시작-->
                       <div style="height:200px;background-color:#51555c;padding-top:30px;">
                          
-
+                        
                           <div style="text-align: center;font-family: 'Noto Sans KR', sans-serif;color:white;">
                               <!-- 1.1 이름 -->
                               <p style="font-size:33px;">{{portfolio.name}}</p>
@@ -33,7 +33,7 @@
 <div style="margin-left:100px;margin-right:100px;">
 
                       <!-- 3. 소개 -->
-                      <div style="background-color:white;height:290px;margin-top:30px;padding:80px 70px 70px 70px;box-shadow: 3px 3px 33px 4px  rgba(163, 163, 163, 0.404);">
+                      <div style="background-color:white;height:340px;margin-top:30px;padding:80px 70px 70px 70px;box-shadow: 3px 3px 33px 4px  rgba(163, 163, 163, 0.404);">
                               
                           <!-- 3-1. 깃허브주소, 이메일주소, 연락처 -->   
                           <div class="row" style="margin-bottom:50px;">
@@ -47,8 +47,8 @@
                           <!-- 3-1. -->
                           
                           <!-- 3-2. portfolio.content -->
-                          <span style="align: center;font-family: 'Noto Sans KR', sans-serif;">
-                                희망 직무 {{portfolio.content}}
+                          <span style="align: center;font-family: 'Noto Sans KR', sans-serif;line-height: 30px;">
+                                {{portfolioMoreInfo.introduction}}
                           </span> 
                           <!-- 3-2. -->
 
@@ -67,33 +67,7 @@
                        <!-- 3. 소개 끝 -->
 
 
-              <!-- 4. 프로그래밍 능력 / 외국어 능력 -->
-              <div class="header-timeline" style="margin-top:60px;margin-bottom:30px;">
-                                <h1>SKILLS</h1>
-              </div>
-
-
-                <div style="background-color:white;
-                 box-shadow: 3px 3px 33px 4px  rgba(163, 163, 163, 0.404);">
-                 <div class="row">
-                  <br> <br>
-                 <div class="col-sm-1"></div>       
-                 <div class="col-sm-5">                  
-                 
-                
-                 <radar-chart v-bind:label="label" v-bind:exp="exp" v-bind:title="'프로그래밍 능력'"></radar-chart>
-                  </div>
-                  <div class="col-sm-5">
-                <radar-chart v-bind:label="language" v-bind:exp="exp_lang" v-bind:title="'외국어 능력'"></radar-chart>
-                  </div>
-
-                  <div class="col-sm-1"></div>
-                </div>
-                 <br> <br>
-                 <div style="margin-bottom:20px;"></div>
-                 </div>
-               <!-- 4. 끝 -->
-
+          
 </div>
 
                              
@@ -165,6 +139,35 @@
        <!-- 5. 프로젝트 타임라인 끝 -->
 
 
+  <!-- 4. 프로그래밍 능력 / 외국어 능력 -->
+              <div class="header-timeline" style="margin-top:60px;margin-bottom:30px;">
+                                <h1>SKILLS</h1>
+                                 <h2>Programming and Language skills</h2>
+              </div>
+
+
+                <div>
+                 <div class="row">
+                  <br> <br>
+                 <div class="col-sm-1"></div>       
+                 <div class="col-sm-5">                  
+                 
+                
+                 <radar-chart v-bind:label="label" v-bind:exp="exp" v-bind:title="'프로그래밍 능력'"></radar-chart>
+                  </div>
+                  <div class="col-sm-5">
+                <radar-chart v-bind:label="language" v-bind:exp="exp_lang" v-bind:title="'외국어 능력'"></radar-chart>
+                  </div>
+
+                  <div class="col-sm-1"></div>
+                </div>
+                 <br> <br>
+                 <div style="margin-bottom:20px;"></div>
+                 </div>
+               <!-- 4. 끝 -->
+
+
+
                             <div style="margin-top:40px;height:100px;background-color:white"></div>
                             
                             </div>
@@ -201,6 +204,7 @@
           portfoliopjt : '',
           portfoliostack : '',
           portfoliocert : '',
+          portfolioMoreInfo : '',
           label : [],
           exp : [],
           language : [],
@@ -229,6 +233,13 @@
             this.exp_lang[i]= data[i].level
           }
       });
+    
+        http.get('portfolio/info/'+this.seq)
+        .then(({data}) => {
+            this.portfolioMoreInfo=data;
+            this.addstr="http://maps.google.com/maps?q="+data.address;
+         })
+      
     
     },  
     methods : {
@@ -315,4 +326,5 @@ src: url(/fonts/NotoSans-Bold.eot?#iefix) format('embedded-opentype'),
 url(/fonts/NotoSans-Bold.woff2) format('woff2'),
 url(/fonts/NotoSans-Bold.woff) format('woff');
 }
+
 </style>
