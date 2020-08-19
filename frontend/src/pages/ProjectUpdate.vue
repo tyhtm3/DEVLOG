@@ -303,7 +303,7 @@ export default {
             type: 'success',
             message: '프로젝트 수정 완료.'
           });
-          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)  
+          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
         })
       }
     },
