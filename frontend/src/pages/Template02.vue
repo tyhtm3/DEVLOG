@@ -221,14 +221,8 @@
               this.chartData.rows.push(rows)
             } 
           }
-          this.projects.sort(this.customSort) 
          })
       },
-      customSort(a, b) {
-        if(a.start_date == b.start_date){
-          return 0
-          }
-          return a.start_date > b.start_date ? 1 : -1; }
    },
 }        
   function dateDiff(_date1, _date2) {
