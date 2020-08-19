@@ -347,56 +347,63 @@ export default {
         this.portfolioDisclosure = 2
       else
         this.portfolioDisclosure = 3
+
+      console.log(this.portfolioContent)
+      console.log(this.portfolioDisclosure)
+      console.log(this.email)
+      console.log(this.giturl)
+      console.log(this.profile_img_url)
+      console.log(this.name)
+      console.log(this.imageUrl)
+      console.log(this.seq)
+      console.log(this.tel)
+      console.log(this.portfolioTitle)
+      
+      // name, profile_img_url, github_url, birthday, content, tel,email, title, disclosure, img_url
       http
       .put('portfolio', {
-        email: this.email,
+        seq: Number(this.portfolioSeq),
         content: this.portfolioContent,
-        disclosure: this.portfolioDisclosure,
+        disclosure: Number(this.portfolioDisclosure),
+        birthday: null,
+        email: this.email,
         github_url: this.giturl,
-        img_url: this.profile_img_url,
+        img_url: null,
         name: this.name,
         profile_img_url: this.imageUrl,
-        seq_blog: this.seq,
+        seq_blog: Number(this.seq),
         tel: this.tel,
         title: this.portfolioTitle,
-        regtime: this.regtime,
       })
       .then(({ data }) => {
-        console.log(this.includedProject)
-        console.log(this.portfolioSeq)
         // 선택된 프로젝트 목록 업데이트
         http
         .post('portfoliopjt', {
-          seq_post_portfolio: this.$route.params.seq,
+          seq_post_portfolio: Nmuber(this.portfolioSeq),
           seq_post_project: this.includedProject,
-          // seq_post_portfolio: 497,
-          // seq_post_project: null
         })
         .then(({ data }) => {
-          
-          console.log("여기까지오나1")
+          console.log("프로젝트 목록 갱신 성공")
         })
         .catch((error)=>{
-          // console.log(error.response.status)
+          console.log("프로젝트 목록 갱신 성공")          
         })
-        console.log("여기까지오나2")
-
+        
         // 선택된 기술 스택 업데이트
         for(let i=0; i<this.includedStack.length; i++){
-          console.log("여기까지오나3")
-          console.log(this.includedStack)
-          // http
-          // .post('projectstack', {
-          //   seq_post_project: this.portfolioSeq,
-          //   stack: this.stackInfoList[this.includedStack[i]].stack,
-          //   stack_img_url: this.stackInfoList[this.includedStack[i]].stack_img_url,
-          // })
-          // .then(({ data }) => {
-          // })
-          // .catch((error)=>{
-          // })
+          http
+          .post('projectstack', {
+            seq_post_project: this.portfolioSeq,
+            stack: this.stackInfoList[this.includedStack[i]].stack,
+            stack_img_url: this.stackInfoList[this.includedStack[i]].stack_img_url,
+          })
+          .then(({ data }) => {
+            console.log("기술 스택 목록 갱신 성공")
+          })
+          .catch((error)=>{
+            console.log("기술 스택 목록 갱신 성공")
+          })
         }
-        console.log("여기까지오나4")
         this.$message({
             type: 'success',
             message: '포트폴리오 수정 완료.'
@@ -405,7 +412,7 @@ export default {
         this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
       })
       .catch((error) => {
-        // console.log(error.response.status)
+        console.log("실패")
       })
     },
     
