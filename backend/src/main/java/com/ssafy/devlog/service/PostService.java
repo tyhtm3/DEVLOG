@@ -12,6 +12,7 @@ public interface PostService {
 	
 	public Post selectPost(int seq);
 	public List<Post> selectDraftPost(int seq_blog);
+	public String selectPostTitle(int seq);
 	public int insertPost(Post post);
 	public int insertPostBasic(Post post);
 	public int updatePost(Post post);

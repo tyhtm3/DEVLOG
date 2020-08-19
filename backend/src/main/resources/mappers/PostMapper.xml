@@ -89,6 +89,12 @@
 		where post.seq = #{seq}
 	</select>
 	
+	<select id="selectPostTitle" resultType="String">
+		select title
+		from post
+		where seq = #{seq_post}
+	</select>
+	
 	<!-- 임시보관 포스트 조회  -->
 	<select id="selectDraftPost" resultType="Post">
 	select post.*, post_basic.content from post inner join post_basic on post.seq = post_basic.seq

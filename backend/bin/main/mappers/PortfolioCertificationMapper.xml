@@ -7,7 +7,7 @@
 		select *
 		from post_portfolio_certification
         where seq_post_portfolio = #{seq_post_portfolio}
-        order by date
+        order by date desc
 	</select>
 	
 	<!-- 포트폴리오에 자격증을 추가한다.  -->

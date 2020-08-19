@@ -63,4 +63,9 @@ public class PostServiceImpl implements PostService{
 		return postMapper.deletePost(seq);
 	}
 
+	@Override
+	public String selectPostTitle(int seq) {
+		return postMapper.selectPostTitle(seq);
+	}
+
 }
