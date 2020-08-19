@@ -59,75 +59,74 @@
             <section v-if="projectInfoList.length>0" class="showProject">
               <div class="tocenter" style="padding: 10px">
                 <div style="margin-bottom:15px; font-size:15px"><b>프로젝트 정보</b></div>
-                
-                <!-- <span v-text="hoveredProject"></span> -->
-                <!-- <span :v-bind=hoveredProject></span> -->
-                <!-- <span :v-text=hoveredProject></span> -->
+                <div style="margin-bottom:15px; text-align:center"><img :src=hoveredProjectData.img_url width="200px"></div>
                 <div class="row pjt-margin">
-                  <div class="col-sm-4">
+                  <div class="col-sm-3">
                   <p>제목</p>
                   </div>
-                  <div class="col-sm-8">
-                    <input class="only-for-show" type="text" id="project-title" readonly />
+                  <div class="col-sm-9">
+                    <!-- <input class="only-for-show" type="text" id="project-title" readonly /> -->
                   <!-- <p class="pjt-content">{{projectInfoList[0].title}}</p> -->
+                  <p class="pjt-content">{{hoveredProjectData.title}}</p>
                   </div>
                 </div>
                 <div class="row pjt-margin">
-                  <div class="col-sm-4">
+                  <div class="col-sm-3">
                   <p>개요</p>
                   </div>
-                  <div class="col-sm-8">
-                  <p class="pjt-content">{{projectInfoList[0].summary}}</p>
+                  <div class="col-sm-9">
+                  <p class="pjt-content">{{hoveredProjectData.summary}}</p>
                   </div>
                 </div>
                 <div class="row pjt-margin">
-                  <div class="col-sm-4">
+                  <div class="col-sm-3">
                   <p>기간</p>
                   </div>
-                  <div class="col-sm-8">
-                  <p class="pjt-content">{{projectInfoList[0].start_date}} ~ <br>{{projectInfoList[0].finish_date}}</p>
+                  <div class="col-sm-9">
+                  <p class="pjt-content">{{hoveredProjectData.start_date}} ~ {{hoveredProjectData.finish_date}}</p>
                   </div>
                 </div>
                 <div class="row pjt-margin">
-                  <div class="col-sm-4">
+                  <div class="col-sm-3">
                   <p>스택</p>
                   </div>
-                  <div class="col-sm-8">
-                  <div v-for="(stack,index) in stack" :key="index">
-                    <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
+                  <div class="col-sm-9">
+                  <div v-for="(stack,index) in projectStackList" :key="index">
+                    <!-- @click="putStack(stack.stack)"  -->
+                    <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="height: 32px;margin-right:10px;">
                   </div>
                   </div>
                 </div>
                 <div class="row pjt-margin">
-                  <div class="col-sm-4">
+                  <div class="col-sm-3">
                   <p>역할</p>
                   </div>
-                  <div class="col-sm-8">
-                  <p class="pjt-content">{{projectInfoList[0].role}}</p>
+                  <div class="col-sm-9">
+                  <p class="pjt-content" v-for="(role,index) in hoveredProjectData.roles" :key="index" >{{role.role}}</p>
                   </div>
                 </div>
-                <div class="row" v-if="projectInfoList[0].github_url">
-                  <div class="col-sm-4">
+                <div class="row" v-if="hoveredProjectData.github_url">
+                  <div class="col-sm-3">
                   <p>Git</p>
                   </div>
-                  <div class="col-sm-8">
-                  <p class="pjt-content"><a href="#" @click="goUrl(projectInfoList[0].github_url)">{{projectInfoList[0].github_url}}</a></p>
+                  <div class="col-sm-9">
+                  <p class="pjt-content"><a href="#" @click="goUrl(hoveredProjectData.github_url)">{{hoveredProjectData.github_url}}</a></p>
                   </div>
                 </div>
-                <div class="row" v-if="projectInfoList[0].etc_url">
-                  <div class="col-sm-4">
+                <div class="row" v-if="hoveredProjectData.etc_url">
+                  <div class="col-sm-3">
                   <p>기타 Url</p>
                   </div>
-                  <div class="col-sm-8">
-                  <p class="pjt-content">{{projectInfoList[0].etc_url}}</p>
+                  <div class="col-sm-9">
+                  <p class="pjt-content">{{hoveredProjectData.etc_url}}</p>
                   </div>
                 </div>
-                <div class="row" v-if="projectInfoList[0].rep_url">
-                  <div class="col-sm-4">
+                <div class="row" v-if="hoveredProjectData.rep_url">
+                  <div class="col-sm-3">
                   <p>참고 Url</p>
                   </div>
-                  <div class="col-sm-8">
-                  <p class="pjt-content">{{projectInfoList[0].rep_url}}</p>
+                  <div class="col-sm-9">
+                  <p class="pjt-content">{{hoveredProjectData.rep_url}}</p>
                   </div>
                 </div>
               </div>
@@ -159,14 +158,13 @@
             <div v-if="stackInfoList.length>0" class="showProject">
               <div class="tocenter" style="padding: 10px">
                 <div style="margin-bottom:15px; font-size:15px"><b>기술스택 정보</b></div>
-                <div style="margin-bottom:15px; text-align:center"><img :src=stackInfoList[0].stack_img_url width="200px"/></div>
+                <div style="margin-bottom:15px; text-align:center"><img :src=hoveredStackData.stack_img_url width="200px"/></div>
                 <div class="row pjt-margin" style="padding-top:10px;">
                   <div class="col-sm-4">
                   <p>기술스택</p>
                   </div>
                   <div class="col-sm-8">
-                    <input class="only-for-show" type="text" id="stack-title" readonly />
-                  <!-- <p class="pjt-content">{{stackInfoList[0].stack}}</p> -->
+                  <p class="pjt-content">{{hoveredStackData.stack}}</p>
                   </div>
                 </div>
                 <!-- <div class="row pjt-margin">
@@ -252,30 +250,40 @@ export default {
       projectList: [],
       includedProject: [],
       projectInfoList:[],
+      projectStackList:[],
       // 스택정보
       stackList: [],
       includedStack: [],
       stackInfoList:[],
 
+      test:[],
+
       hoveredProject:'',
-      hoveredProjectList:'',
+      hoveredProjectData:'',
       hoveredStack:'',
-      hoveredStackInfoList:'',
+      hoveredStackData:'',
 
     }
   },
-  watch:{
-    hoveredStack:function(){
-      console.log("스택호버됨");
-    },
-    hoveredProject:function(){
-      console.log("프로젝트호버됨");
-    }
-  },
+  // watch:{
+  //   includedStack:function(){
+  //     console.log(this.stackList);
+  //     console.log(this.includedProject);
+  //     console.log(this.stackInfoList);
+  //   },
+  //    hoveredStack:function(){
+  //     console.log("스택호버됨");
+  //   },
+  //   hoveredProject:function(){
+  //     console.log("프로젝트호버됨");
+  //   }
+  // },
   created() {
     this.$store.state.loginFormVisible = false;
     this.getProjectList(this.userInfo.seq);
     this.getStackList(this.userInfo.seq);
+    
+
   },
   mounted() {
     this.seq = this.userInfo.seq,
@@ -285,27 +293,47 @@ export default {
     this.birth = this.userInfo.birthday,
     this.giturl = this.userInfo.github_url,
     this.imageUrl = this.userInfo.profile_img_url
-    
-
-     $(".el-transfer-panel__body").mouseover(function(event) {
+    var vm = this;
+    $(".el-transfer-panel__body").mouseover(function(event) {
       event.preventDefault();
-      // console.log($(this).parent().index());
       if(event.target.className==''){
         if($(this).parent().parent().parent()[0].className=='selectProject'){
-          // console.log($(this).children().children());
-          this.hoveredProject=event.target.innerText;
-          $("#project-title").val(this.hoveredProject).trigger('change');//실시간 변경해주는거,,
-          console.log(this.hoveredProject);
+          vm.putHoveredProject(event.target.innerText);
         }else if($(this).parent().parent().parent()[0].className=='selectStacks'){
-          this.hoveredStack=event.target.innerText;
-          $("#stack-title").val(this.hoveredStack).trigger('change');//실시간 변경해주는거,,
-          console.log(this.hoveredStack);
+          vm.putHoveredStack(event.target.innerText);
         }
       }
     });
-   
   },
   methods: {
+    // putStack(){
+    //   alert(this.stackList);
+    // },
+    putHoveredProject(input){
+      this.hoveredProject=input;
+      // project list for문 돌리기
+      for(var i=0; i<this.projectInfoList.length; i++){
+        if(this.projectInfoList[i].title==this.hoveredProject){
+          this.hoveredProjectData=this.projectInfoList[i];
+          this.getProjectStack(this.hoveredProjectData.seq);
+        }
+      }
+    },
+    getProjectStack(seq){
+      http
+      .get('/projectstack/'+seq)
+      .then(({ data }) => {
+        this.projectStackList=data;
+      })
+    },
+    putHoveredStack(input){
+      this.hoveredStack=input;
+      for(var i=0; i<this.stackInfoList.length; i++){
+        if(this.stackInfoList[i].stack==this.hoveredStack){
+          this.hoveredStackData=this.stackInfoList[i];
+        }
+      }
+    },
     filterMethod(query, item) {
         return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
     },
@@ -314,6 +342,7 @@ export default {
       .post('project/blog', { seq_user:seq , seq_blog:seq, offset:0, limit:99999} )
       .then(({ data }) => {
         this.projectInfoList=data;
+        this.hoveredProjectData=this.projectInfoList[0];
         for(let i=0; i<data.length; i++){
           this.projectList.push({
           label: data[i].title,
@@ -328,6 +357,7 @@ export default {
       .get('/stack')
       .then(({ data }) => {
         this.stackInfoList=data;
+        this.hoveredStackData=this.stackInfoList[0];
         for(let i=0; i<data.length; i++){
           this.stackList.push({
           label: data[i].stack,
