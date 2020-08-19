@@ -390,6 +390,7 @@ export default {
         tel: this.tel
       })
       .then(({ data }) => {
+        console.log(this.portfolioSeq)
         this.portfolioSeq=data;
         http
         .post('portfoliopjt', {

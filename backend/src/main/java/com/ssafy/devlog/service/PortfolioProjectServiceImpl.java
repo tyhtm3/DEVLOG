@@ -30,4 +30,9 @@ public class PortfolioProjectServiceImpl implements PortfolioProjectService {
 		return portfolioProjectMapper.deletePortfolioProject(seq_post_portfolio , seq_post_project);
 	}
 
+	@Override
+	public int deleteAllPortfolioProject(int seq_post_portfolio) {
+		return portfolioProjectMapper.deleteAllPortfolioProject(seq_post_portfolio);
+	}
+
 }
