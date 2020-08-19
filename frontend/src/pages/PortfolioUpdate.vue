@@ -348,16 +348,6 @@ export default {
       else
         this.portfolioDisclosure = 3
 
-      // console.log(this.portfolioContent)
-      // console.log(this.portfolioDisclosure)
-      // console.log(this.email)
-      // console.log(this.giturl)
-      // console.log(this.profile_img_url)
-      // console.log(this.name)
-      // console.log(this.imageUrl)
-      // console.log(this.seq)
-      // console.log(this.tel)
-      // console.log(this.portfolioTitle)
       http
       .put('portfolio', {
         seq: this.portfolioSeq,
@@ -373,21 +363,30 @@ export default {
         title: this.portfolioTitle,
       })
       .then(({ data }) => {
-        // 선택된 기술 스택 업데이트
-        // for(let i=0; i<this.includedStack.length; i++){
-        //   http
-        //   .post('projectstack', {
-        //     seq_post_project: Number(this.portfolioSeq),
-        //     stack: this.stackInfoList[this.includedStack[i]].stack,
-        //     stack_img_url: this.stackInfoList[this.includedStack[i]].stack_img_url,
-        //   })
-        //   .then(({ data }) => {
-        //     console.log("기술 스택 목록 갱신 성공")
-        //   })
-        //   .catch((error)=>{
-        //     console.log("기술 스택 목록 갱신 성공")
-        //   })
-        // }
+        // 선택된 프로젝트 목록 업데이트
+        console.log(this.includedProject)
+        http
+        .post('portfoliopjt', {
+          seq_post_portfolio: Number(this.portfolioSeq),
+          seq_post_project: this.includedProject,
+        })
+        .then(({ data }) => {
+          console.log("프로젝트 목록 업데이트 성공")
+        })
+        .catch((error)=>{
+          console.log("프로젝트 목록 업데이트 실패")
+        })
+
+        console.log(this.includedStack)
+        http.delete('./projectstack/'+this.portfolioSeq)
+        .then(()=>{
+            for(var i=0; i<this.includedStack.length; i++){
+            http.post('./projectstack', {
+              seq_post_project: Number(this.portfolioSeq),
+              stack: this.includedStack[i]
+            })
+          }
+        })
         this.$message({
             type: 'success',
             message: '포트폴리오 수정 완료.'
@@ -396,17 +395,6 @@ export default {
       })
       .catch((error) => {
         console.log("실패")
-      })
-      // 선택된 프로젝트 목록 업데이트
-      console.log(this.includedProject)
-      http
-      .post('portfoliopjt', {
-        seq_post_portfolio: Number(this.portfolioSeq),
-        seq_post_project: this.includedProject,
-      })
-      .then(({ data }) => {
-      })
-      .catch((error)=>{
       })
     },
     

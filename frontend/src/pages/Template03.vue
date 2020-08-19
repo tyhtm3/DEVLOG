@@ -11,7 +11,7 @@
               <!-- <i class="fas fa-rocket"></i> -->
             </div>
             <div class="info">
-              <h1 class="name" v-text="portfolioInfo.name"></h1>
+              <h1 class="name" style="font-weight:bold;" v-text="portfolioInfo.name" ></h1>
               <!-- 지원 직무 : portfolioInfo.position"-->
               <h2 class="job" v-text="portfolioMoreInfo.objective"></h2>
               <!-- <h2 class="job" v-text="portfolioInfo.position"></h2> -->
@@ -29,13 +29,30 @@
             <!-- <address id="getaddress"/> -->
             <!-- <div class="address"><a :href=addstr><i class="ti-map-alt"></i><span>{{portfolioInfo.address}}</span></a> -->
             <div class="address"><a :href=addstr target="_blank"><i class="ti-map-alt"></i><span>{{portfolioMoreInfo.address}}</span></a></div>
-            <div class="email"><a :href=portfolioInfo.email><i class="ti-email"></i><span>{{portfolioInfo.email}}</span></a></div>
+            <div class="email"><a ><i class="ti-email"></i><span>{{portfolioInfo.email}}</span></a></div>
             <div class="website"><a :href=gitstr target="_blank"> <i class="ti-github"></i><span>{{portfolioInfo.github_url}}</span></a></div>
             <!-- <div class="website" @click="goBlog(portfolioOwnerInfo.id)"><a href="#"> <i class="ti-home"></i><span>{{devlogurl}}</span></a></div> -->
           </div>
           <div class="follow">
-            <h3>Follow Me</h3>
+            <h3>Technical Stacks</h3>
+                  <!-- <div v-for="(stack,index) in projectStackList" :key="index">
+                    <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="height: 32px;margin-right:10px;">
+                  </div> -->
             <div class="box" style="background-color:transparent; ">
+              <a v-for="(stack,index) in portfolioStack" :key="index" :alt="stack.stack"  href="#">
+                    <div class="thumbnail-stack-img">
+                      <img class="stack-img" :src="stack.stack_img_url" :alt="stack.stack" > 
+                    </div>
+              </a>
+
+              <!-- <a v-for="(stack,index) in portfolioStack" v-bind:key="index" :href=social.link target="_blank"><i :class=social.icon></i></a> -->
+              <!-- <img class="media-object img-circle pull-left"  v-for="(stack,index) in portfolioStack" :key="index" :alt="stack.stack" :src="stack.stack_img_url" style="height: 32px;margin-right:10px;"> -->
+              <!-- <a v-for="(stack,index) in projectSportfolioStack" v-bind:key="index" :href=stack.stack_img_url target="_blank"><i :class=social.icon></i></a> -->
+            </div>
+          </div>
+          <div class="follow" >
+            <h3>Follow Me</h3>
+            <div class="box" style="background-color:transparent;">
               <a :href=devlogstr><img src="../assets/logo_icon.png"></a>
               <a v-for="(social,index) in socials" v-bind:key="index" :href=social.link target="_blank"><i :class=social.icon></i></a>
             </div>
@@ -51,7 +68,7 @@
               <li  v-for="(experience,index) in experiences" v-bind:key="index">
                 <span v-text=experience.position />
                 <small v-text=experience.company />
-                <small><span v-text=experience.start /> ~ <span v-if="experience.end" v-text=experience.end /><span v-else>재직중</span></small>
+                <small><span v-text=experience.start /> <span>~</span> <span v-if="experience.end" v-text=experience.end /><span v-else>재직중</span></small>
               </li>
             </ul>
           </div>
@@ -113,21 +130,27 @@
           <div class="project">
             <h3><i class="fa fa-briefcase"></i>Projects</h3>
             <ul>
-              <li v-for="(project,index) in projects" v-bind:key="index" @click="goDetailProject(project.seq)">
-                <a href="#"><span v-text=project.title /></a>
+              <li v-for="(project,index) in projects" v-bind:key="index" >
+                <a style="width:70%; display:inline-block;"><span v-text=project.title /></a>
+                <a style="width:29%; display:inline-block;"><small style="float:right; vertical-align:middle;"><span v-text=project.start_date /> <span>~</span> <span v-if="project.finish_date" v-text=project.finish_date /><span v-else>진행중</span></small></a>
+
+                <small v-text=project.summary style="width:100%"/>
+                
+                
+                <i @click="goDetailProject(project.seq)" class="ti-info-alt " style="float:right;">&nbsp;</i>
+                <a :href=project.etc_url><i v-if="project.etc_url"  class="ti-link" style="float:right;">&nbsp;</i></a>
+                <a :href=project.github_url> <i v-if="project.github_url"  class="ti-github" style="float:right;">&nbsp;</i></a>
+                <div style="">
+                <span class="tag" v-for="(stack,i) in project.stacks" v-bind:key="i" style="font-size:small; font-weight:300;">#{{stack.stack}} </span>
+                </div>
+                
                 <!-- <i class="material-icons" style="transform:rotate(135deg); font-size:18px">link</i> -->
-                <small v-text=project.summary />
-                <small><span v-text=project.start_date /> ~ <span v-if="project.finish_date" v-text=project.finish_date /><span v-else>진행중</span></small>
-                <a :href=project.github_url><small v-text=project.github_url>  </small></a>
-                <small v-text=project.etc_url />
-                <small v-text=project.rep_url />
-                <small v-for="(role,i) in project.roles" v-bind:key="i" v-text=role.role>
+                <!-- <small v-for="(role,i) in project.roles" v-bind:key="i" v-text=role.role> -->
                   <!-- 역할
                   <ul>
                     <li v-for="(role,i) in project.roles" v-bind:key="i" v-text=role.role></li>
                   </ul> -->
-                </small>
-                <small v-for="(stack,i) in project.stacks" v-bind:key="i" v-text=stack.stack />
+                <!-- </small> -->
                 
               </li>
             </ul>
@@ -152,6 +175,7 @@
           loading: true,
           portfolioOwnerInfo:'',
           portfolioInfo:[],
+          portfolioStack:[],
           portfolioMoreInfo:[],
           projects:[],
           socials:[],
@@ -765,6 +789,7 @@
         e.stopPropagation();
       });
       this.getPortfolioInfo(this.$route.params.seq);
+      this.getPortfolioStack(this.$route.params.seq)
       this.getPortfolioMoreInfo(this.$route.params.seq);
       this.getSocials(this.$route.params.seq);
       this.getExperiences(this.$route.params.seq);
@@ -858,6 +883,13 @@
             this.gitstr="https://"+data.github_url;
             this.getPortfolioOwnerInfo(data.seq_blog);
          })
+      },
+      getPortfolioStack(seq){
+        http
+        .get('/projectstack/'+seq)
+        .then(({ data }) => {
+          this.portfolioStack=data;
+        })
       },
       getPortfolioOwnerInfo(seq){
         http.get('user/'+seq)
@@ -967,6 +999,18 @@ $white: #ffffff;
 $black: #0e1442;
 $orange: #b68c2c;
 $yellow: #bea231;
+
+// $darkest-blue: rgba(211, 211, 211, 0.103);
+// $darker-blue: white;
+// $dark-blue: white;
+// $medium-blue: rgb(46, 88, 122);
+// $light-blue: purple;
+// $lighter-blue: green;
+// $lightest-blue: gray;
+// $white: #9ec2cd;
+// $black: rgba(211, 211, 211, 0.103);
+// $orange: #356574;
+// $yellow: #11212E;
 // $orange: #9ec2cd;
 // $yellow: #9EBBCD;
 
@@ -1135,6 +1179,32 @@ h3 {
   left: 0;
   transition-duration: 0.3s;
 }
+// .resume .base .stack .box {
+//   text-align: center;
+//   vertical-align: middle;
+// } 
+// .resume .base .stack .box a {
+//   display: inline-block;
+//   vertical-align: text-bottom;
+// }
+// .resume .base .stack .box a:hover i {
+//   background: $yellow;
+//   border-radius: 5px;
+//   transform: rotate(45deg) scale(0.8);
+// }
+// .resume .base .stack .box a:hover img {
+//   background: $yellow;
+//   border-radius: 5px;
+//   transform: rotate(45deg) scale(0.8);
+// }
+// .resume .base .stack .box .media-object{
+//   margin:10px;
+// }
+
+
+
+
+
 .resume .base .follow .box {
   text-align: center;
   vertical-align: middle;
@@ -1179,6 +1249,40 @@ h3 {
   color: $darker-blue;
   margin: 0 10px 10px 10px;
   transition-duration: 0.3s;
+}
+.resume .base .follow .box .thumbnail-stack-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color:rgba(255, 255, 255, 0.39);
+  opacity: 1;
+  margin:0px 10px 10px 10px;
+  transition-duration: 0.3s;
+}
+.resume .base .follow .box a.thumbnail-stack-img img{
+  background-color: transparent!important;
+}
+.resume .base .follow .box a:hover .thumbnail-stack-img {
+  opacity: 0.6;
+  border-radius: 5px;
+  transform: rotate(45deg) scale(0.8);
+}
+.resume .base .follow .box a:hover .thumbnail-stack-img img{
+  transform: rotate(0);
+}
+.resume .base .follow .box .thumbnail-stack-img .stack-img {
+  display: inline-block;
+  font-size: 30px;
+  background: transparent;
+  max-width: 40px;
+  max-height: 40px;
+  border-radius:0px;
+  // border-radius: 100%;
+  line-height: 60px;
+  color: $darker-blue;
+  margin: 10px 10px 10px 10px;
+  transition-duration: 0.3s;
+  vertical-align: middle;
 }
 .resume .base .follow .box i::before {
   transition-duration: 0.3s;
@@ -1235,12 +1339,12 @@ h3 {
   padding-left: 25px;
   padding-bottom: 15px;
 }
-.resume .func .work ul li:first-child span,
-.resume .func .edu ul li:first-child span{
+.resume .func .work ul li span,
+.resume .func .edu ul li span{
   font-weight: bold;
 }
-.resume .func .work ul li:first-child small span,
-.resume .func .edu ul li:first-child small span{
+.resume .func .work ul li small span,
+.resume .func .edu ul li small span{
   font-weight: 300;
 }
 
@@ -1263,6 +1367,10 @@ h3 {
 .resume .func .project ul li:hover span {
   color: $yellow;
   font-weight: bold;
+}
+.resume .func .project ul li:hover .tag{
+  color: $white;
+  font-weight: 400;
 }
 .resume .func .work ul li:hover small span ,
 .resume .func .edu ul li:hover small span,
@@ -1479,9 +1587,22 @@ h3 {
 .resume .func .certifications-items div span {
   display: block;
 }
+.tag{
+  margin-left:-8px;
+}
 .tag:hover{
   background-color: $yellow;
+  color:rgb(30, 59, 82)!important;
 }
 
+
+.a:hover .tag{
+  color:white;
+}
+
+.project ul li i:hover{
+  transform: rotate(25deg) scale(1.1);
+  transition-duration: 0.3s;
+}
 
 </style>
