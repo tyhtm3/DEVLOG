@@ -4,7 +4,9 @@
       <!-- 프로젝트 정보 시작 -->
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">* 제목</p>
+          <p class="pull-right">* 제목
+            <el-tooltip class="item" effect="dark" content="프로젝트의 특징을 살릴 수 있는 기발한 제목을 적어주세요" placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+          </p>
         </div>
         <div class="col-sm-9">
           <el-input style="padding:10px;" placeholder="PROJECT TITLE" v-model="title"> </el-input>
@@ -13,7 +15,9 @@
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">* 프로젝트 개요</p>
+          <p class="pull-right">* 개요
+            <el-tooltip class="item" effect="dark" content="프로젝트를 한 줄로 설명해보세요" placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+          </p>
         </div>
         <div class="col-sm-9">
           <el-input style="padding:10px;" type="textarea" :rows="5" placeholder="PROJECT SUMMARY" v-model="summary"> </el-input>
@@ -22,40 +26,65 @@
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">* 개발 기간</p>
+          <p class="pull-right">* 개발 기간
+            <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 이곳에 입력된 개발 기간 데이터를 활용해 가장 최신 프로젝트부터 과거의 프로젝트까지 정렬해드립니다." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+          </p>
         </div>
-        <div class="col-sm-9" style="padding-top:15px;padding-left:25px;">
-          <el-date-picker v-model="start_date" type="date"></el-date-picker><span style="font-size:20px;">&nbsp; ~ &nbsp;</span>
+        <div class="col-sm-4" style="padding-top:15px;">
+          <el-date-picker v-model="start_date" type="date"></el-date-picker>
+        </div>
+        <div class="col-sm-1" style="position:relative; top:20px;">
+          <span style="font-size:20px;">&nbsp; ~ &nbsp;</span>
+        </div>
+        <div class="col-sm-4" style="padding-top:15px;">
           <el-date-picker v-model="finish_date" type="date"></el-date-picker>
         </div>
       </div><hr>
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">* 사용 스택</p>
+          <p class="pull-right">* 사용 스택
+            <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 이곳에서 선택한 기술 스택을 통해 포트폴리오를 시각화해드립니다." placement="right"><span class="ti-help-alt" style="position:relative;"/></el-tooltip>
+          </p>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-1 pull-right">
+          
+        </div>
+        <div class="col-sm-8 pull-right">
+          <section class="selectProject" style="padding:15px;">
+            <el-transfer
+              :titles="['기술스택 목록', '사용한 기술스택']"
+              filterable
+              :filter-method="filterMethod"
+              filter-placeholder="기술스택 검색"
+              v-model="stack"
+              :button-texts="['','']"
+              :data="all_stack">
+            </el-transfer>
+          </section>
+        </div>
+        <!-- <div @click="test">클릭해봐요</div> -->
+        <!-- {{stack}} -->
+        <!-- {{all_stack}} -->
+        <div class="col-sm-3" >
+          <!-- <div  style="width:100%;"> -->
+              <div v-if="initial_all_stack.length>0" class="tocenter" style="padding: 10px;  min-height:250px">
+                <div style="text-align:center; margin-top:auto; margin-bottom:auto;"><img :src=hoveredStackData.stack_img_url width="100px"/></div>
+              </div>
+            </div>
+        <!-- </div> -->
+      </div>
       
-        <section class="selectProject" style="padding:15px;">
-          <el-transfer
-            :titles="['ALL STACK', 'YOUR STACK']"
-            filterable
-            :filter-method="filterMethod"
-            filter-placeholder="기술스택 검색"
-            v-model="stack"
-            :button-texts="['','']"
-            :data="all_stack">
-          </el-transfer>
-        </section>
-        </div>
-      </div><hr>
+      <hr>
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">* 역할</p>
+          <p class="pull-right">* 역할 
+            <el-tooltip class="item" effect="dark" content="본인이 맡은 역할을 구체적으로 작성해 신뢰도를 높여주세요. 텍스트박스를 클릭하면 입력한 역할이 제거됩니다." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+          </p>
         </div>
-        <div class="col-sm-9">
-          <div v-for="(role2,index) in roles" :key="index">
+        <div class="col-sm-9" id="role-input" >
+          <div v-for="(role2,index) in roles" :key="index" >
               <span @click="deleteRole(index)" style="cursor:pointer;">
             <el-tooltip class="item" effect="dark" content="클릭시 제거됩니다." placement="right">
                 <el-input style="padding:10px;" type="textarea" :rows="2" :value="role2" readonly></el-input>
@@ -64,10 +93,13 @@
           <div class="pull-right" style="padding:0px 10px 0px 10px;">
           </div>
           </div>
-          <el-input style="padding:10px;" type="textarea" :rows="4" placeholder="PROJECT ROLE" v-model="role"> </el-input>
-          <div class="pull-right" style="padding:0px 10px 0px 10px;">
-            <el-button @click="addRole">추가</el-button>
+          <el-input style="padding:10px; display:inline-block;" type="textarea" :rows="4" v-model="role"> </el-input>
+          <div class="pull-right" style="padding:10px; display:inline-block; height:60px!important; margin-bottom:auto; margin-top:auto;">
+            <el-button @click="addRole" >추가</el-button>
           </div>
+        </div>
+        <div class="col-sm-2">
+          
         </div>
       </div>
       <hr>
@@ -76,34 +108,48 @@
 
         <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">* Git url</p>
+          <p class="pull-right">* Git url
+            <el-tooltip class="item" effect="dark" content="프로젝트를 증명해주세요! 첨부한 Git을 통해 인사 담당자가 프로젝트에 대해 더욱 정확히 이해할 수 있습니다." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+          </p>
         </div>
         <div class="col-sm-9">
-          <el-input style="padding:10px;" v-model="github_url"> </el-input>
+          <el-input style="padding:10px;" v-model="github_url"> 
+            <template slot="prepend">https://</template>
+          </el-input>
         </div>
       </div><hr>
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">기타 url</p>
+          <p class="pull-right">기타 url
+            <el-tooltip class="item" effect="dark" content="프로젝트를 생동감있게 소개해주세요! 많은 데블로거들이 이곳에 시연 동영상 주소, 직접 제작한 웹페이지 주소 등을 첨부합니다." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+          </p>
         </div>
         <div class="col-sm-9">
-          <el-input style="padding:10px;" v-model="etc_url"> </el-input>
+          <el-input style="padding:10px;" v-model="etc_url"> 
+            <template slot="prepend">https://</template>
+          </el-input>
         </div>
       </div><hr>
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">참고 url</p>
+          <p class="pull-right">참고 url
+            <el-tooltip class="item" effect="dark" content="프로젝트에 사용된 자료의 출처를 밝혀주세요! 프로젝트 자료의 출처가 명확하면 프로젝트에 대한 신뢰도가 높아집니다." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+          </p>
         </div>
         <div class="col-sm-9">
-          <el-input style="padding:10px;" v-model="rep_url"> </el-input>
+          <el-input style="padding:10px;" v-model="rep_url"> 
+            <template slot="prepend">https://</template>
+          </el-input>
         </div>
       </div><hr>
 
       <div class="row">
         <div class="col-sm-2 pjt-title" style="height:490px;">
-          <p class="pull-right">추가 설명</p>
+          <p class="pull-right">추가 설명
+            <el-tooltip class="item" effect="dark" content="프로젝트에 대해 더 자세한 설명을 남기고싶다면? 이곳을 이용해주세요." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+          </p>
         </div>
         <div class="col-sm-9">
           <vue-editor id="project-editor" v-model="content2" style="padding:10px;"></vue-editor>
@@ -113,9 +159,11 @@
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">태그</p>
+          <p class="pull-right">태그
+            <el-tooltip class="item" effect="dark" content="다양한 태그를 통해 다른 데블로거들의 관심을 끌어보세요! 태그를 타고 들어온 데블로거가 함께 새로운 프로젝트를 진행하자고 요청할지도 몰라요!" placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+          </p>
         </div>
-        <div class="col-sm-9" style="padding:15px 0px 0px 25px">
+        <div class="col-sm-9" style="position:relative; top:20px;">
           <span v-html="htmlTag">
           </span>
           # <input class="inputtag" v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그를 입력해주세요.">
@@ -124,7 +172,9 @@
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">썸네일</p>
+          <p class="pull-right">썸네일
+            <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 썸네일을 통해 포트폴리오를 시각화해드립니다. 화려한 썸네일을 활용한다면 피드 페이지에서 더욱 돋보일 수 있어요." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+          </p>
         </div>
         <div class="col-sm-9" style="padding:0px 0px 0px 25px">
           <el-upload action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
@@ -222,8 +272,14 @@ components: {
       rep_url : null,
       content2 : null,
       // 기술스택
-      stack : [],
-      all_stack : [],
+      initial_all_stack: [],  // 맨 처음에 axios로 불러온 상태
+      stack : [],             // 선택된 애들?
+      all_stack : [],         // 남은 애들? 맞나요!? 이게 헷갈리네
+      // 호버된 기술스택
+      hoveredStackData:'',
+
+
+
       // 역할
       roles : [],
       role: '',
@@ -235,12 +291,15 @@ components: {
       // 임시저장
       drafts: [],
       selectDialogVisible: false,
+
+    
     }
   },
 
  created(){
       http.get('stack')
         .then(({data}) => {
+          this.initial_all_stack=data;
           for(let i=0; i<data.length; i++){
           this.all_stack.push({
           label: data[i].stack,
@@ -255,7 +314,33 @@ components: {
           this.drafts = data;
      })
  },
+ mounted(){
+   var vm = this;
+    $(".el-transfer-panel__body").mouseover(function(event) {
+      event.preventDefault();
+      if(event.target.className==''){
+        if($(this).parent().parent().parent()[0].className=='selectProject'){
+          // alert(event.target.innerText)
+          vm.putHoveredStack(event.target.innerText);
+        }
+      }
+    });
+ },
   methods : {
+    // test(){
+      // alert("들어옴");
+      // this.stack.push("php");
+    // },
+    putHoveredStack(input){
+      this.hoveredStack=input;
+      for(var i=0; i<this.initial_all_stack.length; i++){
+        if(this.initial_all_stack[i].stack==this.hoveredStack){
+          this.hoveredStackData=this.initial_all_stack[i];
+        }
+      }
+    },
+
+
     addRole(){
         if(this.role==''){
           this.$message.warning('프로젝트 역할을 입력해 주세요.')
@@ -667,8 +752,18 @@ components: {
 #project-editor .ql-editor{
   min-height: 400px;
 }
+#role-input .el-textarea__inner{
+    /* background-color:red !important; */
+    height:40px !important;
+  }
+
+  #role-input .el-textarea{
+    width: 80%;
+  }
+
 </style>
 <style scoped>
+  
 .pjt-title{
   padding-top: 20px;
 }
