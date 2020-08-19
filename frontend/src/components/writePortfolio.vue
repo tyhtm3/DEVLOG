@@ -59,12 +59,17 @@
             <section v-if="projectInfoList.length>0" class="showProject">
               <div class="tocenter" style="padding: 10px">
                 <div style="margin-bottom:15px; font-size:15px"><b>프로젝트 정보</b></div>
+                
+                <!-- <span v-text="hoveredProject"></span> -->
+                <!-- <span :v-bind=hoveredProject></span> -->
+                <!-- <span :v-text=hoveredProject></span> -->
                 <div class="row pjt-margin">
                   <div class="col-sm-4">
                   <p>제목</p>
                   </div>
                   <div class="col-sm-8">
-                  <p class="pjt-content">{{projectInfoList[0].title}}</p>
+                    <input class="only-for-show" type="text" id="project-title" readonly />
+                  <!-- <p class="pjt-content">{{projectInfoList[0].title}}</p> -->
                   </div>
                 </div>
                 <div class="row pjt-margin">
@@ -155,15 +160,16 @@
               <div class="tocenter" style="padding: 10px">
                 <div style="margin-bottom:15px; font-size:15px"><b>기술스택 정보</b></div>
                 <div style="margin-bottom:15px; text-align:center"><img :src=stackInfoList[0].stack_img_url width="200px"/></div>
-                <div class="row pjt-margin">
+                <div class="row pjt-margin" style="padding-top:10px;">
                   <div class="col-sm-4">
                   <p>기술스택</p>
                   </div>
                   <div class="col-sm-8">
-                  <p class="pjt-content">{{stackInfoList[0].stack}}</p>
+                    <input class="only-for-show" type="text" id="stack-title" readonly />
+                  <!-- <p class="pjt-content">{{stackInfoList[0].stack}}</p> -->
                   </div>
                 </div>
-                <div class="row pjt-margin">
+                <!-- <div class="row pjt-margin">
                   <a href="#">
                   <div class="col-sm-4">
                   <p>활용 1)</p>
@@ -182,7 +188,7 @@
                   <p class="pjt-content">def프로젝트</p>
                   </div>
                   </a>
-                </div>
+                </div> -->
               </div>
             </div>
             <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
@@ -250,6 +256,20 @@ export default {
       stackList: [],
       includedStack: [],
       stackInfoList:[],
+
+      hoveredProject:'',
+      hoveredProjectList:'',
+      hoveredStack:'',
+      hoveredStackInfoList:'',
+
+    }
+  },
+  watch:{
+    hoveredStack:function(){
+      console.log("스택호버됨");
+    },
+    hoveredProject:function(){
+      console.log("프로젝트호버됨");
     }
   },
   created() {
@@ -265,39 +285,25 @@ export default {
     this.birth = this.userInfo.birthday,
     this.giturl = this.userInfo.github_url,
     this.imageUrl = this.userInfo.profile_img_url
-    // ,$(".el-tab-pane").click(function(event){
-    //   var targetElement = $(event.target);
-    //   if(targetElement.is(".el-tab-pane")){
-    //     alert("고침");
-    //   }
-    // });
+    
 
-    // divs.forEach(function(div) {
-      //   div.addEventListener('click', logEvent, {
-        //     capture: true // default 값은 false입니다.
-    //   });
-    // });
-
-    // var spans = document.querySelectorAll('span');
-    // spans.forEach(function(span) {
-    //   span.addEventListener('click', logEvent);
-    // });
-
-    // function logEvent(event) {
-    //   event.stopPropagation();
-    //   console.log(event.currentTarget.className); // three
-    // }
-
-
-    //  ,$('.el-tab-pane').on('click', evt => {
-    //   alert("클릭됨!!!");
-    // })
-    // var span = document.querySelector('.el-tab-pane');
-    // span.addEventListener('click', alertspan);
-    // function alertspan(event){
-    //   // console.log(event);
-    //   alert("된다");
-    // }
+     $(".el-transfer-panel__body").mouseover(function(event) {
+      event.preventDefault();
+      // console.log($(this).parent().index());
+      if(event.target.className==''){
+        if($(this).parent().parent().parent()[0].className=='selectProject'){
+          // console.log($(this).children().children());
+          this.hoveredProject=event.target.innerText;
+          $("#project-title").val(this.hoveredProject).trigger('change');//실시간 변경해주는거,,
+          console.log(this.hoveredProject);
+        }else if($(this).parent().parent().parent()[0].className=='selectStacks'){
+          this.hoveredStack=event.target.innerText;
+          $("#stack-title").val(this.hoveredStack).trigger('change');//실시간 변경해주는거,,
+          console.log(this.hoveredStack);
+        }
+      }
+    });
+   
   },
   methods: {
     filterMethod(query, item) {
@@ -484,4 +490,23 @@ export default {
     /* background-color: #d5cbe42a; */
     border-radius: 6px;
   }
+
+  .el-transfer-panel__item.el-checkbox .el-checkbox__label:hover{
+    color:#9EBBCD;
+  }
+  
+
+  /* 프로젝트 및 스택 정보 출력 */
+  .only-for-show{
+    height:100%;
+    width:100%; 
+    background-color:transparent; 
+    border:none;
+  } 
+
+  .row .pjt-margin p{
+    margin:0px;
+    margin-bottom: 10px;
+  }
+
 </style>
