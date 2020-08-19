@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading">
+  <div>
     <app-header></app-header>
 
     <!-- Left side column. contains the sidebar -->
@@ -24,6 +24,6 @@
     components: {
       'app-header': Header,
       'app-footer': Footer,
-    }
+    },
   }
 </script>
