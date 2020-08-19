@@ -230,7 +230,11 @@
           }
       });
     
-    },  
+    },
+    mounted() {
+      $(".main-header").css('display','none')
+      $(".main-footer"). css('display','none')
+    },
     methods : {
        // Url로 이동
       goUrl(url){
