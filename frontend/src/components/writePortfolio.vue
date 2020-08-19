@@ -5,10 +5,14 @@
         <div class="col-sm-12" style="padding:0px">
           <div class="col-xs-12 col-sm-12" style="padding:0px">
             <hr>
-              <div style="margin-bottom:15px; font-size:20px;"><b>개인정보 입력</b></div>
+              <div style="margin-bottom:15px; font-size:20px;"><b>개인정보 입력</b>
+                <el-tooltip class="item" effect="dark" content="내 정보를 기반으로 정보를 채워두었습니다. 인사 담당자에게 보여질 정보이므로 정확한 정보를 입력해주세요." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+              </div>
               <hr>
             <dl class="dl-horizontal-profile">
-              <dt>이름</dt>
+              <dt>이름 
+                <el-tooltip class="item" effect="dark" content="포트폴리오에 보여줄 이름을 입력해주세요. 인사담당자에게 보여줄 포트폴리오라면 실명을 입력해주세요." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+              </dt>
               <dd>
                 <el-input v-model="name" style="width: 50%; border: 0px"></el-input>
                 <el-tooltip class="item" effect="dark" content="사진 비율 : 3x4" placement="right">
@@ -23,11 +27,17 @@
                 </el-upload>
                 </el-tooltip>
               </dd>
-              <dt>연락처</dt>
+              <dt>연락처
+                <el-tooltip class="item" effect="dark" content="잘못된 연락처를 기입해 취업시 불이익을 받는 사례가 많습니다. 연락처를 다시한번 확인해주세요." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+              </dt>
               <dd><el-input v-model="tel" style="width: 50%;"></el-input></dd>
-              <dt>이메일</dt>
+              <dt>이메일
+                <el-tooltip class="item" effect="dark" content="자주 사용하는 이메일을 등록해주세요. 해외 기업 지원자라면 gmail로 작성하시는 것을 추천드립니다." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+              </dt>
               <dd><el-input v-model="email" style="width: 50%;"></el-input></dd>
-              <dt>GIT 주소</dt>
+              <dt>GIT 주소
+                <el-tooltip class="item" effect="dark" content="깃 주소를 입력해 인사담당자의 흥미를 끌어보세요! Git은 프로젝트 경험과 더불어 성실함까지 어필할 수 있는 수단입니다." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+              </dt>
               <dd>
                 <el-input v-model="giturl" style="width: 50%;">
                   <template slot="prepend">https://</template>
@@ -37,7 +47,9 @@
             </div>
               <div class="col-xs-12 col-sm-12" style="padding:0px">
               <hr>
-              <div style="margin-bottom:15px; font-size:20px"><b>프로젝트 정보 입력</b></div>
+              <div style="margin-bottom:15px; font-size:20px"><b>프로젝트 정보 입력</b>
+                <el-tooltip class="item" effect="dark" content="지금까지 작성했던 프로젝트 중 포트폴리오에 첨부하고 싶은 프로젝트를 선택해보세요!" placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+              </div>
               <hr>
             </div>
             <div>
@@ -135,7 +147,9 @@
             </div>
               <div class="col-xs-12 col-sm-12" style="padding:0px">
               <hr>
-              <div style="margin-bottom:15px; font-size:20px"><b>기술스택 정보 입력</b></div>
+              <div style="margin-bottom:15px; font-size:20px"><b>기술스택 정보 입력</b>
+                <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 이곳에서 선택한 기술 스택을 통해 포트폴리오를 시각화해드립니다. 자신있는 기술스택을 골라보세요! " placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+              </div>
               <hr>
             </div>
             <div>
@@ -195,7 +209,9 @@
           <br>
           <div class="col-xs-12 col-sm-12" style="padding:0px">
             <hr>
-            <div style="margin-bottom:15px; font-size:20px"><b>포트폴리오 정보 입력</b></div>
+            <div style="margin-bottom:15px; font-size:20px"><b>포트폴리오 정보 입력</b>
+              <el-tooltip class="item" effect="dark" content="지금부터 입력받는 부분은 회원님에게만 보이는 정보입니다. 다른 데블로거는 회원님이 선택한 대표 포트폴리오만 열람이 가능합니다." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+            </div>
             <!-- <div style="margin-bottom:15px; font-size:20px; text-align:center"><b>포트폴리오 정보 입력</b></div> -->
             <hr>
             <dl class="dl-horizontal-profile">
