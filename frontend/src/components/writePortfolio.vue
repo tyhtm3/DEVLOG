@@ -110,12 +110,12 @@
                   <p>Git</p>
                   </div>
                   <div class="col-sm-9">
-                  <p class="pjt-content"><a href="#" @click="goUrl(hoveredProjectData.github_url)">{{hoveredProjectData.github_url}}</a></p>
+                  <a href="#" @click="goUrl(hoveredProjectData.github_url)"><p class="pjt-content">{{hoveredProjectData.github_url}}</p></a>
                   </div>
                 </div>
                 <div class="row" v-if="hoveredProjectData.etc_url">
                   <div class="col-sm-3">
-                  <p>기타 Url</p>
+                  <p>기타 </p>
                   </div>
                   <div class="col-sm-9">
                   <p class="pjt-content">{{hoveredProjectData.etc_url}}</p>
@@ -390,7 +390,6 @@ export default {
         tel: this.tel
       })
       .then(({ data }) => {
-        console.log(this.portfolioSeq)
         this.portfolioSeq=data;
         http
         .post('portfoliopjt', {
@@ -491,6 +490,7 @@ export default {
     padding: 0px 5px !important;
     /* background-color: green; */
   }
+
   botton.el-button.el-button--primary.is-disabled.el-transfer__button.is-with-texts{
     padding: 5px;
   }
@@ -526,6 +526,9 @@ export default {
     color:#9EBBCD;
   }
   
+  .pjt-content{
+    word-break:break-all;
+  }
 
   /* 프로젝트 및 스택 정보 출력 */
   .only-for-show{
