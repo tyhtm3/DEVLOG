@@ -1,15 +1,14 @@
 <template>
-    <div class="content-wrapper">
+    <div>
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
+            <!-- <h1>
                 404 Error Page
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#">Examples</a></li>
+            </h1> -->
+            <!-- <ol class="breadcrumb">
+                <li><router-link to="/"><i class="fa fa-dashboard"></i>홈으로</router-link></li>
                 <li class="active">404 error</li>
-            </ol>
+            </ol> -->
         </section>
         <main class="wrapper-404">
             <div class="error-404">
