@@ -27,6 +27,7 @@
 		select *
 		from post_portfolio_experience
         where seq_post_portfolio = #{seq_post_portfolio}
+        order by start
 	</select>
 	
 	<!-- 포트폴리오에 경력을 추가한다.  -->
@@ -49,6 +50,7 @@
 		select *
 		from post_portfolio_education
         where seq_post_portfolio = #{seq_post_portfolio}
+        order by start
 	</select>
 	
 	<!-- 포트폴리오에 학력을 추가한다.  -->

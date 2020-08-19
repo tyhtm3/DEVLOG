@@ -1,11 +1,3 @@
-<!--
-문제점
-1.  전체 프로젝트 목록(a)과 선택된 프로젝트 목록(b)을 받아와서
-    a목록에서 b목록을 제거한 목록을 왼쪽에 b 목록을 오른쪽에 넣어줘야 하는데
-    b요청의 결과가 먼저 도착하면 a가 빈 배열이라 중복제거가 안 됨
-2.  기술 스택도 동일한 문제
--->
-
 <template>
   <transition name="el-zoom-in-top">
     <div class="content-wrapper">
@@ -98,11 +90,11 @@
                         <div class="col-sm-4">
                         <p>스택</p>
                         </div>
-                        <div class="col-sm-8">
-                        <div v-for="(stack,index) in stack" :key="index">
+                        <!-- <div class="col-sm-8">
+                        <div v-for="(stack,index) in this.projectInfoList[0].stacks" :key="index">
                           <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
                         </div>
-                        </div>
+                        </div> -->
                       </div>
                       <div class="row pjt-margin">
                         <div class="col-sm-4">
@@ -230,6 +222,7 @@
 </template>
 <script>
 import http from '../util/http-common'
+import App from '../App.vue'
 import { mapState } from 'vuex'
 export default {
   computed: {
@@ -250,6 +243,7 @@ export default {
       birth: '',
       giturl: '',
       imageUrl: '',
+      regtime: '',
       // 플젝정보
       projectList: [],
       includedProject: [],
@@ -263,10 +257,12 @@ export default {
   created() {
     this.portfolioSeq =  this.$route.params.seq
     this.$store.state.loginFormVisible = false
-    this.getPortfolioInfo()
-    this.getProjectList(this.userInfo.seq)
-    this.getIncludedProjectList()
     this.getStackList(this.userInfo.seq)
+    this.getProjectList(this.userInfo.seq)
+  },
+  mounted(){
+    this.getPortfolioInfo()
+    this.getIncludedProjectList()
     this.getIncludedStackList()
   },
   methods: {
@@ -291,6 +287,7 @@ export default {
         this.birth = data.birthday
         this.giturl = data.github_url
         this.imageUrl = data.profile_img_url
+        this.regtim = data.ragtime
       })
     },
     filterMethod(query, item) {
@@ -300,13 +297,12 @@ export default {
       http
       .post('project/blog', { seq_user:seq , seq_blog:seq, offset:0, limit:99999} )
       .then(({ data }) => {
-        console.log(data)
-        this.projectInfoList=data;
+        this.projectInfoList=data
         for(let i=0; i<data.length; i++){
           this.projectList.push({
-          label: data[i].title,
-          key:data[i].seq,
-          initial: data[i].seq
+            label: data[i].title,
+            key: data[i].seq,
+            initial: data[i].seq
           })
         }
       })
@@ -315,7 +311,9 @@ export default {
       http
       .get('portfoliopjt/'+this.portfolioSeq)
       .then(({data}) => {
-        console.log(data)
+        for(let i=0; i<data.length; i++){          
+          this.includedProject.push(data[i].seq)
+        }
       })
     },
     getStackList(seq){
@@ -325,9 +323,9 @@ export default {
         this.stackInfoList=data;
         for(let i=0; i<data.length; i++){
           this.stackList.push({
-          label: data[i].stack,
-          key:i,
-          initial: data[i].seq
+            label: data[i].stack,
+            key: data[i].stack,
+            initial: data[i].seq
           })
         }
       })
@@ -336,7 +334,9 @@ export default {
       http
       .get('projectstack/'+this.portfolioSeq)
       .then(({data}) => {
-        console.log(data)
+        for(let i=0; i<data.length; i++){
+          this.includedStack.push(data[i].stack)
+        }
       })
     },
     // 포트폴리오 업데이트
@@ -347,46 +347,46 @@ export default {
         this.portfolioDisclosure = 2
       else
         this.portfolioDisclosure = 3
+
       http
       .put('portfolio', {
-        email: this.email,
+        seq: this.portfolioSeq,
         content: this.portfolioContent,
         disclosure: this.portfolioDisclosure,
+        birthday: null,
+        email: this.email,
         github_url: this.giturl,
-        img_url: this.profile_img_url,
+        img_url: null,
         name: this.name,
         profile_img_url: this.imageUrl,
-        seq_blog: this.seq,
+        tel: this.tel,
         title: this.portfolioTitle,
-        tel: this.tel
       })
       .then(({ data }) => {
         // 선택된 프로젝트 목록 업데이트
+        console.log(this.includedProject)
         http
         .post('portfoliopjt', {
-          seq_post_portfolio: this.portfolioSeq,
-          seq_post_project: this.includedProject
+          seq_post_portfolio: Number(this.portfolioSeq),
+          seq_post_project: this.includedProject,
         })
         .then(({ data }) => {
+          console.log("프로젝트 목록 업데이트 성공")
         })
         .catch((error)=>{
-          console.log(error.response.status)
+          console.log("프로젝트 목록 업데이트 실패")
         })
 
-        // 선택된 기술 스택 업데이트
-        // for(let i=0; i<this.includedStack.length; i++){
-        //   http
-        //   .post('projectstack', {
-        //     seq_post_project: this.portfolioSeq,
-        //     stack: this.stackInfoList[this.includedStack[i]].stack,
-        //     stack_img_url: this.stackInfoList[this.includedStack[i]].stack_img_url,
-        //   })
-        //   .then(({ data }) => {
-        //   })
-        //   .catch((error)=>{
-        //     console.log(error.response.status)
-        //   })
-        // }
+        console.log(this.includedStack)
+        http.delete('./projectstack/'+this.portfolioSeq)
+        .then(()=>{
+            for(var i=0; i<this.includedStack.length; i++){
+            http.post('./projectstack', {
+              seq_post_project: Number(this.portfolioSeq),
+              stack: this.includedStack[i]
+            })
+          }
+        })
         this.$message({
             type: 'success',
             message: '포트폴리오 수정 완료.'
@@ -394,7 +394,7 @@ export default {
         this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
       })
       .catch((error) => {
-        console.log(error.response.status)
+        console.log("실패")
       })
     },
     

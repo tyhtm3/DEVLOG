@@ -26,6 +26,12 @@
 		where seq_post_portfolio= #{seq_post_portfolio} and seq_post_project=#{seq_post_project}
 	</delete>
 	
+	<!-- 포트폴리오의 모든 프로젝트를 삭제한다. -->
+	<delete id="deleteAllPortfolioProject">
+		delete from post_portfolio_project
+		where seq_post_portfolio= #{seq_post_portfolio}
+	</delete>
+	
 </mapper>
 
 

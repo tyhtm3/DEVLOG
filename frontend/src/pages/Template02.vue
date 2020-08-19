@@ -225,7 +225,6 @@
               this.chartData.rows.push(rows)
             } 
           }
-          this.projects.sort(this.customSort) 
          })
       },
       customSort(a, b) {
