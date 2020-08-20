@@ -17,7 +17,8 @@
         </li>
         <li><a> <span class="ti-pencil"></span>&nbsp;{{post.regtime}}</a></li>
         <li><a> <span class="ti-comment-alt"></span>&nbsp;{{commentCnt}}</a></li>
-        <li>
+        <li style="cursor:pointer">
+          
           <i v-if="isLike" @click="cancelLike" class="material-icons">favorite</i>
           <i v-else @click="like" class="material-icons">favorite_border</i>
           &nbsp;{{post.like_count}}
@@ -148,6 +149,7 @@ export default {
               this.post.like_count+=1
               this.isLike=true
         })
+        this.$message.info('좋아요')
     },
     // 좋아요 취소
     cancelLike(){
@@ -158,6 +160,7 @@ export default {
                 this.isLike=false
               })
         })
+        this.$message.info('좋아요 취소')
     },
     // 포스트 삭제
     deletePost(seq){

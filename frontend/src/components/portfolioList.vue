@@ -107,9 +107,11 @@ export default {
                         });
                     }
                 })
-                http.get('portfolio/representation/'+data.seq).then(({data}) => {
-                    this.seq_rep = data
-                })
+                if(data.length>0){
+                    http.get('portfolio/representation/'+data.seq).then(({data}) => {
+                        this.seq_rep = data
+                    })
+                }
             })
         },
         removeTag(text){
