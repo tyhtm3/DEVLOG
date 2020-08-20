@@ -12,9 +12,12 @@
                         <label :for=project.seq></label>
                     </span>
                     <div class="well-media" style="cursor:pointer;">
-                        <div class="vendor" @click="goDetail(project.seq)">
-                            <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" alt="">
-                            <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                        <div class="vendor" style="text-align:center;" @click="goDetail(project.seq)">
+                            <div style="height:250px;line-height:250px;vertical-align:middle; text-align:middle; display:inline-flex;">
+                                <!-- padding-top: 100%;  -->
+                                <img v-if="project.img_url" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" class="img-responsive-media" :src="project.img_url" alt="">
+                                <img v-else class="img-responsive-media" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                            </div>
                             <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
                         </div>
                         <div class="video-text" @click="goDetail(project.seq)">
@@ -31,8 +34,8 @@
                             </span>
                             <span class="tag donotshow"></span>
                         </span>
-                        <span class="tag-copy" style="display:inline-block;"><i class="ti-heart"></i> {{ project.like_count }} </span>
-                        <span class="tag-copy" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
+                        <span class="tag-copy" style="display:inline-block; float:right;"><i class="ti-heart"></i> {{ project.like_count }} </span>
+                        <span class="tag-copy" style="display:inline-block;  float:right;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
                         </div>
                         <!-- <div class="video-category-bg">
                             <h3>FRONT-END</h3>
@@ -46,7 +49,7 @@
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
             <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
                 <!-- <div slot="spinner" style="color:#11212E; padding:50px">로딩중</div> -->
-                <div v-if="projectList.length>page" slot="no-results" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
+                <div v-if="projectList.length>0" slot="no-results" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
                 <div v-else slot="no-results" style="color:#11212E; padding:50px">조건에 일치하는 프로젝트가 존재하지 않습니다.</div>
                 <div slot="no-more" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
             </infinite-loading>
