@@ -42,7 +42,6 @@
                 </div>
                 <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
                 <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
-                <!-- <div slot="spinner" style="color:#11212E; padding:50px">로딩중</div> -->
                 <div v-if="postList.length>0" slot="no-results" style="color:#11212E; padding:50px">마지막 포스트입니다.</div>
                 <div v-else slot="no-results" style="color:#11212E; padding:50px">조건에 일치하는 포스트가 존재하지 않습니다.</div>
                 <div slot="no-more" style="color:#11212E; padding:50px">마지막 포스트입니다.</div>
@@ -153,7 +152,6 @@ export default {
                 .then(({ data }) => {
                     if(data.length){
                         this.postList = data;
-                        // this.getpostCommentTag(data)
                     }
                 })
             })
@@ -173,7 +171,6 @@ export default {
                     // 스크롤 페이징을 띄우기 위한 시간 1초
                     setTimeout(()=>{
                         if(data.length){
-                            // this.getpostCommentTag(data)
                             this.postList = this.postList.concat(data);
                             $state.loaded()
                             this.limit +=this.page

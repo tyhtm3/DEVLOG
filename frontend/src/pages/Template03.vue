@@ -4,8 +4,6 @@
     <div class="content-wrapper" style="background: white;">
       <br><br><br>
 
-      <!-- 명지님 이거 PDF 버튼이에요 !!!!!! 위치 마음에 드는곳으로 바꿔주세요 !!!!!
-           (지금은 pdf에 사진 안나오는데 프론트 빌드된 서버로 실행하면 사진 나와요!)-->
       <el-button data-html2canvas-ignore="true" type="primary" style="position:absolute;" @click="PDF">PDF</el-button>
 
       <div class="resume">
@@ -13,36 +11,27 @@
           <div class="profile">
             <div class="photo">
               <img :src="portfolioInfo.profile_img_url" style="text-align:center"/>
-              <!-- <i class="fas fa-rocket"></i> -->
             </div>
             <div class="info">
               <h1 class="name" style="font-weight:bold;" v-text="portfolioInfo.name" ></h1>
               <!-- 지원 직무 : portfolioInfo.position"-->
               <h2 class="job" v-text="portfolioMoreInfo.objective"></h2>
-              <!-- <h2 class="job" v-text="portfolioInfo.position"></h2> -->
             </div>
           </div>
           <div class="about">
             <h3>About Me</h3>
             <!-- 간단한 자기소개 : portfolioInfo.introduction"-->
             <p v-text="portfolioMoreInfo.introduction"></p>
-            <!-- <p v-text=tempintroduction /> -->
           </div>
           <div class="contact">
             <h3>Contact Me</h3>
             <div class="call"><a :href=telstr><i class="ti-mobile"></i><span v-text="portfolioInfo.tel" ></span></a></div>
-            <!-- <address id="getaddress"/> -->
-            <!-- <div class="address"><a :href=addstr><i class="ti-map-alt"></i><span>{{portfolioInfo.address}}</span></a> -->
-            <div class="address"><a :href=addstr target="_blank"><i class="ti-map-alt"></i><span>{{portfolioMoreInfo.address}}</span></a></div>
+             <div class="address"><a :href=addstr target="_blank"><i class="ti-map-alt"></i><span>{{portfolioMoreInfo.address}}</span></a></div>
             <div class="email"><a ><i class="ti-email"></i><span>{{portfolioInfo.email}}</span></a></div>
             <div class="website"><a :href=gitstr target="_blank"> <i class="ti-github"></i><span>{{portfolioInfo.github_url}}</span></a></div>
-            <!-- <div class="website" @click="goBlog(portfolioOwnerInfo.id)"><a href="#"> <i class="ti-home"></i><span>{{devlogurl}}</span></a></div> -->
-          </div>
+             </div>
           <div class="follow">
             <h3>Technical Stacks</h3>
-                  <!-- <div v-for="(stack,index) in projectStackList" :key="index">
-                    <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="height: 32px;margin-right:10px;">
-                  </div> -->
             <div class="box" style="background-color:transparent; ">
               <a v-for="(stack,index) in portfolioStack" :key="index" :alt="stack.stack"  href="#">
                     <div class="thumbnail-stack-img">
@@ -50,10 +39,7 @@
                     </div>
               </a>
 
-              <!-- <a v-for="(stack,index) in portfolioStack" v-bind:key="index" :href=social.link target="_blank"><i :class=social.icon></i></a> -->
-              <!-- <img class="media-object img-circle pull-left"  v-for="(stack,index) in portfolioStack" :key="index" :alt="stack.stack" :src="stack.stack_img_url" style="height: 32px;margin-right:10px;"> -->
-              <!-- <a v-for="(stack,index) in projectSportfolioStack" v-bind:key="index" :href=stack.stack_img_url target="_blank"><i :class=social.icon></i></a> -->
-            </div>
+              </div>
           </div>
           <div class="follow" >
             <h3>Follow Me</h3>
@@ -67,10 +53,7 @@
           <div class="work">
             <h3><i class="fa fa-briefcase"></i>Experience</h3>
             <ul>
-              <!-- <li><span>Technical Consultant -<br>Web Design</span><small>Fiserv</small><small>Apr 2018 - Now</small></li>
-              <li><span>Web Designer</span><small>Lynden</small><small>Jan 2018 - Apr 2018</small></li>
-              <li><span>Intern - Web Design</span><small>Lynden</small><small>Aug 2017 - Dec 2017</small></li> -->
-              <li  v-for="(experience,index) in experiences" v-bind:key="index">
+             <li  v-for="(experience,index) in experiences" v-bind:key="index">
                 <span v-text=experience.position />
                 <small v-text=experience.company />
                 <small><span v-text=experience.start /> <span>~</span> <span v-if="experience.end" v-text=experience.end /><span v-else>재직중</span></small>
@@ -88,7 +71,6 @@
             </ul>
           </div>
 
-          <!-- /api/portfolio/skill/{seq_post_portfolio} 에 이미지 url 추가 가능하면 ㄱㄱ  -->
           <div class="skills-prog">
             <h3><i class="material-icons">code</i>Programming Skills</h3>
             <ul >
@@ -116,19 +98,12 @@
             </ul>
           </div> 
 
-          <!-- <div class="certifications"> -->
           <div class="skills-soft" v-if="certifications">
             <h3><i class="material-icons" v-text=certificationicon></i>Certification</h3>
                 <tr v-for="(certification, index) in certifications" v-bind:key="index">
                   <td style="width:30%"><span class="tag" style="font-size:20px; margin:10px; line-height:40px;" @click="goToWebsite(certification.certification)">#{{certification.certification}}</span></td>
                   <td style="width:60%; text-align:right">{{certification.date}}</td>
-                  <!-- <td style="width:40%">{{certification.level}}</td> -->
-                  <!-- 자격증에 레벨 있는것도 있지않나? -->
                 </tr>
-                <!-- <span v-for="(certification, index) in certifications" v-bind:key="index" class="tag" style="font-size:20px; margin:10px; line-height:50px; " @click="goToWebsite(certification.certification)">
-                  <span style="width:30%">#{{certification.certification}}</span>
-                  <span style="width:60%">{{certification.date}}</span><br>
-                </span> -->
           </div>
           
           <!-- 프로젝트 경험 -->
@@ -148,14 +123,7 @@
                 <div style="">
                 <span class="tag" v-for="(stack,i) in project.stacks" v-bind:key="i" style="font-size:small; font-weight:300;">#{{stack.stack}} </span>
                 </div>
-                
-                <!-- <i class="material-icons" style="transform:rotate(135deg); font-size:18px">link</i> -->
-                <!-- <small v-for="(role,i) in project.roles" v-bind:key="i" v-text=role.role> -->
-                  <!-- 역할
-                  <ul>
-                    <li v-for="(role,i) in project.roles" v-bind:key="i" v-text=role.role></li>
-                  </ul> -->
-                <!-- </small> -->
+           
                 
               </li>
             </ul>
@@ -813,8 +781,6 @@
       setTimeout(this.stopLoading, 1);
     },
     updated(){
-      // 주소 입력, portfolioInfo.address
-      // var link = $('#getaddress').append("<a href='http://maps.google.com/maps?q="+this.portfolioMoreInfo.address+"' target='_blank'>"+ this.portfolioMoreInfo.address+"</a>")
       $(".skills-prog li").find(".skills-bar").each(function(i) {
         var percent;
         percent = $(this)
@@ -842,7 +808,6 @@
         circle = $(this).children(".cbar");
         r = circle.attr("r");
         c = Math.PI * (r * 2);
-        console.log(c);
         percent = $(this)
           .parent()
           .data("percent")*20;
@@ -964,7 +929,6 @@
          })
       },
       goToWebsite(certi){
-        console.log(certi);
         for(var i=0; i<this.testCertificationLink.length; i++)
         {
           if(this.testCertificationLink[i].key==certi){
@@ -1040,22 +1004,6 @@ $white: #ffffff;
 $black: #0e1442;
 $orange: #b68c2c;
 $yellow: #bea231;
-
-// $darkest-blue: rgba(211, 211, 211, 0.103);
-// $darker-blue: white;
-// $dark-blue: white;
-// $medium-blue: rgb(46, 88, 122);
-// $light-blue: purple;
-// $lighter-blue: green;
-// $lightest-blue: gray;
-// $white: #9ec2cd;
-// $black: rgba(211, 211, 211, 0.103);
-// $orange: #356574;
-// $yellow: #11212E;
-// $orange: #9ec2cd;
-// $yellow: #9EBBCD;
-
-// @charset "UTF-8";
 
 * {
   outline: none;
@@ -1220,28 +1168,6 @@ h3 {
   left: 0;
   transition-duration: 0.3s;
 }
-// .resume .base .stack .box {
-//   text-align: center;
-//   vertical-align: middle;
-// } 
-// .resume .base .stack .box a {
-//   display: inline-block;
-//   vertical-align: text-bottom;
-// }
-// .resume .base .stack .box a:hover i {
-//   background: $yellow;
-//   border-radius: 5px;
-//   transform: rotate(45deg) scale(0.8);
-// }
-// .resume .base .stack .box a:hover img {
-//   background: $yellow;
-//   border-radius: 5px;
-//   transform: rotate(45deg) scale(0.8);
-// }
-// .resume .base .stack .box .media-object{
-//   margin:10px;
-// }
-
 
 
 

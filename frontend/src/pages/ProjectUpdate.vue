@@ -539,7 +539,6 @@ export default {
         http
         .get('/projectstack/'+this.$route.params.seq)
         .then(({data}) => {
-          console.log(data)
           for(let i=0; i<data.length; i++){
             this.stack.push(data[i].stack)
           }

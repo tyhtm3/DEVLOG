@@ -47,9 +47,6 @@
             <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 이곳에서 선택한 기술 스택을 통해 포트폴리오를 시각화해드립니다." placement="right"><span class="ti-help-alt" style="position:relative;"/></el-tooltip>
           </p>
         </div>
-        <!-- <div class="col-sm-1 pull-right">
-          
-        </div> -->
         <div class="col-sm-6">
           <section class="selectProject" style="padding-top:15px;">
             <el-transfer
@@ -266,9 +263,9 @@ components: {
       rep_url : null,
       content : null,
       // 기술스택
-      initial_all_stack: [],  // 맨 처음에 axios로 불러온 상태
-      stack : [],             // 선택된 애들?
-      all_stack : [],         // 남은 애들? 맞나요!? 이게 헷갈리네
+      initial_all_stack: [],
+      stack : [],
+      all_stack : [],
       // 호버된 기술스택
       hoveredStackData:'',
 
@@ -317,17 +314,12 @@ components: {
       event.preventDefault();
       if(event.target.className==''){
         if($(this).parent().parent().parent()[0].className=='selectProject'){
-          // alert(event.target.innerText)
           vm.putHoveredStack(event.target.innerText);
         }
       }
     });
  },
   methods : {
-    // test(){
-      // alert("들어옴");
-      // this.stack.push("php");
-    // },
     putHoveredStack(input){
       this.hoveredStack=input;
       for(var i=0; i<this.initial_all_stack.length; i++){
@@ -355,7 +347,6 @@ components: {
       http
       .get('/project/'+this.drafts[index].seq)
       .then(({data}) => {
-        console.log(data)
         if(data.disclosure===1)
           this.disclosure = '전체공개'
         else if(data.disclosure===2)
@@ -750,7 +741,6 @@ components: {
   min-height: 400px;
 }
 #role-input .el-textarea__inner{
-    /* background-color:red !important; */
     height:40px !important;
   }
 
@@ -786,7 +776,6 @@ components: {
 }
   /* 임시저장 글 삭제 */
   .delete-draft-button{
-    /* style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;" */
     font-size:20px;
     color:#333333;
     padding:0px;

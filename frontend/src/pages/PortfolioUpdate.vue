@@ -90,11 +90,6 @@
                         <div class="col-sm-4">
                         <p>스택</p>
                         </div>
-                        <!-- <div class="col-sm-8">
-                        <div v-for="(stack,index) in this.projectInfoList[0].stacks" :key="index">
-                          <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
-                        </div>
-                        </div> -->
                       </div>
                       <div class="row pjt-margin">
                         <div class="col-sm-4">
@@ -747,17 +742,14 @@ export default {
       })
       .then(({ data }) => { 
         // 선택된 프로젝트 목록 업데이트
-        console.log(this.includedProject)
         http
         .post('portfoliopjt', {
           seq_post_portfolio: Number(this.portfolioSeq),
           seq_post_project: this.includedProject,
         })
         .then(({ data }) => {
-          console.log("프로젝트 목록 업데이트 성공")
         })
         .catch((error)=>{
-          console.log("프로젝트 목록 업데이트 실패")
         })
         http
         .post('portfolio/certification', {
@@ -837,8 +829,7 @@ export default {
         .catch((error)=>{
           console.log(error.response.status)
         })
-        
-        console.log(this.includedStack)
+
         http.delete('./projectstack/'+this.portfolioSeq)
         .then(()=>{
             for(var i=0; i<this.includedStack.length; i++){
@@ -855,7 +846,6 @@ export default {
         this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
       })
       .catch((error) => {
-        console.log("실패")
       })
     },
     

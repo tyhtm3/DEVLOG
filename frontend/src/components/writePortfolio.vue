@@ -77,8 +77,6 @@
                   <p>제목</p>
                   </div>
                   <div class="col-sm-9">
-                    <!-- <input class="only-for-show" type="text" id="project-title" readonly /> -->
-                  <!-- <p class="pjt-content">{{projectInfoList[0].title}}</p> -->
                   <p class="pjt-content">{{hoveredProjectData.title}}</p>
                   </div>
                 </div>
@@ -104,7 +102,6 @@
                   </div>
                   <div class="col-sm-9">
                   <div v-for="(stack,index) in projectStackList" :key="index">
-                    <!-- @click="putStack(stack.stack)"  -->
                     <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="height: 32px;margin-right:10px;">
                   </div>
                   </div>
@@ -168,8 +165,6 @@
             <!-- 왼쪽 기술스택 선택 부분 끝-->
             </div>
             <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 -->
-            <!-- {{projectInfoList}}<br><br>
-            프로젝트 사이즈 : {{projectInfoList.length}}<br><br> -->
             <div v-if="stackInfoList.length>0" class="showProject">
               <div class="tocenter" style="padding: 10px">
                 <div style="margin-bottom:15px; font-size:15px"><b>기술스택 정보</b></div>
@@ -466,7 +461,6 @@
             <div style="margin-bottom:15px; font-size:20px"><b>포트폴리오 정보 입력</b>
               <el-tooltip class="item" effect="dark" content="지금부터 입력받는 부분은 회원님에게만 보이는 정보입니다. 다른 데블로거는 회원님이 선택한 대표 포트폴리오만 열람이 가능합니다." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
             </div>
-            <!-- <div style="margin-bottom:15px; font-size:20px; text-align:center"><b>포트폴리오 정보 입력</b></div> -->
             <hr>
             <dl class="dl-horizontal-profile">
               <dt>TITLE</dt>
