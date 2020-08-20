@@ -35,7 +35,7 @@
                     width="95%"
                     center>
                         <div v-if="seq_blog==seq_user" class="pull-right pull top" style="margin-top:-40px;margin-right:20px;">
-                            <router-link :to="{name:'portfolio-update', params:{seq:portfolio.seq}}">
+                            <router-link :to="{name:'portfolio-update', params:{seq:clickedSeq}}">
                                 <el-tooltip content="포트폴리오 수정" placement="top">
                                     <el-button icon="el-icon-edit" type="success">
                                     </el-button> 

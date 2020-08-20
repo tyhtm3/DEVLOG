@@ -510,7 +510,6 @@ export default {
       // 포트폴리오 기본정보
       portfolioContent:'',
       portfolioTitle:'',
-      portfolioSummary:'summary',
       portfolioRepresentation : 0,
       portfolioSeq:'',
       // 개인정보
