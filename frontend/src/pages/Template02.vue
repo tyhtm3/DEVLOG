@@ -7,15 +7,15 @@
               <li><a></a></li>
               <li class="pull-right" v-if="basicinfo.seq_blog==seq_user"><span class="ti-pencil"></span>&nbsp;{{basicinfo.regtime}} &nbsp; | <a href="#"> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
           </ul>
-          <div v-if="basicinfo.profile_img_url" class="header-image">
-          <img style="block:inline;" :src='basicinfo.profile_img_url' class="avatar">
+          <div v-if="portfolioUser.profile_img_url" class="header-image">
+          <img style="block:inline;" :src='portfolioUser.profile_img_url' class="avatar">
           </div>
           <div class="nextToAvater" >
-            <div class="header-text" :class="{ 'header-text-noImage' : !basicinfo.profile_img_url }" style="padding-left:30px!important">
-            <p style="font-size:50px;"><b>{{basicinfo.name}}</b></p>
-            <i class="ti-mobile" style="font-size:30px;"/> {{basicinfo.tel}}<br>
+            <div class="header-text" :class="{ 'header-text-noImage' : !portfolioUser.profile_img_url }" style="padding-left:30px!important">
+            <p style="font-size:50px;"><b>{{portfolioUser.name}}</b></p>
+            <i class="ti-mobile" style="font-size:30px;"/> {{portfolioUser.tel}}<br>
             <i class="ti-email" style="font-size:30px;"/> {{portfolioUser.email}}<br>
-            <i class="ti-link" style="font-size:30px;"/> {{basicinfo.github_url}}<br>
+            <i class="ti-link" style="font-size:30px;"/> {{portfolioUser.github_url}}<br>
             </div>
           </div>
       </div>
