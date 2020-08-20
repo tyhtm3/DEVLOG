@@ -16,7 +16,8 @@ public interface PostMapper {
 	public int selectPostCntByBlog(@Param("seq_user") int seq_user,@Param("seq_blog")int seq_blog);
 	
 	public Post selectPost(int seq);
-	public List<Post> selectDraftPost();
+	public List<Post> selectDraftPost(int seq_blog);
+	public String selectPostTitle(int seq);
 	public int insertPost(Post post);
 	public int insertPostBasic(Post post);
 	public int updatePost(Post post);

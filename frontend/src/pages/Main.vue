@@ -161,8 +161,8 @@
               </div>
             <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
                 <!-- <div slot="spinner" style="color:#11212E; padding:50px">로딩중</div> -->
-                <div slot="no-more" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
-                <div slot="no-results" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
+                <div slot="no-more" style="color:#11212E; padding:50px">마지막 포스트입니다.</div>
+                <div slot="no-results" style="color:#11212E; padding:50px">마지막 포스트입니다.</div>
             </infinite-loading>
             </div>
             <!-- end post list -->  
@@ -338,7 +338,7 @@ export default {
     getFromDetailSearchTag(){
         if(this.fromDetailSearchTag!=null){
         this.inputtag = this.fromDetailSearchTag
-        this.addTag()
+        // this.addTag()
         this.searchTags.push(this.fromDetailSearchTag)
         this.fromDetailSearchTag = null
         this.$store.commit('setSearchTag',null)

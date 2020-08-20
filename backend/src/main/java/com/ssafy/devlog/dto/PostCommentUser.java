@@ -11,7 +11,7 @@ public class PostCommentUser {
 	private String nickname;
 	private String name;
 	private String profile_img_url;
-	
+	private String title;
 	public int getSeq() {
 		return seq;
 	}
@@ -66,13 +66,42 @@ public class PostCommentUser {
 	public void setProfile_img_url(String profile_img_url) {
 		this.profile_img_url = profile_img_url;
 	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	
-	@Override
-	public String toString() {
-		return "PostCommentUser [seq=" + seq + ", seq_post=" + seq_post + ", seq_user=" + seq_user + ", content="
-				+ content + ", regtime=" + regtime + ", id=" + id + ", nickname=" + nickname + ", name=" + name
-				+ ", profile_img_url=" + profile_img_url + "]";
+	public PostCommentUser() {
+		
 	}
 
+	public PostCommentUser(PostComment postComment, User user) {
+		this.seq = postComment.getSeq();
+		this.seq_post = postComment.getSeq_post();
+		this.seq_user = postComment.getSeq_user();
+		this.content = postComment.getContent();
+		this.regtime = postComment.getRegtime();
+		this.id = user.getId();
+		this.nickname = user.getNickname();
+		this.name = user.getName();
+		this.profile_img_url = user.getProfile_img_url();
+	}
+	
+	public PostCommentUser(int seq, int seq_post, int seq_user, String content, String regtime, String id,
+			String nickname, String name, String profile_img_url, String title) {
+		this.seq = seq;
+		this.seq_post = seq_post;
+		this.seq_user = seq_user;
+		this.content = content;
+		this.regtime = regtime;
+		this.id = id;
+		this.nickname = nickname;
+		this.name = name;
+		this.profile_img_url = profile_img_url;
+		this.title = title;
+	}
+	
 	
 }

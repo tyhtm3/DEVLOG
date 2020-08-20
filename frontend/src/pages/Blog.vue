@@ -7,8 +7,8 @@
         <div class="details-profile" >
           <div class="title1" style="display:inline;">
             <!-- input length 바꾸게 하는것, font-size 수정시 자바스크립트 input box 수정하는 부분도 수정해야함.-->
-            <input id="title"  type="text" style="font-size:32px; color:#333333;" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog"  :placeholder=titleplaceholder readonly /><br>
-            <input id="detail" type="text" style="font-size:15px; color:#959595; padding-top:5px;" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog"  :placeholder=contentplaceholder readonly />
+            <input id="title"  type="text" style="font-size:32px; color:#333333; width:100%;" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog"  :placeholder=titleplaceholder readonly /><br>
+            <input id="detail" type="text" style="font-size:15px; color:#959595; padding-top:5px; width:100%;" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog"  :placeholder=contentplaceholder readonly />
           </div>
           <div v-if="!isAdmin" class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
               <span class="show-blog-owner-nickname">by {{blogOwnerInfo.nickname}}</span>
@@ -189,7 +189,7 @@ export default {
         var tag = this.$store.state.searchTag
         if(tag!=null){
         this.tag = tag
-        this.addTag()
+        // this.addTag()
         this.searchTags.push(tag)
         var index = this.searchTags.indexOf(tag)
         this.activeIndex.push(index)
@@ -453,12 +453,17 @@ export default {
   .column4 span{
     cursor: pointer;
   }
+  #title{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    margin-left:-3px;
+  }
   #title, #detail{
     padding: 0px;
     border: none;
     background: transparent;
   }
-.tagspecial {
+  .tagspecial {
     font-family: 'Montserrat';
     font-weight: 300;
     background: white;
@@ -479,9 +484,12 @@ export default {
   }
   .details-profile .title2 span{
     all: unset;
+    color: rgb(149, 149, 149);
+    font-family: 'Noto Sans KR', sans-serif;
   }
   #show-blog-owner-nickname:hover{
     box-shadow: 3px 3px 3px rgba(177, 177, 177, 0.527);
+    font-family: 'Noto Sans KR', sans-serif;
   }
   .column2{
     padding-left:0px !important;
@@ -567,7 +575,7 @@ export default {
   src: local('Noto Sans Light'), local('NotoSans-Light'), url(/fonts/NotoSans-Light.eot);
   src: url(/fonts/NotoSans-Light.eot?#iefix) format('embedded-opentype'),
   url(/fonts/NotoSans-Light.woff2) format('woff2'),
-  url(/fonts/NotoSans-Light.woff) format('woff');;
+  url(/fonts/NotoSans-Light.woff) format('woff');
   }
   @font-face {
   font-family: 'NotoKrR';

@@ -35,8 +35,8 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	@Override
-	public List<Post> selectDraftPost(){
-		return postMapper.selectDraftPost();
+	public List<Post> selectDraftPost(int seq_blog){
+		return postMapper.selectDraftPost(seq_blog);
 	}
 	@Override
 	public int insertPost(Post post){
@@ -61,6 +61,11 @@ public class PostServiceImpl implements PostService{
 	@Override
 	public int deletePost(int seq){
 		return postMapper.deletePost(seq);
+	}
+
+	@Override
+	public String selectPostTitle(int seq) {
+		return postMapper.selectPostTitle(seq);
 	}
 
 }

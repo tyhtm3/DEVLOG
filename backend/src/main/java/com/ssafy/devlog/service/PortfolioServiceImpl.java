@@ -30,6 +30,11 @@ public class PortfolioServiceImpl implements PortfolioService{
 	}
 	
 	@Override
+	public Portfolio selectPortfolioByRep(int seq_blog) {
+		return portfolioMapper.selectPortfolioByRep(seq_blog);
+	}
+	
+	@Override
 	public int insertPost(Portfolio portfolio){
 		return portfolioMapper.insertPost(portfolio);
 	}
@@ -49,6 +54,15 @@ public class PortfolioServiceImpl implements PortfolioService{
 		return portfolioMapper.updatePostPortfolio(portfolio);
 	}
 	
+	@Override
+	public int updatePortfolioGeneral(int seq_blog) {
+		return portfolioMapper.updatePortfolioGeneral(seq_blog);
+	}
+	
+	@Override
+	public int updatePortfolioRepresentation(int seq) {
+		return portfolioMapper.updatePortfolioRepresentation(seq);
+	}
 	@Override
 	public int deletePortfolio(int seq){
 		return portfolioMapper.deletePortfolio(seq);

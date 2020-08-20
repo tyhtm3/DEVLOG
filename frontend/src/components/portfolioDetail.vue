@@ -47,9 +47,9 @@ export default {
           url: "/blog/portfolio3/"+this.clickedSeq
         },
         {
-          image: 'https://source.unsplash.com/collection/190727/400x400?4',
-          title: "템플릿이름",
-          summary: "설명",
+          image: '../../static/img/template05.png',
+          title: "심플 템플릿",
+          summary: "심플한 디자인으로 프로젝트를 강조하고 싶은 개발자에게 이 템플릿을 추천합니다.",
           url: "/blog/portfolio5/"+this.clickedSeq
         }
       ]
