@@ -34,25 +34,25 @@ export default {
         {
           image: '../../static/img/template01.jpg',
           title: "4 card",
-          summary: "지원하는 직무와 연관된 소수의 프로젝트를 보여주는 데 적합한 템플릿",
+          summary: '<u style="color:#b68c2c;">지원하는 직무와 연관된 <span style="color:#b68c2c; font-weight:500;">3개의 핵심 프로젝트</span></u>를 보여주는 데 최적화된 템플릿',
           url: "/blog/portfolio1/"+this.clickedSeq
         },
         {
           image: '../../static/img/template02.jpg',
-          title: "심플 타임라인",
-          summary: "프로젝트를 중심으로 통계화한 정보를 타임라인으로 보여줍니다.",
+          title: "통계 & 타임라인",
+          summary: '프로젝트를 중심으로 데이터를 <span style="color:#b68c2c; font-weight:500;">통계화</span>하여 <span style="color:#b68c2c; font-weight:500;"><u style="color:#b68c2c;">시각화된 정보</span>와 <span style="color:#b68c2c; font-weight:500;">타임라인</span>을 보여주는 템플릿</u>',
           url: "/blog/portfolio2/"+this.clickedSeq
         },
         {
           image: '../../static/img/template03.png',
-          title: "인포그래픽 템플릿",
-          summary: '당신의 <span style="color:#b68c2c; font-weight:500;">이력</span>과 <span style="color:#b68c2c; font-weight:500;">포트폴리오</span>를 한눈에! <br>더이상의 구글링은 필요없다! <br>지원자의 <span style="color:#b68c2c; font-weight:500;">프로젝트</span>, <span style="color:#b68c2c; font-weight:500;">자격증</span>, <span style="color:#b68c2c; font-weight:500;">일상</span> 등에 대해 더 알아보고 싶은 <u style="color:#b68c2c;">인사 담당자의 번거로움을 덜어주는 <span style="color:#b68c2c; font-weight:500;">링크형 인포그래픽 템플릿</span></u>.',
+          title: "인포그래픽",
+          summary: '지원자의 <span style="color:#b68c2c; font-weight:500;">프로젝트</span>, <span style="color:#b68c2c; font-weight:500;">자격증</span>, <span style="color:#b68c2c; font-weight:500;">일상</span> 등에 대해 더 알아보고 싶은 <u style="color:#b68c2c;">인사 담당자의 번거로움을 덜어주는 <span style="color:#b68c2c; font-weight:500;">링크형 인포그래픽 템플릿</span></u>',
           url: "/blog/portfolio3/"+this.clickedSeq
         },
         {
           image: '../../static/img/template05.png',
-          title: "심플 템플릿",
-          summary:'<span style="color:#b68c2c; font-weight:500;">심플</span>한 디자인으로 <u style="color:#b68c2c;"><span style="color:#b68c2c; font-weight:500;">프로젝트를 강조하고 싶은 개발자</span></u>에게 이 템플릿을 <span style="color:#b68c2c;">추천</span>합니다.',
+          title: "Simple",
+          summary:'<span style="color:#b68c2c; font-weight:500;">심플</span>한 디자인으로 <u style="color:#b68c2c;"><span style="color:#b68c2c; font-weight:500;">프로젝트를 강조하고 싶은 개발자</span></u>를 위한 템플릿',
           url: "/blog/portfolio5/"+this.clickedSeq
         }
       ]
