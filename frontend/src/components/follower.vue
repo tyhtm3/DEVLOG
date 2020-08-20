@@ -46,7 +46,7 @@
               <div v-else style="height:54px;"></div>
               <div class="chat-about">
                 <div class="chat-with" @click="move" style="cursor:pointer">{{selectedName}}</div>
-                <div class="chat-num-messages">구독한 날짜 : {{selectedRegtime}}</div>
+                <div class="chat-num-messages" v-if="selectedRegtime">구독한 날짜 : {{selectedRegtime}}</div>
               </div>
             </div>
             <!-- end chat-header -->
