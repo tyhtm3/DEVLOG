@@ -34,5 +34,10 @@ public class UserNeighborServiceImpl implements UserNeighborService {
 		return userNeighborMapper.checkUserNeighbor(seq_user, seq_neighbor);
 	}
 
+	@Override
+	public List<UserNeighbor> selectAllUserNeighborMe(int seq_user) {
+		return userNeighborMapper.selectAllUserNeighborMe(seq_user);
+	}
+
 
 }

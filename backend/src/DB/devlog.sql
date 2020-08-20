@@ -199,3 +199,10 @@ CREATE TABLE `post_portfolio_social`(
     `icon` varchar(64),
     FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `certification`(
+	`seq` int primary key auto_increment,
+    `key` varchar(128),
+    `value` varchar(10)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    
