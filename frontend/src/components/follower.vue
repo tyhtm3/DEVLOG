@@ -14,7 +14,7 @@
           <div class="people-list" id="people-list">
             <div class="search">
               <input type="text" v-model="search" placeholder="search follower" /> <i class="fa fa-search"></i> </div>
-          <div>
+          <div class="pull-right">
               {{ followtext }}
               
               <el-switch v-model="flag"
@@ -23,7 +23,7 @@
               >
               </el-switch>
           </div>
-            <ul style="text-align:center" class="list">
+            <ul style="text-align:center; clear:both" class="list">
               <li style="cursor:pointer" class="clearfix" v-for="(neighbor, index) in requestneighborinfoList" :key="index" v-show="neighbor.name.includes(search)">
                 <img @click ="goBlog(neighbor.id)" v-if="neighbor.profile_img_url" :src="neighbor.profile_img_url" style="height:60px;" alt="avatar" />
                 <img @click ="goBlog(neighbor.id)" v-else src="http://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" alt="avatar" />
@@ -45,8 +45,8 @@
               <img v-else-if="!selectedImg&&selectedName" src="http://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" style="height: 60px;" alt="avatar" />
               <div v-else style="height:54px;"></div>
               <div class="chat-about">
-                <div class="chat-with">{{selectedName}}</div>
-                <div class="chat-num-messages">{{selectedRegtime}}</div>
+                <div class="chat-with" @click="move" style="cursor:pointer">{{selectedName}}</div>
+                <div class="chat-num-messages">구독한 날짜 : {{selectedRegtime}}</div>
               </div>
             </div>
             <!-- end chat-header -->
@@ -54,7 +54,7 @@
               <ul v-for="(comment,index) in neighborCommentList" :key="index">
                 <li class="clearfix">
                   <div class="message-data align-right">
-                    <span class="message-data-name">포스트 제목 : {{comment.title}}</span>
+                    <span class="message-data-name">{{comment.title}}</span>
                     <span class="message-data-time">{{comment.regtime}}</span> &nbsp; &nbsp; 
                     <!-- <span class="message-data-name">{{selectedName}}</span> <i class="fa fa-circle me"></i> -->
                   </div>
@@ -85,6 +85,7 @@ export default {
       requestneighborinfoList: [],
       selectedImg: '',
       selectedRegtime: '',
+      selectedId: '',
       select: false,
       search: '',
       isActive: false,
@@ -107,7 +108,7 @@ export default {
         this.neighborCommentData = []
         this.neighborCommentList = []
         this.getNeighborList();
-        this.followtext = "나를 구독한 사람"
+        this.followtext = "내가 구독한 사람"
       }
       else{
         this.requestneighborinfoList = []
@@ -115,7 +116,7 @@ export default {
         this.neighborCommentData = []
         this.neighborCommentList = []
         this.getNeighbormeList();
-        this.followtext = "내가 구독한 사람"
+        this.followtext = "나를 구독한 사람"
       }
     }
   },
@@ -179,7 +180,6 @@ export default {
             .get('postcomment/neighbor/' +data.seq
             ,{headers: { Authorization : this.$store.state.token,}})
             .then(({data}) => {
-              console.log(data)
               this.neighborComment[i] = data.length
               this.neighborCommentData[i] = data
               this.$forceUpdate();
@@ -190,13 +190,14 @@ export default {
       })
     },
     selected(index) {
-      console.log(this.requestneighborinfoList)
       if(this.requestneighborinfoList[index].nickname)
         this.selectedName = this.requestneighborinfoList[index].nickname
       else
         this.selectedName = this.requestneighborinfoList[index].id
       this.selectedImg = this.requestneighborinfoList[index].profile_img_url
       this.selectedRegtime = this.neighborList[index].regtime
+      this.selectedRegtime = this.selectedRegtime.slice(0,10)
+      this.selectedId = this.requestneighborinfoList[index].id
       // 선택된 구독 댓글 정보
       this.neighborCommentList = this.neighborCommentData[index]
     },
@@ -223,6 +224,9 @@ export default {
         this.neighborCommentList = []
         this.getNeighborList();
       })
+    },
+    move(){
+      this.$router.push(''+this.selectedId)
     }
   }
 }
