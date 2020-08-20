@@ -86,6 +86,7 @@ export default {
     this.email=  this.getUserInfo.email
     this.tel=  this.getUserInfo.tel
     this.birthday=  this.getUserInfo.birthday
+    this.birthday_temp=  this.getUserInfo.birthday
     this.github_url=  this.getUserInfo.github_url
     this.profile_img_url=  this.getUserInfo.profile_img_url
   },
@@ -130,7 +131,7 @@ export default {
           nickname: this.nickname,
           email: this.email,
           tel: this.tel,
-          birthday: this.date_to_str(this.birthday),
+          birthday: this.birthday!=this.birthday_temp?this.date_to_str(this.birthday):this.birthday,
           github_url: this.github_url,
           profile_img_url: this.profile_img_url
         },{headers: { Authorization : this.$store.state.token,}})

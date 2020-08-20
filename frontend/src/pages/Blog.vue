@@ -189,7 +189,7 @@ export default {
         var tag = this.$store.state.searchTag
         if(tag!=null){
         this.tag = tag
-        this.addTag()
+        // this.addTag()
         this.searchTags.push(tag)
         var index = this.searchTags.indexOf(tag)
         this.activeIndex.push(index)

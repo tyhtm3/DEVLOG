@@ -68,8 +68,9 @@ public class PortfolioProjectController {
 		logger.debug("insertPortfolioProject - 호출");
 		List<Integer> seq_post_project = (List<Integer>)params.get("seq_post_project");
 		int seq_post_portfolio = (int)params.get("seq_post_portfolio");
-		if(seq_post_project == null)
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		portfolioProjectService.deleteAllPortfolioProject(seq_post_portfolio);
+		if(seq_post_project == null || seq_post_project.size()==0)
+			return new ResponseEntity<String>("null", HttpStatus.OK);
 		else if(portfolioProjectService.insertPortfolioProject(seq_post_portfolio,seq_post_project)!=0)
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		else 

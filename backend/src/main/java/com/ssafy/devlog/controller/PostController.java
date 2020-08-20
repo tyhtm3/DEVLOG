@@ -66,7 +66,7 @@ public class PostController {
 	@GetMapping(value = "/draft")
 	public ResponseEntity<List<Post>> selectDraftPost() {
 		logger.debug("selectDraftPost - 호출");
-		return new ResponseEntity<List<Post>>(postService.selectDraftPost(), HttpStatus.OK);
+		return new ResponseEntity<List<Post>>(postService.selectDraftPost(jwtService.getSeq()), HttpStatus.OK);
 
 	}
 	

@@ -92,7 +92,7 @@
 	<select id="selectDraftProject" resultType="Project">
 	select post_project.*,post.status,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count,post.img_url
 	from post inner join post_project on post.seq=post_project.seq
-	where post.status = 'draft' 
+	where post.status = 'draft' and seq_blog = #{seq_blog} 
 	order by regtime desc
 	</select>
 	

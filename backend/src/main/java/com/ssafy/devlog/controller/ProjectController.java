@@ -66,7 +66,7 @@ public class ProjectController {
 	@GetMapping(value = "/draft")
 	public ResponseEntity<List<Project>> selectDraftProject() {
 		logger.debug("selectDraftProject - 호출");
-		return new ResponseEntity<List<Project>>(projectService.selectDraftProject(), HttpStatus.OK);
+		return new ResponseEntity<List<Project>>(projectService.selectDraftProject(jwtService.getSeq()), HttpStatus.OK);
 
 	}
 	

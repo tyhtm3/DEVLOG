@@ -3,7 +3,9 @@
     <div>
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">* 제목</p>
+          <p class="pull-right">* 제목
+            <el-tooltip class="item" effect="dark" content="게시물의 특징을 살릴 수 있는 기발한 제목을 적어주세요" placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+          </p>
         </div>
         <div class="col-sm-9">
           <el-input style="padding:10px;" placeholder="POST TITLE" v-model="postInfo.title"> </el-input>
@@ -12,7 +14,9 @@
 
        <div class="row">
         <div class="col-sm-2 pjt-title" style="height:490px;">
-          <p class="pull-right">* 내용</p>
+          <p class="pull-right">* 내용
+            <el-tooltip class="item" effect="dark" content="많은 데블로거들이 이 부분에 오늘 배운 새로운 지식들을 정리합니다." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+          </p>
         </div>
         <div class="col-sm-9">
           <vue-editor id="post-editor" v-model="postInfo.content" style="padding:10px;"></vue-editor>
@@ -21,18 +25,21 @@
 
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">태그</p>
+          <p class="pull-right">태그
+            <el-tooltip class="item" effect="dark" content="다양한 태그를 통해 다른 데블로거들의 관심을 끌어보세요! 태그를 타고 들어온 데블로거가 함께 새로운 프로젝트를 진행하자고 요청할지도 몰라요!" placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+          </p>
         </div>
-        <div class="col-sm-9" style="padding:15px 0px 0px 25px">
+        <div class="col-sm-9" style="position:relative; top:20px;">
           <span v-html="htmlTag">
           </span>
           # <input class="inputtag" v-on:keyup.enter="addTag" v-on:keydown.delete="deleteTag" v-model="tag" placeholder="태그를 입력해주세요.">
         </div>
       </div><hr>
-
       <div class="row">
         <div class="col-sm-2 pjt-title">
-          <p class="pull-right">썸네일</p>
+          <p class="pull-right">썸네일
+            <el-tooltip class="item" effect="dark" content="게시물을 대표할 수 있는 사진을 첨부해주세요. 화려한 썸네일을 활용한다면 피드 페이지에서 더욱 돋보일 수 있어요." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+          </p>
         </div>
         <div class="col-sm-9" style="padding:0px 0px 0px 25px">
           <el-upload action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
@@ -135,7 +142,10 @@ export default {
   },
   created() {
      http
-        .get('./post/draft').then(({data})=>{
+        .get('./post/draft', {headers: {
+        'Content-type': 'application/json',
+        Authorization : this.$store.state.token,
+        }}).then(({data})=>{
           this.drafts = data;
         })
   },
