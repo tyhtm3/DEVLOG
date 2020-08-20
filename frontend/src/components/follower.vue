@@ -19,11 +19,11 @@
               <input type="text" v-model="search" placeholder="search follower" /> <i class="fa fa-search"></i> </div>
            {{neighborList}}
             <ul style="text-align:center" class="list" >
-              <li @click="selected(index)" style="cursor:pointer" class="clearfix" v-for="(neighbor, index) in requestneighborinfoList" :key="index" v-show="neighbor.name.includes(search)">
-                <img v-if="neighbor.profile_img_url" :src="neighbor.profile_img_url" style="height:60px;" alt="avatar" />
-                <img v-else src="upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" alt="avatar" />
+              <li style="cursor:pointer" class="clearfix" v-for="(neighbor, index) in requestneighborinfoList" :key="index" v-show="neighbor.name.includes(search)">
+                <img @click ="goBlog(neighbor.id)" v-if="neighbor.profile_img_url" :src="neighbor.profile_img_url" style="height:60px;" alt="avatar" />
+                <img @click ="goBlog(neighbor.id)" v-else src="upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png" alt="avatar" />
                 <span class="about">
-                  <span class="name">
+                  <span class="name" @click="selected(index)">
                     <p>{{neighbor.name}}
                     </p>댓글 수 {{neighborComment[index]}}
                   </span>
@@ -90,6 +90,9 @@ export default {
     this.getNeighborList();
   },
   methods: {
+    goBlog(id){
+      this.$router.push('/blog/'+id);
+    },
     follower2() {
        this.$parent.follower();
     },

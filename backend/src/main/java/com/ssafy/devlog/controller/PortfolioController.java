@@ -44,14 +44,19 @@ public class PortfolioController {
 		
 	}
 	
-	@ApiOperation(value = "새로운  포트폴리오 입력 ( seq_blog, title, disclosure ) 필수  ", response = String.class)
+
+	
+	@ApiOperation(value = "새로운  포트폴리오 입력  ", response = String.class)
 	@PostMapping
 	public ResponseEntity<Integer> insertPortfolio(@RequestBody Portfolio portfolio) {
 		
 		logger.debug("insertPortfolio - 호출");
-		
+
 		// insertPortfolio 이후 portfolioBasic 객체에 seq 받아오기 위한 작업
 		Portfolio pf = portfolio;
+		if(portfolio.getRepresentation()==1)
+			portfolioService.updatePortfolioGeneral(portfolio.getSeq_blog());
+			
 		portfolioService.insertPost(pf);
 		int seq_post_portfolio = pf.getSeq();
 		
@@ -65,12 +70,38 @@ public class PortfolioController {
 	@PutMapping
 	public ResponseEntity<String> updatePortfolio(@RequestBody Portfolio portfolio) {
 		logger.debug("updatePortfolio - 호출");
+		
+		if(portfolio.getRepresentation()==1)
+			portfolioService.updatePortfolioGeneral(portfolio.getSeq_blog());
+		
 		if (portfolioService.updatePost(portfolio)==1&&portfolioService.updatePostPortfolio(portfolio)==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 
+	@ApiOperation(value = "대표 포트폴리오 변경 ( seq_blog : 101, seq : 520 )", response = String.class)
+	@PutMapping(value = "/representation")
+	public ResponseEntity<String> updatePortfolioRepresentation(@RequestBody Portfolio portfolio) {
+		logger.debug("updatePortfolioRepresentation - 호출");
+		
+		portfolioService.updatePortfolioGeneral(portfolio.getSeq_blog());
+		if (portfolioService.updatePortfolioRepresentation(portfolio.getSeq())==1) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	
+	@ApiOperation(value = "블로그의 대표 포트폴리오 시퀀스를 반환", response = String.class)
+	@GetMapping(value = "/representation/{seq_blog}")
+	public ResponseEntity<Integer> selectPortfolioByRep(@PathVariable int seq_blog) {
+		logger.debug("selectPortfolioByRep - 호출");
+		System.out.println(seq_blog);
+		return new ResponseEntity<Integer>(portfolioService.selectPortfolioByRep(seq_blog).getSeq(), HttpStatus.OK);
+		
+	}
+	
 	@ApiOperation(value = "글번호에 해당하는 포트폴리오 삭제", response = String.class)
 	@DeleteMapping(value = "/{seq}")
 	public ResponseEntity<String> deletePortfolio(@PathVariable int seq) {

@@ -98,7 +98,7 @@
 	<!-- 임시보관 포스트 조회  -->
 	<select id="selectDraftPost" resultType="Post">
 	select post.*, post_basic.content from post inner join post_basic on post.seq = post_basic.seq
-	where post.status = 'draft' 
+	where post.status = 'draft' and seq_blog = #{seq_blog}  
 	order by regtime desc
 	</select>
 	

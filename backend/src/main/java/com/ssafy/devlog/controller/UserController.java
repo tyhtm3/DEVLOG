@@ -219,7 +219,7 @@ public class UserController {
 
 			// 정상적으로 토큰을 가져오면 Gson 으로 JSON 파일을 파싱해준다.
 
-			String id, nickName, email, profile_img_url, tmp;
+			String id, nickName, email, profile_img_url,name, tmp;
 			JsonParser parser = new JsonParser();
 
 			// 파싱한 access_token 값으로 네이버에 유저 정보를 요청. 이 함수의 return 값은 id, email, nickname 등
@@ -229,6 +229,8 @@ public class UserController {
 
 			JsonElement userInfoElement = parser.parse(tmp);
 			id = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("id").getAsString();
+			name =  userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("name")
+					.getAsString();
 			nickName = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("nickname")
 					.getAsString();
 			email = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("email").getAsString();
@@ -249,7 +251,7 @@ public class UserController {
 				user.setSocial("Naver");
 				StringTokenizer st = new StringTokenizer(email,"@");
 				user.setId(st.nextToken() + "Naver");
-				user.setName(nickName);
+				user.setName(name);
 				user.setPassword(id);
 				user.setNickname(nickName);
 				user.setEmail(email);

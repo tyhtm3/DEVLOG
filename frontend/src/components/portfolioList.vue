@@ -35,6 +35,14 @@
                     width="95%"
                     center
                     >
+                        <div v-if="seq_blog==seq_user" class="pull-right pull top" style="margin-top:-40px;margin-right:100px;">
+                            <el-tooltip :content="clickedSeq!=seq_rep?'대표 설정':'대표 포트폴리오'" placement="right">
+                            <el-button v-if="clickedSeq!=seq_rep" @click="updateRepresentation(clickedSeq)" type="warning" icon="el-icon-star-off" circle></el-button>
+                            <el-button v-else v-on:click.prevent.self>대표</el-button>
+                            </el-tooltip>
+                        </div>
+                        
+
                         <portfolio-detail v-bind:clickedSeq="clickedSeq" style="overflow:auto"></portfolio-detail>
                     </el-dialog>
                     <!-- 템플릿 선택 dialog 끝 -->
@@ -62,7 +70,10 @@ export default {
             deleteList: [],
             deleteSuccess: true,
             selectDialogVisible: false,
-            clickedSeq:''
+            clickedSeq:'',
+            seq_blog:'',
+            seq_user:this.$store.getters.getUserInfo.seq,
+            seq_rep: '',
         }
     },
     created() {
@@ -81,7 +92,8 @@ export default {
         getportfolioList(){
             http.get('user/id/'+this.$route.params.id)
             .then(({data})=>{
-                http.get('portfolio/blog/'+data.seq+'/'+data.seq+'/'+this.offset+'/'+this.limit)
+                this.seq_blog = data.seq
+                http.get('portfolio/blog/'+this.$store.getters.getUserInfo.seq+'/'+data.seq+'/'+this.offset+'/'+this.limit)
                 .then(({ data }) => {
                     this.portfolioList = data;
                     for(var i=0; i<this.portfolioList.length; i++){
@@ -90,6 +102,9 @@ export default {
                             this.comment.push(data.length);
                         });
                     }
+                })
+                http.get('portfolio/representation/'+data.seq).then(({data}) => {
+                this.seq_rep = data
                 })
             })
         },
@@ -107,7 +122,7 @@ export default {
             }
             else{
                 this
-                .$confirm('삭제하시겠습니까?', {
+                .$confirm('총 '+this.deleteList.length+'개의 포트폴리오를 삭제하시겠습니까?', {
                     confirmButtonText: '삭제',
                     cancelButtonText: '취소',
                     type: 'warning'
@@ -135,6 +150,19 @@ export default {
                 .catch(() => {
                 });
             }
+        },
+        updateRepresentation(seq){
+        http
+          .put('portfolio/representation', {
+            seq_blog: this.seq_blog,
+            seq: seq
+          }) .then(() => {
+              this.seq_rep = seq
+               this.$message({
+                    type: 'success',
+                    message: '선택한 포트폴리오를 대표로 설정하였습니다.',
+                });
+          })
         }
     }
 }

@@ -338,7 +338,7 @@ export default {
     getFromDetailSearchTag(){
         if(this.fromDetailSearchTag!=null){
         this.inputtag = this.fromDetailSearchTag
-        this.addTag()
+        // this.addTag()
         this.searchTags.push(this.fromDetailSearchTag)
         this.fromDetailSearchTag = null
         this.$store.commit('setSearchTag',null)

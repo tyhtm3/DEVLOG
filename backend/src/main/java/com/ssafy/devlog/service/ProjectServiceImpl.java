@@ -36,8 +36,8 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 	
 	@Override
-	public List<Project> selectDraftProject(){
-		return projectMapper.selectDraftProject();
+	public List<Project> selectDraftProject(int seq_blog){
+		return projectMapper.selectDraftProject(seq_blog);
 	}
 	
 	@Override

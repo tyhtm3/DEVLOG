@@ -71,7 +71,7 @@
           comments:'',
           commentUser:[], 
           seq_user: this.$store.state.userInfo.seq,
-          insertContent: '', // 댓글 입력 내용물
+          insertContent: ' ', // 댓글 입력 내용물
           updateContent: '', // 댓글 수정 내용물
           updateSeq: 0,
           placeholderMessage:'댓글',
