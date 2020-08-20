@@ -14,7 +14,8 @@ public class PostWithTag {
 	private int comment_count;
 	
 	private String img_url;
-	
+	private String nickname;
+	private String id;
 	private List<PostTag> tags;
 	//post_basic
 	private String content;
@@ -78,6 +79,19 @@ public class PostWithTag {
 	public void setComment_count(int comment_count) {
 		this.comment_count = comment_count;
 	}
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	public PostWithTag() {
 	}
 	public PostWithTag(Post p,List<PostTag> tags,int comment_count ) {
@@ -92,10 +106,22 @@ public class PostWithTag {
 		this.tags = tags;
 		this.comment_count = comment_count;
 	}
-
+	public PostWithTag(Post p,List<PostTag> tags,int comment_count,String id, String nickname ) {
+		this.seq = p.getSeq();
+		this.seq_blog = p.getSeq_blog();
+		this.title = p.getTitle();
+		this.regtime = p.getRegtime();
+		this.disclosure = p.getDisclosure();
+		this.like_count = p.getLike_count();
+		this.img_url = p.getImg_url();
+		this.content = p.getContent();
+		this.tags = tags;
+		this.comment_count = comment_count;
+		this.id = id;
+		this.nickname = nickname;
+	}
 	public PostWithTag(int seq, int seq_blog, String title, String regtime, int disclosure, int like_count,
-			int comment_count, String img_url, List<PostTag> tags, String content) {
-		super();
+			int comment_count, String img_url, String nickname, String id, List<PostTag> tags, String content) {
 		this.seq = seq;
 		this.seq_blog = seq_blog;
 		this.title = title;
@@ -104,15 +130,13 @@ public class PostWithTag {
 		this.like_count = like_count;
 		this.comment_count = comment_count;
 		this.img_url = img_url;
+		this.nickname = nickname;
+		this.id = id;
 		this.tags = tags;
 		this.content = content;
 	}
-	@Override
-	public String toString() {
-		return "PostWithTag [seq=" + seq + ", seq_blog=" + seq_blog + ", title=" + title + ", regtime=" + regtime
-				+ ", disclosure=" + disclosure + ", like_count=" + like_count + ", comment_count=" + comment_count
-				+ ", img_url=" + img_url + ", tags=" + tags + ", content=" + content + "]";
-	}
+
+	
 	
 }
 

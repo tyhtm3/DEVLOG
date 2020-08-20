@@ -293,14 +293,16 @@
               this.chartData_language.rows.push(rows)
           }
       });
-    
-      http.get('portfolio/info/'+this.seq).then(({data}) => {
-            this.portfolioMoreInfo=data;
-            this.addstr="http://maps.google.com/maps?q="+data.address;
-         })
-      
-    
-    },  
+      http.get('portfolio/info/'+this.seq)
+      .then(({data}) => {
+          this.portfolioMoreInfo=data;
+          this.addstr="http://maps.google.com/maps?q="+data.address;
+        })
+    },
+    mounted() {
+      $(".main-header").css('display','none')
+      $(".main-footer"). css('display','none')
+    },
     methods : {
        // Url로 이동
       goUrl(url){

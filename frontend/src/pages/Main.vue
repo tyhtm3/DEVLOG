@@ -75,10 +75,12 @@
               <el-carousel  :interval="4000" type="card" height="440px">
                 <el-carousel-item v-for="(project, index) in projectList" :key="index" >
                   <div class="well-media">
-                    <div class="vendor">
+                    <div class="vendor" style="text-align:center;">
                       <!-- 중앙일 때 : transform: translateX(125.25px) scale(1); -->
-                      <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" @click="goDetailProject(project.seq)">
-                      <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" @click="goDetailProject(project.seq)">
+                      <div style="height:250px;line-height:250px;vertical-align:middle; text-align:middle; display:inline-flex;">
+                      <img v-if="project.img_url" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" class="img-responsive-media" :src="project.img_url" @click="goDetailProject(project.seq)">
+                      <img v-else class="img-responsive-media" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" @click="goDetailProject(project.seq)">
+                      </div>
                     </div>
                     <div class="video-text">
                       <h2 style="font-weight: bold; margin-bottom:5px;" @click="goDetailProject(project.seq)">{{ project.title }}</h2>
@@ -123,7 +125,9 @@
                     <ul class="list-inline blog-devin-tag">  
                       <li>
                       &nbsp;
-                      <span class="tag-copy2" ><i class="ti-pencil"></i> {{ post.regtime }}&nbsp;</span>
+                      <span class="tag-copy2" v-if="post.nickname" ><i class="ti-user "></i> {{ post.nickname }}&nbsp;</span>
+                      <span class="tag-copy2" v-else ><i class="ti-user "></i> {{ post.id }}&nbsp;</span>
+                      <span class="tag-copy2" ><i class="ti-calendar"></i> {{ post.regtime }}&nbsp;</span>
                       <span class="tag-copy2" >&nbsp;<i class="ti-comment-alt"></i>&nbsp;{{ post.comment_count }} </span>
                       <span class="tag-copy2" >&nbsp;<i class="ti-heart"></i>&nbsp;{{ post.like_count }} </span>
                       </li>
@@ -152,17 +156,19 @@
                 </div>
 
                 <div class="right" @click="goDetailPost(post.seq)">
-                  <div class="vendor">
-                    <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
-                    <img v-else class="img-responsive-media" style="margin-top:25px;" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
+                  <div class="vendor" style="text-align:center;" >
+                    <div style="height:250px;line-height:250px;vertical-align:middle; text-align:middle; display:inline-flex;">
+                    <img v-if="post.img_url" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" class="img-responsive-media" :src="post.img_url" alt="">
+                    <img v-else class="img-responsive-media" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png">
+                    </div>
                   </div>
                 </div>
                 <!-- <hr style="clear:both"> -->
               </div>
             <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
                 <!-- <div slot="spinner" style="color:#11212E; padding:50px">로딩중</div> -->
-                <div slot="no-more" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
-                <div slot="no-results" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
+                <div slot="no-more" style="color:#11212E; padding:50px">마지막 포스트입니다.</div>
+                <div slot="no-results" style="color:#11212E; padding:50px">마지막 포스트입니다.</div>
             </infinite-loading>
             </div>
             <!-- end post list -->  

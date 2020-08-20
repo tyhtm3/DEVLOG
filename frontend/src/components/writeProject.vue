@@ -9,7 +9,7 @@
           </p>
         </div>
         <div class="col-sm-9">
-          <el-input style="padding:10px;" placeholder="PROJECT TITLE" v-model="title"> </el-input>
+          <el-input style="padding:10px;" placeholder="프로젝트 제목을 입력하세요." v-model="title"> </el-input>
         </div>
       </div><hr>
 
@@ -20,7 +20,7 @@
           </p>
         </div>
         <div class="col-sm-9">
-          <el-input style="padding:10px;" type="textarea" :rows="5" placeholder="PROJECT SUMMARY" v-model="summary"> </el-input>
+          <el-input style="padding:10px;" type="textarea" :rows="5" placeholder="프로젝트 개요를 입력하세요." v-model="summary"> </el-input>
         </div>
       </div><hr>
 
@@ -47,11 +47,11 @@
             <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 이곳에서 선택한 기술 스택을 통해 포트폴리오를 시각화해드립니다." placement="right"><span class="ti-help-alt" style="position:relative;"/></el-tooltip>
           </p>
         </div>
-        <div class="col-sm-1 pull-right">
+        <!-- <div class="col-sm-1 pull-right">
           
-        </div>
-        <div class="col-sm-8 pull-right">
-          <section class="selectProject" style="padding:15px;">
+        </div> -->
+        <div class="col-sm-6">
+          <section class="selectProject" style="padding-top:15px;">
             <el-transfer
               :titles="['기술스택 목록', '사용한 기술스택']"
               filterable
@@ -63,16 +63,11 @@
             </el-transfer>
           </section>
         </div>
-        <!-- <div @click="test">클릭해봐요</div> -->
-        <!-- {{stack}} -->
-        <!-- {{all_stack}} -->
         <div class="col-sm-3" >
-          <!-- <div  style="width:100%;"> -->
-              <div v-if="initial_all_stack.length>0" class="tocenter" style="padding: 10px;  min-height:250px">
-                <div style="text-align:center; margin-top:auto; margin-bottom:auto;"><img :src=hoveredStackData.stack_img_url width="100px"/></div>
-              </div>
-            </div>
-        <!-- </div> -->
+        <div v-if="initial_all_stack" class="tocenter" style="padding: 10px;  min-height:250px">
+          <div style="text-align:center; margin-top:auto; margin-bottom:auto;"><img :src=hoveredStackData.stack_img_url width="100px"/></div>
+        </div>
+        </div>
       </div>
       
       <hr>
@@ -85,15 +80,14 @@
         </div>
         <div class="col-sm-9" id="role-input" >
           <div v-for="(role2,index) in roles" :key="index" >
-              <span @click="deleteRole(index)" style="cursor:pointer;">
-            <el-tooltip class="item" effect="dark" content="클릭시 제거됩니다." placement="right">
-                <el-input style="padding:10px;" type="textarea" :rows="2" :value="role2" readonly></el-input>
-            </el-tooltip>
-              </span>
-          <div class="pull-right" style="padding:0px 10px 0px 10px;">
+            <span @click="deleteRole(index)" style="cursor:pointer;">
+              <el-tooltip class="item" effect="dark" content="클릭시 제거됩니다." placement="right">
+                  <el-input style="padding:10px;" type="textarea" :rows="2" :value="role2" readonly></el-input>
+              </el-tooltip>
+            </span>
+            <div class="pull-right" style="padding:0px 10px 0px 10px;"></div>
           </div>
-          </div>
-          <el-input style="padding:10px; display:inline-block;" type="textarea" :rows="4" v-model="role"> </el-input>
+          <el-input style="padding:10px; display:inline-block;" type="textarea" :rows="4" placeholder="수행한 역할을 입력해주세요." v-model="role"> </el-input>
           <div class="pull-right" style="padding:10px; display:inline-block; height:60px!important; margin-bottom:auto; margin-top:auto;">
             <el-button @click="addRole" >추가</el-button>
           </div>

@@ -9,17 +9,16 @@
               <li class="pull-right" v-if="basicinfo.seq_blog==seq_user"><span class="ti-pencil"></span>&nbsp;{{basicinfo.regtime}} &nbsp; | <a href="#"> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
               <el-button data-html2canvas-ignore="true" type="primary" style="position:absolute;" @click="PDF">PDF</el-button>
           </ul>
-         
-          <div v-if="basicinfo.profile_img_url" class="header-image">
-          <img style="block:inline;" :src='basicinfo.profile_img_url' class="avatar">
+          <div v-if="portfolioUser.profile_img_url" class="header-image">
+          <img style="block:inline;" :src='portfolioUser.profile_img_url' class="avatar">
           </div>
           
           <div class="nextToAvater" >
-            <div class="header-text" :class="{ 'header-text-noImage' : !basicinfo.profile_img_url }" style="padding-left:30px!important">
-            <p style="font-size:50px;"><b>{{basicinfo.name}}</b></p>
-            <i class="ti-mobile" style="font-size:30px;"/> {{basicinfo.tel}}<br>
+            <div class="header-text" :class="{ 'header-text-noImage' : !portfolioUser.profile_img_url }" style="padding-left:30px!important">
+            <p style="font-size:50px;"><b>{{portfolioUser.name}}</b></p>
+            <i class="ti-mobile" style="font-size:30px;"/> {{portfolioUser.tel}}<br>
             <i class="ti-email" style="font-size:30px;"/> {{portfolioUser.email}}<br>
-            <i class="ti-link" style="font-size:30px;"/> {{basicinfo.github_url}}<br>
+            <i class="ti-link" style="font-size:30px;"/> {{portfolioUser.github_url}}<br>
             </div>
           </div>
       </div>
@@ -186,6 +185,10 @@
       this.getBasicInfo(this.$route.params.seq);
       this.getPortfolioInfo(this.$route.params.seq);
     },
+    mounted() {
+      $(".main-header").css('display','none')
+      $(".main-footer"). css('display','none')
+    },
     methods: {
       getBasicInfo(seq){
         http.get('portfolio/'+seq)
@@ -259,7 +262,12 @@
           
         pdf.save('포트폴리오.pdf')
       })
-      }
+      },
+      customSort(a, b) {
+        if(a.start_date == b.start_date){
+          return 0
+          }f
+          return a.start_date > b.start_date ? 1 : -1; }
    },
 }        
   function dateDiff(_date1, _date2) {

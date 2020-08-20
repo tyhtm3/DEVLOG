@@ -35,9 +35,9 @@ export default {
           url: "/blog/portfolio1/"+this.clickedSeq
         },
         {
-          image: 'https://source.unsplash.com/collection/190727/400x400?2',
-          title: "템플릿이름",
-          summary: "설명",
+          image: '../../static/img/template02.jpg',
+          title: "심플 타임라인",
+          summary: "프로젝트를 중심으로 통계화한 정보를 타임라인으로 보여줍니다.",
           url: "/blog/portfolio2/"+this.clickedSeq
         },
         {
@@ -57,7 +57,7 @@ export default {
   },
   methods:{
     templateDetail(url){
-      this.$router.push(url)
+      window.open(url, '_blank');
     }
   }
 }

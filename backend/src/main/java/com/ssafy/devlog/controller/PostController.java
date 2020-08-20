@@ -28,10 +28,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.devlog.dto.Post;
 import com.ssafy.devlog.dto.PostTag;
 import com.ssafy.devlog.dto.PostWithTag;
+import com.ssafy.devlog.dto.User;
 import com.ssafy.devlog.service.JwtService;
 import com.ssafy.devlog.service.PostCommentService;
 import com.ssafy.devlog.service.PostService;
 import com.ssafy.devlog.service.PostTagService;
+import com.ssafy.devlog.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -50,6 +52,8 @@ public class PostController {
 	private PostTagService postTagService;
 	@Autowired
 	private PostCommentService postCommentService;
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private JwtService jwtService;
 
@@ -130,7 +134,9 @@ public class PostController {
 			int seq = postList.get(i).getSeq();
 			List<PostTag> tags = postTagService.selectAllPostTag(seq);
 			int comment_count = postCommentService.selectPostCommentCnt(seq);
-			postWithTagList.add(new PostWithTag(postList.get(i),tags,comment_count));
+			int seq_blog = postService.selectPost(seq).getSeq_blog();
+			User user = userService.selectUserBySeq(seq_blog);
+			postWithTagList.add(new PostWithTag(postList.get(i),tags,comment_count,user.getId(),user.getNickname()));
 		}
 		return new ResponseEntity<List<PostWithTag>>(postWithTagList,
 				HttpStatus.OK);
