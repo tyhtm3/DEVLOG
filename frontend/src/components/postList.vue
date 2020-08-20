@@ -12,9 +12,11 @@
                             <label :for=post.seq></label>
                         </span>
                         <div class="well-media" style="cursor:pointer;">
-                            <div class="vendor" @click="goDetail(post.seq)">
-                                <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="">
-                                <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                            <div class="vendor" style="text-align:center;" @click="goDetail(post.seq)">
+                                <div style="height:250px;line-height:250px;vertical-align:middle; text-align:middle; display:inline-flex;">
+                                <img v-if="post.img_url" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" class="img-responsive-media" :src="post.img_url" alt="">
+                                <img v-else class="img-responsive-media" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                                </div>
                             </div>
                             <div class="video-text" @click="goDetail(post.seq)">
                                 <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{post.title}}</h2>
@@ -32,8 +34,8 @@
 
 
                             <!-- 좋아요, 코멘트 수 -->
-                            <span class="tag-copy" style="display:inline-block;"><i class="ti-heart"></i> {{ post.like_count }} </span>
-                            <span class="tag-copy" style="display:inline-block;"><i class="ti-comment-alt"></i> {{ post.comment_count }} </span>
+                            <span class="tag-copy" style="display:inline-block; float:right;"><i class="ti-heart"></i> {{ post.like_count }} </span>
+                            <span class="tag-copy" style="display:inline-block; float:right;"><i class="ti-comment-alt"></i> {{ post.comment_count }} </span>
                             </div>
                         </div>
                     </div>
