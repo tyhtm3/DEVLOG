@@ -123,7 +123,7 @@
                     <ul class="list-inline blog-devin-tag">  
                       <li>
                       &nbsp;
-                      <span class="tag-copy2" ><i class="ti-pencil"></i> {{ post.regtime }}&nbsp;</span>
+                      <span class="tag-copy2" ><i class="ti-calendar"></i> {{ post.regtime }}&nbsp;</span>
                       <span class="tag-copy2" >&nbsp;<i class="ti-comment-alt"></i>&nbsp;{{ post.comment_count }} </span>
                       <span class="tag-copy2" >&nbsp;<i class="ti-heart"></i>&nbsp;{{ post.like_count }} </span>
                       </li>

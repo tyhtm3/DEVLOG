@@ -57,7 +57,7 @@ export default {
   },
   methods:{
     templateDetail(url){
-      this.$router.push(url)
+      window.open(url, '_blank');
     }
   }
 }
