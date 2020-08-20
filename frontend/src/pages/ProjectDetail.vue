@@ -34,82 +34,93 @@
         <!-- 프로젝트 관리 헤더 끝 -->
         <hr>
         <!-- 프로젝트 출력 시작 -->
-        <div class="row">
-          <div class="col-sm-12">
-
-            <!-- 프로젝트 썸네일 -->
-            <div class="col-sm-4 pull-right" style="min-height:350px;">
-              <div class="pull-right" style="min-height:200px;">
-                <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" alt="">
-                <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+        <!-- 프로젝트 정보 -->
+        <div class="row" id="project-data">
+          <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-3">
+                <p class="pjt-title">프로젝트 제목</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="pjt-content" style="font-size:16px;">{{project.title}}</p>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="pjt-title">프로젝트 개요</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="pjt-content" style="font-size:16px;">{{project.summary}}</p>
               </div>
             </div>
-
-            <!-- 프로젝트 정보 -->
-            <div class="col-sm-2">
-            <p class="pjt-title">프로젝트 제목</p>
-            </div>
-            <div class="col-sm-6">
-              <p class="pjt-content" style="font-size:16px;">{{project.title}}</p>
-            </div>
-            <div class="col-sm-2">
-              <p class="pjt-title">프로젝트 개요</p>
-            </div>
-            <div class="col-sm-6">
-              <p class="pjt-content" style="font-size:16px;">{{project.summary}}</p>
-            </div>
-            <div class="col-sm-2">
-              <p class="pjt-title">개발 기간</p>
-            </div>
-            <div class="col-sm-6">
-              <p class="pjt-content" style="font-size:16px;">{{project.start_date}} ~ {{project.finish_date}}</p>
-            </div>
-            <div class="col-sm-2">
-              <p class="pjt-title">기술 스택</p>
-            </div>
-            <div class="col-sm-6" style="margin-bottom:10px;`">
-              <div v-for="(stack,index) in stack" :key="index">
-                <img class="media-object pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="height: 64px;margin-right:20px;">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="pjt-title">개발 기간</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="pjt-content" style="font-size:16px;">{{project.start_date}} ~ {{project.finish_date}}</p>
               </div>
             </div>
-            <div class="col-sm-2" v-if="role.length>0">
-              <p class="pjt-title">역할</p>
-            </div>
-            <div class="col-sm-6">
-              <div v-for="(role,index) in role" :key="index">
-                <p class="pjt-content" style="font-size:16px; margin-bottom:0px;" >{{role.role}}</p>  
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="pjt-title">기술 스택</p>
+              </div>
+              <div class="col-sm-9" >
+                <div v-for="(stack,index) in stack" :key="index" style="padding:5px; display: inline-block; ">
+                  <img class="media-object pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="height: 64px;">
+                </div>
               </div>
             </div>
-            <div class="col-sm-2" v-if="project.github_url">
-              <p class="pjt-title">Github Url</p>
+            <div class="row" v-if="role.length>0">
+              <div class="col-sm-3" >
+                <p class="pjt-title">역할</p>
+              </div>
+              <div class="col-sm-9">
+                <div v-for="(role,index) in role" :key="index">
+                  <p class="pjt-content" style="font-size:16px; margin-bottom:0px;" >{{role.role}}</p>  
+                </div>
+              </div>
             </div>
-            <div class="col-sm-6" v-if="project.github_url">
-              <p class="pjt-content" style="font-size:16px;"><a href="#" @click="goUrl(project.github_url)">{{project.github_url}}</a></p>
+            <div class="row" v-if="project.github_url">
+              <div class="col-sm-3" >
+                <p class="pjt-title">Github Url</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="pjt-content" style="font-size:16px;"><a href="#" @click="goUrl(project.github_url)">{{project.github_url}}</a></p>
+              </div>
             </div>
-            <div class="col-sm-2" v-if="project.etc_url">
-              <p class="pjt-title">참고 Url</p>
+            <div class="row" v-if="project.etc_url">
+              <div class="col-sm-3" >
+                <p class="pjt-title">참고 Url</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="pjt-content" style="font-size:16px;">{{project.etc_url}}</p>
+              </div>
             </div>
-            <div class="col-sm-6" v-if="project.etc_url">
-              <p class="pjt-content" style="font-size:16px;">{{project.etc_url}}</p>
+            <div class="row">
+              <div class="col-sm-3" v-if="project.rep_url">
+                <p class="pjt-title">참조 Url</p>
+              </div>
+              <div class="col-sm-9" v-if="project.rep_url">
+                <p class="pjt-content" style="font-size:16px;">{{project.rep_url}}</p>
+              </div>
             </div>
-            <div class="col-sm-2" v-if="project.rep_url">
-              <p class="pjt-title">참조 Url</p>
-            </div>
-            <div class="col-sm-6" v-if="project.rep_url">
-              <p class="pjt-content" style="font-size:16px;">{{project.rep_url}}</p>
+          </div>
+          <div class="col-sm-3 pull-right">
+            <div class="pull-right" style="min-height:200px;">
+              <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" alt="">
+              <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
             </div>
           </div>
         </div>
-
-        <hr>
-
+        
         <!-- 상세정보 -->
-        <div class="row">
-          <div class="col-sm-12" v-if="project.content" >
+        <div class="row" v-if="project.content">
+          <hr>
+          <div class="col-sm-12"  >
             <p v-html="project.content"></p>
           </div>
         </div>
-
         <hr>
 
         <!-- 프로젝트 태그 -->
@@ -314,13 +325,16 @@ a:hover { color: black; text-decoration: bold;}
   margin-bottom:60px;
 } */
 
-/* .pjt-content{
-  margin-top:-2px;
+.pjt-content{
+  
+  /* margin-top:-2px;
   font-size:14px;
   word-spacing: 2px;
-  line-height:30px;
-} */
-
+  line-height:30px; */
+}
+#project-data .row{
+  margin-bottom:20px;
+}
 
 
 /* 내가 적용한 css */
@@ -339,10 +353,6 @@ a:hover { color: black; text-decoration: bold;}
 }
 .material-icons{
   font-size:13px;
-}
-
-.col-sm-6{
-  margin-bottom: 10px;
 }
 
 </style>
