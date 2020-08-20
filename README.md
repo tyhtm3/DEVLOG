@@ -3,11 +3,9 @@
 ![Alt text](https://img.shields.io/badge/data-Web-orange)<br>
 ![Alt text](https://img.shields.io/badge/Stack-Vue.js-green) ![Alt text](https://img.shields.io/badge/Stack-Sass-pink) ![Alt text](https://img.shields.io/badge/Stack-ElementUI-skyblue)<br>
 ![Alt text](https://img.shields.io/badge/Stack-SpringBoot-green) ![Alt text](https://img.shields.io/badge/Stack-Mybatis-blue) ![Alt text](https://img.shields.io/badge/Stack-Docker-blue) ![Alt text](https://img.shields.io/badge/Stack-MariaDB-blue)
-<br>
+<br><br>
 
 
-
-<br>  
 > [Devlog](http://i3a402.p.ssafy.io/) <br>
 > [Devlog API](http://i3a402.p.ssafy.io:8090/devlog/swagger-ui.html#)  <br>
 > <img src="./meeting log/res/qr.png" width="150" height="150">  
@@ -79,15 +77,15 @@ SSAFY 3기 공통 프로젝트
 
 ## 개발 환경
 
-<img src="./meeting log/res/npm.png" width="20" height="20">npm 6.14.5 
-<img src="./meeting log/res/vuejs.png" width="20" height="20">@vue/cli 4.4.6 
-<img src="./meeting log/res/bootstrap.png" width="20" height="20">bootstrap 3.3.7 
-<img src="./meeting log/res/elementui.png" width="20" height="20">element-ui 2.0.2 
-<img src="./meeting log/res/sass.png" width="20" height="20">node-sass 4.14.1 
-<img src="./meeting log/res/spring.png" width="20" height="20">SpringBoot 2.3.1.RELEASE 
-<img src="./meeting log/res/aws.png" width="20" height="20">AWS EC2 
-<img src="./meeting log/res/nginx.png" width="20" height="20">Nginx 1.14.0 
-<img src="./meeting log/res/mariadb.png" width="20" height="20">MariaDB 10.5.4 
+<img src="./meeting log/res/npm.png" width="20" height="20">npm 6.14.5 <br>
+<img src="./meeting log/res/vuejs.png" width="20" height="20">@vue/cli 4.4.6 <br>
+<img src="./meeting log/res/bootstrap.png" width="20" height="20">bootstrap 3.3.7 <br>
+<img src="./meeting log/res/elementui.png" width="20" height="20">element-ui 2.0.2 <br>
+<img src="./meeting log/res/sass.png" width="20" height="20">node-sass 4.14.1 <br>
+<img src="./meeting log/res/spring.png" width="20" height="20">SpringBoot 2.3.1.RELEASE <br>
+<img src="./meeting log/res/aws.png" width="20" height="20">AWS EC2 <br>
+<img src="./meeting log/res/nginx.png" width="20" height="20">Nginx 1.14.0 <br>
+<img src="./meeting log/res/mariadb.png" width="20" height="20">MariaDB 10.5.4 <br>
 
 ## 저작권 및 사용권 정보
 
