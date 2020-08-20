@@ -9,7 +9,7 @@
     </div>
     <div class="tl-content">
       <h1>{{ portfolioInfo.name }}</h1>
-      <p>자기 소개가 들어가야 하는데 포트폴리오 입력 페이지에서 입력 항목에 없음</p>
+      <p>{{ portfolioInfo.introduction }}</p>
     </div>
   </div>
   <!-- about me 끝 -->
@@ -61,7 +61,7 @@
               <span class="pull-right" @click="deleteCertification(index)"><i class="ti-trash"></i></span>
             </div>
             <div v-show="inputCertification">
-              <span><input size="5" placeholder="취득년도" v-model="certification.date"></span>
+              <span><input size="4" placeholder="취득년도" v-model="certification.date"></span>
               <span><input placeholder="자격증" v-on:keyup.enter="addCertification" v-model="certification.certification"></span>
             </div>
           </el-card>

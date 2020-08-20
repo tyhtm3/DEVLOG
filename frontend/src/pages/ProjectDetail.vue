@@ -23,8 +23,13 @@
           <i v-else @click="like" class="material-icons">favorite_border</i>
           &nbsp;{{project.like_count}}</li>
         <li class="pull-right" v-if="project.seq_blog==seq_user">
+          <span style="cursor:pointer" @click="copyurl">주소 복사</span>&nbsp;|&nbsp;
           <span style="cursor:pointer" @click="updateProject(project.seq)">수정 </span>&nbsp;|&nbsp;
           <span style="cursor:pointer" @click="deleteProject(project.seq)"> 삭제</span>
+        </li>
+        <li class="pull-right" v-else>
+          <!-- <span style="cursor:pointer" @click="savePost(post.seq)">저장</span> -->
+          <span style="cursor:pointer" @click="copyurl">주소 복사</span>
         </li>
       </ul>
       <!-- 헤더 끝 -->               
@@ -257,6 +262,16 @@
       // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
       return text
     },
+    copyurl(){
+      var url = window.location.href
+      var dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = url;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      this.$message.success('주소가 복사되었습니다.')
+    }
    },
   }
 </script>

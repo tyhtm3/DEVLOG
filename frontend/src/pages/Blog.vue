@@ -36,7 +36,7 @@
                   <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
                   <p><small id="followertext" v-text="followtext"></small></p>
                 </div>
-                <div v-else class="col-sm-3 emphasis" style="cursor:pointer;">
+                <div v-else class="col-sm-3 emphasis">
                   <h2 style="margin:0px">{{blogOwnerNumOfNeighbor}}</h2>
                   <p><small id="followertext" v-text="followtext"></small></p>
                 </div>
