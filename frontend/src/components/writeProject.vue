@@ -146,7 +146,7 @@
           </p>
         </div>
         <div class="col-sm-9">
-          <vue-editor id="project-editor" v-model="content2" style="padding:10px;"></vue-editor>
+          <vue-editor id="project-editor" v-model="content" style="padding:10px;"></vue-editor>
         </div>
       </div><hr>
       <!--  프로젝트 정보 끝 -->
@@ -264,7 +264,7 @@ components: {
       github_url : '',
       etc_url : null,
       rep_url : null,
-      content2 : null,
+      content : null,
       // 기술스택
       initial_all_stack: [],  // 맨 처음에 axios로 불러온 상태
       stack : [],             // 선택된 애들?
