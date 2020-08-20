@@ -1,16 +1,17 @@
 <template>
   <transition name="el-zoom-in-top">
+    <!-- <img class="img-resize" style="height:400px" src="../../docs/static/img/banner1.jpg"> -->
     <div class="content-wrapper" style="background: white;">
       <!-- start banner carousel -->
       <div class="carousel">
-        <el-carousel indicator-position="outside" height='400px'>
+        <el-carousel indicator-position="outside" height='400px' >
           <el-carousel-item class="img-resize">
-            <img class="img-resize" src="../../docs/static/img/test1.jpg">
+            <img class="img-resize" src="../../docs/static/img/banner1.jpg">
           </el-carousel-item>
-          <el-carousel-item class="img-resize">
-            <img class="img-resize" src="../../docs/static/img/test2.jpg">
-          </el-carousel-item>
-          <el-carousel-item class="img-resize">
+          <!-- <el-carousel-item class="img-resize">
+            <img class="img-resize" src="../../docs/static/img/banner2.jpg">
+          </el-carousel-item> -->
+          <!-- <el-carousel-item class="img-resize">
             <img class="img-resize" src="../../docs/static/img/test3.jpg">
           </el-carousel-item>
           <el-carousel-item class="img-resize">
@@ -24,7 +25,7 @@
           </el-carousel-item>
           <el-carousel-item class="img-resize">
             <img class="img-resize" src="../../docs/static/img/ba3.png">
-          </el-carousel-item>
+          </el-carousel-item> -->
           
         </el-carousel>
       </div>
@@ -710,11 +711,15 @@ $( '.topimg' ).click( function() {
 }
 .img-resize{
   // width:100%;
+  // margin-left:33%;
   height:380px !important;
   text-align: center !important;
   // background-image:url('../../docs/static/img/ba.png');
   // background-position:center;
-  // background-size:contain;
+  // background-size`:contain;
+  // -webkit-transform: translate(-50%,-50%); 
+  // -ms-transform: translate(-50%,-50%); 
+  // transform: translate(-50%,-50%); 
 }
 .title-1line{
   /* 한 줄 자르기 */
