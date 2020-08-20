@@ -66,7 +66,7 @@ SSAFY 3기 공통 프로젝트
 :running: 차윤석 (백엔드, 서버) (c9boom7@naver.com)<br>
 
 ## 개발 일정
-![image](./meeting log/res/schedule.jpg)
+![image](./meeting log/res/schedule.JPG)
 
 ## 실행 환경(권장)
 
@@ -77,14 +77,14 @@ SSAFY 3기 공통 프로젝트
 ## 개발 환경
 
 - npm 6.14.5 
-- @vue/cli 4.4.6 ![image](./meeting log/res/vuejs.png){: width="20" height="20"} 
-- bootstrap 3.3.7 ![image](./meeting log/res/bootstrap.png){: width="20" height="20"} 
-- element-ui 2.0.2 ![image](./meeting log/res/elementui.png){: width="20" height="20"} 
-- node-sass 4.14.1 ![image](./meeting log/res/sass.png){: width="20" height="20"} 
-- SpringBoot 2.3.1.RELEASE ![image](./meeting log/res/spring.png){: width="20" height="20"} 
-- AWS EC2 ![image](./meeting log/res/aws.png){: width="20" height="20"} 
-- Nginx 1.14.0 ![image](./meeting log/res/nginx.png){: width="20" height="20"} 
-- MariaDB 10.5.4 ![image](./meeting log/res/mariadb.png){: width="20" height="20"} 
+- @vue/cli 4.4.6 ![image](./meeting log/res/vuejs.png =20x20) 
+- bootstrap 3.3.7 ![image](./meeting log/res/bootstrap.png =20x20)
+- element-ui 2.0.2 ![image](./meeting log/res/elementui.png =20x20)
+- node-sass 4.14.1 ![image](./meeting log/res/sass.png =20x20)
+- SpringBoot 2.3.1.RELEASE ![image](./meeting log/res/spring.png =20x20)
+- AWS EC2 ![image](./meeting log/res/aws.png =20x20)
+- Nginx 1.14.0 ![image](./meeting log/res/nginx.png =20x20)
+- MariaDB 10.5.4 ![image](./meeting log/res/mariadb.png =20x20)
 
 ## 저작권 및 사용권 정보
 
