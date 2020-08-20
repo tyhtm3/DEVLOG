@@ -59,6 +59,8 @@
                             <el-col :span="24/(portfoliocert.length)" v-for="(cert,index) in portfoliocert" :key="index" style="text-align: center;font-family: 'Noto Sans KR', sans-serif;">
                                 <div class="grid-content bg-aqua" style="padding-top:7px;box-shadow: 3px 3px 14px 4px  rgba(163, 163, 163, 0.404);">{{cert.certification}}</div>
                             </el-col>
+                            <!-- 3-3. 자격증 수정 -->
+                            
                         </el-row>
                           <!-- 3.3 -->
                          <br>
@@ -138,40 +140,61 @@
            </div>
        <!-- 5. 프로젝트 타임라인 끝 -->
 
+<div v-if="chartData.rows.length!=0">
+  <!-- 4. only 기술스택 -->
+<div style="margin-left:100px;margin-right:100px;" v-if="chartData_language.rows.length==0">
+  <div style="margin-top:80px;background-color:white;height:650px;padding:50px 70px 70px 70px;box-shadow: 3px 3px 33px 4px  rgba(163, 163, 163, 0.404);">
 
-  <!-- 4. 프로그래밍 능력 / 외국어 능력 -->
-              <div class="header-timeline" style="margin-top:60px;margin-bottom:30px;">
+              <div class="header-timeline" style="margin-bottom:30px;">
+                                <h1>SKILLS</h1>
+                                 <h2>Programming skills</h2>
+              </div>
+
+          <div class="row" style="margin-top:-20px;">
+              <div class="col-md-12">
+                      <div class="box-body" id="box-pie">
+                          <ve-pie :data="chartData" :settings="chartSettings" :id="box-pie"></ve-pie>
+                      </div>
+              </div>
+          </div>
+
+            </div>
+              </div>
+  <!-- 4. 끝 -->
+
+  <!-- 4. 기술스택과 언어스킬 -->
+<div style="margin-left:80px;margin-right:80px;margin-top:80px;" v-else >
+  
+              <div class="header-timeline" style="margin-bottom:30px;">
                                 <h1>SKILLS</h1>
                                  <h2>Programming and Language skills</h2>
               </div>
 
+          <div class="row" style="margin-top:-20px;">
+              <div class="col-md-6">
+                      <div class="box-body" id="box-pie">
+                          <ve-pie :data="chartData" :settings="chartSettings" :id="box-pie"></ve-pie>
+                      </div>
+              </div>
+         
 
-                <div>
-                 <div class="row">
-                  <br> <br>
-                 <div class="col-sm-1"></div>       
-                 <div class="col-sm-5">                  
-                 
-                
-                 <radar-chart v-bind:label="label" v-bind:exp="exp" v-bind:title="'프로그래밍 능력'"></radar-chart>
-                  </div>
-                  <div class="col-sm-5">
-                <radar-chart v-bind:label="language" v-bind:exp="exp_lang" v-bind:title="'외국어 능력'"></radar-chart>
-                  </div>
+              <div class="col-md-6">
+                      <div class="box-body" id="box-pie">
+                          <ve-pie :data="chartData_language" :settings="chartSettings_language" :id="box-pie"></ve-pie>
+                      </div>
+              </div>
+          </div>
 
-                  <div class="col-sm-1"></div>
-                </div>
-                 <br> <br>
-                 <div style="margin-bottom:20px;"></div>
-                 </div>
-               <!-- 4. 끝 -->
+              </div>
+  <!-- 4. 끝 -->
+</div>
 
+                          
 
-
-                            <div style="margin-top:40px;height:100px;background-color:white"></div>
+                            <div style="margin-top:40px;height:60px;background-color:white"></div>
                             
                             </div>
-                            
+                                  </div>
                             
 
                             
@@ -190,12 +213,10 @@
   import { VueEditor } from 'vue2-editor'
   import html2canvas from 'html2canvas'
   import jsPDF from 'jspdf'  
-  import Radar from '../components/RadarChart'
   export default {
     name: 'pdf',
     components: {
       VueEditor,
-      'radar-chart': Radar
     },
     data: function () {
         return { 
@@ -205,18 +226,55 @@
           portfoliostack : '',
           portfoliocert : '',
           portfolioMoreInfo : '',
-          label : [],
-          exp : [],
-          language : [],
-          exp_lang : [],
+          chartData : {},
+          chartSettings : {},
+          chartData_language : {},
+          chartSettings_language : {},
         }
     },
     created(){
-          http.get(`portfolio/${this.seq}`).then(({data}) => {
+       this.chartData = {
+        rows: [
+        ]
+      }
+      this.chartSettings = {
+        dimension: 'stack',
+        metrics: 'rate'
+      }
+      this.chartData_language = {
+        rows: [
+        ]
+      }
+      this.chartSettings_language = {
+        dimension: 'language',
+        metrics: 'rate'
+      }
+      http.get(`portfolio/${this.seq}`).then(({data}) => {
           this.portfolio=data
       });
       http.get(`portfoliopjt/${this.seq}`).then(({data}) => {
           this.portfoliopjt=data
+           // 기술스택
+          for(var i=0;i<data.length;i++){
+          for(var j=0;j<data[i].stacks.length;j++){
+              var rows = new Object()
+              rows.stack = data[i].stacks[j].stack
+              rows.rate = 1
+              var found = false;
+              //이미 들어온 데이터 확인하면서 중복이면 숫자 증가
+              for(var k = 0; k < this.chartData.rows.length; k++) {
+                if (this.chartData.rows[k].stack == rows.stack) {
+                  found = true;
+                 this.chartData.rows[k].rate += 1
+                break;
+                }
+              }
+              //새로 들어온거면 1로 추가
+              if(!found)
+              this.chartData.rows.push(rows)
+            } 
+          }
+          
       });
       http.get(`portfolio/skill/${this.seq}`).then(({data}) => {
           for(var i=0;i<data.length;i++){
@@ -229,13 +287,14 @@
       });
       http.get(`portfolio/language/${this.seq}`).then(({data}) => {
            for(var i=0;i<data.length;i++){
-            this.language[i] = data[i].language
-            this.exp_lang[i]= data[i].level
+              var rows = new Object()
+              rows.language = data[i].language
+              rows.rate = data[i].level
+              this.chartData_language.rows.push(rows)
           }
       });
     
-        http.get('portfolio/info/'+this.seq)
-        .then(({data}) => {
+      http.get('portfolio/info/'+this.seq).then(({data}) => {
             this.portfolioMoreInfo=data;
             this.addstr="http://maps.google.com/maps?q="+data.address;
          })

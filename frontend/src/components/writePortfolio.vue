@@ -6,7 +6,7 @@
           <div class="col-xs-12 col-sm-12" style="padding:0px">
             <hr>
               <div style="margin-bottom:15px; font-size:20px;"><b>개인정보 입력</b>
-                <el-tooltip class="item" effect="dark" content="내 정보를 기반으로 정보를 채워두었습니다. 인사 담당자에게 보여질 정보이므로 정확한 정보를 입력해주세요." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+                <el-tooltip class="item" effect="dark" content="포트폴리오에 담길 내 정보를 작성해보세요. 인사 담당자에게 보여질 항목이므로 정확한 정보를 입력해주세요." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
               </div>
               <hr>
             <dl class="dl-horizontal-profile">

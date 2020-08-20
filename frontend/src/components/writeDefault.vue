@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-sm-2 pjt-title">
           <p class="pull-right">* 제목
-            <el-tooltip class="item" effect="dark" content="게시물의 특징을 살릴 수 있는 기발한 제목을 적어주세요" placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="게시물의 특징을 살릴 수 있는 제목을 적어주세요" placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
           </p>
         </div>
         <div class="col-sm-9">
@@ -15,7 +15,7 @@
        <div class="row">
         <div class="col-sm-2 pjt-title" style="height:490px;">
           <p class="pull-right">* 내용
-            <el-tooltip class="item" effect="dark" content="많은 데블로거들이 이 부분에 오늘 배운 새로운 지식들을 정리합니다." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+            <el-tooltip class="item" effect="dark" content="오늘 배운 새로운 지식들을 정리해보세요" placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
           </p>
         </div>
         <div class="col-sm-9">

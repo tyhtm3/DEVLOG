@@ -49,7 +49,7 @@ export default {
         {
           image: '../../static/img/template05.png',
           title: "심플 템플릿",
-          summary: "심플한 디자인으로 프로젝트를 강조하고 싶은 개발자에게 이 템플릿을 추천합니다.",
+          summary:'<span style="color:#b68c2c; font-weight:500;">심플</span>한 디자인으로 <u style="color:#b68c2c;"><span style="color:#b68c2c; font-weight:500;">프로젝트를 강조하고 싶은 개발자</span></u>에게 이 템플릿을 <span style="color:#b68c2c;">추천</span>합니다.',
           url: "/blog/portfolio5/"+this.clickedSeq
         }
       ]

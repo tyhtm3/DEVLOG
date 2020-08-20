@@ -2,14 +2,18 @@
   <transition name="el-zoom-in-top">
     <div class="content-wrapper" style="background: white;">
       <br><br><br>
+      <div class="portfolio">
       <div class="header-block">
-          <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
+          <ul data-html2canvas-ignore="true" class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
               <li><a></a></li>
               <li class="pull-right" v-if="basicinfo.seq_blog==seq_user"><span class="ti-pencil"></span>&nbsp;{{basicinfo.regtime}} &nbsp; | <a href="#"> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
+              <el-button data-html2canvas-ignore="true" type="primary" style="position:absolute;" @click="PDF">PDF</el-button>
           </ul>
+         
           <div v-if="basicinfo.profile_img_url" class="header-image">
           <img style="block:inline;" :src='basicinfo.profile_img_url' class="avatar">
           </div>
+          
           <div class="nextToAvater" >
             <div class="header-text" :class="{ 'header-text-noImage' : !basicinfo.profile_img_url }" style="padding-left:30px!important">
             <p style="font-size:50px;"><b>{{basicinfo.name}}</b></p>
@@ -137,7 +141,8 @@
               </section>
             </div>
           </div>
-        </div>             
+        </div>         
+      </div>
       </div>
     </div>
   </transition>
@@ -145,7 +150,10 @@
 <script>
   import http from '../util/http-common'
   import { VueEditor } from 'vue2-editor'
+  import html2canvas from 'html2canvas'
+  import jsPDF from 'jspdf' 
   export default {
+    name: 'pdf',
     components: {
       VueEditor
     },
@@ -223,6 +231,35 @@
           }
          })
       },
+      PDF(){
+      window.scrollTo(0, 0);
+      window.html2canvas = html2canvas
+      const pageWidth = 210 //캔버스 너비 mm
+      const pageHeight = 295 //캔버스 높이 mm
+      let ele = document.querySelector(".portfolio")
+			let width = ele.offsetWidth // 셀렉트한 요소의 px 너비
+      let height = ele.offsetHeight // 셀렉트한 요소의 px 높이
+      let imgHeight = pageWidth * height/width 
+      
+      html2canvas($('.portfolio')[0]).then(function(canvas) {
+        let position = 0
+        let pdf = new jsPDF('p', 'mm', 'a4')
+        let imgData = canvas.toDataURL('image/jpeg');
+        pdf.addImage(imgData, 'jpeg', 0, position, pageWidth, imgHeight, undefined, 'slow')
+
+        //Paging 처리
+					let heightLeft = imgHeight //페이징 처리를 위해 남은 페이지 높이 세팅.
+					heightLeft -= pageHeight
+					while (heightLeft >= 0) {
+						position = heightLeft - imgHeight
+						pdf.addPage();
+						pdf.addImage(imgData, 'jpeg', 0, position, pageWidth, imgHeight)
+						heightLeft -= pageHeight
+          }
+          
+        pdf.save('포트폴리오.pdf')
+      })
+      }
    },
 }        
   function dateDiff(_date1, _date2) {

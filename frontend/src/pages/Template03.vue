@@ -3,6 +3,11 @@
     <section id="timelineTemplate" v-loading="loading" >
     <div class="content-wrapper" style="background: white;">
       <br><br><br>
+
+      <!-- 명지님 이거 PDF 버튼이에요 !!!!!! 위치 마음에 드는곳으로 바꿔주세요 !!!!!
+           (지금은 pdf에 사진 안나오는데 프론트 빌드된 서버로 실행하면 사진 나와요!)-->
+      <el-button data-html2canvas-ignore="true" type="primary" style="position:absolute;" @click="PDF">PDF</el-button>
+
       <div class="resume">
         <div class="base">
           <div class="profile">
@@ -166,7 +171,10 @@
 <script>  
   import http from '../util/http-common'
   import { VueEditor } from 'vue2-editor'
+  import html2canvas from 'html2canvas'
+  import jsPDF from 'jspdf'  
   export default {
+    name: 'pdf',
     components: {
       VueEditor
     },
@@ -968,6 +976,37 @@
       goBlog(id){
             this.$router.push(`/blog/${id}`)
       },
+      PDF(){
+      window.scrollTo(0, 0);
+      window.html2canvas = html2canvas
+      const pageWidth = 210 //캔버스 너비 mm
+      const pageHeight = 295 //캔버스 높이 mm
+      let ele = document.querySelector(".resume")
+			let width = ele.offsetWidth // 셀렉트한 요소의 px 너비
+      let height = ele.offsetHeight // 셀렉트한 요소의 px 높이
+      let imgHeight = pageWidth * height/width 
+      
+      html2canvas($('.resume')[0]).then(function(canvas) {
+        let position = 0
+        let pdf = new jsPDF('p', 'mm', 'a4')
+        let imgData = canvas.toDataURL('image/jpeg');
+        pdf.addImage(imgData, 'jpeg', 0, position, pageWidth, imgHeight, undefined, 'slow')
+
+        //Paging 처리
+					let heightLeft = imgHeight //페이징 처리를 위해 남은 페이지 높이 세팅.
+					heightLeft -= pageHeight
+					while (heightLeft >= 0) {
+						position = heightLeft - imgHeight
+						pdf.addPage();
+						pdf.addImage(imgData, 'jpeg', 0, position, pageWidth, imgHeight)
+						heightLeft -= pageHeight
+          }
+          
+        pdf.save('포트폴리오.pdf')
+      })
+     
+
+      }
    },
   }
 </script>
