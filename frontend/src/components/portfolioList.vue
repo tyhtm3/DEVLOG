@@ -81,7 +81,6 @@ export default {
             deleteSuccess: true,
             selectDialogVisible: false,
             clickedSeq:'',
-            isAdmin: false,
             seq_blog:'',
             seq_user:this.$store.getters.getUserInfo.seq,
             seq_rep: '',
@@ -89,14 +88,6 @@ export default {
     },
     created() { 
         this.getportfolioList();
-    },
-    mounted() {
-        console.log(this.$route.params.id)
-        console.log(this.$store.getters.getUserInfo.id)
-        if(this.$route.params.id === this.$store.getters.getUserInfo.id){
-            this.isAdmin = true
-        }
-        console.log(this.isAdmin)
     },
     computed: {
         adminMode() {

@@ -178,6 +178,10 @@
       this.getBasicInfo(this.$route.params.seq);
       this.getPortfolioInfo(this.$route.params.seq);
     },
+    mounted() {
+      $(".main-header").css('display','none')
+      $(".main-footer"). css('display','none')
+    },
     methods: {
       getBasicInfo(seq){
         http.get('portfolio/'+seq)
@@ -223,6 +227,11 @@
           }
          })
       },
+      customSort(a, b) {
+        if(a.start_date == b.start_date){
+          return 0
+          }f
+          return a.start_date > b.start_date ? 1 : -1; }
    },
 }        
   function dateDiff(_date1, _date2) {
