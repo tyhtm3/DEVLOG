@@ -9,6 +9,8 @@
       <div class="resume">
         <div class="base">
           <div class="profile">
+            <el-button data-html2canvas-ignore="true" class="pull-top pull-left" type="primary" style="position:absolute;margin-top:-30px;margin-left:-15px;" @click="PDF">PDF</el-button>
+      
             <div class="photo">
               <img :src="portfolioInfo.profile_img_url" style="text-align:center"/>
             </div>

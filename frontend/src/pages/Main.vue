@@ -38,7 +38,6 @@
       <!-- end banner carousel -->
 
       <br>
-
       <div class="box">
         <div class="box-body" style="min-height:400px;">
           <div class="col-sm-12">

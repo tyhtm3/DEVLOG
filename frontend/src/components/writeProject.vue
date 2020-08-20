@@ -30,13 +30,13 @@
             <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 이곳에 입력된 개발 기간 데이터를 활용해 가장 최신 프로젝트부터 과거의 프로젝트까지 정렬해드립니다." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
           </p>
         </div>
-        <div class="col-sm-4" style="padding-top:15px;">
+        <div class="col-sm-2" style="padding-top:15px;">
           <el-date-picker v-model="start_date" type="date"></el-date-picker>
         </div>
-        <div class="col-sm-1" style="position:relative; top:20px;">
-          <span style="font-size:20px;">&nbsp; ~ &nbsp;</span>
+        <div class="col-sm-1" style="position:relative;padding-top:20px;margin-left:60px;">
+          <span style="font-size:20px;">~</span>
         </div>
-        <div class="col-sm-4" style="padding-top:15px;">
+        <div class="col-sm-2" style="padding-top:15px;margin-left:-60px;">
           <el-date-picker v-model="finish_date" type="date"></el-date-picker>
         </div>
       </div><hr>
