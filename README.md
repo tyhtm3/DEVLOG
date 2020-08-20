@@ -4,9 +4,14 @@
 ![Alt text](https://img.shields.io/badge/Stack-Vue.js-green) ![Alt text](https://img.shields.io/badge/Stack-Sass-pink) ![Alt text](https://img.shields.io/badge/Stack-ElementUI-skyblue)<br>
 ![Alt text](https://img.shields.io/badge/Stack-SpringBoot-green) ![Alt text](https://img.shields.io/badge/Stack-Mybatis-blue) ![Alt text](https://img.shields.io/badge/Stack-Docker-blue) ![Alt text](https://img.shields.io/badge/Stack-MariaDB-blue)
 <br>
-  
+
+<img src="./meeting log/res/logo.png">  
+
+<br>
+>  
 > [Devlog](http://i3a402.p.ssafy.io/) <br>
-> [Devlog API](http://i3a402.p.ssafy.io:8090/devlog/swagger-ui.html#)
+> [Devlog API](http://i3a402.p.ssafy.io:8090/devlog/swagger-ui.html#)  <br>
+> <img src="./meeting log/res/qr.png" width="150" height="150">  
 
 
 SSAFY 3기 공통 프로젝트
@@ -56,15 +61,14 @@ SSAFY 3기 공통 프로젝트
 
 ## 개선 계획
 
-[TODO](https://docs.google.com/spreadsheets/d/1oepRaSxXjLjH7jysRXlJGQSCKlrDdntnmp4L84fDZiE/edit#gid=349343557)
+- [TODO](https://docs.google.com/spreadsheets/d/1oepRaSxXjLjH7jysRXlJGQSCKlrDdntnmp4L84fDZiE/edit#gid=349343557)
 를 참고해주세요
 ## 배포자 및 개발자의 연락처 정보
-:running: 김유창 (프론트, 팀장) (oyes9316@gmail.com)<br>
-:running: 김선민 (프론트, UCC) (tyhtm3@naver.com)<br>
-:running: 손명지 (프론트, 기획) (ji_exitosa@naver.com)<br>
-:running: 서주현 (백엔드, 프론트) (rat71400@gmail.com)<br>
-:running: 차윤석 (백엔드, 서버) (c9boom7@naver.com)<br>
-
+<img src="./meeting log/res/running.png" width="16" height="16"> 김유창 (프론트, 팀장) (oyes9316@gmail.com)<br>
+<img src="./meeting log/res/running.png" width="16" height="16"> 김선민 (프론트, UCC) (tyhtm3@naver.com)<br>
+<img src="./meeting log/res/running.png" width="16" height="16"> 손명지 (프론트, 기획) (ji_exitosa@naver.com)<br>
+<img src="./meeting log/res/running.png" width="16" height="16"> 서주현 (백엔드, 프론트) (rat71400@gmail.com)<br>
+<img src="./meeting log/res/running.png" width="16" height="16"> 차윤석 (백엔드, 서버) (c9boom7@naver.com)<br>
 ## 개발 일정
 ![image](./meeting log/res/schedule.JPG)
 
@@ -76,15 +80,15 @@ SSAFY 3기 공통 프로젝트
 
 ## 개발 환경
 
-- npm 6.14.5 
-- @vue/cli 4.4.6 <img src="./meeting log/res/vuejs.png" width="20" height="20">
-- bootstrap 3.3.7 <img src="./meeting log/res/bootstrap.png" width="20" height="20">
-- element-ui 2.0.2 <img src="./meeting log/res/elementui" width="20" height="20">
-- node-sass 4.14.1 <img src="./meeting log/res/sass" width="20" height="20">
-- SpringBoot 2.3.1.RELEASE <img src="./meeting log/res/spring.png" width="20" height="20">
-- AWS EC2 <img src="./meeting log/res/aws.png" width="20" height="20">
-- Nginx 1.14.0 <img src="./meeting log/res/nginx.png" width="20" height="20">
-- MariaDB 10.5.4 <img src="./meeting log/res/mariadb.png" width="20" height="20">
+- <img src="./meeting log/res/npm.png" width="20" height="20">npm 6.14.5 
+- <img src="./meeting log/res/vuejs.png" width="20" height="20">@vue/cli 4.4.6 
+- <img src="./meeting log/res/bootstrap.png" width="20" height="20">bootstrap 3.3.7 
+- <img src="./meeting log/res/elementui.png" width="20" height="20">element-ui 2.0.2 
+- <img src="./meeting log/res/sass.png" width="20" height="20">node-sass 4.14.1 
+- <img src="./meeting log/res/spring.png" width="20" height="20">SpringBoot 2.3.1.RELEASE 
+- <img src="./meeting log/res/aws.png" width="20" height="20">AWS EC2 
+- <img src="./meeting log/res/nginx.png" width="20" height="20">Nginx 1.14.0 
+- <img src="./meeting log/res/mariadb.png" width="20" height="20">MariaDB 10.5.4 
 
 ## 저작권 및 사용권 정보
 

@@ -189,6 +189,7 @@
   </transition>
 </template>
 <script>
+
 import http from '../util/http-common'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mapGetters } from 'vuex'
@@ -237,6 +238,7 @@ export default {
     this.getTags();
     this.getFromDetailSearchTag();
     this.getPostandproject();
+    this.device_check();
   },
   watch: { 
       getUserInfo() {
@@ -464,8 +466,20 @@ export default {
     hideCloseButton(index){
       $(".hideDeleteButton").eq(index).hide();
     },
+    device_check() {
+    // 디바이스 종류 설정
+    var pc_device = "win16|win32|win64|mac|macintel";
+    // 접속한 디바이스 환경
+    var this_device = navigator.platform;
+    if ( this_device ) {
+        if ( pc_device.indexOf(navigator.platform.toLowerCase()) < 0 ) {
+            alert("Devlog는 PC모드에 최적화 되어 있습니다")
+        } else {
+     }
     }
+    },
   }
+}
 $( window ).scroll( function() {
 	if ( $( this ).scrollTop() > 200 ) {
 		$( '.topimg' ).fadeIn();
