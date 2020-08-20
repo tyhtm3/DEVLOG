@@ -114,7 +114,24 @@ export default {
         return text
         },
         goDetail(seq){
-            this.$router.push(`/blog/post/${seq}`)
+            if(this.adminMode) {
+                if($("#"+seq).is(":checked") == true) {
+                    $("#"+seq).prop("checked", false);
+                    for(let i=0; i<this.deleteList.length; i++){
+                        if(this.deleteList[i] === seq){
+                            this.deleteList.splice(i, 1);
+                        }
+                    }
+                }
+                else{
+                   $("#"+seq).prop("checked", true);
+                   this.deleteList.push(seq)
+                }
+            }
+            else {
+                this.$router.push(`/blog/post/${seq}`)
+            }
+
         },
         // 페이지네이션 하기 전 처음 페이지에 뿌려줄 카드 불러오기
         getpostList(){
