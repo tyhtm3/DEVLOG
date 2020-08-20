@@ -60,7 +60,7 @@ import Template01 from './pages/Template01.vue'
 import Template02 from './pages/Template02.vue'
 import Template03 from './pages/Template03.vue'
 import Template05 from './pages/Template05.vue'
-import store from './store';
+import store from './store'
 
 // Routes
 const routes = [

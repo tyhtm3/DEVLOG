@@ -114,7 +114,6 @@ import http from '../util/http-common'
 export default {
   data(){
     return{
-      isFullScreen: false,
       seq_portfolio: '',
       portfolioInfo: [],
       projectInfo: [],
@@ -152,17 +151,6 @@ export default {
   mounted() {
     $(".main-header").css('display','none')
     $(".main-footer"). css('display','none')
-    $(document).ready(function(){
-      document.body.requestFullscreen()
-      this.isFullScreen = true
-      if(this.FullScreen){
-        $(window).keydown(function(event) {
-          if (event.keyCode == 27) {
-            document.exitFullscreen();
-          }
-        })
-      }
-    })
     this.getPortFolioInfo()
     setTimeout(this.stopLoading, 2000);
   },

@@ -24,6 +24,6 @@
     components: {
       'app-header': Header,
       'app-footer': Footer,
-    }
+    },
   }
 </script>

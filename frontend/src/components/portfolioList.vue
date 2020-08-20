@@ -6,7 +6,7 @@
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
-                <div class="col-md-4" v-for="(portfolio,index) in portfolioList" :key="index">
+                <div class="col-md-4" v-for="(portfolio, index) in portfolioList" :key="index">
                     <span v-show="adminMode">
                         <input class="delete-box" :id=portfolio.seq type="checkbox" :value=portfolio.seq v-model="deleteList" />
                         <label :for=portfolio.seq></label>
@@ -33,12 +33,22 @@
                     title="마음에 드는 템플릿을 골라보세요."
                     :visible.sync="selectDialogVisible"
                     width="95%"
-                    center
-                    >
-                        <div v-if="seq_blog==seq_user" class="pull-right pull top" style="margin-top:-40px;margin-right:100px;">
-                            <el-tooltip :content="clickedSeq!=seq_rep?'대표 설정':'대표 포트폴리오'" placement="right">
-                            <el-button v-if="clickedSeq!=seq_rep" @click="updateRepresentation(clickedSeq)" type="warning" icon="el-icon-star-off" circle></el-button>
-                            <el-button v-else v-on:click.prevent.self>대표</el-button>
+                    center>
+                        <div class="pull-right" v-if="isAdmin">
+                            <router-link :to="{name:'portfolio-update', params:{seq:portfolio.seq}}"><i calss=el-icon-edit></i></router-link>
+                            <!-- &nbsp;|&nbsp;
+                            <span>삭제</span> -->
+                        </div><br>
+                        <div v-if="seq_blog==seq_user" class="pull-right pull top" style="margin-top:-40px;margin-right:20px;">
+                            <router-link :to="{name:'portfolio-update', params:{seq:portfolio.seq}}">
+                                <el-tooltip content="포트폴리오 수정" placement="top">
+                                    <el-button icon="el-icon-edit" type="success">
+                                    </el-button> 
+                                </el-tooltip>
+                            </router-link>
+                            <el-tooltip :content="clickedSeq!=seq_rep?'대표 설정':'대표 포트폴리오'" placement="top">
+                                <el-button v-if="clickedSeq!=seq_rep" @click="updateRepresentation(clickedSeq)" type="warning" icon="el-icon-star-off" circle></el-button>
+                                <el-button v-else v-on:click.prevent.self type="warning" icon="el-icon-star-on"></el-button>
                             </el-tooltip>
                         </div>
                         
@@ -76,7 +86,7 @@ export default {
             seq_rep: '',
         }
     },
-    created() {
+    created() { 
         this.getportfolioList();
     },
     computed: {
@@ -86,7 +96,6 @@ export default {
     },
     methods:{
         setPortfolioSeq(seq){
-          // alert(seq);
           this.clickedSeq = seq;
         },
         getportfolioList(){
@@ -104,7 +113,7 @@ export default {
                     }
                 })
                 http.get('portfolio/representation/'+data.seq).then(({data}) => {
-                this.seq_rep = data
+                    this.seq_rep = data
                 })
             })
         },

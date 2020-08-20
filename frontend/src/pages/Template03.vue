@@ -800,6 +800,8 @@
       this.getProjectsInfo(this.$route.params.seq);
     },
     mounted(){
+      $(".main-header").css('display','none')
+      $(".main-footer"). css('display','none')
       setTimeout(this.stopLoading, 1);
     },
     updated(){

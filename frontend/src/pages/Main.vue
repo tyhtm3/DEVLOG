@@ -125,8 +125,8 @@
                     <ul class="list-inline blog-devin-tag">  
                       <li>
                       &nbsp;
-                      
-                      <span class="tag-copy2" ><i class="ti-user "></i> 닉네임{{ post.nickname }}&nbsp;</span>
+                      <span class="tag-copy2" v-if="post.nickname" ><i class="ti-user "></i> {{ post.nickname }}&nbsp;</span>
+                      <span class="tag-copy2" v-else ><i class="ti-user "></i> {{ post.id }}&nbsp;</span>
                       <span class="tag-copy2" ><i class="ti-calendar"></i> {{ post.regtime }}&nbsp;</span>
                       <span class="tag-copy2" >&nbsp;<i class="ti-comment-alt"></i>&nbsp;{{ post.comment_count }} </span>
                       <span class="tag-copy2" >&nbsp;<i class="ti-heart"></i>&nbsp;{{ post.like_count }} </span>
