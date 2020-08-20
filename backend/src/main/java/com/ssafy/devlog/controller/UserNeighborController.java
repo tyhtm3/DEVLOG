@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.UserNeighbor;
@@ -46,11 +47,10 @@ public class UserNeighborController {
 				HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "유저를 구독하는 모든 이웃을 반환한다.", response = List.class)
-	@GetMapping("me")
-	public ResponseEntity<List<UserNeighbor>> selectAllUserNeighbor() throws Exception {
+	@ApiOperation(value = "해당 유저를 구독하는 모든 이웃을 반환한다.", response = List.class)
+	@GetMapping("{seq_user}")
+	public ResponseEntity<List<UserNeighbor>> selectAllUserNeighbor(@PathVariable int seq_user) throws Exception {
 		logger.debug("selectAllUserNeighbor - 호출");
-		int seq_user = jwtService.getSeq();
 		return new ResponseEntity<List<UserNeighbor>>(userNeighborService.selectAllUserNeighborMe(seq_user),
 				HttpStatus.OK);
 	}
