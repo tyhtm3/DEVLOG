@@ -13,8 +13,11 @@
 
         <figcaption>
           <div class="abuot-template">
-          <h2 class="select-template-title" v-if="template.title">{{ template.title }}</h2>
-          <small class="select-template-summary" v-if="template.summary" v-html="template.summary"></small>
+          <h2 class="select-template-title" v-if="template.title">{{ template.title }}
+          <i @click="copyurl" class="material-icons" style="position:relative; top:2px; cursor:pointer; transform: rotate(45deg);" >link</i>
+          </h2>
+          <small class="select-template-summary" v-if="template.summary" v-html="template.summary">
+          </small>
           </div>
         </figcaption>
       </figure>
@@ -58,6 +61,16 @@ export default {
   methods:{
     templateDetail(url){
       window.open(url, '_blank');
+    },
+    copyurl(){
+      var url = window.location.href
+      var dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = url;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      this.$message.success('주소가 복사되었습니다.')
     }
   }
 }
@@ -115,13 +128,6 @@ export default {
   -ms-transform: translate(-50%,-50%); 
   transform: translate(-50%,-50%); 
   }
-// 이렇게하고 hover하면 좌우로 이미지 왔다갔다하게되는거
-// .thumbnail-wrappper { 
-//   width: 300px; height: 300px; overflow: hidden; 
-// }
-// .portfolio-thumbnail{
-//   max-height:100%; width:auto;
-// }
 </style>
 <style>
   .media-post h2 { 

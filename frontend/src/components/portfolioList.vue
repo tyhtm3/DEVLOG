@@ -34,11 +34,6 @@
                     :visible.sync="selectDialogVisible"
                     width="95%"
                     center>
-                        <div class="pull-right" v-if="isAdmin">
-                            <router-link :to="{name:'portfolio-update', params:{seq:portfolio.seq}}"><i calss=el-icon-edit></i></router-link>
-                            <!-- &nbsp;|&nbsp;
-                            <span>삭제</span> -->
-                        </div><br>
                         <div v-if="seq_blog==seq_user" class="pull-right pull top" style="margin-top:-40px;margin-right:20px;">
                             <router-link :to="{name:'portfolio-update', params:{seq:portfolio.seq}}">
                                 <el-tooltip content="포트폴리오 수정" placement="top">

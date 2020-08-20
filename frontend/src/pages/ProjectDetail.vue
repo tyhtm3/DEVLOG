@@ -277,6 +277,16 @@
       // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
       return text
     },
+    copyurl(){
+      var url = window.location.href
+      var dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = url;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      this.$message.success('주소가 복사되었습니다.')
+    }
    },
   }
 </script>
