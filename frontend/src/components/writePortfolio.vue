@@ -143,6 +143,7 @@
                 </div>
               </div>
             </section>
+
             <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
             </div>
               <div class="col-xs-12 col-sm-12" style="padding:0px">
@@ -181,31 +182,284 @@
                   <p class="pjt-content">{{hoveredStackData.stack}}</p>
                   </div>
                 </div>
-                <!-- <div class="row pjt-margin">
-                  <a href="#">
-                  <div class="col-sm-4">
-                  <p>활용 1)</p>
-                  </div>
-                  <div class="col-sm-8">
-                  <p class="pjt-content">abc프로젝트</p>
-                  </div>
-                  </a>
-                </div>
-                <div class="row pjt-margin">
-                  <a href="#">
-                  <div class="col-sm-4">
-                  <p>활용 2)</p>
-                  </div>
-                  <div class="col-sm-8">
-                  <p class="pjt-content">def프로젝트</p>
-                  </div>
-                  </a>
-                </div> -->
               </div>
             </div>
             <!-- 오른쪽 hover 하면 데이터 띄워주는 부분 끝-->
           </div>
-          <hr>
+          <hr><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+          
+
+     <!-- 자격증 -->
+    <div class="col-xs-12 col-sm-12" style="padding:0px">
+
+            <hr>
+              <div style="margin-bottom:15px; font-size:20px;"><b>자격증</b>
+                <el-tooltip class="item" effect="dark" content="내가 취득한 자격증의 정보를 입력해주세요. 취득년월와 자격증명을 정확하게 입력해주세요." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+              </div>
+              <hr>
+
+          <div v-for="(certification,index) in certifications" :key="index" >
+            <span @click="deleteCertification(index)" style="cursor:pointer;">
+              <el-tooltip class="item" effect="dark" content="클릭시 제거됩니다." placement="right">
+                  <div class="row" style="margin-bottom:10px;">
+                  <div class="col-sm-3">
+                  <el-input :value="certification.date" readonly></el-input>
+                  </div>
+                  <div class="col-sm-9">
+                  <el-input :value="certification.certification" readonly></el-input>
+                 </div>
+                  </div>
+                  
+              </el-tooltip>
+            </span>
+          </div>
+
+          <div class="pull-right" style="padding:0px 10px 0px 10px;"></div>
+     
+          <div class="row">
+          <div class="col-sm-3">
+          <el-input placeholder="취득년월" v-model="certification.date"> </el-input>
+          </div>
+          <div class="col-sm-9">
+          <el-input placeholder="자격증을 입력해주세요" v-model="certification.certification"> </el-input>
+          </div>
+          </div>
+
+          <div class="pull-right" style="padding:10px; display:inline-block; height:60px!important; margin-bottom:auto; margin-top:auto;">
+            <el-button @click="addCertification" >추가</el-button>
+          </div>
+          </div>           
+          <!-- 자격증 끝 -->
+
+         <!-- 기술 -->
+    <div class="col-xs-12 col-sm-12" style="padding:0px">
+
+            <hr>
+              <div style="margin-bottom:15px; font-size:20px;"><b>프로그래밍 언어 능력</b>
+                <el-tooltip class="item" effect="dark" content="나의 프로그래밍 역량을 인사담당자에게 어필해보세요. 능력은 1~5 사이의 숫자를 입력해야 합니다." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+              </div>
+              <hr>
+
+          <div v-for="(skill,index) in skills" :key="index" >
+            <span @click="deleteSkill(index)" style="cursor:pointer;">
+              <el-tooltip class="item" effect="dark" content="클릭시 제거됩니다." placement="right">
+                  <div class="row" style="margin-bottom:10px;">
+                  <div class="col-sm-3">
+                  <el-input :value="skill.level" readonly></el-input>
+                  </div>
+                  <div class="col-sm-9">
+                  <el-input :value="skill.skill" readonly></el-input>
+                 </div>
+                  </div>
+              </el-tooltip>
+            </span>
+          </div>
+
+          <div class="pull-right" style="padding:0px 10px 0px 10px;"></div>
+     
+          <div class="row">
+          <div class="col-sm-3">
+          <el-input placeholder="능력" v-model="skill.level"> </el-input>
+          </div>
+          <div class="col-sm-9">
+          <el-input placeholder="프로그래밍 언어" v-model="skill.skill"> </el-input>
+          </div>
+          </div>
+
+          <div class="pull-right" style="padding:10px; display:inline-block; height:60px!important; margin-bottom:auto; margin-top:auto;">
+            <el-button @click="addSkill" >추가</el-button>
+          </div>
+          </div>           
+          <!-- 기술 끝 -->
+
+
+          <!-- 외국어 능력 (language, level) 입력하기 -->
+        <div class="col-xs-12 col-sm-12" style="padding:0px">
+
+            <hr>
+              <div style="margin-bottom:15px; font-size:20px;"><b>외국어 능력</b>
+                <el-tooltip class="item" effect="dark" content="나의 외국어 역량을 인사담당자에게 어필해보세요. 능력은 1~5 사이의 숫자를 입력해야 합니다" placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+              </div>
+              <hr>
+
+          <div v-for="(language,index) in languages" :key="index" >
+            <span @click="deleteLanguage(index)" style="cursor:pointer;">
+              <el-tooltip class="item" effect="dark" content="클릭시 제거됩니다." placement="right">
+                  <div class="row" style="margin-bottom:10px;">
+                  <div class="col-sm-3">
+                  <el-input :value="language.level" readonly></el-input>
+                  </div>
+                  <div class="col-sm-9">
+                  <el-input :value="language.language" readonly></el-input>
+                 </div>
+                  </div>
+              </el-tooltip>
+            </span>
+          </div>
+
+          <div class="pull-right" style="padding:0px 10px 0px 10px;"></div>
+     
+          <div class="row">
+          <div class="col-sm-3">
+          <el-input placeholder="역량" v-model="language.level"> </el-input>
+          </div>
+          <div class="col-sm-9">
+          <el-input placeholder="외국어" v-model="language.language"> </el-input>
+          </div>
+          </div>
+
+          <div class="pull-right" style="padding:10px; display:inline-block; height:60px!important; margin-bottom:auto; margin-top:auto;">
+            <el-button @click="addLanguage" >추가</el-button>
+          </div>
+          </div>           
+
+          <!-- 언어 끝 -->
+
+
+          <!-- 학력 -->
+         
+          <div class="col-xs-12 col-sm-12" style="padding:0px">
+
+            <hr>
+              <div style="margin-bottom:15px; font-size:20px;"><b>학력</b>
+                <el-tooltip class="item" effect="dark" content="포트폴리오에 담길 내 학력 정보를 작성해보세요. 인사 담당자에게 보여질 항목이므로 정확한 정보를 입력해주세요." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+              </div>
+              <hr>
+
+          <div v-for="(education,index) in educations" :key="index" >
+            <span @click="deleteEducation(index)" style="cursor:pointer;">
+              <el-tooltip class="item" effect="dark" content="클릭시 제거됩니다." placement="right">
+                  <div class="row" style="margin-bottom:10px;">
+                  <div class="col-sm-3">
+                  <el-input :value="education.major" readonly></el-input>
+                  </div>
+                  <div class="col-sm-3">
+                  <el-input :value="education.name" readonly></el-input>
+                 </div>
+                 <div class="col-sm-3">
+                  <el-input :value="education.start" readonly></el-input>
+                 </div>
+                 <div class="col-sm-3">
+                  <el-input :value="education.end" readonly></el-input>
+                 </div>
+                  </div>
+              </el-tooltip>
+            </span>
+          </div>
+
+          <div class="pull-right" style="padding:0px 10px 0px 10px;"></div>
+     
+          <div class="row">
+          <div class="col-sm-3">
+          <el-input placeholder="전공" v-model="education.major"> </el-input>
+          </div>
+          <div class="col-sm-3">
+          <el-input placeholder="학교명" v-model="education.name"> </el-input>
+          </div>
+          <div class="col-sm-3">
+          <el-input placeholder="입학년월" v-model="education.start"> </el-input>
+          </div>
+          <div class="col-sm-3">
+          <el-input placeholder="졸업년월" v-model="education.end"> </el-input>
+          </div>
+          </div>
+
+          <div class="pull-right" style="padding:10px; display:inline-block; height:60px!important; margin-bottom:auto; margin-top:auto;">
+            <el-button @click="addEducation" >추가</el-button>
+          </div>
+          </div>           
+
+          <!-- 학력 끝 -->
+
+          <!-- 경력 -->
+          <div class="col-xs-12 col-sm-12" style="padding:0px">
+
+            <hr>
+              <div style="margin-bottom:15px; font-size:20px;"><b>경력</b>
+                <el-tooltip class="item" effect="dark" content="포트폴리오에 담길 내 경력 정보를 작성해보세요. 인사 담당자에게 보여질 항목이므로 정확한 정보를 입력해주세요." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+              </div>
+              <hr>
+
+          <div v-for="(experience,index) in experiences" :key="index" >
+            <span @click="deleteExperience(index)" style="cursor:pointer;">
+              <el-tooltip class="item" effect="dark" content="클릭시 제거됩니다." placement="right">
+                  <div class="row" style="margin-bottom:10px;">
+                  <div class="col-sm-3">
+                  <el-input :value="experience.position" readonly></el-input>
+                  </div>
+                  <div class="col-sm-3">
+                  <el-input :value="experience.company" readonly></el-input>
+                 </div>
+                 <div class="col-sm-3">
+                  <el-input :value="experience.start" readonly></el-input>
+                 </div>
+                 <div class="col-sm-3">
+                  <el-input :value="experience.end" readonly></el-input>
+                 </div>
+                  </div>
+              </el-tooltip>
+            </span>
+          </div>
+
+          <div class="pull-right" style="padding:0px 10px 0px 10px;"></div>
+     
+          <div class="row">
+          <div class="col-sm-3">
+          <el-input placeholder="직위" v-model="experience.position"> </el-input>
+          </div>
+          <div class="col-sm-3">
+          <el-input placeholder="회사명" v-model="experience.company"> </el-input>
+          </div>
+          <div class="col-sm-3">
+          <el-input placeholder="입사년월" v-model="experience.start"> </el-input>
+          </div>
+          <div class="col-sm-3">
+          <el-input placeholder="퇴사년월" v-model="experience.end"> </el-input>
+          </div>
+          </div>
+
+          <div class="pull-right" style="padding:10px; display:inline-block; height:60px!important; margin-bottom:auto; margin-top:auto;">
+            <el-button @click="addExperience" >추가</el-button>
+          </div>
+          </div>           
+
+          <!-- 경력 끝 -->
+
+          <!-- 소셜 -->
+          <div class="col-xs-12 col-sm-12" style="padding:0px">
+
+            <hr>
+              <div style="margin-bottom:15px; font-size:20px;"><b>소셜 정보</b>
+                <el-tooltip class="item" effect="dark" content="내 소셜 정보를 입력하여 개성을 어필해보세요." placement="right"><span class="ti-help-alt" style="position:relative;top:2px;"/></el-tooltip>
+              </div>
+              <hr>
+
+          <div v-for="(social,index) in socials" :key="index" >
+            <span @click="deleteSocial(index)" style="cursor:pointer;">
+              <el-tooltip class="item" effect="dark" content="클릭시 제거됩니다." placement="right">
+                  <div class="row" style="margin-bottom:10px;">
+                  <el-input :value="social.link" readonly style="padding-left:20px;padding-right:20px;"></el-input>
+                  </div>
+              </el-tooltip>
+            </span>
+          </div>
+
+          <div class="pull-right" style="padding:0px 10px 0px 10px;"></div>
+     
+          <div class="row">
+          <el-input placeholder="소셜정보" v-model="social.link" style="padding-left:20px;padding-right:20px;" > </el-input>
+          </div>
+
+          <div class="pull-right" style="padding:10px; display:inline-block; height:60px!important; margin-bottom:auto; margin-top:auto;">
+            <el-button @click="addSocial" >추가</el-button>
+          </div>
+          </div> 
+     
+          <!-- 소셜 끝 -->
+
+
+
+          <!-- 포트폴리오 정보 입력 -->
           <br>
           <div class="col-xs-12 col-sm-12" style="padding:0px">
             <hr>
@@ -219,7 +473,12 @@
               <dd><el-input v-model="portfolioTitle" style="width: 70%;"></el-input></dd>
               <dt>CONTENT</dt>
               <dd><el-input v-model="portfolioContent" style="width: 70%;"></el-input></dd>
-
+              <dt>자기 소개</dt>
+              <dd><el-input v-model="introduction" style="width: 70%;"></el-input></dd>
+              <dt>주소</dt>
+              <dd><el-input v-model="address" style="width: 70%;"></el-input></dd>
+              <dt>희망 직무</dt>
+              <dd><el-input v-model="objective" style="width: 70%;"></el-input></dd>
 
              <dt>대표 여부</dt>
               
@@ -231,6 +490,7 @@
 
             </dl>
             <hr>
+           
           </div>
           <el-button @click="makePortfolio" style="float:right; margin-bottom: 20px">포트폴리오 생성</el-button>
         </div> 
@@ -272,6 +532,13 @@ export default {
       includedStack: [],
       stackInfoList:[],
 
+      // 자격증정보
+      certification: {
+        date: '',
+        certification: ''
+      },
+      certifications : [], // 저장할 자격증
+
       test:[],
 
       hoveredProject:'',
@@ -279,26 +546,57 @@ export default {
       hoveredStack:'',
       hoveredStackData:'',
 
+      // 언어 기술 정보 
+      language: {
+        level: '',
+        language: ''
+      },
+      languages : [], 
+
+      // 기술 스킬 정보
+      skill: {
+        level: '',
+        skill: ''
+      },
+      skills : [], 
+
+      // 학력 정보
+      education: {
+        major: '',
+        name: '',
+        start: '',
+        end: '',
+      },
+      educations : [], 
+      
+      // 경력
+      experience: {
+        position: '',
+        company: '',
+        start: '',
+        end: '',
+      },
+      experiences : [], 
+
+      // 소셜 정보
+      social: {
+        link: '',
+        icon: '',
+      },
+      socials : [], 
+
+      // 추가 인적사항 (예시 example tooltip쓰기)
+      introduction : '',
+      address : '',
+      objective : '',
+      
+
     }
   },
-  // watch:{
-  //   includedStack:function(){
-  //     console.log(this.stackList);
-  //     console.log(this.includedProject);
-  //     console.log(this.stackInfoList);
-  //   },
-  //    hoveredStack:function(){
-  //     console.log("스택호버됨");
-  //   },
-  //   hoveredProject:function(){
-  //     console.log("프로젝트호버됨");
-  //   }
-  // },
   created() {
     this.$store.state.loginFormVisible = false;
     this.getProjectList(this.userInfo.seq);
     this.getStackList(this.userInfo.seq);
-    
 
   },
   mounted() {
@@ -322,9 +620,60 @@ export default {
     });
   },
   methods: {
-    // putStack(){
-    //   alert(this.stackList);
-    // },
+    addCertification(){
+      this.certifications.push(this.certification)
+      this.certification = {}
+    },
+    deleteCertification(index){
+      this.certifications.splice(index,1)
+    },
+    addLanguage(){
+      this.languages.push(this.language)
+      this.language = {}
+    },
+    deleteLanguage(index){
+      this.languages.splice(index,1)
+    },
+    addSkill(){
+      this.skills.push(this.skill)
+      this.skill = {}
+    },
+    deleteSkill(index){
+      this.skills.splice(index,1)
+    },
+    addEducation(){
+      this.educations.push(this.education)
+      this.education = {}
+    },
+    deleteEducation(index){
+      this.educations.splice(index,1)
+    },
+    addExperience(){
+      this.experiences.push(this.experience)
+      this.experience = {}
+    },
+    deleteExperience(index){
+      this.experiences.splice(index,1)
+    },
+    addSocial(){
+      if(this.social.link.includes('facebook',0) )
+        this.social.icon = 'ti-facebook'
+      else if(this.social.link.includes('instagram',0) )
+        this.social.icon = 'ti-instagram'
+      else if(this.social.link.includes('google',0) )
+        this.social.icon = 'ti-google'
+      else if(this.social.link.includes('github',0) )
+        this.social.icon = 'ti-github'
+      else if(this.social.link.includes('twitter',0) )
+        this.social.icon = 'ti-twitter-alt'
+      else if(this.social.link.includes('tumblr',0) )
+        this.social.icon = 'ti-tumblr-alt'
+      this.socials.push(this.social)
+      this.social = {}
+    },
+    deleteSocial(index){
+      this.socials.splice(index,1)
+    },
     putHoveredProject(input){
       this.hoveredProject=input;
       // project list for문 돌리기
@@ -384,6 +733,11 @@ export default {
       })
     },
     makePortfolio() {
+      if(this.includedProject.length==0){
+        this.$message.warning('프로젝트를 한 개 이상 선택해야 합니다.')
+      }else if(this.portfolioTitle.length==0){
+        this.$message.warning('포트폴리오 제목을 등록해야 합니다.')
+      }else{
       http
       .post('portfolio', {
         email: this.email,
@@ -409,6 +763,85 @@ export default {
         .catch((error)=>{
           console.log(error.response.status)
         })
+        http
+        .post('portfolio/certification', {
+          seq_post_portfolio: this.portfolioSeq,
+          certification: this.certifications
+        })
+        .then(({ data }) => {
+        })
+        .catch((error)=>{
+          console.log(error.response.status)
+        })
+
+        http
+        .post('portfolio/info', {
+          seq_post_portfolio : this.portfolioSeq ,
+          introduction : this.introduction,
+          address : this.address,
+          objective : this.objective
+        })
+        .then(({ data }) => {
+        })
+        .catch((error)=>{
+          console.log(error.response.status)
+        })
+
+        http
+        .post('portfolio/info/education', {
+          seq_post_portfolio : this.portfolioSeq ,
+          education : this.educations
+        })
+        .then(({ data }) => {
+        })
+        .catch((error)=>{
+          console.log(error.response.status)
+        })
+
+        http
+        .post('portfolio/language', {
+          seq_post_portfolio : this.portfolioSeq ,
+          language : this.languages
+        })
+        .then(({ data }) => {
+        })
+        .catch((error)=>{
+          console.log(error.response.status)
+        })
+
+        http
+        .post('portfolio/info/experience', {
+          seq_post_portfolio : this.portfolioSeq,
+          experience : this.experiences
+        })
+        .then(({ data }) => {
+        })
+        .catch((error)=>{
+          console.log(error.response.status)
+        })
+
+        http
+        .post('portfolio/info/social', {
+          seq_post_portfolio : this.portfolioSeq ,
+          social : this.socials
+        })
+        .then(({ data }) => {
+        })
+        .catch((error)=>{
+          console.log(error.response.status)
+        })
+
+        http
+        .post('portfolio/skill', {
+          seq_post_portfolio : this.portfolioSeq ,
+          skill : this.skills
+        })
+        .then(({ data }) => {
+        })
+        .catch((error)=>{
+          console.log(error.response.status)
+        })
+
         for(let i=0; i<this.includedStack.length; i++){
           http
           .post('projectstack', {
@@ -431,6 +864,7 @@ export default {
       .catch((error) => {
         console.log(error.response.status)
       })
+      }
     },
     
     validEmail: function(email) {
