@@ -11,9 +11,12 @@
               style="position:relative; width:2500px; left:50%; margin-left:-1250px">
             </div>
           </el-carousel-item>
-          <!-- <el-carousel-item class="img-resize">
-            <img class="img-resize" src="../../docs/static/img/banner2.jpg">
-          </el-carousel-item> -->
+          <el-carousel-item>
+            <div style="width:0px; margin:auto;">
+              <img class="img-resize" src="../../docs/static/img/banner2.jpg"
+              style="position:relative; width:2500px; left:50%; margin-left:-1250px">
+            </div>
+          </el-carousel-item>
           <!-- <el-carousel-item class="img-resize">
             <img class="img-resize" src="../../docs/static/img/test3.jpg">
           </el-carousel-item>
