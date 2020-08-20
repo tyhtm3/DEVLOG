@@ -6,7 +6,7 @@
       <div class="carousel">
         <el-carousel indicator-position="outside" height='400px' >
           <el-carousel-item class="img-resize">
-            <img class="img-resize" src="../../docs/static/img/banner1.jpg">
+            <img class="img-resize" src="../../docs/static/img/banner1.jpg" style="margin-left:-40%;">
           </el-carousel-item>
           <!-- <el-carousel-item class="img-resize">
             <img class="img-resize" src="../../docs/static/img/banner2.jpg">
@@ -32,7 +32,6 @@
       <!-- end banner carousel -->
 
       <br>
-
       <div class="box">
         <div class="box-body" style="min-height:400px;">
           <div class="col-sm-12">

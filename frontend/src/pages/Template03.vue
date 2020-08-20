@@ -4,13 +4,11 @@
     <div class="content-wrapper" style="background: white;">
       <br><br><br>
 
-      <!-- 명지님 이거 PDF 버튼이에요 !!!!!! 위치 마음에 드는곳으로 바꿔주세요 !!!!!
-           (지금은 pdf에 사진 안나오는데 프론트 빌드된 서버로 실행하면 사진 나와요!)-->
-      <el-button data-html2canvas-ignore="true" type="primary" style="position:absolute;" @click="PDF">PDF</el-button>
-
       <div class="resume">
         <div class="base">
           <div class="profile">
+            <el-button data-html2canvas-ignore="true" class="pull-top pull-left" type="primary" style="position:absolute;margin-top:-30px;margin-left:-15px;" @click="PDF">PDF</el-button>
+      
             <div class="photo">
               <img :src="portfolioInfo.profile_img_url" style="text-align:center"/>
               <!-- <i class="fas fa-rocket"></i> -->

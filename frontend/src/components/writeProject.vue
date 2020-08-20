@@ -30,13 +30,13 @@
             <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 이곳에 입력된 개발 기간 데이터를 활용해 가장 최신 프로젝트부터 과거의 프로젝트까지 정렬해드립니다." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
           </p>
         </div>
-        <div class="col-sm-4" style="padding-top:15px;">
+        <div class="col-sm-2" style="padding-top:15px;">
           <el-date-picker v-model="start_date" type="date"></el-date-picker>
         </div>
-        <div class="col-sm-1" style="position:relative; top:20px;">
-          <span style="font-size:20px;">&nbsp; ~ &nbsp;</span>
+        <div class="col-sm-1" style="position:relative;padding-top:20px;margin-left:60px;">
+          <span style="font-size:20px;">~</span>
         </div>
-        <div class="col-sm-4" style="padding-top:15px;">
+        <div class="col-sm-2" style="padding-top:15px;margin-left:-60px;">
           <el-date-picker v-model="finish_date" type="date"></el-date-picker>
         </div>
       </div><hr>
@@ -146,7 +146,7 @@
           </p>
         </div>
         <div class="col-sm-9">
-          <vue-editor id="project-editor" v-model="content2" style="padding:10px;"></vue-editor>
+          <vue-editor id="project-editor" v-model="content" style="padding:10px;"></vue-editor>
         </div>
       </div><hr>
       <!--  프로젝트 정보 끝 -->
@@ -264,7 +264,7 @@ components: {
       github_url : '',
       etc_url : null,
       rep_url : null,
-      content2 : null,
+      content : null,
       // 기술스택
       initial_all_stack: [],  // 맨 처음에 axios로 불러온 상태
       stack : [],             // 선택된 애들?
