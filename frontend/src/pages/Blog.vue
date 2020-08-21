@@ -6,7 +6,6 @@
         <!-- start profile -->
         <div class="details-profile" >
           <div class="title1" style="display:inline;">
-            <!-- input length 바꾸게 하는것, font-size 수정시 자바스크립트 input box 수정하는 부분도 수정해야함.-->
             <input id="title"  type="text" style="font-size:32px; color:#333333; width:100%;" v-model="blogInfo.blog_name" v-on:keyup.13="updateBlog"  :placeholder=titleplaceholder readonly /><br>
             <input id="detail" type="text" style="font-size:15px; color:#959595; padding-top:5px; width:100%;" v-model="blogInfo.blog_detail" v-on:keyup.13="updateBlog"  :placeholder=contentplaceholder readonly />
           </div>
@@ -92,7 +91,6 @@
       <el-tooltip class="item" effect="dark" content="상단으로" placement="bottom" popper-class="draw_share_atooltip">
         <a href="#" class="topimg"><img src="../assets/top3.png" height="48px"></a>
       </el-tooltip>
-    <!-- <a href="#" class="top"><i class="material-icons" id="to-top">arrow_upward</i></a> -->
     </div>
   </transition>
 </template>
@@ -189,7 +187,6 @@ export default {
         var tag = this.$store.state.searchTag
         if(tag!=null){
         this.tag = tag
-        // this.addTag()
         this.searchTags.push(tag)
         var index = this.searchTags.indexOf(tag)
         this.activeIndex.push(index)
@@ -209,11 +206,9 @@ export default {
       var idx = this.activeIndex.indexOf(index)
       
       if(index<0){
-        console.log("태그 검색 시작: " + index + " / " + idx);
         this.searchTags.push(tag)
         this.activeIndex.push(index)
       }else{
-        console.log("태그 검색 제거: " + index + " / " + idx);
         this.searchTags.splice(index,1)
         this.activeIndex.splice(idx,1)
       }
@@ -252,7 +247,6 @@ export default {
       .then(({ data }) => {
         this.blogOwnerMainTags = data;
       });
-      // this.getBlogOwnerNumOfNeighbor(this.seq_blog);
       // 이웃여부 불러올 때 함
       this.subscribe(false);
     },
@@ -323,13 +317,13 @@ export default {
                   type: 'success',
                   message: this.blogOwnerInfo.nickname+'님의 블로그를 구독합니다.',
                 });
-                this.subscribemessage="구독끊기"
+                this.subscribemessage="구독 해제"
                 this.getBlogOwnerInfo()
               })
             }
             // 구독완료
           }else{
-            this.subscribemessage="구독끊기"
+            this.subscribemessage="구독 해제"
             // 구독취소 버튼 눌러서 함수에 들어온거라면
             if(bool==true){
               http.delete('/userneighbor', {
@@ -381,8 +375,6 @@ export default {
         this.tag = ''
         this.getBlogOwnerInfo()
       })
-      console.log(this.searchTags);
-      console.log(this.activeIndex);
     },
     deleteTag(seq, tag){
       http

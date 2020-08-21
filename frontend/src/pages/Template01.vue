@@ -200,7 +200,6 @@ export default {
       this.certifications.push(this.certification)
       this.certification = {}
       this.addCertificationVisible()
-      console.log(this.certifications)
       http
       .post('/portfolio/certification', {
         seq_post_portfolio: this.portfolioInfo.seq,
@@ -223,7 +222,6 @@ export default {
       this.skills.push(this.skill)
       this.skill = {}
       this.addSkillVisible()
-      console.log(this.skills)
       http
       .post('portfolio/skill', {
         seq_post_portfolio: this.portfolioInfo.seq,

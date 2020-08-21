@@ -221,7 +221,6 @@ export default {
           status: 'draft'
         })
         .then(({data}) => {
-          console.log(data)
           if(this.tags.length==0)
             this.postInfo.tags = null
           else
@@ -297,7 +296,6 @@ export default {
           status: 'published'
         })
         .then(({data}) => {
-          console.log(data)
           if(this.tags.length==0)
             this.postInfo.tags = null
           else

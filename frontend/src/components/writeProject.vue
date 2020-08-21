@@ -30,13 +30,13 @@
             <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 이곳에 입력된 개발 기간 데이터를 활용해 가장 최신 프로젝트부터 과거의 프로젝트까지 정렬해드립니다." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
           </p>
         </div>
-        <div class="col-sm-4" style="padding-top:15px;">
+        <div class="col-sm-2" style="padding-top:15px;">
           <el-date-picker v-model="start_date" type="date"></el-date-picker>
         </div>
-        <div class="col-sm-1" style="position:relative; top:20px;">
-          <span style="font-size:20px;">&nbsp; ~ &nbsp;</span>
+        <div class="col-sm-1" style="position:relative;padding-top:20px;margin-left:60px;">
+          <span style="font-size:20px;">~</span>
         </div>
-        <div class="col-sm-4" style="padding-top:15px;">
+        <div class="col-sm-2" style="padding-top:15px;margin-left:-60px;">
           <el-date-picker v-model="finish_date" type="date"></el-date-picker>
         </div>
       </div><hr>
@@ -47,9 +47,6 @@
             <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 이곳에서 선택한 기술 스택을 통해 포트폴리오를 시각화해드립니다." placement="right"><span class="ti-help-alt" style="position:relative;"/></el-tooltip>
           </p>
         </div>
-        <!-- <div class="col-sm-1 pull-right">
-          
-        </div> -->
         <div class="col-sm-6">
           <section class="selectProject" style="padding-top:15px;">
             <el-transfer
@@ -146,7 +143,7 @@
           </p>
         </div>
         <div class="col-sm-9">
-          <vue-editor id="project-editor" v-model="content2" style="padding:10px;"></vue-editor>
+          <vue-editor id="project-editor" v-model="content" style="padding:10px;"></vue-editor>
         </div>
       </div><hr>
       <!--  프로젝트 정보 끝 -->
@@ -264,11 +261,11 @@ components: {
       github_url : '',
       etc_url : null,
       rep_url : null,
-      content2 : null,
+      content : null,
       // 기술스택
-      initial_all_stack: [],  // 맨 처음에 axios로 불러온 상태
-      stack : [],             // 선택된 애들?
-      all_stack : [],         // 남은 애들? 맞나요!? 이게 헷갈리네
+      initial_all_stack: [],
+      stack : [],
+      all_stack : [],
       // 호버된 기술스택
       hoveredStackData:'',
 
@@ -317,17 +314,12 @@ components: {
       event.preventDefault();
       if(event.target.className==''){
         if($(this).parent().parent().parent()[0].className=='selectProject'){
-          // alert(event.target.innerText)
           vm.putHoveredStack(event.target.innerText);
         }
       }
     });
  },
   methods : {
-    // test(){
-      // alert("들어옴");
-      // this.stack.push("php");
-    // },
     putHoveredStack(input){
       this.hoveredStack=input;
       for(var i=0; i<this.initial_all_stack.length; i++){
@@ -355,7 +347,6 @@ components: {
       http
       .get('/project/'+this.drafts[index].seq)
       .then(({data}) => {
-        console.log(data)
         if(data.disclosure===1)
           this.disclosure = '전체공개'
         else if(data.disclosure===2)
@@ -750,7 +741,6 @@ components: {
   min-height: 400px;
 }
 #role-input .el-textarea__inner{
-    /* background-color:red !important; */
     height:40px !important;
   }
 
@@ -786,7 +776,6 @@ components: {
 }
   /* 임시저장 글 삭제 */
   .delete-draft-button{
-    /* style="font-size:3px;color:#333333;padding:0px;margin-left:-30px;" */
     font-size:20px;
     color:#333333;
     padding:0px;

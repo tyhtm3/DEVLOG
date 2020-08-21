@@ -38,7 +38,6 @@
       <!-- end banner carousel -->
 
       <br>
-
       <div class="box">
         <div class="box-body" style="min-height:400px;">
           <div class="col-sm-12">
@@ -282,10 +281,6 @@ export default {
         this.searchTags.splice(0,1)
         this.activeIndex.splice(-1,1)
       }
-      console.log(this.searchTags);
-      console.log(this.activeIndex);
-
-      // 충돌난부분인데 냅둬야되지않나?
       this.limit=0
       this.getPostandproject();
       
@@ -385,7 +380,6 @@ export default {
     removeTag(text){
       text = text.replace(/<br\/>/ig, "\n")
       text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
-      // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
       return text
     },
     goDetailProject(seq){
@@ -620,8 +614,6 @@ $( '.topimg' ).click( function() {
 // 지역 css
 .row {
   padding: 40px;
-  // box-shadow: 2px 2px 2px rgba(226, 223, 223, 0.4);
-  // margin: 2px;
 }
 .search {
   float: none;
@@ -649,8 +641,6 @@ $( '.topimg' ).click( function() {
     -moz-osx-font-smoothing: grayscale;
     
   }
-  // &[type=search] {
-  //   }
 }
 .well-media{
   margin:10px;
@@ -670,18 +660,6 @@ $( '.topimg' ).click( function() {
   margin: 0;
 }
 
-// .el-carousel__item:nth-child(2n) {
-//   background-color: none;
-//   // #d3dce6;
-//   //#99a9bf
-//   // box-shadow: 15px 15px 15px rgba(146, 146, 146, 0.4);
-// }
-
-// .el-carousel__item:nth-child(2n+1) {
-//   // background-color: #d3dce6;
-//   background-color: none;
-// }
- 
 .el-carousel__item{
   background-color: none;
 }
@@ -699,15 +677,12 @@ $( '.topimg' ).click( function() {
   float: left;
 }
 .tag-copy2{
-  // float: right;
   padding-top: 8px;
   margin-right: 5px;
   vertical-align: middle;
 }
 .ul{
   float: right;
-  // padding-top: 8px;
-  // margin-right: 5px;
 }
 .content{
   padding: 0px;

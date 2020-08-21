@@ -210,7 +210,6 @@
             for(var i=0;i<data.length;i++){
             //좋아요 개수 추가
             this.likeCount += data[i].like_count
-            console.log(this.likeCount)
             //개발기간 추가
             this.totaldays += (dateDiff(data[i].finish_date, data[i].start_date))
             //스택 개수 반복

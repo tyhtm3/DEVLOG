@@ -2,20 +2,9 @@
   <transition name="el-zoom-in-top">
     <div class="content-wrapper" style="background: white;">
       <br><br><br>
-      <!-- <div>
-        {{basicinfo}}
-        <br><br><br>
-        {{portfolioUser}}
-      </div>  -->
        <!-- start banner carousel -->
       <div class="header-block">
-         <!-- <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
-              <li><a>&nbsp;&nbsp;<span class="ti-user"></span>닉네임{{portfolioUser.nickname}}</a></li>
-              <li><a> <span class="ti-pencil"></span>&nbsp;{{basicinfo.regtime}}</a></li>
-              <li><a> <span class="ti-comment-alt"></span>&nbsp;{{comment.length}}</a></li>
-              <li><a> <span class="ti-heart"></span>&nbsp;{{project.like_count}}</a></li>
-              <li class="pull-right" v-if="project.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
-          </ul> -->
+
           <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
               <li><a></a></li>
               <li class="pull-right" v-if="basicinfo.seq_blog==seq_user"><span class="ti-pencil"></span>&nbsp;{{basicinfo.regtime}} &nbsp; | <a href="#"> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
@@ -68,27 +57,16 @@
               </div>
             </div>
           </div>
-          <!-- <hr><div style="font-size:20px; text-align:center">Project TechStack</div><hr> -->
           <hr><div style="font-size:20px; text-align:center">프로젝트 기술 스택</div><hr>
           <div class="row">
               <div class="col-md-12">
                       <div class="box-body" id="box-pie">
                           <ve-pie :data="chartData" :settings="chartSettings" :id="box-pie"></ve-pie>
-                          <!-- <h4 style="text-align : center">Project TechStack</h4> -->
                       </div>
               </div>
           </div>
           <hr><div style="margin-bottom:15px; font-size:20px; text-align:center">프로젝트</div><hr>
-          <!-- <div class="box-body" style="min-height:400px;"> -->
             <div class="container-timeline" style="margin: auto; width:900px">
-              <!-- <div class="header-timeline">
-                <img src="http://i3a402.p.ssafy.io/images/project.png" height="64" width="64">
-                <h1>프로젝트</h1>
-                <h2>A timeline that shows my project history</h2>
-                <br>
-                <br>
-                <hr>
-              </div> -->
                   <div id="timeline">
                     <div>
                       <section class="year" v-for="(project,index) in projects" :key="index">
@@ -118,143 +96,6 @@
                   </div>
                 </div>
               </div>
-          <!-- </div> -->
-
-
-
-
-
-
-        <!-- <div class="row">
-          <div class="col-md-6" style="height:100px; text-align: center;  vertical-align:middle;
-          border-right: thin solid gray;
-          border-bottom: thin solid gray;
-          ">
-              1<strong>개</strong><br>프로젝트
-          </div>
-          <div class="col-md-6" style="height:100px; text-align: center;  vertical-align:middle;
-          border-left: thin solid gray;
-          border-bottom: thin solid gray;
-          ">
-              1<strong>개</strong><br>프로젝트
-          </div>
-        </div>
-        <div class="row" style="justify:center; align:middle;">
-          <div class="col-md-6" style="height:100px; text-align: center;  vertical-align:middle;;
-          border-top: thin solid gray;
-          border-right: thin solid gray;
-          ">
-              <div style="background-color:green;">1<strong>개</strong><br>프로젝트</div>
-          </div>
-          <div class="col-md-6" style="height:100px; text-align: center;
-          border-top: thin solid gray;
-          border-left: thin solid gray;
-          
-          ">
-              <div>1<strong>개</strong><br>프로젝트</div>
-          </div>
-        </div> -->
-
-
-      <!-- end banner carousel -->
-
-              
-              <!-- 헤더 : 프로젝트 작성시간, 댓글수, 좋아요 수, 수정|삭제 -->
-                    <!-- <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
-                        <li><a>&nbsp;&nbsp;<span class="ti-user"></span>{{projectUser.nickname}}</a></li>
-                        <li><a> <span class="ti-pencil"></span>&nbsp;{{project.regtime}}</a></li>
-                        <li><a> <span class="ti-comment-alt"></span>&nbsp;{{comment.length}}</a></li>
-                        <li><a> <span class="ti-heart"></span>&nbsp;{{project.like_count}}</a></li>
-                        <li class="pull-right" v-if="project.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
-                    </ul> -->
-              <!-- 헤더 끝 -->               
-                <!-- <div class="box">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <div class="blog-list-nest">
-                        <div v-for="(project,index) in projects" v-bind:key="index" class="blog-list-content">
-                            <div class="pull-right" style="width:22%;margin-top:-2px;">
-                            <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
-                            </div>
-                            <div class="row pjt-margin" style="margin-top:100px;">
-                              <div class="col-sm-3">
-                              <p class="pjt-title">프로젝트 제목</p>
-                              </div>
-                              <div class="col-sm-6">
-                              <p class="pjt-content" style="font-size:20px;">{{project.title}}</p>
-                              </div>
-                            </div>
-                            <div class="row pjt-margin">
-                              <div class="col-sm-3">
-                              <p class="pjt-title">프로젝트 개요</p>
-                              </div>
-                              <div class="col-sm-9">
-                              <p class="pjt-content">{{project.summary}}</p>
-                              </div>
-                            </div>
-                            <div class="row pjt-margin">
-                              <div class="col-sm-3">
-                              <p class="pjt-title">개발 기간</p>
-                              </div>
-                              <div class="col-sm-9">
-                              <p class="pjt-content" style="font-size:20px;">{{project.start_date}} ~ {{project.finish_date}}</p>
-                              </div>
-                            </div>
-
-                            <div class="row pjt-margin">
-                              <div class="col-sm-3">
-                              <p class="pjt-title">기술 스택</p>
-                              </div>
-                              <div class="col-sm-9">
-                              <div v-for="(stack,index) in stack" :key="index">
-                                <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
-                              </div>
-                              </div>
-                            </div>
-
-                            <div class="row pjt-margin">
-                              <div class="col-sm-3">
-                              <p class="pjt-title">역할</p>
-                              </div>
-                              <div class="col-sm-9">
-                              <p class="pjt-content">{{project.role}}</p>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-sm-3">
-                              <p class="pjt-title">Github Url</p>
-                              </div>
-                              <div class="col-sm-9">
-                              <p class="pjt-content"><a href="#" @click="goUrl(project.github_url)">{{project.github_url}}</a></p>
-                              </div>
-                            </div>
-                            <div class="row" v-if="project.etc_url">
-                              <div class="col-sm-3">
-                              <p class="pjt-title">참고 Url</p>
-                              </div>
-                              <div class="col-sm-9">
-                              <p class="pjt-content">{{project.github_url}}</p>
-                              </div>
-                            </div>
-                            <div class="row" v-if="project.rep_url">
-                              <div class="col-sm-3">
-                              <p class="pjt-title">참조 Url</p>
-                              </div>
-                              <div class="col-sm-9">
-                              <p class="pjt-content">{{project.rep_url}}</p>
-                              </div>
-                            </div>
-
-                            <p style="margin-top:50px;margin-bottom:50px;" v-html="project.content"></p><hr>  
-                            <p class="pull-left">
-                              <span v-for="(tag, index) in tag" v-bind:key="index" class="tag">
-                              #{{tag.tag}}
-                              </span>
-                            </p>
-                            <div style="clear:both;"></div>
-                        </div>
-                      </div>
-                    </div> -->
     </div>
   </transition>
 </template>
@@ -315,7 +156,6 @@
             for(var i=0;i<data.length;i++){
             //좋아요 개수 추가
             this.likeCount += data[i].like_count
-            console.log(this.likeCount)
             //개발기간 추가
             this.totaldays += (dateDiff(data[i].finish_date, data[i].start_date))
             //스택 개수 반복
@@ -339,28 +179,6 @@
           }
          })
       },
-    //   // 프로젝트 삭제
-    //   deleteProject(seq){
-    //     http.delete('portfolio/'+seq)
-    //     .then(({data}) => {
-    //         alert('프로젝트가 삭제되었습니다.')
-    //         this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
-    //      })
-    //   },
-    //   // 프로젝트 수정 미구현
-    //   updateProject(){
-        
-    //   },
-    //   // Url로 이동
-    //   goUrl(url){
-    //     window.open(url, '_blank');
-    //   },
-    //    removeTag(text){
-    //   text = text.replace(/<br\/>/ig, "\n")
-    //   text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
-    //   // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
-    //   return text
-    // },
    },
   }
   function dateDiff(_date1, _date2) {

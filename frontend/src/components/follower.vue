@@ -7,7 +7,7 @@
           <div class="col-md-12">
             <br>
             <div style="text-align:center"></div>
-              <el-button :plain="true" @click="unfollowmode" v-bind:class="{ active: isActive}">구독 끊기</el-button>
+              <el-button :plain="true" @click="unfollowmode" v-bind:class="{ active: isActive}">구독 해제</el-button>
               <el-button :plain="true" @click="follower2" style="float:right">구독 관리 종료</el-button>
             </div>
 

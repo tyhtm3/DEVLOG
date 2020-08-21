@@ -93,7 +93,6 @@
         http.get('postcomment/'+seq)
         .then(({data}) => {
           this.comments=data;
-          console.log(this.comments);
          })
       },
 
@@ -117,11 +116,18 @@
           })
         }
         else{
-          http.post('postcomment',{content:this.insertContent,seq_post:this.seq,seq_user:this.seq_user}, {headers: {'Authorization': this.$store.state.token,}})
-                  .then(({data}) => {
-                //댓글 입력하고 리스트 업데이트
-                // alert("댓글 작성중, 유저 번호 : " + this.seq_user);
-                this.getComment(this.seq)
+          http.post('postcomment',{
+            content: this.insertContent,
+            seq_post:this.seq,seq_user:this.seq_user
+          },
+          {
+            headers: {
+              'Authorization': this.$store.state.token
+            }
+          })
+          .then(({data}) => {
+            //댓글 입력하고 리스트 업데이트
+            this.getComment(this.seq)
           })
           this.insertContent = ''
         }

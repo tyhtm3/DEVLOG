@@ -18,7 +18,6 @@
             <a :href="url" v-else> <i  class="material-icons" style="position:relative; top:1px;">person</i> {{projectUser.id}}</a><span> | </span> 
             <span><i  class="material-icons" style="position:relative; top:2px;">date_range</i></span>&nbsp;<span style="min-">{{project.regtime}}</span><span> | </span> 
             <span><i  class="material-icons" style="position:relative; top:2px;">insert_comment</i></span>&nbsp;<span>{{commentCnt}}</span><span> | </span> 
-            <!-- <span class="ti-comment-alt"></span>&nbsp;{{commentCnt}}<span> | </span>  -->
             <span>
             <i v-if="isLike" @click="cancelLike" class="material-icons" style="color:red; position:relative; top:2px; cursor:pointer" >favorite</i> 
             <i v-else @click="like" class="material-icons" style="position:relative; top:2px; cursor:pointer">favorite_border</i> 
@@ -285,7 +284,6 @@
        removeTag(text){
       text = text.replace(/<br\/>/ig, "\n")
       text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
-      // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
       return text
     },
     copyurl(){

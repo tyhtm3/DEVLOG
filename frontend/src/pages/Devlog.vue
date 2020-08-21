@@ -2,16 +2,10 @@
   <div>
     <app-header></app-header>
 
-    <!-- Left side column. contains the sidebar -->
-    <!-- <app-sidebar></app-sidebar> -->
-
-    <!-- Content Wrapper. Contains page content -->
     <router-view></router-view>
-    <!-- /.content-wrapper -->
 
     <app-footer></app-footer>
 
-    <!-- <control-sidebar></control-sidebar> -->
   </div>
 </template>
 
