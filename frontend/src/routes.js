@@ -43,6 +43,7 @@ import OpenLayer from './References/OpenLayer.vue'
 // devlog
 import Devlog from './pages/Devlog.vue'
 import Main from './pages/Main.vue'
+import Naver from './pages/Naver.vue'
 import Blog from './pages/Blog.vue'
 import SignUp from './pages/SignUp.vue'
 import MyInfo from './pages/MyInfo.vue'
@@ -50,10 +51,16 @@ import FindPassword from './pages/FindPassword'
 import WritePost from './pages/WritePost.vue'
 import ProjectDetail from './pages/ProjectDetail.vue'
 import PostDetail from './pages/PostDetail.vue'
-import PortfolioDetail from './pages/PortfolioDetail.vue'
 import NotFound from './pages/error/404.vue'
 import NotFoundSecond from './pages/error/500.vue'
+import PostUpdate from './pages/PostUpdate.vue'
+import ProjectUpdate from './pages/ProjectUpdate.vue'
+import PortfolioUpdate from './pages/PortfolioUpdate.vue'
 import Template01 from './pages/Template01.vue'
+import Template02 from './pages/Template02.vue'
+import Template03 from './pages/Template03.vue'
+import Template05 from './pages/Template05.vue'
+import store from './store'
 
 // Routes
 const routes = [
@@ -78,24 +85,32 @@ const routes = [
         component: Main
       },
       {
-        path: '/blog',
+        path: '/naver/*',
+        name: 'naver',
+        component: Naver
+      },
+      {
+        path: '/blog/:id',
         name: 'blog',
         component: Blog
       },
       {
         path: '/blog/post/:seq',
         name: 'post-detail',
-        component: PostDetail
+        component: PostDetail,
+        beforeEnter: (to, from, next) => {
+          store.commit('setPreviousUrl',from.path)
+          next()
+        }
       },
       {
         path: '/blog/project/:seq',
         name: 'project-detail',
-        component: ProjectDetail
-      },
-      {
-        path: '/blog/portfolio/:seq',
-        name: 'portfolio-detail',
-        component: PortfolioDetail
+        component: ProjectDetail,
+        beforeEnter: (to, from, next) => {
+          store.commit('setPreviousUrl',from.path)
+          next()
+        }
       },
       {
         path: '/signup',
@@ -128,12 +143,40 @@ const routes = [
         component: NotFoundSecond
       },
       {
-        path: '/template01',
+        path: '/blog/post-update/:seq',
+        name: 'post-update',
+        component: PostUpdate
+      },
+      {
+        path: '/blog/project-update/:seq',
+        name: 'project-update',
+        component: ProjectUpdate
+      },
+      {
+        path: '/blog/portfolio-update/:seq',
+        name: 'portfolio-update',
+        component: PortfolioUpdate
+      },
+      {
+        path: '/blog/portfolio1/:seq',
         name: 'template01',
         component: Template01
       },
-
-
+      {
+        path: '/blog/portfolio2/:seq',
+        name: 'template02',
+        component: Template02
+      },
+      {
+        path: '/blog/portfolio3/:seq',
+        name: 'template03',
+        component: Template03
+      },
+      {
+        path: '/blog/portfolio5/:seq',
+        name: 'template05',
+        component: Template05
+      },
 
       ///////////////////////////
       ///////////////////////////

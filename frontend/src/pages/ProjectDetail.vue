@@ -1,134 +1,161 @@
 <template>
   <transition name="el-zoom-in-top">
-    <div class="content-wrapper" style="background: white;">
-      <!-- start banner carousel -->
-      <div class="header-block">
+    <div class="content-wrapper" style="background-color:transparent;">
+      <!-- 배너 시작 -->
+      <div class="header-block" style="background: black;">
         <div class="header-image">
-        <img src="../assets/project-banner.jpg" width="100%" style=" max-height: initial;margin-top: -15%;"/>
+          <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" alt="" style="opacity:0.2; margin-top: -20px;">
+          <img v-else src="../assets/project-banner2.jpg" height="100%" style=" top:50%; left:50%; max-height: initial;margin-top: -20px;"/>
         </div>
         <div class="header-text"><p>{{project.title}}</p></div>
       </div>
-      <!-- end banner carousel -->
-
-
-      <!-- 헤더 : 프로젝트 작성시간, 댓글수, 좋아요 수, 수정|삭제 -->
-      <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
-        <li><a>&nbsp;&nbsp;<span class="ti-user"></span>{{projectUser.nickname}}</a></li>
-        <li><a> <span class="ti-pencil"></span>&nbsp;{{project.regtime}}</a></li>
-        <li><a> <span class="ti-comment-alt"></span>&nbsp;{{commentCnt}}</a></li>
-        <li>
-          <i v-if="isLike" @click="cancelLike" class="material-icons">favorite</i>
-          <i v-else @click="like" class="material-icons">favorite_border</i>
-          &nbsp;{{project.like_count}}</li>
-        <li class="pull-right" v-if="project.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject()"> &nbsp;삭제</a></li>
-      </ul>
-      <!-- 헤더 끝 -->               
+      <!-- 배너 끝 -->
       <div class="box">
+        <!-- 프로젝트 관리 헤더 시작 -->
+        <div class="row" style="padding-top:20px; padding-left:15px;">
+          <div class="col-sm-6">
+            <a :href="url" v-if="projectUser.nickname" style="color:black;"><i class="material-icons" style="position:relative; top:2px;">person</i>{{projectUser.nickname}}</a>
+            <a :href="url" v-else> <i  class="material-icons" style="position:relative; top:1px;">person</i> {{projectUser.id}}</a><span> | </span> 
+            <span><i  class="material-icons" style="position:relative; top:2px;">date_range</i></span>&nbsp;<span style="min-">{{project.regtime}}</span><span> | </span> 
+            <span><i  class="material-icons" style="position:relative; top:2px;">insert_comment</i></span>&nbsp;<span>{{commentCnt}}</span><span> | </span> 
+            <span>
+            <i v-if="isLike" @click="cancelLike" class="material-icons" style="color:red; position:relative; top:2px; cursor:pointer" >favorite</i> 
+            <i v-else @click="like" class="material-icons" style="position:relative; top:2px; cursor:pointer">favorite_border</i> 
+            </span>&nbsp;{{project.like_count}}
+          </div>
+          <div class="col-sm-6">
+            <div class="pull-right" style="padding-right:15px;" v-if="project.seq_blog==seq_user">
+              <span style="cursor:pointer" @click="updateProject(project.seq)">수정 </span>&nbsp;|&nbsp;
+              <span style="cursor:pointer" @click="deleteProject(project.seq)"> 삭제</span>
+            </div>
+          </div>
+        </div>
+        <!-- 프로젝트 관리 헤더 끝 -->
+        <hr>
+        <!-- 프로젝트 출력 시작 -->
+        <!-- 프로젝트 정보 -->
+        <div class="row" id="project-data">
+          <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-3">
+                <p class="pjt-title">프로젝트 제목</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="pjt-content" style="font-size:16px;">{{project.title}}</p>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="pjt-title">프로젝트 개요</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="pjt-content" style="font-size:16px;">{{project.summary}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="pjt-title">개발 기간</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="pjt-content" style="font-size:16px;">{{project.start_date}} ~ {{project.finish_date}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="pjt-title">기술 스택</p>
+              </div>
+              <div class="col-sm-9" >
+                <div v-for="(stack,index) in stack" :key="index" style="padding:5px; display: inline-block; ">
+                  <img class="media-object pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="height: 64px;">
+                </div>
+              </div>
+            </div>
+            <div class="row" v-if="role.length>0">
+              <div class="col-sm-3" >
+                <p class="pjt-title">역할</p>
+              </div>
+              <div class="col-sm-9">
+                <div v-for="(role,index) in role" :key="index">
+                  <p class="pjt-content" style="font-size:16px; margin-bottom:0px;" >{{role.role}}</p>  
+                </div>
+              </div>
+            </div>
+            <div class="row" v-if="project.github_url">
+              <div class="col-sm-3" >
+                <p class="pjt-title">Github Url</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="pjt-content" style="font-size:16px;"><a href="#" @click="goUrl(project.github_url)">{{project.github_url}}</a></p>
+              </div>
+            </div>
+            <div class="row" v-if="project.etc_url">
+              <div class="col-sm-3" >
+                <p class="pjt-title">참고 Url</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="pjt-content" style="font-size:16px;">{{project.etc_url}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-3" v-if="project.rep_url">
+                <p class="pjt-title">참조 Url</p>
+              </div>
+              <div class="col-sm-9" v-if="project.rep_url">
+                <p class="pjt-content" style="font-size:16px;">{{project.rep_url}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3 pull-right">
+            <div class="pull-right" style="min-height:200px;">
+              <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" alt="">
+              <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+            </div>
+          </div>
+        </div>
+        
+        <!-- 상세정보 -->
+        <div class="row" v-if="project.content">
+          <hr>
+          <div class="col-sm-12"  >
+            <p v-html="project.content"></p>
+          </div>
+        </div>
+        <hr>
+
+        <!-- 프로젝트 태그 -->
         <div class="row">
-          <div class="col-sm-12">
+          <div class="col-sm-9">
             <div class="blog-list-nest">
               <div class="blog-list-content">
-                <!-- 프로젝트 썸네일 -->
-                <div class="pull-right" style="width:22%;margin-top:-2px;">
-                  <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" alt="">
-                  <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
-                </div>
-                <!-- 프로젝트 정보 :  프로젝트 명 / 프로젝트 개요 / 개발기간 / 기술스택 / 역할 / URL / 설명-->
-                <div class="row pjt-margin" style="margin-top:100px;">
-                  <div class="col-sm-3">
-                    <p class="pjt-title">프로젝트 제목</p>
-                  </div>
-                  <div class="col-sm-6">
-                    <p class="pjt-content" style="font-size:20px;">{{project.title}}</p>
-                  </div>
-                </div>
-                <div class="row pjt-margin">
-                  <div class="col-sm-3">
-                    <p class="pjt-title">프로젝트 개요</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="pjt-content">{{project.summary}}</p>
-                  </div>
-                </div>
-                <div class="row pjt-margin">
-                  <div class="col-sm-3">
-                    <p class="pjt-title">개발 기간</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="pjt-content" style="font-size:20px;">{{project.start_date}} ~ {{project.finish_date}}</p>
-                  </div>
-                </div>
-                <div class="row pjt-margin">
-                  <div class="col-sm-3">
-                    <p class="pjt-title">기술 스택</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <div v-for="(stack,index) in stack" :key="index">
-                      <img class="media-object img-circle pull-left" :alt="stack.stack" :src="stack.stack_img_url" style="width: 64px; height: 64px;margin-right:20px;">
-                    </div>
-                  </div>
-                </div>
-                <div class="row pjt-margin">
-                  <div class="col-sm-3">
-                    <p class="pjt-title">역할</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="pjt-content">{{project.role}}</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="pjt-title">Github Url</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="pjt-content"><a href="#" @click="goUrl(project.github_url)">{{project.github_url}}</a></p>
-                  </div>
-                </div>
-                <div class="row" v-if="project.etc_url">
-                  <div class="col-sm-3">
-                    <p class="pjt-title">참고 Url</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="pjt-content">{{project.github_url}}</p>
-                  </div>
-                </div>
-                <div class="row" v-if="project.rep_url">
-                  <div class="col-sm-3">
-                    <p class="pjt-title">참조 Url</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="pjt-content">{{project.rep_url}}</p>
-                  </div>
-                </div>
-                <p style="margin-top:50px;margin-bottom:50px;" v-html="project.content"></p><hr>  
-                <!--  프로젝트 정보 끝 -->
-
-                <!-- 프로젝트 태그 -->
                 <p class="pull-left">
-                  <span v-for="(tag, index) in tag" v-bind:key="index" class="tag">
+                  <span @click="tagSearch(tag.tag)" v-for="(tag, index) in tag" v-bind:key="index" class="tag" style="line-height:38px;">
                     #{{tag.tag}}
                   </span>
                 </p>
-
-                <div style="clear:both;"></div>
               </div>
             </div>
-          
-           <!-- 댓글 리스트 -->
-              <comment v-bind:seq="seq"></comment>
-            <!-- 댓글 창 끝 -->
-
-
-            
-            <ul class="pager success">
-              <li class="previous"><a href="#">← Older</a> </li>
-              <li class="next disabled"><a href="#">Newer →</a> </li>
-            </ul>
           </div>
-          <!--  END OF BLOG CONTENT -->
+           <div class="col-sm-3">
+             <span class="pull-right" style="line-height:38px;">
+              좋아요<i v-if="isLike" @click="cancelLike" class="material-icons" style="color:red; position:relative; top:2px; cursor:pointer" >favorite</i> 
+              <i v-else @click="like" class="material-icons" style="position:relative; top:2px; cursor:pointer">favorite_border</i> 
+              </span>
+              <span class="pull-right" style="line-height:38px;">&nbsp;&nbsp;|&nbsp;&nbsp;</span> 
+              <span class="pull-right" style="line-height:38px;">
+              <span @click="copyurl" style="cursor:pointer; ">URL 복사<i class="material-icons" style="position:relative; top:2px;transform: rotate(45deg)" >link</i></span>
+              </span>
+           </div>
         </div>
+        
+        <!-- 댓글 리스트 -->
+        <div class="row" style="margin-top : 20px;">
+          <div class="col-sm-12">
+            <comment v-bind:seq="seq"></comment>
+            <!-- 댓글 창 끝 -->
+          </div>
+        </div>
+
       </div>
-      <!-- /.content -->
     </div>
   </transition>
 </template>
@@ -142,14 +169,17 @@
     data: function () {
         return { 
           seq:'',
-          project:'',
+          project:{},
           projectUser:'',
           isLike:'',
           commentCnt:'',
           tag: [],
           stack: [],
+          role: [],
           seq_user: this.$store.state.userInfo.seq,
-
+          basicurl: '/blog/',
+          blogurl:'',
+          url:'',
         }
     },
     created(){
@@ -157,6 +187,24 @@
       this.getInfo(this.seq)
     },
     methods: {
+      copyurl(){
+      var url = window.location.href
+      var dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = url;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      this.$message.success('주소가 복사되었습니다.')
+    },
+      tagSearch(tag){
+        this.$store.commit('setSearchTag',tag)
+        if(this.$store.state.previousUrl.indexOf('blog')>0){
+            this.$router.push('/blog/'+this.blogurl)
+        }else{
+            this.$router.push('/')
+        }
+      },
       getInfo(seq){
         // 프로젝트 불러오기.
         http.get('project/'+seq)
@@ -166,6 +214,8 @@
             http.get('user/'+data.seq_blog)
             .then(({data}) => {
               this.projectUser=data
+              this.blogurl = this.projectUser.id
+              this.url=this.basicurl+this.blogurl
             }) 
          })
         // 댓글 개수 불러오기
@@ -182,6 +232,11 @@
         http.get('projectstack/'+seq)
                 .then(({data}) => {
                 this.stack = data;
+         })
+        // 역할 불러오기
+         http.get('projectrole/'+seq)
+                .then(({data}) => {
+                this.role = data;
          })
         // 좋아요 여부 불러오기
         http.get('postlike/'+seq)
@@ -212,18 +267,15 @@
          })
       },
       // 프로젝트 삭제
-      deleteProject(){
-        http.delete('project/'+this.seq)
+      deleteProject(seq){
+        http.delete('project/'+seq)
         .then(({data}) => {
-            if(data==="SUCCESS"){
-              this.$message.success('프로젝트가 삭제되었습니다.')
-              this.$router.push(`/blog`)
-            }
+            this.$message.success('프로젝트가 삭제되었습니다.')
+            this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
          })
       },
-      // 프로젝트 수정 미구현
-      updateProject(){
-        
+      updateProject(seq){
+        this.$router.push('/blog/project-update/'+seq)
       },
       // Url로 이동
       goUrl(url){
@@ -232,9 +284,18 @@
        removeTag(text){
       text = text.replace(/<br\/>/ig, "\n")
       text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "")
-      // text = text.replace(/<(\/b|b)([^>]*)>/gi,""); 
       return text
     },
+    copyurl(){
+      var url = window.location.href
+      var dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = url;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      this.$message.success('주소가 복사되었습니다.')
+    }
    },
   }
 </script>
@@ -242,11 +303,7 @@
 a:link { color: #B1B0AC; text-decoration: none;}
 a:visited { color: #B1B0AC;; text-decoration: none;}
 a:hover { color: black; text-decoration: bold;}
-.header-block{
-  max-height: 500px;
-  overflow: hidden;
-  position: relative;
-}
+
 .header-image{
   	vertical-align: middle;
 }
@@ -258,27 +315,42 @@ a:hover { color: black; text-decoration: bold;}
   transform: translate( -50%, -50% );
   color:white;
   font-size:80px;
+  font-family: "Noto Sans KR";
+  font-weight: 500;
 }
-.box{
-   padding-left:300px;
-   padding-right:300px;
-}
-.pjt-margin{
-  margin-bottom:60px;
 
+/* .pjt-margin{
+  margin-bottom:60px;
+} */
+
+.pjt-content{
+  
+  /* margin-top:-2px;
+  font-size:14px;
+  word-spacing: 2px;
+  line-height:30px; */
+}
+#project-data .row{
+  margin-bottom:20px;
+}
+
+
+/* 내가 적용한 css */
+.header-block{
+  height: 425px!important;;
+  overflow: hidden;
+  position: relative;
+}
+
+.box{
+   padding-left:10%;
+   padding-right:10%;
 }
 .pjt-title{
   font-size:18px;
 }
-.pjt-content{
-  margin-top:-2px;
-  font-size:14px;
-  word-spacing: 2px;
-  line-height:30px;
+.material-icons{
+  font-size:13px;
 }
-</style>
-<style>
-.ql-editor{
-  min-height: 100px;
-}
+
 </style>

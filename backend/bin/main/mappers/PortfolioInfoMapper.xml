@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.devlog.mapper.PortfolioInfoMapper">
+
+	<!-- 포트폴리오의 기본 정보를 반환한다  -->
+	<select id="selectAllPortfolioInfo" resultType="PortfolioInfo">
+		select *
+		from post_portfolio_info
+        where seq_post_portfolio = #{seq_post_portfolio}
+	</select>
+	
+	<!-- 포트폴리오에 기본 정보를 추가한다.  -->
+	<insert id="insertPortfolioInfo">
+		insert into post_portfolio_info( seq_post_portfolio, introduction,address,objective)
+		values 
+		(#{seq_post_portfolio}, #{introduction} , #{address}, #{objective} )
+	</insert>
+	
+	<!-- 포트폴리오의 기본 정보를 삭제한다. -->
+	<delete id="deletePortfolioInfo">
+		delete from post_portfolio_info
+		where seq_post_portfolio= #{seq_post_portfolio}
+	</delete>
+	
+	<!-- 포트폴리오의 경력을 반환한다  -->
+	<select id="selectAllPortfolioExperience" resultType="PortfolioExperience">
+		select *
+		from post_portfolio_experience
+        where seq_post_portfolio = #{seq_post_portfolio}
+        order by start desc
+	</select>
+	
+	<!-- 포트폴리오에 경력을 추가한다.  -->
+	<insert id="insertPortfolioExperience">
+		insert into post_portfolio_experience( seq_post_portfolio, position,company,start,end)
+		values 
+		<foreach collection="experience" item="item" separator=",">
+		(#{seq_post_portfolio}, #{item.position}, #{item.company}, #{item.start}, #{item.end} )
+		</foreach>
+	</insert>
+	
+	<!-- 포트폴리오의 경력을 삭제한다. -->
+	<delete id="deletePortfolioExperience">
+		delete from post_portfolio_experience
+		where seq_post_portfolio= #{seq_post_portfolio}
+	</delete>
+	
+	<!-- 포트폴리오의 학력을 반환한다  -->
+	<select id="selectAllPortfolioEducation" resultType="PortfolioEducation">
+		select *
+		from post_portfolio_education
+        where seq_post_portfolio = #{seq_post_portfolio}
+        order by start desc
+	</select>
+	
+	<!-- 포트폴리오에 학력을 추가한다.  -->
+	<insert id="insertPortfolioEducation">
+		insert into post_portfolio_education( seq_post_portfolio, major,name,start,end)
+		values 
+		<foreach collection="education" item="item" separator=",">
+		(#{seq_post_portfolio}, #{item.major}, #{item.name}, #{item.start}, #{item.end} )
+		</foreach>
+	</insert>
+	
+	<!-- 포트폴리오의 언어를 삭제한다. -->
+	<delete id="deletePortfolioEducation">
+		delete from post_portfolio_education
+		where seq_post_portfolio= #{seq_post_portfolio}
+	</delete>
+	
+	<!-- 포트폴리오의 소셜 정보를 반환한다  -->
+	<select id="selectAllPortfolioSocial" resultType="PortfolioSocial">
+		select *
+		from post_portfolio_social
+        where seq_post_portfolio = #{seq_post_portfolio}
+	</select>
+	
+	<!-- 포트폴리오에 소셜 정보를 추가한다.  -->
+	<insert id="insertPortfolioSocial">
+		insert into post_portfolio_social( seq_post_portfolio, link,icon)
+		values 
+		<foreach collection="social" item="item" separator=",">
+		(#{seq_post_portfolio}, #{item.link}, #{item.icon} )
+		</foreach>
+	</insert>
+	
+	<!-- 포트폴리오의 소셜 정보를 삭제한다. -->
+	<delete id="deletePortfolioSocial">
+		delete from post_portfolio_social
+		where seq_post_portfolio= #{seq_post_portfolio}
+	</delete>
+</mapper>
+
+
+
+
+
+

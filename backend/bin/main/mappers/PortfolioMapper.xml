@@ -7,14 +7,11 @@
 
 	<!-- 블로그 메인에서 한 페이지의 포트폴리오 반환 -->
 	<select id="selectPortfolioByBlog" resultType="Portfolio">
-		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content
+		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content,b.tel,b.email, b.representation
 		from post as a inner join post_portfolio as b on a.seq = b.seq
 		where seq_blog = #{seq_blog}
-		<if test="seq_user != 0">
-		    and (disclosure=1 or (seq_blog = #{seq_user}))
-		</if>
-		<if test="seq_user == 0">
-		 	and disclosure=1 
+		<if test="seq_user != seq_blog">
+		    and b.representation = 1
 		</if>
 		and <![CDATA[regtime <= now()]]>
 		ORDER BY regtime desc
@@ -24,9 +21,17 @@
 	
 	<!-- 포트폴리오 상세조회  -->
 	<select id="selectPortfolio" resultType="Portfolio">
-		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content
+		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content,b.tel,b.email 
 		from post as a inner join post_portfolio as b on a.seq = b.seq
 		where a.seq = #{seq}
+	</select>
+	
+
+	<!--  대표 포트폴리오 조회 -->
+	<select id="selectPortfolioByRep" resultType="Portfolio">
+		select a.*,b.name,b.profile_img_url,b.github_url,b.birthday,b.content,b.tel,b.email, b.representation
+		from post as a inner join post_portfolio as b on a.seq = b.seq
+		where seq_blog = #{seq_blog} and b.representation = 1;
 	</select>
 	
 	<!-- 포트폴리오 기본 정보 등록 -->
@@ -34,16 +39,16 @@
 		insert into post(
 			seq_blog,title,disclosure,img_url,like_count
 		) values (
-			#{seq_blog}, #{title}, #{disclosure} ,#{img_url}, 0
+			#{seq_blog}, #{title}, 1 ,#{img_url}, 0
 		)
 	</insert>
 	
 	<!-- 포트폴리오 내용 등록 -->
 	<insert id="insertPostPortfolio">
 		insert into post_portfolio(
-			seq,name,profile_img_url,github_url,birthday,content
+			seq,name,profile_img_url,github_url,birthday,content,tel,email,representation
 		) values (
-			#{seq}, #{name}, #{profile_img_url}, #{github_url}, #{birthday}, #{content}
+			#{seq}, #{name}, #{profile_img_url}, #{github_url}, #{birthday}, #{content},#{tel},#{email},#{representation}
 		)
 	</insert>
 	
@@ -51,7 +56,6 @@
 	<update id="updatePost">
 		update post 
 		   set title = #{title}, 
-		   	   disclosure = #{disclosure},
 		   	   img_url = #{img_url}
 		 where seq = #{seq}
 	</update>
@@ -60,8 +64,21 @@
 	<update id="updatePostPortfolio">
 		update post_portfolio 
 		   set name = #{name}, profile_img_url = #{profile_img_url},
-		   github_url = #{github_url}, birthday = #{birthday}, content = #{content}
+		   github_url = #{github_url}, birthday = #{birthday}, content = #{content}, tel=#{tel}, email=#{email}, representation = #{representation}
 		 where seq = #{seq}
+	</update>
+	
+	
+	<!-- 포트폴리오 대표설정 해제 -->
+	<update id="updatePortfolioGeneral">
+		update post_portfolio set representation=0 where seq in(
+   		select post_portfolio.seq
+		from post inner join post_portfolio on post.seq=post_portfolio.seq where seq_blog=#{seq_blog});
+	</update>
+	
+	<!-- 포트폴리오 대표설정 -->
+	<update id="updatePortfolioRepresentation">
+		update post_portfolio set representation=1 where seq  = #{seq};
 	</update>
 	
 	<!-- 포트폴리오 삭제 -->

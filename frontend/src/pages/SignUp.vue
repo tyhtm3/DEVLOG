@@ -1,60 +1,60 @@
 <template>
 	<transition name="el-zoom-in-top">
-    <div class="content-wrapper">
-      <!-- start Main content -->
-      <section class="content">
-        <div class="box">
-          <div class="box-body" style="align:center; min-height:400px; max-width:800px; margin:auto">
-						<div class="col-sm-12">
-							<br>
-							<br>
-							<br>
-							<div class="col-xs-12 col-sm-12 profile-name">
-								<h2>회원 가입</h2>
-								<hr>
-								<dl class="dl-horizontal-profile">
-									<dt>*아이디</dt>
-                  <dd>
-                    <el-input v-model="id" style="width: 40%;"></el-input>
-                    <el-upload
-                    class="avatar-uploader2"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload"
-                    >
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                  </dd>
-                  <dt>*비밀번호</dt>
-                  <dd><el-input v-model="password" type="password" style="width: 40%;"></el-input></dd>
-									<dt>*비밀번호 확인</dt>
-                  <dd><el-input v-model="confirm" type="password" style="width: 40%;"></el-input></dd>
-									<dt>*이름</dt>
-                  <dd><el-input v-model="name" style="width: 70%;"></el-input></dd>
-									<dt>닉네임</dt>
-                  <dd><el-input v-model="nickname" style="width: 70%;"></el-input></dd>
-                  <dt>*이메일</dt>
-									<dd><el-input v-model="email" style="width: 70%;"></el-input></dd>
-									<dt>연락처</dt>
-                  <dd><el-input v-model="tel" style="width: 70%;"></el-input></dd>
-                  <dt>생년월일</dt>
-                  <dd><el-date-picker v-model="birth" type="date"></el-date-picker></dd>
-                  <dt>url</dt>
-									<dd>
-                    <el-input v-model="url" style="width: 70%;">
-                      <template slot="prepend">https://</template>
-                    </el-input>
-                  </dd>
-								</dl>
-            	</div>
-              <el-button :plain="true" @click="signup">가입하기</el-button>
-						</div>
+    <section class="content">
+      <div class="box">
+        <div class="box-body" style="align:center; min-height:400px; max-width:800px; margin:auto;">
+          <div class="col-sm-12">
+            <br>
+            <br>
+            <br>
+            <div class="col-xs-12 col-sm-12 profile-name">
+              <h2>회원 가입</h2>
+              <hr>
+              <dl class="dl-horizontal-profile">
+                <dt>*아이디</dt>
+                <dd>
+                  <el-input v-model="id" style="width: 40%;"></el-input>
+                  <el-upload
+                  class="avatar-uploader2"
+                  action="http://i3a402.p.ssafy.io:8090/devlog/api/user/upload"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess"
+                  :before-upload="beforeAvatarUpload">
+                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                </dd>
+                <dt>*비밀번호</dt>
+                <dd><el-input v-model="password" type="password" style="width: 40%;"></el-input></dd>
+                <dt>*비밀번호 확인</dt>
+                <dd><el-input v-model="confirm" type="password" style="width: 40%;"></el-input></dd>
+                <dt>*이름</dt>
+                <dd><el-input v-model="name" style="width: 70%;"></el-input></dd>
+                <dt>닉네임</dt>
+                <dd><el-input v-model="nickname" style="width: 70%;"></el-input></dd>
+                <dt>*이메일</dt>
+                <dd><el-input v-model="email" style="width: 70%;"></el-input></dd>
+                <dt>연락처</dt>
+                <dd><el-input v-model="tel" style="width: 70%;"></el-input></dd>
+                <dt>생년월일</dt>
+                <dd><el-date-picker v-model="birth" type="date"></el-date-picker></dd>
+                <dt>Giturl</dt>
+                <dd>
+                  <el-input v-model="url" style="width: 70%;">
+                    <template slot="prepend">https://</template>
+                  </el-input>
+                  
+                  <el-tooltip  class="pull-right"  content="포트폴리오 생성시 자동으로 데이터를 입력해줍니다!" placement="right">
+                    <img src="http://i3a402.p.ssafy.io/images/question.png" alt="?" width="15px" height="15px" style="margin-top:1px;">
+                  </el-tooltip>
+                </dd>
+              </dl>
+            </div>
+            <el-button :plain="true" @click="signup">가입하기</el-button>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
 	</transition>
 </template>
 
@@ -84,6 +84,8 @@ import http from '../util/http-common'
       signup() {
         if(this.id==='')
           this.$message.warning('아이디를 입력해 주세요.')
+        else if(!this.validId(this.id))
+          this.$message.warning('아이디는 2자이상 영문과 숫자만 포함할 수 있습니다.')
         else if(this.password==='')
           this.$message.warning('비밀번호를 입력해 주세요.')
         else if(this.confirm==='')
@@ -114,7 +116,7 @@ import http from '../util/http-common'
               type: 'success',
               message: '회원 가입이 완료되었습니다.'
             });
-            this.$router.push('/blog')
+            this.$router.push('/')
           })
           .catch((error) => {
             console.log(error.response.status)
@@ -127,6 +129,10 @@ import http from '../util/http-common'
           })
         }
       },
+      validId: function(id) {
+          return /^[a-z0-9]{2,20}$/.test(id)
+      },
+
       validEmail: function(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
@@ -141,61 +147,53 @@ import http from '../util/http-common'
         if(date<10) date = '0' + date;
         return year + "-" + month + "-" + date}
       },
-     handleAvatarSuccess(res, file) {
-      var frm = new FormData();
-      frm.append("upload_file", file.raw);
-
-      http.post('user/upload',frm,{headers: {
-            'Content-Type': 'multipart/form-data'
-          }})
-        .then(({data}) => {
-          this.imageUrl = 'http://'.concat(data)
-      })
-    },
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = 'http://'.concat(res)
+      },
       beforeAvatarUpload(file) {
-
         const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        const isPNG = file.type === 'image/png';
+        const isLt10M = file.size / 1024 / 1024 < 10;
 
-        if (!isJPG) {
-          this.$message.error('Avatar picture must be JPG format!');
+        if (!(isPNG || isJPG)) {
+          this.$message.error('Image must be JPG or PNG format!1');
         }
-        if (!isLt2M) {
-          this.$message.error('Avatar picture size can not exceed 2MB!');
+        if (!isLt10M) {
+          this.$message.error('Image size can not exceed 10MB!');
         }
-        return isJPG && isLt2M;
-      }
+        return (isJPG || isPNG) && isLt10M;
+      },
     },
   }
 
 </script>
 
 <style>
-  .avatar-uploader2 .el-upload {
-    top: 90px;
-    left: 500px;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: absolute;
-    overflow: hidden;
-  }
-  .avatar-uploader2 .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
+.content{
+  padding-top:110px;
+}
+.avatar-uploader2 .el-upload {
+  top: 90px;
+  left: 500px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: absolute;
+  overflow: hidden;
+}
+.avatar-uploader2 .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 168px;
+  height: 168px;
+  line-height: 34px;
+  text-align: center;
+}
+.avatar {
     width: 168px;
     height: 168px;
-    line-height: 34px;
-    text-align: center;
-  }
-  .avatar {
-    width: 168px;
-    height: 168px;
-  }
-  .avatar-uploader-icon {
-    transform: translate(0%, 40%);
   }
 </style>

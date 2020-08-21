@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.devlog.mapper.ProjectRoleMapper">
+
+	<!-- 프로젝트의 모든 역할내용 리스트를 반환한다. -->
+	<select id="selectAllProjectRole" resultType="ProjectRole">
+		select *
+		from post_project_role
+		where seq_post_project= #{seq_post_project}
+	</select>
+
+	<!-- 프로젝트에 역할을 추가한다  -->
+	<insert id="insertProjectRole">
+		insert into post_project_role( seq_post_project,role)
+		values 
+		<foreach collection="role" item="item" separator=",">
+            (#{seq_post_project}, #{item})
+        </foreach>
+	</insert>
+	
+	<!-- 프로젝트의 역할을 삭제한다. -->
+	<delete id="deleteProjectRole">
+		delete from post_project_role
+		where 	seq_post_project = #{seq_post_project}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+

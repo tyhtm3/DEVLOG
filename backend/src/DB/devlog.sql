@@ -140,4 +140,69 @@ CREATE TABLE `post_like`(
     FOREIGN KEY (`seq_user`) REFERENCES `user` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `post_portfolio_certification`(
+    `seq` int primary key auto_increment,
+    `seq_post_portfolio` int not null,
+    `certification` varchar(256),
+    `date` varchar(20),
+    FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `post_portfolio_skill`(
+    `seq` int primary key auto_increment,
+    `seq_post_portfolio` int not null,
+    `skill` varchar(256),
+    `level` varchar(10),
+    FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `post_portfolio_language`(
+    `seq` int primary key auto_increment,
+    `seq_post_portfolio` int not null,
+    `language` varchar(256),
+    `level` varchar(10),
+    FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `post_portfolio_info`(
+    `seq` int primary key auto_increment,
+    `seq_post_portfolio` int not null,
+    `introduction` text,
+    `address` varchar(256),
+    FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `post_portfolio_experience`(
+    `seq` int primary key auto_increment,
+    `seq_post_portfolio` int not null,
+    `position` varchar(256),
+    `company` varchar(64),
+    `start` varchar(20),
+    `end` varchar(20),
+    FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `post_portfolio_education`(
+    `seq` int primary key auto_increment,
+    `seq_post_portfolio` int not null,
+    `major` varchar(256),
+    `name` varchar(64),
+    `start` varchar(20),
+    `end` varchar(20),
+    FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `post_portfolio_social`(
+    `seq` int primary key auto_increment,
+    `seq_post_portfolio` int not null,
+    `link` varchar(256),
+    `icon` varchar(64),
+    FOREIGN KEY (`seq_post_portfolio`) REFERENCES `post_portfolio` (`seq`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `certification`(
+	`seq` int primary key auto_increment,
+    `key` varchar(128),
+    `value` varchar(10)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    

@@ -2,49 +2,48 @@
     <transition name="el-zoom-in-top">
         <section class="content"  style="padding-top:30px">
         <!-- 프로젝트 출력 -->
-            <div class="delete" @click="deleteProject" v-show="this.$store.state.settingButtonVisible">
+            <div class="delete" @click="deleteProject" v-show="adminMode">
                 <i class="ti-trash"></i> 삭제
             </div>
             <div class="row">
-                <div class="col-md-4" v-for="(project,index) in projectList" :key="index">
-                    <span v-show="$store.state.settingButtonVisible">
+                <div class="col-md-4" v-for="(project,index) in projectList" :key="index" style="height:534px;">
+                    <span v-show="adminMode">
                         <input class="delete-box" :id=project.seq type="checkbox" :value=project.seq v-model="deleteList" />
                         <label :for=project.seq></label>
                     </span>
-                    <div class="well-media" @click="goDetail(project.seq)" style="cursor:pointer;">
-                        <div class="vendor">
-                            <img v-if="project.img_url" class="img-responsive-media" :src="project.img_url" alt="">
-                            <img v-else class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
-                            <!-- <a class="fancybox" rel="group" href="#"> <img class="img-responsive-media" src="https://www.bloter.net/wp-content/uploads/2014/05/unreal_1_600.jpg" alt=""> </a> -->
+                    <div class="well-media" style="cursor:pointer;">
+                        <div class="vendor" style="text-align:center;" @click="goDetail(project.seq)">
+                            <div style="height:250px;line-height:250px;vertical-align:middle; text-align:middle; display:inline-flex;">
+                                <img v-if="project.img_url" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" class="img-responsive-media" :src="project.img_url" alt="">
+                                <img v-else class="img-responsive-media" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                            </div>
                         </div>
-                        <div class="video-text">
-                            <!-- {{project}} -->
-                            <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{project.title}}<!--{{project.seq}}--></h2>
+                        <div class="video-text" @click="goDetail(project.seq)">
+                            <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{project.title}}</h2>
                             <p class="content-3line" style="color:black;">{{project.summary}}</p>
                         </div>
-                        <div class="tag-nest" style="block:inline"> 
-                           <!-- 태그 3개만 갖고오기--> 
-                            <span v-for="(tag,index) in tag[index]" :key="index">
-                            <span class="tag">#{{tag.tag}}</span>
-                            </span>
-                            <!-- 여백 -->
-                            <span class="tag"></span>
+                        
+                        <div class="tag-nest" style="block:inline; padding:10px 5px 10px 5px; ">
+                        <span class = "tag-nest-detail">
 
-                            <!-- 좋아요, 코멘트 수 -->
-                            <span class="tag-copy" style="float:right"> <i class="ti-heart"></i> {{project.like_count}} </span>
-                            <span class="tag-copy" style="float:right"> <i class="ti-comment-alt"></i> {{comment[index]}} </span> 
+                            <span v-for="(tag,index) in project.tags" :key="index" class="tag" @click="tagSearch(tag.tag)" :class="{'active': itemsContains(tag.tag)}" style="font-size:17px; margin-right:8px;">
+                                #{{tag.tag}}
+                            </span>
+                            <span class="tag donotshow"></span>
+                        </span>
+                        <span class="tag-copy" style="display:inline-block; float:right;"><i class="ti-heart"></i> {{ project.like_count }} </span>
+                        <span class="tag-copy" style="display:inline-block;  float:right;"><i class="ti-comment-alt"></i> {{ project.comment_count }} </span>
                         </div>
-                        <!-- <div class="video-category-bg">
-                            <h3>FRONT-END</h3>
-                            <a class="link-media pull-right" href="#"> <span class="fontawesome-picture"></span> </a>
-                            <div class="triangle-white"></div>
-                            <div class="triangle-photo-right"></div>
-                        </div> -->
                     </div>
                 </div>
             </div>
             <!-- infinite-loading 스피너형식 : default/spiral/circles/bubbles/waveDots-->
-            <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+            <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler" spinner="waveDots">
+                <div v-if="projectList.length>0" slot="no-results" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
+                <div v-else slot="no-results" style="color:#11212E; padding:50px">조건에 일치하는 프로젝트가 존재하지 않습니다.</div>
+                <div slot="no-more" style="color:#11212E; padding:50px">마지막 프로젝트입니다.</div>
+            </infinite-loading>
+           
         </section>
     </transition>
 </template>
@@ -56,71 +55,93 @@
     components: {
         InfiniteLoading
     },
+    props: ['searchTags'],
+    watch: { 
+      	searchTags(){
+            // 선택한 태그로 재검색 (합집합)
+            this.limit=0
+            this.getprojectList();
+        }
+    },
     data(){
         return{
-            // 방문한 블로그 일단은 무조건 현재 블로그번호로 지정, 이후에 방문 블로그 번호로 설정하는거 해야함
-            seq_blog: this.$store.state.userInfo.seq,
-            seq_user: this.$store.state.userInfo.seq,
             projectList: [],
-            comment: [],
-            tag:[],
             // 페이지네이션
             limit: 0,
             page: 6, //한 페이지에 불러올 카드 숫자. 추후 수정 가능(3배수)
             deleteList: [],
-            deleteSuccess: true
+            deleteSuccess: true,
+            activeIndex: [],
         }
     },
-    created(){	 
-      this.getprojectList();
+    created() {
+        this.getprojectList()
+    },
+    computed: {
+        adminMode() {
+            return this.$store.getters.getIsAdminMode
+        },
     },
     methods:{
+        // 태그 누를때마다 검색
+        tagSearch(tag){
+          // 태그 선택시 css 바꾸고 searchTags에 추가 (토글)
+          var index = this.searchTags.indexOf(tag)
+          var idx = this.activeIndex.indexOf(index)
+          if(index<0){
+            this.searchTags.push(tag)
+            this.activeIndex.push(index)
+          }else{
+            this.searchTags.splice(index,1)
+            this.activeIndex.splice(idx,1)
+          }
+        },
+        itemsContains(tag) {
+        return this.searchTags.indexOf(tag) > -1
+        },
         goDetail(seq){
             this.$router.push(`/blog/project/${seq}`)
         },
         // 페이지네이션 하기 전 처음 페이지에 뿌려줄 카드 불러오기
         getprojectList(){
-            http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:0, limit:this.page } )
-            .then(({ data }) => {
-                this.projectList = data;
-                this.getprojectCommentTag(data)
+            this.projectList= []
+            this.comment= []
+            this.tag=[]
+            if(this.$refs.infiniteLoading){
+            this.$refs.infiniteLoading.stateChanger.reset(); 
+            }
+            http.get('user/id/'+this.$route.params.id)
+            .then(({data})=>{
+                http.post('project/blog', { seq_user:data.seq , seq_blog:data.seq, offset:0, limit:this.page , tag:(this.searchTags.length==0?null:this.searchTags) } )
+                .then(({ data }) => {
+                    this.projectList = data;
+                })
             })
         },
         // 인피니트로딩
         infiniteHandler($state){
-            http.post('project/blog', { seq_user:this.seq_user , seq_blog:this.seq_blog, offset:this.limit+this.page, limit:this.page })
-            .then(({ data }) => {
-                // 스크롤 페이징을 띄우기 위한 시간 1초
-                setTimeout(()=>{
-                    if(data.length){
-                        this.getprojectCommentTag(data)
-                        this.projectList = this.projectList.concat(data);
-                        $state.loaded()
-                        this.limit +=this.page
-                        if(this.projectList.length/this.page == 0){
+            http.get('user/id/'+this.$route.params.id)
+            .then(({data})=>{
+                http.post('project/blog', { seq_user:data.seq , seq_blog:data.seq, offset:this.limit+this.page, limit:this.page,tag:(this.searchTags.length==0?null:this.searchTags) })
+                .then(({ data }) => {
+                    // 스크롤 페이징을 띄우기 위한 시간 1초
+                    setTimeout(()=>{
+                        if(data.length){
+                            // this.getprojectCommentTag(data)
+                            this.projectList = this.projectList.concat(data);
+                            $state.loaded()
+                            this.limit +=this.page
+                            if(this.projectList.length/this.page == 0){
+                                $state.complete();
+                            }
+                        }else{
                             $state.complete();
                         }
-                    }else{
-                        $state.complete();
-                    }
-                },1000)
+                    },1000)
+                })
             })
         },
-        // 프로젝트로부터 코멘트 개수와 태그 불러오기
-        getprojectCommentTag(data){
-            for(var i=0; i<data.length; i++){
-                // 코멘트
-                http.get('postcomment/count/'+data[i].seq)
-                .then(({data}) => {
-                this.comment.push(data);
-                });
-                // 태그
-                http.get('posttag/'+data[i].seq)
-                .then(({data}) => {
-                this.tag.push(data.slice(0,3));
-                });
-            }   
-        },
+        
         deleteProject(){
              if(this.deleteList.length === 0){
                 this.$message({
@@ -130,7 +151,7 @@
             }
             else{
                 this
-                .$confirm('삭제하시겠습니까?', {
+                .$confirm('총 '+this.deleteList.length+'개의 프로젝트를 삭제하시겠습니까?', {
                     confirmButtonText: '삭제',
                     cancelButtonText: '취소',
                     type: 'warning'
@@ -255,5 +276,18 @@ input[type="checkbox"]:checked + label:before {
   border-left-color: transparent;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+.active {
+  background-color:    #DDD;
+}
+</style>
+<style lang="scss" >
+
+.col-md-4{
+  margin-bottom:20px;
+  border-radius: 5px;
+}
+.col-md-4:hover{
+  box-shadow: 15px 15px 15px rgba(134, 134, 134, 0.096);
 }
 </style>

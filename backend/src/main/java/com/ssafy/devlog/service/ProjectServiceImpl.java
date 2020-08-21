@@ -2,7 +2,6 @@ package com.ssafy.devlog.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +33,11 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public Project selectProject(int seq){
 		return projectMapper.selectProject(seq);
+	}
+	
+	@Override
+	public List<Project> selectDraftProject(int seq_blog){
+		return projectMapper.selectDraftProject(seq_blog);
 	}
 	
 	@Override

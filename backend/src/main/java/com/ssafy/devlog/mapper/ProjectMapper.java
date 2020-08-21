@@ -15,6 +15,7 @@ public interface ProjectMapper {
 	public int selectProjectCntByBlog(@Param("seq_user") int seq_user,@Param("seq_blog")int seq_blog);
 	
 	public Project selectProject(int seq);
+	public List<Project> selectDraftProject(int seq_blog);
 	public int insertPost(Project project);
 	public int insertPostProject(Project project);
 	public int updatePost (Project project);

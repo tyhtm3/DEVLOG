@@ -1,5 +1,6 @@
 package com.ssafy.devlog.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,8 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.devlog.dto.PostComment;
+import com.ssafy.devlog.dto.PostCommentUser;
+import com.ssafy.devlog.dto.User;
 import com.ssafy.devlog.service.JwtService;
 import com.ssafy.devlog.service.PostCommentService;
+import com.ssafy.devlog.service.PostService;
+import com.ssafy.devlog.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -35,6 +40,10 @@ public class PostCommentController {
 	@Autowired
 	private PostCommentService postCommentService;
 	@Autowired
+	private UserService userService;
+	@Autowired
+	private PostService postService;
+	@Autowired
 	private JwtService jwtService;
 
 	@ApiOperation(value = "포스트 및 프로젝트의 seq로 댓글 개수를 반환한다.", response = List.class)
@@ -46,19 +55,45 @@ public class PostCommentController {
 
 	@ApiOperation(value = "포스트 및 프로젝트의 seq로 모든 댓글을 반환한다.", response = List.class)
 	@GetMapping(value = "/{seq_post}")
-	public ResponseEntity<List<PostComment>> selectAllPostComment(@PathVariable int seq_post) throws Exception {
+	public ResponseEntity<List<PostCommentUser>> selectAllPostComment(@PathVariable int seq_post) throws Exception {
 		logger.debug("selectAllPostComment - 호출");
-		return new ResponseEntity<List<PostComment>>(postCommentService.selectAllPostComment(seq_post), HttpStatus.OK);
+		return new ResponseEntity<List<PostCommentUser>>(postCommentService.selectAllPostComment(seq_post),
+				HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "특정 이웃이 남긴 댓글을 전부 불러온다. // seq_user : 이웃의 seq ", response = List.class)
 	@GetMapping(value = "/neighbor/{seq_user}")
-	public ResponseEntity<List<PostComment>> selectAllPostCommentByNeighbor(@PathVariable int seq_user)
+	public ResponseEntity<List<PostCommentUser>> selectAllPostCommentByNeighbor(@PathVariable int seq_user)
 			throws Exception {
 		logger.debug("selectAllPostCommentByNeighbor - 호출");
 		int seq_blog = jwtService.getSeq();
-		return new ResponseEntity<List<PostComment>>(postCommentService.selectAllPostCommentByNeighbor(seq_user,seq_blog),
-				HttpStatus.OK);
+		User user = userService.selectUserBySeq(seq_user);
+		List<PostCommentUser> postCommentUserList = new ArrayList<PostCommentUser>();
+		List<PostComment> postCommentList = postCommentService.selectAllPostCommentByNeighbor(seq_user, seq_blog);
+		for (int i = 0; i < postCommentList.size(); i++) {
+			postCommentUserList.add(new PostCommentUser(postCommentList.get(i), user));
+			int seq_post = postCommentList.get(i).getSeq_post();
+			postCommentUserList.get(i).setTitle(postService.selectPostTitle(seq_post));
+		}
+		return new ResponseEntity<List<PostCommentUser>>(postCommentUserList, HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "내가 특정 이웃에게 남긴 댓글을 전부 불러온다. // seq_neighbor : 이웃의 seq ", response = List.class)
+	@GetMapping(value = "/neighbor/me/{seq_neighbor}")
+	public ResponseEntity<List<PostCommentUser>> selectAllPostCommentByMe(@PathVariable int seq_neighbor)
+			throws Exception {
+		logger.debug("selectAllPostCommentByNeighbor - 호출");
+		int seq_user = jwtService.getSeq();
+		int seq_blog = seq_neighbor;
+		User user = userService.selectUserBySeq(seq_user);
+		List<PostCommentUser> postCommentUserList = new ArrayList<PostCommentUser>();
+		List<PostComment> postCommentList = postCommentService.selectAllPostCommentByNeighbor(seq_user, seq_blog);
+		for (int i = 0; i < postCommentList.size(); i++) {
+			postCommentUserList.add(new PostCommentUser(postCommentList.get(i), user));
+			int seq_post = postCommentList.get(i).getSeq_post();
+			postCommentUserList.get(i).setTitle(postService.selectPostTitle(seq_post));
+		}
+		return new ResponseEntity<List<PostCommentUser>>(postCommentUserList, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "포스트 및 프로젝트에 댓글을 입력한다.", response = String.class)

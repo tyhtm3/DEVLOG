@@ -4,10 +4,11 @@
 
 	<!-- 포트폴리오의 모든 프로젝들을 반환한다  -->
 	<select id="selectAllPortfolioProject" resultType="Project">
-		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count
+		select post_project.*,post.seq_blog,post.title,post.regtime,post.disclosure,post.like_count,post.img_url
 		from post inner join post_project on post.seq=post_project.seq
         where post_project.seq in (
-		select seq_post_project from post_portfolio_project where seq_post_portfolio = #{ seq_post_portfolio } );
+		select seq_post_project from post_portfolio_project where seq_post_portfolio = #{ seq_post_portfolio } ) 
+		order by start_date desc;
 	</select>
 	
 	<!-- 포트폴리오에 프로젝트를 추가한다.  -->
@@ -23,6 +24,12 @@
 	<delete id="deletePortfolioProject">
 		delete from post_portfolio_project
 		where seq_post_portfolio= #{seq_post_portfolio} and seq_post_project=#{seq_post_project}
+	</delete>
+	
+	<!-- 포트폴리오의 모든 프로젝트를 삭제한다. -->
+	<delete id="deleteAllPortfolioProject">
+		delete from post_portfolio_project
+		where seq_post_portfolio= #{seq_post_portfolio}
 	</delete>
 	
 </mapper>

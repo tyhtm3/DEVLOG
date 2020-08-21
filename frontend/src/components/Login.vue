@@ -7,63 +7,94 @@
 			<div class="body">
 				<input v-model="id" id="id" placeholder="id" type="text"/>
 				<input v-model="password" type="password" id="password" placeholder="password"/>
-				<button class="normal" @click="login">login</button><p/>
-				<button class="kakao" @click="login">kakao</button><button class="naver" @click="naverLogin">naver</button><p/>
+				<button class="normal" @click="login">로그인</button><p/>
+				<button class="kakao" @click="kakaoLogin">kakao</button><button id="naverIdLogin" class="naver">NAVER</button><p/>
 				<!-- <button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button> -->
-				<p class="message">Not registered?
-					<router-link to="/signup">
-						Create an account
+				<p class="message">
+					<span class="pull-left">
+					<router-link to="/findpw"><i class="dripicons-lock"></i>아이디·비밀번호 찾기
 					</router-link>
-				</p>	
-				<p class="message">Forgot password?
-					<router-link to="/findpw">
-						Find password
+					</span>
+					<span class="pull-right">
+					<router-link to="/signup"><i class="dripicons-user"></i>회원가입
 					</router-link>
+					</span>
 				</p>
 			</div>
 		</div> 
 	</div>
 </template>
 <script>
+import http from '../util/http-common'
 export default {
 	data: () => {
 		return {
 			id: '',
 			password: '',
-			// naver
-			CLIENT_ID: 'RSKBTL31UOSpdlckpmTt',
-      		redirectURI: 'http://localhost:8090/devlog/api/user/naver',
-			state: 123, 
-			/* state : 사이트 간 요청 위조 공격을 방지하기 위해 애플리케이션에서 생성한 상태 토큰값으로
-			 URL 인코딩을 적용한 값을 사용해야한다는데 뭔지 모르겠으므로 일단 123으로 지정 */
-     		naverLoginURL: 'https://nid.naver.com/oauth2.0/authorize?response_type=code'
 		}
 	},
-	created () {
-    this.naverLoginURL += '&client_id=' + this.CLIENT_ID
-    this.naverLoginURL += '&redirect_uri=' + this.redirectURI
-    this.naverLoginURL += '&state=' + this.state
-  	},
+  mounted() {
+    const that = this
+    const naverLogin = new naver.LoginWithNaverId({
+		clientId: 'RSKBTL31UOSpdlckpmTt',
+		callbackUrl:'http://i3a402.p.ssafy.io/naver/',
+		  isPopup: true,
+		  loginButton:{
+			  color:'green',
+			  type:1,
+			  height:15,
+		  },
+		  callbackHandle: true
+    	})
+	  naverLogin.init()
+  },
 	methods: {
 		loginFormClose(){
-			this.$store.state.loginFormVisible = false
+			this.$store.commit('setLoginFormVisible', false)
 		},
 		login() {
 			if(this.id==='')
 				this.$message.warning('아이디를 입력해주세요')
 			else if(this.password==='')
 				this.$message.warning('비밀번호를 입력해주세요')
-			else
-				this.$store.dispatch('login', {id: this.id, password: this.password})
+			else{
+				http
+				.post('/user/login', { 
+					id: this.id,
+					password: this.password
+				})
+				.then(({data}) => {
+					this.$store.commit('setIsLogin', true)
+					this.$store.commit('setToken', data)
+					http
+					.get('/user/me',{headers : {'Authorization' : data,}})
+					.then(({data}) => {
+						this.$message.success('정상적으로 로그인되었습니다.')
+						this.$store.commit('setUserInfo', data)
+						this.$store.commit('setLoginFormVisible', false)
+					})
+					.catch((error) => {
+						this.$message.error('로그인 도중 오류가 발생했습니다.')
+					})
+				})
+				.catch((error) =>  {
+					if(error.response.status == '404')
+						this.$message.error('존재하지 않는 아이디입니다.')
+					else if(error.response.status == '401')
+						this.$message.error('비밀번호가 틀렸습니다.')
+					else
+						this.$message.error('로그인 도중 오류가 발생했습니다.')
+				})
+			}
 		},
-		naverLogin(){
-			//window.open(this.naverLoginURL, '_blank');
-			var popup = window.open(this.naverLoginURL,'window_name','width=430,height=500,left=500,right=500,location=no,status=no,scrollbars=yes');
-			
-			//popup.close();
+		kakaoLogin(){
+			Kakao.Auth.login({
+				success:this.kakaoLoginStore,
+			});
 		},
-		myFunc(){
-			alert("YA")
+		kakaoLoginStore(authObj){
+			this.$store.dispatch('kakaoLogin', {access_token : authObj.access_token})
+			this.$router.push('/')
 		}
 	},
 }
@@ -143,12 +174,23 @@ export default {
 	display: inline;
 }
 
-.form button:hover,
-.form button:active,
-.form button:focus {
+.form .normal:hover,
+.form .normal:active,
+.form .normal:focus {
   background: #424242;
 }
 
+.form .kakao:hover,
+.form .kakao:active,
+.form .kakao:focus {
+  background: #d8ca00;
+}
+
+.form .naver:hover,
+.form .naver:active,
+.form .naver:focus {
+  background: #238d00;
+}
 .form .message {
   margin: 15px 0 0;
   color: #b3b3b3;

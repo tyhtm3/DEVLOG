@@ -12,15 +12,21 @@
 
       <!-- 헤더 : 프로젝트 작성시간, 댓글수, 좋아요 수, 수정|삭제 -->
       <ul class="list-inline blog-devin-tag" style="padding-left:300px;padding-right:300px;font-size:13px;">
-        <li><a>&nbsp;&nbsp;<span class="ti-user"></span>{{postUser.nickname}}</a></li>
+        <li><a :href="url" v-if="postUser.nickname">&nbsp;&nbsp;<span class="ti-user"></span>{{postUser.nickname}}</a>
+            <a :href="url" v-else>&nbsp;&nbsp;<span class="ti-user"></span>{{postUser.id}}</a>
+        </li>
         <li><a> <span class="ti-pencil"></span>&nbsp;{{post.regtime}}</a></li>
         <li><a> <span class="ti-comment-alt"></span>&nbsp;{{commentCnt}}</a></li>
-        <li>
+        <li style="cursor:pointer">
+          
           <i v-if="isLike" @click="cancelLike" class="material-icons">favorite</i>
           <i v-else @click="like" class="material-icons">favorite_border</i>
           &nbsp;{{post.like_count}}
         </li>
-        <li class="pull-right" v-if="post.seq_blog==seq_user"><a> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deletePost(post.seq)"> &nbsp;삭제</a></li>
+        <li class="pull-right" v-if="post.seq_blog==seq_user">
+          <span style="cursor:pointer" @click="updatePost(post.seq)">수정</span>&nbsp;|&nbsp;
+          <span style="cursor:pointer" @click="deletePost(post.seq)">삭제</span>
+        </li>
       </ul>
       <!-- 헤더 끝 -->               
       <div class="box">
@@ -33,9 +39,9 @@
                     <p class="post-content" style="margin-top:60px;" v-html="post.content"></p><hr> 
                   </div>
                 </div>
-                <!-- 프스트 태그 -->
+                <!-- 포스트 태그 -->
                 <p class="pull-left">
-                  <span v-for="(tag, index) in tag" v-bind:key="index" class="tag">
+                  <span @click="tagSearch(tag.tag)" v-for="(tag, index) in tag" v-bind:key="index" class="tag">
                   #{{tag.tag}}
                   </span>
                 </p>
@@ -43,14 +49,9 @@
               </div>
             </div>
            
-           <!-- 댓글 리스트 -->
+            <!-- 댓글 리스트 -->
               <comment v-bind:seq="seq"></comment>
             <!-- 댓글 창 끝 -->
-
-            <ul class="pager success">
-              <li class="previous"><a href="#">← Older</a> </li>
-              <li class="next disabled"><a href="#">Newer →</a> </li>
-            </ul>
           </div>
           <!--  END OF BLOG CONTENT -->
         </div>
@@ -60,93 +61,123 @@
   </transition>
 </template>
 <script>
-  import Comment from '../components/detailComment'
-  import http from '../util/http-common'
-  export default {
-    components: {
-      Comment
+import Comment from '../components/detailComment'
+import http from '../util/http-common'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
+export default {
+  components: {
+    Comment
+  },
+  data: function () {
+      return { 
+        seq: '',
+        post:'',
+        postUser:'',
+        isLike:'',
+        commentCnt:'',
+        tag: [],
+        seq_user: this.$store.state.userInfo.seq,
+        basicurl: '/blog/',
+        blogurl:'',
+        url:'',
+
+      }
+  },
+  created(){
+    this.seq= this.$route.params.seq
+    this.getInfo(this.seq)
+  },
+  methods: {
+      tagSearch(tag){
+      this.$store.commit('setSearchTag',tag)
+      // 블로그 메인 -> 디테일페이지 -> 태그검색 -> 블로그메인
+      if(this.$store.state.previousUrl.indexOf('blog')>0){
+          this.$router.push('/blog/'+this.blogurl)
+      }
+      // 피드 -> 디테일페이지 -> 태그검색 -> 피드
+      else{
+          this.$router.push('/')
+      }
     },
-    data: function () {
-        return { 
-          seq: '',
-          post:'',
-          postUser:'',
-          isLike:'',
-          commentCnt:'',
-          tag: [],
-          seq_user: this.$store.state.userInfo.seq,
-        }
-    },
-    created(){
-      this.seq= this.$route.params.seq
-      this.getInfo(this.seq)
-    },
-    methods: {
-      getInfo(seq){
-        // 포스트 불러오기.
-        http.get('post/'+seq)
-        .then(({data}) => {
-            this.post=data
-            // 포스트 작성자 정보 불러오기.
-            http.get('user/'+data.seq_blog)
-            .then(({data}) => {
-              this.postUser=data
-            }) 
-         })
-        // 댓글 개수 불러오기
-         http.get('postcomment/count/'+seq)
-                .then(({data}) => {
-                this.commentCnt = data;
-         }) 
-        // 태그 불러오기
-         http.get('posttag/'+seq)
-                .then(({data}) => {
-                this.tag = data;
-         })
-         // 좋아요 여부 불러오기
-        http.get(`postlike/${seq}`)
-                .then(({data}) => {
-                if(data.length==0){
-                  this.isLike=false
-                }else{
-                  this.isLike=true
-                }
-         })
-      },
-       // 좋아요
-      like(){
-        http.post('postlike/',{seq_post:this.seq})
-                .then(({data}) => {
-                this.post.like_count+=1
+    getInfo(seq){
+      // 포스트 불러오기.
+      http.get('post/'+seq)
+      .then(({data}) => {
+          this.post=data
+          // 포스트 작성자 정보 불러오기.
+          http.get('user/'+data.seq_blog)
+          .then(({data}) => {
+            this.postUser=data
+            this.blogurl = this.postUser.id
+            this.url=this.basicurl+this.blogurl
+          }) 
+        })
+      // 댓글 개수 불러오기
+        http.get('postcomment/count/'+seq)
+              .then(({data}) => {
+              this.commentCnt = data;
+        }) 
+      // 태그 불러오기
+        http.get('posttag/'+seq)
+              .then(({data}) => {
+              this.tag = data;
+        })
+        // 좋아요 여부 불러오기
+      http.get(`postlike/${seq}`)
+              .then(({data}) => {
+              if(data.length==0){
+                this.isLike=false
+              }else{
                 this.isLike=true
-         })
-      },
-      // 좋아요 취소
-      cancelLike(){
-        http.get(`postlike/${this.seq}`)
-                .then(({data}) => {
-                http.delete(`postlike/${data.seq}`).then(({data})=>{
-                  this.post.like_count-=1
-                  this.isLike=false
-                })
-         })
-      },
-      // 포스트 삭제
-      deletePost(seq){
-         http.delete('post/'+seq)
-        .then(({data}) => {
-            if(data==="SUCCESS"){
-              this.$message.success('게시글이 삭제되었습니다.')
-              this.$router.push(`/blog`)
-            }
-         })
-      },
-      // 포스트 수정 미구현
-      updatePost(){
-        
-      },
-   },
-  }
+              }
+        })
+    },
+      // 좋아요
+    like(){
+      http.post('postlike/',{seq_post:this.seq})
+              .then(({data}) => {
+              this.post.like_count+=1
+              this.isLike=true
+        })
+        this.$message.info('좋아요')
+    },
+    // 좋아요 취소
+    cancelLike(){
+      http.get(`postlike/${this.seq}`)
+              .then(({data}) => {
+              http.delete(`postlike/${data.seq}`).then(({data})=>{
+                this.post.like_count-=1
+                this.isLike=false
+              })
+        })
+        this.$message.info('좋아요 취소')
+    },
+    // 포스트 삭제
+    deletePost(seq){
+        http.delete('post/'+seq)
+      .then(({data}) => {
+          this.$message.success('게시글이 삭제되었습니다.')
+          this.$router.push('/blog/'+this.$store.getters.getUserInfo.id)
+        })
+    },
+    // 포스트 수정
+    updatePost(seq){
+      this.$router.push('/blog/post-update/'+seq)
+    },
+    savePost(){
+      //Vue.js 는 window 객체에 직접 할당해야 함.
+      window.html2canvas = html2canvas
+      html2canvas($('.content-wrapper')[0])
+      .then(function(canvas) {
+        let pdf = new jsPDF('p', 'mm', 'a4')
+        let imgData = canvas.toDataURL('image/png');
+        pdf.addImage(imgData, 'PNG', 0, 0)
+        pdf.save('sample-file.pdf')
+      })
+    }
+  },
+}
 </script>
 <style scoped>
 
@@ -183,4 +214,8 @@ a:hover { color: black; text-decoration: bold;}
   font-size:14px;
   line-height:30px;
 }
+.material-icons{
+  font-size:13px;
+}
+
 </style>

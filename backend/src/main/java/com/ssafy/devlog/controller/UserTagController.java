@@ -60,7 +60,8 @@ public class UserTagController {
 		if (check != null)
 			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
 		else if (userTagService.insertUserTag(userTag) == 1) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			String seq = Integer.toString(userTagService.selectUserTagByUserAndTag(userTag).getSeq());
+			return new ResponseEntity<String>(seq, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}

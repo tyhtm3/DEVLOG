@@ -1,5 +1,6 @@
 package com.ssafy.devlog.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,11 +17,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.devlog.dto.Post;
+import com.ssafy.devlog.dto.PostTag;
 import com.ssafy.devlog.dto.Project;
+import com.ssafy.devlog.dto.ProjectRole;
+import com.ssafy.devlog.dto.ProjectWithRoleTag;
 import com.ssafy.devlog.service.JwtService;
+import com.ssafy.devlog.service.PostCommentService;
+import com.ssafy.devlog.service.PostTagService;
+import com.ssafy.devlog.service.ProjectRoleService;
 import com.ssafy.devlog.service.ProjectService;
 
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +44,12 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 	@Autowired
+	private ProjectRoleService projectRoleService;
+	@Autowired
+	private PostTagService postTagService;
+	@Autowired
+	private PostCommentService postCommentService;
+	@Autowired
 	private JwtService jwtService;
 	
 
@@ -49,16 +62,24 @@ public class ProjectController {
 		
 	}
 	
-	@ApiOperation(value = "새로운  프로젝트 입력 ( seq_blog, title, disclosure, summary, start_date, role ) 필수  ", response = String.class)
+	@ApiOperation(value = "임시 보관 게시글을 반환", response = String.class)
+	@GetMapping(value = "/draft")
+	public ResponseEntity<List<Project>> selectDraftProject() {
+		logger.debug("selectDraftProject - 호출");
+		return new ResponseEntity<List<Project>>(projectService.selectDraftProject(jwtService.getSeq()), HttpStatus.OK);
+
+	}
+	
+	@ApiOperation(value = "새로운  프로젝트 입력 ( seq_blog, title, disclosure, summary, start_date, role, status(draft or published) ) 필수  ", response = String.class)
     @PostMapping
     public ResponseEntity<Integer> insertProject(@RequestBody Project project) {
 
         logger.debug("insertProject - 호출");
-
         // insertPost 이후 Project 객체에 seq 받아오기 위한 작업
         Project pjt = new Project();
         pjt = project;
         pjt.setSeq_blog(jwtService.getSeq());
+        System.out.println(pjt.getSeq_blog());
         projectService.insertPost(pjt);
 
         if (projectService.insertPostProject(pjt)==1) {
@@ -101,11 +122,19 @@ public class ProjectController {
 	@ApiOperation(value = "피드에서 최신순으로 6개의 프로젝트 반환. (ex. { seq_user:1 , disclosure:1, tag:['python']  } )", response = List.class)
 	@PostMapping(value = "/feed")
 		
-	public ResponseEntity<List<Project>> selectProjectByFeed(@RequestBody Map<String, Object> params) throws Exception {
+	public ResponseEntity<List<ProjectWithRoleTag>> selectProjectByFeed(@RequestBody Map<String, Object> params) throws Exception {
 		logger.debug("selectProjectByFeed - 호출");
 		int seq_user = jwtService.getSeq();
-			
-		return new ResponseEntity<List<Project>>(projectService.selectProjectByFeed(seq_user,(int)params.get("disclosure"),(List<String>)params.get("tag")), HttpStatus.OK);
+		List<ProjectWithRoleTag> projectWithRoleTagList = new ArrayList<ProjectWithRoleTag>(); 
+		List<Project> projectList = projectService.selectProjectByFeed(seq_user,(int)params.get("disclosure"),(List<String>)params.get("tag"));
+		for(int i=0,size=projectList.size();i<size;i++) {
+			int seq = projectList.get(i).getSeq();
+			List<PostTag> postTagList = postTagService.selectAllPostTag(seq);
+			List<ProjectRole> projectRoleList = projectRoleService.selectAllProjectRole(seq);
+			int comment_count = postCommentService.selectPostCommentCnt(seq);
+			projectWithRoleTagList.add(new ProjectWithRoleTag(projectList.get(i),postTagList,projectRoleList,comment_count));
+		}
+		return new ResponseEntity<List<ProjectWithRoleTag>>(projectWithRoleTagList, HttpStatus.OK);
 	}
 	
 	// show blog
@@ -120,10 +149,19 @@ public class ProjectController {
 	@SuppressWarnings("unchecked")
 	@ApiOperation(value = "블로그 메인에서 한 페이지의 프로젝트 반환. (ex. { seq_user:1 , seq_blog:1, offset:0, limit:6, tag:['python','c++']  } )", response = List.class)    
 	@PostMapping(value = "/blog")
-	public ResponseEntity<List<Project>> selectProjectByBlog(@RequestBody Map<String, Object> params) throws Exception{
+	public ResponseEntity<List<ProjectWithRoleTag>> selectProjectByBlog(@RequestBody Map<String, Object> params) throws Exception{
 		logger.debug("selectProjectByBlog - 호출");
 		int seq_user = jwtService.getSeq();
-		return new ResponseEntity<List<Project>>(projectService.selectProjectByBlog(seq_user,(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag")), HttpStatus.OK);
+		List<ProjectWithRoleTag> projectWithRoleTagList = new ArrayList<ProjectWithRoleTag>(); 
+		List<Project> projectList = projectService.selectProjectByBlog(seq_user,(int)params.get("seq_blog"),(int)params.get("offset"),(int)params.get("limit"),(List<String>)params.get("tag"));
+		for(int i=0,size=projectList.size();i<size;i++) {
+			int seq = projectList.get(i).getSeq();
+			List<PostTag> postTagList = postTagService.selectAllPostTag(seq);
+			List<ProjectRole> projectRoleList = projectRoleService.selectAllProjectRole(seq);
+			int comment_count = postCommentService.selectPostCommentCnt(seq);
+			projectWithRoleTagList.add(new ProjectWithRoleTag(projectList.get(i),postTagList,projectRoleList,comment_count));
+		}
+		return new ResponseEntity<List<ProjectWithRoleTag>>(projectWithRoleTagList, HttpStatus.OK);
 	}
 	
 	

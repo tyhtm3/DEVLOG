@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.devlog.mapper.PortfolioSkillMapper">
+
+	<!-- 포트폴리오의 모든 기술을 반환한다  -->
+	<select id="selectAllPortfolioSkill" resultType="PortfolioSkill">
+		select *
+		from post_portfolio_skill
+        where seq_post_portfolio = #{seq_post_portfolio}
+	</select>
+	
+	<!-- 포트폴리오에 기술을 추가한다.  -->
+	<insert id="insertPortfolioSkill">
+		insert into post_portfolio_skill( seq_post_portfolio, skill, level)
+		values 
+		<foreach collection="skill" item="item" separator=",">
+		(#{seq_post_portfolio}, #{item.skill}, #{item.level} )
+		</foreach>
+	</insert>
+	
+	<!-- 포트폴리오의 기술을 삭제한다. -->
+	<delete id="deletePortfolioSkill">
+		delete from post_portfolio_skill
+		where seq_post_portfolio= #{seq_post_portfolio}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+

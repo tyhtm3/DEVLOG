@@ -63,14 +63,11 @@ public class ProjectStackController {
 				HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "프로젝트에 기술스택을 추가한다. //중복 입력시 401", response = String.class)
+	@ApiOperation(value = "프로젝트에 기술스택을 추가하거나 수정한다", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> insertProjectStack(@RequestBody ProjectStack projectStack) throws Exception {
 		logger.debug("inserProjectStack - 호출");
-		ProjectStack check = projectStackService.selectProjectStackByProjectAndStack(projectStack);
-		if (check != null)
-			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
-		else if (projectStackService.insertProjectStack(projectStack) == 1) {
+		 if (projectStackService.insertProjectStack(projectStack) == 1) {
 			//이미지 경로 추가
 			//techstack 테이블에 해당 stack명이 있으면 이미지를 넣고 없으면 null
 			projectStackService.updateProjectStackImg(projectStack);

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.devlog.dto.PortfolioProject;
 import com.ssafy.devlog.dto.Project;
 import com.ssafy.devlog.mapper.PortfolioProjectMapper;
 
@@ -29,6 +28,11 @@ public class PortfolioProjectServiceImpl implements PortfolioProjectService {
 	@Override
 	public int deletePortfolioProject(int seq_post_portfolio, int seq_post_project) {
 		return portfolioProjectMapper.deletePortfolioProject(seq_post_portfolio , seq_post_project);
+	}
+
+	@Override
+	public int deleteAllPortfolioProject(int seq_post_portfolio) {
+		return portfolioProjectMapper.deleteAllPortfolioProject(seq_post_portfolio);
 	}
 
 }

@@ -15,7 +15,6 @@ import locale from 'element-ui/lib/locale/lang/en'
 // Resource logic
 Vue.use(Resource)
 Vue.http.options.emulateJSON = true
-
 Vue.use(VueRouter)
 Vue.use(Bars)
 Vue.use(ElementUI, { locale })
@@ -43,7 +42,7 @@ import 'vuelayers/lib/style.css'
 // Routing logic
 var router = new VueRouter({
   routes: routes,
-  mode: 'hash',
+  mode: 'history',
   linkActiveClass: 'open active',
   scrollBehavior: function (to, from, savedPosition) {
     return savedPosition || { x: 0, y: 0 }
@@ -61,13 +60,13 @@ var router = new VueRouter({
 
 // Start out app!
 // eslint-disable-next-line no-new
-new Vue({
+let v = new Vue({
   el: '#app',
   router: router,
   store: store,
   render: h => h(App)
 })
-
+window.app = v; 
 require('bootstrap')
 // require('admin-lte')
 require('../node_modules/admin-lte/dist/js/app.min.js')

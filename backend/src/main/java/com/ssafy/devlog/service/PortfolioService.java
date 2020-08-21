@@ -12,10 +12,13 @@ public interface PortfolioService {
 
 
 	public Portfolio selectPortfolio(int seq);
+	public Portfolio selectPortfolioByRep(int seq_blog);
 	public int insertPost(Portfolio portfolio);
 	public int insertPostPortfolio(Portfolio portfolio);
 	public int updatePost (Portfolio portfolio);
 	public int updatePostPortfolio(Portfolio portfolio);
+	public int updatePortfolioGeneral(int seq_blog);
+	public int updatePortfolioRepresentation(int seq);
 	public int deletePortfolio(int seq);
 	
 }
