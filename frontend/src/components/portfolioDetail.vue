@@ -38,7 +38,7 @@ export default {
           url: "/blog/portfolio1/"+this.clickedSeq
         },
         {
-          image: '../../static/img/template02.jpg',
+          image: '../../static/img/template02.JPG',
           title: "통계 & 타임라인",
           summary: '프로젝트를 중심으로 데이터를 <span style="color:#b68c2c; font-weight:500;">통계화</span>하여 <span style="color:#b68c2c; font-weight:500;"><u style="color:#b68c2c;">시각화된 정보</span>와 <span style="color:#b68c2c; font-weight:500;">타임라인</span>을 보여주는 템플릿</u>',
           url: "/blog/portfolio2/"+this.clickedSeq
