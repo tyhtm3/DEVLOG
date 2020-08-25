@@ -6,7 +6,7 @@
         <div class="header-image">
           <!-- post.img_url -->
           <img v-if="post.img_url" class="img-responsive-media" :src="post.img_url" alt="" style="opacity:0.2!important; margin-top: -20px;">
-          <img v-else src="../assets/post-banner.jpg" height="100%" style="top:50%; left:50%; max-height: initial;margin-top: -20px;"/>
+          <img v-else src="../assets/project-banner2.jpg" height="100%" style=" top:50%; left:50%; max-height: initial;margin-top: -20px;"/>
         </div>
         <div class="header-text"><p>{{post.title}}</p></div>
       </div>
@@ -76,7 +76,9 @@
             <!-- 댓글 리스트 -->
               <comment v-bind:seq="seq"></comment>
             <!-- 댓글 창 끝 -->
+          </div>
           <!--  END OF BLOG CONTENT -->
+        </div>
       </div>
       <!-- /.content -->
     </div>
