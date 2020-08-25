@@ -28,8 +28,8 @@
           </div>
           <div class="col-sm-6">
             <div class="pull-right" style="padding-right:15px;" v-if="post.seq_blog==seq_user">
-              <span style="cursor:pointer" @click="updateProject(post.seq)">수정 </span>&nbsp;|&nbsp;
-              <span style="cursor:pointer" @click="deleteProject(post.seq)"> 삭제</span>
+              <span style="cursor:pointer" @click="updatePost(post.seq)">수정 </span>&nbsp;|&nbsp;
+              <span style="cursor:pointer" @click="deletePost(post.seq)"> 삭제</span>
             </div>
           </div>
         </div>

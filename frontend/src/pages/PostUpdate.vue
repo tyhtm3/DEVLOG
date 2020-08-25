@@ -79,8 +79,9 @@
                   <p class="pull-right">작성 시간</p>
                 </div>
                 <div class="col-sm-9" style="padding:15px 0px 0px 25px">
-                  현재 <el-switch v-model="isReserve" on-text=true off-text=false></el-switch> 예약
-                  <el-date-picker v-if="isReserve" v-model="postInfo.regtime" type="datetime" placeholder="Select date and time">
+                  <el-radio class="radio" v-model="isReserve" label="0">현재</el-radio>
+                  <el-radio class="radio" v-model="isReserve" label="1">예약</el-radio>
+                  <el-date-picker v-if="isReserve==1" style="margin-left:10px;" v-model="postInfo.regtime" type="datetime" placeholder="Select date and time">
                   </el-date-picker>
                 </div>
               </div><hr>
@@ -104,7 +105,7 @@ export default {
   },
   data: function () {
     return {
-      isReserve: '',
+      isReserve: "0",
       postInfo: {
         seq: '',
         title: '',
