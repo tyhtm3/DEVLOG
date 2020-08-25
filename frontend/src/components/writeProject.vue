@@ -60,9 +60,18 @@
             </el-transfer>
           </section>
         </div>
-        <div class="col-sm-3" >
-        <div v-if="initial_all_stack" class="tocenter" style="padding: 10px;  min-height:250px">
-          <div style="text-align:center; margin-top:auto; margin-bottom:auto;"><img :src=hoveredStackData.stack_img_url width="100px"/></div>
+        <div class="col-sm-3 showProject" style="margin-top:16px;" >
+        <div v-if="initial_all_stack" class="tocenter" style="padding-top:10px;min-height:250px">
+         <div style="margin-bottom:15px; font-size:15px"><b>기술스택 정보</b></div>
+                <div style="margin-bottom:15px; text-align:center"><img :src=hoveredStackData.stack_img_url width="150px"/></div>
+                <div class="row pjt-margin" style="padding-top:10px;">
+                  <div class="col-sm-4">
+                  <p>기술스택</p>
+                  </div>
+                  <div class="col-sm-8">
+                  <p class="pjt-content">{{hoveredStackData.stack}}</p>
+                  </div>
+                </div>
         </div>
         </div>
       </div>
@@ -292,6 +301,7 @@ components: {
       http.get('stack')
         .then(({data}) => {
           this.initial_all_stack=data;
+          this.hoveredStackData = this.initial_all_stack[0]
           for(let i=0; i<data.length; i++){
           this.all_stack.push({
           label: data[i].stack,
@@ -751,7 +761,15 @@ components: {
 
 </style>
 <style scoped>
-  
+  .showProject{
+    /* display:block; */
+    margin-left:-25px;
+    float: left;
+    background-color: #d5cbe42a;
+    width: 255px;
+    min-height: 300px;
+    border-radius: 6px;
+  }
 .pjt-title{
   padding-top: 20px;
 }

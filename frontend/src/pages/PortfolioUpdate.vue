@@ -477,12 +477,10 @@
                     <dt>희망 직무</dt>
                     <dd><el-input v-model="objective" style="width: 70%;"></el-input></dd>
 
-              <dt>대표 여부</dt>
+              <dt>대표 포트폴리오 설정</dt>
               
               <dd>
-              <el-tooltip :content="portfolioRepresentation?'나만 보기':'대표 설정'" placement="right">
-              <el-switch v-model="portfolioRepresentation" on-color="#13ce66" off-color="#ff4949" :on-value="1" :off-value="0"> </el-switch>
-              </el-tooltip>
+              <el-switch v-model="portfolioRepresentation" on-color="#13ce66" off-color="#ff4949"  style="margin-top:10px;"  :on-value="1" :off-value="0"> </el-switch>
               </dd>
 
                   </dl>
