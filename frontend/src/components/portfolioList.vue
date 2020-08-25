@@ -15,9 +15,9 @@
                         <div class="vendor">
                             <!-- <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
                              -->
-                             <div class="header-block" style="background: black;">
+                             <div class="header-block">
                                <div class="header-image">
-                                  <img src="../assets/portfolio-banner.jpg" height="100%" style="max-height: initial;margin-top: -20px;"/>
+                                  <img src="../assets/portfolio-banner.jpg" height="100%" style="opacity:60%;max-height: initial;margin-top: -20px;"/>
                                </div>
                                <div class="header-text"><p>{{portfolio.title}}</p></div>
                             </div>
@@ -194,9 +194,10 @@ export default {
   left: 50%;
   transform: translate( -50%, -50% );
   color:white;
-  font-size:30px;
+  font-size:22px;
   font-family: "Noto Sans KR";
   font-weight: 500;
+  
 }
 .tag-copy{
     border-radius: 10px;

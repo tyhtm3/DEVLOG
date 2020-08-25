@@ -11,12 +11,15 @@
           </div>
           <div v-if="!isAdmin" class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
               <span class="show-blog-owner-nickname">by {{blogOwnerInfo.nickname}}</span>
-              <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
+              <img v-if="blogOwnerInfo.profile_img_url!=''" :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
+              <img v-else src="../../static/img/no_profile_img_url.png" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
+              
               </div>
           <router-link v-if="isAdmin" to="/myinfo">
             <div class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
               <span class="show-blog-owner-nickname">by {{blogOwnerInfo.nickname}}</span>
-              <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
+              <img v-if="blogOwnerInfo.profile_img_url!=''" :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
+               <img v-else src="../../static/img/no_profile_img_url.png" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
                </div>
           </router-link>
           

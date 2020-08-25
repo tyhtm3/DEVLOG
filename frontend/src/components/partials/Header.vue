@@ -12,7 +12,9 @@
 				<span v-if="this.$store.state.isLogin">
 					<el-dropdown class="header-dropdown-devin" trigger="click" style="top: 0px;">
 						<span class="el-dropdown-link">
-							<img :src="this.$store.state.userInfo.profile_img_url" class="cover-profile" style="width:50px; height:50px; border:0px; cursor:pointer;" alt="cover"/>
+							<img v-if="this.$store.state.userInfo.profile_img_url!=''" :src="this.$store.state.userInfo.profile_img_url" class="cover-profile" style="width:50px; height:50px; border:0px; cursor:pointer;" alt="cover"/>
+							<img v-else src="../../../static/img/no_profile_img_url.png" class="cover-profile" style="width:50px; height:50px; border:0px; cursor:pointer;" alt="cover"/>
+							
 						</span>
 						<el-dropdown-menu slot="dropdown">
 							<ul class="dropdown-menu-devin">
