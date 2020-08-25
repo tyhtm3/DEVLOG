@@ -198,8 +198,9 @@
           <p class="pull-right">작성 시간</p>
         </div>
         <div class="col-sm-9" style="padding:15px 0px 0px 25px">
-          현재 <el-switch v-model="isReserve" on-text=true off-text=false></el-switch> 예약
-          <el-date-picker v-if="isReserve" v-model="regtime" type="datetime" placeholder="Select date and time">
+          <el-radio class="radio" v-model="isReserve" label="0">현재</el-radio>
+          <el-radio class="radio" v-model="isReserve" label="1">예약</el-radio>
+          <el-date-picker v-if="isReserve==1"  style="margin-left:10px;" v-model="regtime" type="datetime" placeholder="Select date and time">
           </el-date-picker>
         </div>
       </div><hr>
@@ -249,7 +250,7 @@ components: {
       disclosure : "전체공개",
       tag : '',
       tags : [],
-      isReserve : false,
+      isReserve : "0",
       regtime : null,
       img_url : null,
       isImgVisible: false,
@@ -638,7 +639,7 @@ components: {
     },
     // 날짜 셋팅
     setRegtime(){
-      if(this.isReserve){
+      if(this.isReserve==1){
       var year = this.regtime.getFullYear();
       var month = this.regtime.getMonth() + 1;
       if(month<10) month = '0' + month;
