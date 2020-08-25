@@ -7,13 +7,13 @@
         <el-carousel indicator-position="outside" height='400px' >
           <el-carousel-item>
             <div style="width:0px; margin:auto;">
-              <img class="img-resize" src="../../docs/static/img/banner1.jpg"
+              <img class="img-resize" src="../../docs/static/img/real_banner_1.jpg"
               style="position:relative; width:2500px; left:50%; margin-left:-1250px">
             </div>
           </el-carousel-item>
           <el-carousel-item>
             <div style="width:0px; margin:auto;">
-              <img class="img-resize" src="../../docs/static/img/banner2.jpg"
+              <img class="img-resize" src="../../docs/static/img/real_banner_2.jpg"
               style="position:relative; width:2500px; left:50%; margin-left:-1250px">
             </div>
           </el-carousel-item>
