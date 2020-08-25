@@ -7,7 +7,9 @@
 
                     <div  id="portfolio" style="margin-top:50px;background-color:white;box-shadow: 3px 3px 33px 4px  rgba(163, 163, 163, 0.404);">
 
-<el-button data-html2canvas-ignore="true" type="primary" style="position:absolute;" @click="PDF">PDF</el-button>
+                      <el-button data-html2canvas-ignore="true" type="primary" style="position:absolute; margin-top:-50px; " @click="PDF">PDF</el-button>
+                      <el-button data-html2canvas-ignore="true" class="pull-top pull-left" type="primary" style="position:absolute;margin-top:-50px; margin-left: 80px; height:40px;" @click="copyurl"><i class="material-icons" style="position:relative; transform: rotate(45deg); font-size:16px;" >link</i></el-button>
+
 
                       <!-- 1. 배너 시작-->
                       <div style="height:200px;background-color:#51555c;padding-top:30px;">
@@ -305,6 +307,16 @@
     },
     methods : {
        // Url로 이동
+      copyurl(){
+      var url = window.location.href
+      var dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = url;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      this.$message.success('주소가 복사되었습니다.')
+      },
       goUrl(url){
         window.open('http://'.concat(url), '_blank');
       },
