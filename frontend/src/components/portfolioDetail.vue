@@ -14,7 +14,7 @@
         <figcaption>
           <div class="abuot-template">
           <h2 class="select-template-title" v-if="template.title">{{ template.title }}
-          <i @click="copyurl" class="material-icons" style="position:relative; top:2px; cursor:pointer; transform: rotate(45deg);" >link</i>
+          <!-- <i @click="copyurl" class="material-icons" style="position:relative; top:2px; cursor:pointer; transform: rotate(45deg); z-index:999;">link</i> -->
           </h2>
           <small class="select-template-summary" v-if="template.summary" v-html="template.summary">
           </small>

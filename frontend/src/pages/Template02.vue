@@ -8,6 +8,7 @@
               <li><a></a></li>
               <li class="pull-right" v-if="basicinfo.seq_blog==seq_user"><span class="ti-pencil"></span>&nbsp;{{basicinfo.regtime}} &nbsp; | <a href="#"> &nbsp;수정</a><a > &nbsp; | </a><a href="#" @click="deleteProject(project.seq)"> &nbsp;삭제</a></li>
               <el-button data-html2canvas-ignore="true" type="primary" style="position:absolute;" @click="PDF">PDF</el-button>
+              <el-button data-html2canvas-ignore="true" class="pull-top pull-left" type="primary" style="position:absolute;margin-left: 80px; height:40px;" @click="copyurl"><i class="material-icons" style="position:relative; transform: rotate(45deg); font-size:16px;" >link</i></el-button>
           </ul>
           <div v-if="basicinfo.profile_img_url" class="header-image">
           <img style="block:inline;" :src='basicinfo.profile_img_url' class="avatar">
@@ -86,7 +87,13 @@
                   <h3>{{project.start_date.substr(0,7)}}</h3>
                 <section>
                   <ul>
-                    <li> <img :src="project.img_url" height="250" width="400"></li>
+                    <li> 
+                      <div style="height:250px; width:400px; line-height:250px;vertical-align:middle; text-align:left; display:inline-flex;">
+                         <!-- height="250" width="400" -->
+                      <img v-if="project.img_url" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" class="img-responsive-media"  :src="project.img_url">
+                      <img v-else class="img-responsive-media" style="width:auto; height:auto; max-width:100%; max-height:250px; display:relative; margin:auto;" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                      </div>
+                      </li>
                   </ul>
                 </section>
                   <h4>프로젝트명</h4>
@@ -190,6 +197,16 @@
       $(".main-footer"). css('display','none')
     },
     methods: {
+      copyurl(){
+      var url = window.location.href
+      var dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = url;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      this.$message.success('주소가 복사되었습니다.')
+    },
       getBasicInfo(seq){
         http.get('portfolio/'+seq)
         .then(({data}) => {

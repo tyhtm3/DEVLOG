@@ -5,10 +5,10 @@
       <br><br><br>
 
       <div class="resume">
+            <el-button data-html2canvas-ignore="true" class="pull-top pull-left" type="primary" style="position:absolute;margin-top:-50px;" @click="PDF">PDF</el-button>
+            <el-button data-html2canvas-ignore="true" class="pull-top pull-left" type="primary" style="position:absolute;margin-top:-50px; margin-left: 80px; height:40px;" @click="copyurl"><i class="material-icons" style="position:relative; transform: rotate(45deg); font-size:16px;" >link</i></el-button>
         <div class="base">
           <div class="profile">
-            <el-button data-html2canvas-ignore="true" class="pull-top pull-left" type="primary" style="position:absolute;margin-top:-30px;margin-left:-15px;" @click="PDF">PDF</el-button>
-      
             <div class="photo">
               <img :src="portfolioInfo.profile_img_url" style="text-align:center"/>
             </div>
@@ -846,6 +846,16 @@
       });
     },
     methods: {
+      copyurl(){
+      var url = window.location.href
+      var dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = url;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      this.$message.success('주소가 복사되었습니다.')
+    },
       stopLoading(){
         this.loading = false;
       },

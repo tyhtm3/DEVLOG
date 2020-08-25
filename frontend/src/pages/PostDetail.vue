@@ -76,9 +76,7 @@
             <!-- 댓글 리스트 -->
               <comment v-bind:seq="seq"></comment>
             <!-- 댓글 창 끝 -->
-          </div>
           <!--  END OF BLOG CONTENT -->
-        </div>
       </div>
       <!-- /.content -->
     </div>
