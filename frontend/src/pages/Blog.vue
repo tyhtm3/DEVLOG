@@ -12,12 +12,12 @@
           <div v-if="!isAdmin" class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
               <span class="show-blog-owner-nickname">by {{blogOwnerInfo.nickname}}</span>
               <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
-            </div>
+              </div>
           <router-link v-if="isAdmin" to="/myinfo">
             <div class="title2" style="font-size: 15px; color:#959595; padding-top:5px;">
               <span class="show-blog-owner-nickname">by {{blogOwnerInfo.nickname}}</span>
               <img :src="blogOwnerInfo.profile_img_url" alt="cover" class="cover-profile" style="width:25px; height:25px; border:none" />
-            </div>
+               </div>
           </router-link>
           
           <div class="description-profile" style="max-width:700px">

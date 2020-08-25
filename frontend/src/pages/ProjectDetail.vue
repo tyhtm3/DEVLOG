@@ -279,6 +279,8 @@
       },
       // Url로 이동
       goUrl(url){
+        if(url.indexOf('http')<0)
+          url = 'http://'+url
         window.open(url, '_blank');
       },
        removeTag(text){
