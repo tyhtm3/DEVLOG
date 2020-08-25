@@ -44,6 +44,12 @@ SSAFY 3기 공통 프로젝트
 - PDF 저장 또는 링크를 공유하여 취업 시 간편하게 제출할 수 있습니다.
 <br>
 
+## 실행 방법
+
+1. npm run install
+2. npm install node-sass
+3. npm install vue-avatar
+4. npm run dev
 
 ## 기대 효과
 <h4>개발자 취업 성공률 강화 </h4>
@@ -60,12 +66,14 @@ SSAFY 3기 공통 프로젝트
 
 - [TODO](https://docs.google.com/spreadsheets/d/1oepRaSxXjLjH7jysRXlJGQSCKlrDdntnmp4L84fDZiE/edit#gid=349343557)
 를 참고해주세요
+
 ## 배포자 및 개발자의 연락처 정보
 <img src="./meeting log/res/running.png" width="16" height="16"> 김유창 (프론트, 팀장) (oyes9316@gmail.com)<br>
 <img src="./meeting log/res/running.png" width="16" height="16"> 김선민 (프론트, UCC) (tyhtm3@naver.com)<br>
 <img src="./meeting log/res/running.png" width="16" height="16"> 손명지 (프론트, 기획) (ji_exitosa@naver.com)<br>
 <img src="./meeting log/res/running.png" width="16" height="16"> 서주현 (백엔드, 프론트) (rat71400@gmail.com)<br>
 <img src="./meeting log/res/running.png" width="16" height="16"> 차윤석 (백엔드, 서버) (c9boom7@naver.com)<br>
+
 ## 개발 일정
 ![image](./meeting log/res/schedule.JPG)
 
@@ -73,7 +81,6 @@ SSAFY 3기 공통 프로젝트
 
 - Windonws 10
 - Chrome
-
 
 ## 개발 환경
 

@@ -176,6 +176,7 @@ export default {
     },
     beforeAvatarUpload(file) {
       const isPNG = file.type === 'image/png';
+      const isJPG = file.type === 'image/jpeg';
       const isLt10M = file.size / 1024 / 1024 < 10;
 
       if (!(isPNG || isJPG)) {

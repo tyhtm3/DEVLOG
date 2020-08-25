@@ -4,8 +4,6 @@
     <div class="content-wrapper" style="background: white;">
       <br><br><br>
 
-      <!-- <el-button data-html2canvas-ignore="true" type="primary" style="position:absolute;" @click="PDF">PDF</el-button> -->
-
       <div class="resume">
         <div class="base">
           <div class="profile">

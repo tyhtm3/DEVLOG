@@ -147,7 +147,7 @@ export default {
 
             // 구독 댓글목록과 댓글수 불러오기
             http
-            .get('postcomment/neighbor/' +data.seq
+            .get('postcomment/neighbor/me/' +data.seq
             ,{headers: { Authorization : this.$store.state.token,}})
             .then(({data}) => {
               this.neighborComment[i] = data.length
