@@ -13,7 +13,14 @@
                     </span>
                     <div class="well-media" @click="selectDialogVisible=true;setPortfolioSeq(portfolio.seq);" style="cursor:pointer;">
                         <div class="vendor">
-                            <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                            <!-- <img class="img-responsive-media" src="https://www.overseaspropertyforum.com/wp-content/themes/realestate-7/images/no-image.png" alt="">
+                             -->
+                             <div class="header-block" style="background: black;">
+                               <div class="header-image">
+                                  <img src="../assets/portfolio-banner.jpg" height="100%" style="max-height: initial;margin-top: -20px;"/>
+                               </div>
+                               <div class="header-text"><p>{{portfolio.title}}</p></div>
+                            </div>
                         </div>
                         <div class="video-text">
                             <h2 class="title-1line" style="font-weight: bold; margin-bottom:10px;">{{portfolio.title}}</h2>
@@ -30,7 +37,7 @@
                     id="select-template"
                     title="마음에 드는 템플릿을 골라보세요."
                     :visible.sync="selectDialogVisible"
-                    width="95%"
+                    width="85%"
                     center>
                         <div v-if="seq_blog==seq_user" class="pull-right pull top" style="margin-top:-40px;margin-right:20px;">
                             <router-link :to="{name:'portfolio-update', params:{seq:clickedSeq}}">
@@ -171,6 +178,26 @@ export default {
 }
 </script>
 <style scoped>
+.header-block{
+  overflow: hidden;
+  position: relative;
+}
+
+.header-image{
+  	vertical-align: middle;
+}
+
+.header-text{
+  text-align: center;
+  position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate( -50%, -50% );
+  color:white;
+  font-size:30px;
+  font-family: "Noto Sans KR";
+  font-weight: 500;
+}
 .tag-copy{
     border-radius: 10px;
     font-size: 14px;
