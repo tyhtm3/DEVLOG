@@ -123,6 +123,8 @@ public class UserController {
 		if (userService.selectUserById(user.getId()) != null) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
 		}
+		if(user.getProfile_img_url()==null ||user.getProfile_img_url().equals(""))
+			user.setProfile_img_url("http://i3a402.p.ssafy.io/images/profile_default.png");
 		if (userService.insertUser(user) == 1) {
 			Blog blog = new Blog();
 			user = userService.selectUserById(user.getId());
@@ -331,7 +333,7 @@ public class UserController {
 				// 최초 로그인
 				if (user == null) {
 					user = getUserInfoKakao(token);
-
+					
 					userService.insertUser(user);
 
 					user = userService.selectUserBySocialId(id);
@@ -460,6 +462,7 @@ public class UserController {
 				String profile_img = properties.get("profile_image").getAsString();
 				user.setProfile_img_url(profile_img);
 			} catch (NullPointerException e) {
+				user.setProfile_img_url("http://i3a402.p.ssafy.io/images/profile_default.png");
 			}
 
 			br.close();
