@@ -61,7 +61,7 @@
           </section>
         </div>
         <div class="col-sm-3 showProject" style="margin-top:16px;" >
-        <div v-if="initial_all_stack" class="tocenter" style="padding-top:10px;min-height:250px">
+        <div v-if="initial_all_stack" class="tocenter" style="padding-top:10px;margin-left:-5px;min-height:250px">
          <div style="margin-bottom:15px; font-size:15px"><b>기술스택 정보</b></div>
                 <div style="margin-bottom:15px; text-align:center"><img :src=hoveredStackData.stack_img_url width="150px"/></div>
                 <div class="row pjt-margin" style="padding-top:10px;">

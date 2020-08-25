@@ -24,10 +24,18 @@
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                   </el-upload>
                 </dd>
+                <div v-if="isSocialLogin">
+                <dt>*비밀번호</dt>
+                <dd><el-input v-model="password" type="password" style="width: 40%;" readonly></el-input></dd>
+                <dt>*비밀번호 확인</dt>
+                <dd><el-input v-model="confirm" type="password" style="width: 40%;" readonly></el-input></dd>
+                </div>
+                <div v-else>
                 <dt>*비밀번호</dt>
                 <dd><el-input v-model="password" type="password" style="width: 40%;"></el-input></dd>
                 <dt>*비밀번호 확인</dt>
                 <dd><el-input v-model="confirm" type="password" style="width: 40%;"></el-input></dd>
+                </div>
                 <dt>*이름</dt>
                 <dd><el-input v-model="name" style="width: 70%;"></el-input></dd>
                 <dt>닉네임</dt>
@@ -76,10 +84,12 @@ export default {
       github_url: '',
       profile_img_url: '',
       password: '',
-      confirm: ''
+      confirm: '',
+      isSocialLogin: '',
     }
   },
   mounted() {
+    this.isSocialLogin = (this.getUserInfo.id.indexOf('Naver')>0|| this.getUserInfo.id.indexOf('Kakao')>0)?true:false
     this.id=  this.getUserInfo.id
     this.name = this.getUserInfo.name
     this.nickname=  this.getUserInfo.nickname
@@ -89,6 +99,10 @@ export default {
     this.birthday_temp=  this.getUserInfo.birthday
     this.github_url=  this.getUserInfo.github_url
     this.profile_img_url=  this.getUserInfo.profile_img_url
+    if(this.isSocialLogin){
+      this.password = this.getUserInfo.password
+      this.confirm = this.getUserInfo.password
+    }
   },
   methods: {
     modify() {
