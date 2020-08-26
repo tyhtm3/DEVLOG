@@ -117,7 +117,11 @@
         <div class="row" v-if="project.content">
           <hr>
           <div class="col-sm-12"  >
-            <p v-html="project.content"></p>
+             <div class="blog-list-nest">
+              <div class="blog-list-content">
+                <p class ="post-content" v-html="project.content"></p>
+              </div>
+             </div>
           </div>
         </div>
         <hr>
@@ -331,6 +335,18 @@ a:hover { color: black; text-decoration: bold;}
   font-size:14px;
   word-spacing: 2px;
   line-height:30px; */
+}
+p.ql-align-center{
+  text-align: center;
+}
+.pjt-content p.ql-align-center {
+    text-align: center;
+}
+.pjt-content > p.ql-align-right {
+    text-align: right;
+}
+.pjt-content p.ql-align-justify {
+    text-align: justify;
 }
 #project-data .row{
   margin-bottom:20px;
