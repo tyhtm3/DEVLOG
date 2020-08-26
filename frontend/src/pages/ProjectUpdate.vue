@@ -28,21 +28,21 @@
                 </div>
               </div><hr>
 
-              <div class="row">
-                <div class="col-sm-2 pjt-title">
-                  <p class="pull-right">* 개발 기간
-                    <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 이곳에 입력된 개발 기간 데이터를 활용해 가장 최신 프로젝트부터 과거의 프로젝트까지 정렬해드립니다." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
-                  </p>
-                </div>
-                <div class="col-sm-4" style="padding-top:15px;">
-                  <el-date-picker v-model="start_date" type="date"></el-date-picker>
-                </div>
-                <div class="col-sm-1" style="position:relative; top:20px;">
-                  <span style="font-size:20px;">&nbsp; ~ &nbsp;</span>
-                </div>
-                <div class="col-sm-4" style="padding-top:15px;">
-                  <el-date-picker v-model="finish_date" type="date"></el-date-picker>
-                </div>
+                  <div class="row">
+        <div class="col-sm-2 pjt-title">
+          <p class="pull-right">* 개발 기간
+            <el-tooltip class="item" effect="dark" content="포트폴리오 생성시, 이곳에 입력된 개발 기간 데이터를 활용해 가장 최신 프로젝트부터 과거의 프로젝트까지 정렬해드립니다." placement="right"><span class="ti-help-alt" style="position:relative;top:1px;"/></el-tooltip>
+          </p>
+        </div>
+        <div class="col-sm-2" style="padding-top:15px;">
+          <el-date-picker v-model="start_date" type="date"></el-date-picker>
+        </div>
+        <div class="col-sm-1" style="position:relative;padding-top:20px;margin-left:60px;">
+          <span style="font-size:20px;">~</span>
+        </div>
+        <div class="col-sm-2" style="padding-top:15px;margin-left:-60px;">
+          <el-date-picker v-model="finish_date" type="date"></el-date-picker>
+        </div>
 <!--                 
                 <div class="col-sm-9" style="padding-top:15px;padding-left:25px;">
                   <el-date-picker v-model="start_date" type="date"></el-date-picker><span style="font-size:20px;">&nbsp; ~ &nbsp;</span>
@@ -72,11 +72,20 @@
                   </el-transfer>
                 </section>
                 </div>
-                <div class="col-sm-3" >
-                <div v-if="initial_all_stack" class="tocenter" style="padding: 10px;  min-height:250px">
-                  <div style="text-align:center; margin-top:auto; margin-bottom:auto;"><img :src=hoveredStackData.stack_img_url width="100px"/></div>
+<div class="col-sm-3 showProject" style="margin-top:16px;" >
+        <div v-if="initial_all_stack" class="tocenter" style="padding-top:10px;margin-left:-5px;min-height:250px">
+         <div style="margin-bottom:15px; font-size:15px"><b>기술스택 정보</b></div>
+                <div style="margin-bottom:15px; text-align:center"><img :src=hoveredStackData.stack_img_url width="150px"/></div>
+                <div class="row pjt-margin" style="padding-top:10px;">
+                  <div class="col-sm-4">
+                  <p>기술스택</p>
+                  </div>
+                  <div class="col-sm-8">
+                  <p class="pjt-content">{{hoveredStackData.stack}}</p>
+                  </div>
                 </div>
-                </div>
+        </div>
+        </div>
               </div>
               
               
@@ -212,8 +221,9 @@
                   <p class="pull-right">작성 시간</p>
                 </div>
                 <div class="col-sm-9" style="padding:15px 0px 0px 25px">
-                  현재 <el-switch v-model="isReserve" on-text=true off-text=false></el-switch> 예약
-                  <el-date-picker v-if="isReserve" v-model="regtime" type="datetime" placeholder="Select date and time">
+          <el-radio class="radio" v-model="isReserve" label="0">현재</el-radio>
+          <el-radio class="radio" v-model="isReserve" label="1">예약</el-radio>
+          <el-date-picker v-if="isReserve==1"  style="margin-left:10px;" v-model="regtime" type="datetime" placeholder="Select date and time">
                   </el-date-picker>
                 </div>
               </div><hr>
@@ -242,7 +252,7 @@ export default {
       disclosure : '',
       tag : '',
       tags : [],
-      isReserve : false,
+      isReserve : "0",
       regtime : null,
       img_url : null,
       isImgVisible: false,
@@ -406,7 +416,7 @@ export default {
     },
     // 날짜 셋팅
     setRegtime(){
-      if(this.isReserve){
+      if(this.isReserve==1){
         var year = this.regtime.getFullYear();
         var month = this.regtime.getMonth() + 1;
         if(month<10) month = '0' + month;

@@ -117,7 +117,11 @@
         <div class="row" v-if="project.content">
           <hr>
           <div class="col-sm-12"  >
-            <p v-html="project.content"></p>
+             <div class="blog-list-nest">
+              <div class="blog-list-content">
+                <p class ="post-content" v-html="project.content"></p>
+              </div>
+             </div>
           </div>
         </div>
         <hr>
@@ -150,7 +154,7 @@
         <!-- 댓글 리스트 -->
         <div class="row" style="margin-top : 20px;">
           <div class="col-sm-12">
-            <comment v-bind:seq="seq"></comment>
+            <comment v-bind:seq="seq" v-bind:updateCommentCount="updateCommentCount"></comment>
             <!-- 댓글 창 끝 -->
           </div>
         </div>
@@ -187,16 +191,22 @@
       this.getInfo(this.seq)
     },
     methods: {
+      updateCommentCount(){
+        http.get('postcomment/count/'+this.seq)
+              .then(({data}) => {
+              this.commentCnt = data;
+        }) 
+      },
       copyurl(){
-      var url = window.location.href
-      var dummy = document.createElement("textarea");
-      document.body.appendChild(dummy);
-      dummy.value = url;
-      dummy.select();
-      document.execCommand("copy");
-      document.body.removeChild(dummy);
-      this.$message.success('주소가 복사되었습니다.')
-    },
+        var url = window.location.href
+        var dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = url;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+        this.$message.success('주소가 복사되었습니다.')
+      },
       tagSearch(tag){
         this.$store.commit('setSearchTag',tag)
         if(this.$store.state.previousUrl.indexOf('blog')>0){
@@ -250,11 +260,17 @@
       },
       // 좋아요
       like(){
-        http.post('postlike/',{seq_post:this.seq})
-                .then(({data}) => {
-                this.project.like_count+=1
-                this.isLike=true
-         })
+        if(this.$store.getters.getIsLogin){ 
+          http.post('postlike/',{seq_post:this.seq})
+          .then(({data}) => {
+            this.post.like_count+=1
+            this.isLike=true
+          })
+          this.$message.info('좋아요')
+        }
+        else{
+          this.$message.warning('로그인이 필요한 서비스입니다.')
+        }
       },
       // 좋아요 취소
       cancelLike(){
@@ -279,6 +295,8 @@
       },
       // Url로 이동
       goUrl(url){
+        if(url.indexOf('http')<0)
+          url = 'http://'+url
         window.open(url, '_blank');
       },
        removeTag(text){
@@ -329,6 +347,18 @@ a:hover { color: black; text-decoration: bold;}
   font-size:14px;
   word-spacing: 2px;
   line-height:30px; */
+}
+p.ql-align-center{
+  text-align: center;
+}
+.pjt-content p.ql-align-center {
+    text-align: center;
+}
+.pjt-content > p.ql-align-right {
+    text-align: right;
+}
+.pjt-content p.ql-align-justify {
+    text-align: justify;
 }
 #project-data .row{
   margin-bottom:20px;

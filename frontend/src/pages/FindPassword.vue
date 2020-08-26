@@ -12,7 +12,7 @@
 							<div class="col-xs-12 col-sm-12 profile-name">
 								<span style="font-size:30px;">아이디 찾기</span>
                 <hr>
-                <span style="font-size:12px;">본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 인증번호를 받을 수 있습니다.</span><br>
+                <span style="font-size:12px;">계정의 이메일 주소를 통해 아이디를 찾을 수 있습니다. 전체 아이디 정보는 이메일로 전송됩니다.</span><br>
                  
                   <br><br>
                   <div class="row">

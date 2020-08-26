@@ -16,4 +16,5 @@ public interface UserMapper {
 	public int insertUser(User user);
 	public int updateUser(User user);
 	public int deleteUser(int seq);
+	public String selectLastSeq();
 }

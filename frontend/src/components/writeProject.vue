@@ -60,9 +60,18 @@
             </el-transfer>
           </section>
         </div>
-        <div class="col-sm-3" >
-        <div v-if="initial_all_stack" class="tocenter" style="padding: 10px;  min-height:250px">
-          <div style="text-align:center; margin-top:auto; margin-bottom:auto;"><img :src=hoveredStackData.stack_img_url width="100px"/></div>
+        <div class="col-sm-3 showProject" style="margin-top:16px;" >
+        <div v-if="initial_all_stack" class="tocenter" style="padding-top:10px;margin-left:-5px;min-height:250px">
+         <div style="margin-bottom:15px; font-size:15px"><b>기술스택 정보</b></div>
+                <div style="margin-bottom:15px; text-align:center"><img :src=hoveredStackData.stack_img_url width="150px"/></div>
+                <div class="row pjt-margin" style="padding-top:10px;">
+                  <div class="col-sm-4">
+                  <p>기술스택</p>
+                  </div>
+                  <div class="col-sm-8">
+                  <p class="pjt-content">{{hoveredStackData.stack}}</p>
+                  </div>
+                </div>
         </div>
         </div>
       </div>
@@ -198,8 +207,9 @@
           <p class="pull-right">작성 시간</p>
         </div>
         <div class="col-sm-9" style="padding:15px 0px 0px 25px">
-          현재 <el-switch v-model="isReserve" on-text=true off-text=false></el-switch> 예약
-          <el-date-picker v-if="isReserve" v-model="regtime" type="datetime" placeholder="Select date and time">
+          <el-radio class="radio" v-model="isReserve" label="0">현재</el-radio>
+          <el-radio class="radio" v-model="isReserve" label="1">예약</el-radio>
+          <el-date-picker v-if="isReserve==1"  style="margin-left:10px;" v-model="regtime" type="datetime" placeholder="Select date and time">
           </el-date-picker>
         </div>
       </div><hr>
@@ -249,7 +259,7 @@ components: {
       disclosure : "전체공개",
       tag : '',
       tags : [],
-      isReserve : false,
+      isReserve : "0",
       regtime : null,
       img_url : null,
       isImgVisible: false,
@@ -291,6 +301,7 @@ components: {
       http.get('stack')
         .then(({data}) => {
           this.initial_all_stack=data;
+          this.hoveredStackData = this.initial_all_stack[0]
           for(let i=0; i<data.length; i++){
           this.all_stack.push({
           label: data[i].stack,
@@ -638,7 +649,7 @@ components: {
     },
     // 날짜 셋팅
     setRegtime(){
-      if(this.isReserve){
+      if(this.isReserve==1){
       var year = this.regtime.getFullYear();
       var month = this.regtime.getMonth() + 1;
       if(month<10) month = '0' + month;
@@ -750,7 +761,15 @@ components: {
 
 </style>
 <style scoped>
-  
+  .showProject{
+    /* display:block; */
+    margin-left:-25px;
+    float: left;
+    background-color: #d5cbe42a;
+    width: 255px;
+    min-height: 300px;
+    border-radius: 6px;
+  }
 .pjt-title{
   padding-top: 20px;
 }
