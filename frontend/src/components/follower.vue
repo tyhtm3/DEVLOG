@@ -143,6 +143,7 @@ export default {
           .get('/user/' + this.neighborList[i].seq_neighbor
           ,{headers: { Authorization : this.$store.state.token,}})
           .then(({data}) => {
+            console.log(data)
             this.requestneighborinfoList[i] = data
 
             // 구독 댓글목록과 댓글수 불러오기
@@ -150,6 +151,7 @@ export default {
             .get('postcomment/neighbor/me/' +data.seq
             ,{headers: { Authorization : this.$store.state.token,}})
             .then(({data}) => {
+              console.log(data)
               this.neighborComment[i] = data.length
               this.neighborCommentData[i] = data
               this.$forceUpdate();

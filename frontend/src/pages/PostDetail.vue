@@ -13,8 +13,8 @@
       <!-- end banner carousel -->
       <!-- 헤더 끝 -->               
       <div class="box">
-         <!-- 헤더 : 프로젝트 작성시간, 댓글수, 좋아요 수, 수정|삭제 -->
-      <!-- 프로젝트 관리 헤더 시작 -->
+        <!-- 헤더 : 프로젝트 작성시간, 댓글수, 좋아요 수, 수정|삭제 -->
+        <!-- 프로젝트 관리 헤더 시작 -->
         <div class="row" style="padding-top:20px; padding-left:15px;">
           <div class="col-sm-6">
             <a :href="url" v-if="postUser.nickname" style="color:black;"><i class="material-icons" style="position:relative; top:2px;">person</i>{{postUser.nickname}}</a>
@@ -60,27 +60,24 @@
               </div>
             </div>
           </div>
-           <div class="col-sm-3">
-             <span class="pull-right" style="line-height:38px;">
+          <div class="col-sm-3">
+            <span class="pull-right" style="line-height:38px;">
               좋아요<i v-if="isLike" @click="cancelLike" class="material-icons" style="color:red; position:relative; top:2px; cursor:pointer" >favorite</i> 
               <i v-else @click="like" class="material-icons" style="position:relative; top:2px; cursor:pointer">favorite_border</i> 
-              </span>
-              <span class="pull-right" style="line-height:38px;">&nbsp;&nbsp;|&nbsp;&nbsp;</span> 
-              <span class="pull-right" style="line-height:38px;">
+            </span>
+            <span class="pull-right" style="line-height:38px;">&nbsp;&nbsp;|&nbsp;&nbsp;</span> 
+            <span class="pull-right" style="line-height:38px;">
               <span @click="copyurl" style="cursor:pointer; ">URL 복사<i class="material-icons" style="position:relative; top:2px;transform: rotate(45deg)" >link</i></span>
-              </span>
-           </div>
+            </span>
+          </div>
         </div>
            
 
-            <!-- 댓글 리스트 -->
-              <comment v-bind:seq="seq"></comment>
-            <!-- 댓글 창 끝 -->
-          </div>
-          <!--  END OF BLOG CONTENT -->
-        </div>
+        <!-- 댓글 리스트 -->
+        <comment v-bind:seq="seq" v-bind:updateCommentCount="updateCommentCount"></comment>
+        <!-- 댓글 창 끝 -->
+        
       </div>
-      <!-- /.content -->
     </div>
   </transition>
 </template>
@@ -113,6 +110,12 @@ export default {
     this.getInfo(this.seq)
   },
   methods: {
+    updateCommentCount(){
+      http.get('postcomment/count/'+this.seq)
+              .then(({data}) => {
+              this.commentCnt = data;
+        }) 
+    },
     copyurl(){
       var url = window.location.href
       var dummy = document.createElement("textarea");

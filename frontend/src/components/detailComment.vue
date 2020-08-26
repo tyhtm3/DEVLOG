@@ -65,7 +65,7 @@
       'getIsLogin'
     ])
   },
-    props: ['seq'],
+    props: ['seq', 'updateCommentCount'],
     data: function () {
         return { 
           comments:'',
@@ -127,6 +127,8 @@
           })
           .then(({data}) => {
             //댓글 입력하고 리스트 업데이트
+            
+              this.updateCommentCount()
             this.getComment(this.seq)
           })
           this.insertContent = ''
@@ -144,7 +146,8 @@
           http.delete('postcomment/'+seq)
                 .then(({data}) => {
               //댓글 삭제하고 리스트 업데이트
-               this.getComment(this.seq)
+              this.updateCommentCount()
+              this.getComment(this.seq)
          })
         })
       },
