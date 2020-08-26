@@ -172,12 +172,17 @@ export default {
     },
       // 좋아요
     like(){
-      http.post('postlike/',{seq_post:this.seq})
+      if(this.$store.getters.getIsLogin){ 
+        http.post('postlike/',{seq_post:this.seq})
               .then(({data}) => {
-              this.post.like_count+=1
+                this.post.like_count+=1
               this.isLike=true
         })
         this.$message.info('좋아요')
+      }
+      else{
+        this.$message.warning('로그인이 필요한 서비스입니다.')
+      }
     },
     // 좋아요 취소
     cancelLike(){

@@ -127,8 +127,7 @@
           })
           .then(({data}) => {
             //댓글 입력하고 리스트 업데이트
-            
-              this.updateCommentCount()
+            this.updateCommentCount()
             this.getComment(this.seq)
           })
           this.insertContent = ''
