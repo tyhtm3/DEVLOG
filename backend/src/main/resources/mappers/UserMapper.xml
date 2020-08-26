@@ -41,6 +41,13 @@
 		email = #{email}
 	</select>
 	
+	<!-- 회원 수 조회 -->
+	<select id="selectLastSeq" resultType="String">
+		select seq
+		from user
+		order by seq
+		desc limit 1
+	</select>
 
 	<!-- 회원 가입 -->
 	<insert id="insertUser">

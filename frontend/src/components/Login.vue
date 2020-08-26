@@ -8,7 +8,7 @@
 				<input v-model="id" id="id" placeholder="id" type="text"/>
 				<input v-model="password" type="password" id="password" placeholder="password"/>
 				<button class="normal" @click="login">로그인</button><p/>
-				<button class="kakao" @click="kakaoLogin">kakao</button><button id="naverIdLogin" class="naver">NAVER</button><p/>
+				<button class="kakao" @click="kakaoLogin">kakao</button><a id="naverIdLogin_loginButton" href="#"><button id="naverIdLogin" class="naver">NAVER</button></a><p/>
 				<!-- <button class="google" @click="login">google</button><button class="facebook" @click="login">facebook</button> -->
 				<p class="message">
 					<span class="pull-left">

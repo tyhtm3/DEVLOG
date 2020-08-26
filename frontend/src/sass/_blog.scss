@@ -283,6 +283,15 @@ object {
         font-weight: 600;
         margin: 0 0 5px;
     }
+    .post-content .ql-align-center {
+        text-align: center;
+    }
+    .post-content .ql-align-right {
+        text-align: right;
+    }
+    .post-content .ql-align-justify {
+        text-align: justify;
+    }
 }
 
 .list-inline a {
