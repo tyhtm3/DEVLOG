@@ -53,6 +53,11 @@ public class UserServiceImpl implements UserService {
 		return userMapper.deleteUser(seq);
 	}
 
+	@Override
+	public String selectLastSeq() {
+		return userMapper.selectLastSeq();
+	}
+
 
 
 }

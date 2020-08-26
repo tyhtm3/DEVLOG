@@ -66,7 +66,6 @@ public class UserController {
 	@Autowired
 	private JavaMailSender mailSender;
 
-
 	@ApiOperation(value = "로그인 시 id, password를 입력받아 일치여부를 확인한다. // 아이디없음 : 404 , 비밀번호 틀림 : 401", response = List.class)
 	@PostMapping("/login")
 	public ResponseEntity<String> selectUserById(@RequestBody User user) throws Exception {
@@ -106,7 +105,7 @@ public class UserController {
 		logger.debug("selectUserByEmail - 호출");
 		return new ResponseEntity<User>(userService.selectUserByEmail(email), HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "내 정보를 반환한다.", response = List.class)
 	@GetMapping("/me")
 	public ResponseEntity<User> selectMyInfo() throws Exception {
@@ -123,7 +122,7 @@ public class UserController {
 		if (userService.selectUserById(user.getId()) != null) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
 		}
-		if(user.getProfile_img_url()==null ||user.getProfile_img_url().equals(""))
+		if (user.getProfile_img_url() == null || user.getProfile_img_url().equals(""))
 			user.setProfile_img_url("http://i3a402.p.ssafy.io/images/profile_default.png");
 		if (userService.insertUser(user) == 1) {
 			Blog blog = new Blog();
@@ -177,7 +176,7 @@ public class UserController {
 			String root_path = ("/home/ubuntu/");
 			String attach_path = "images/";
 			String filename = dateString + "_" + uploadfile.getOriginalFilename();
-			filename = filename.replaceAll(" ","");
+			filename = filename.replaceAll(" ", "");
 			filename = filename.replaceAll("\\p{Z}", "");
 
 //			 System.out.println(root_path+attach_path+filename);
@@ -214,44 +213,56 @@ public class UserController {
 		String refresh_token = "";
 		String jwt = "";
 
+		String inputLine;
+		StringBuffer res = new StringBuffer();
+
+		// 정상적으로 토큰을 가져오면 Gson 으로 JSON 파일을 파싱해준다.
+
+		String id, nickName, email, profile_img_url, name, tmp;
+		JsonParser parser = new JsonParser();
+
+		// 파싱한 access_token 값으로 네이버에 유저 정보를 요청. 이 함수의 return 값은 id, email, nickname 등
+		// 유저정보들과 상태 코드 등.
+
+		tmp = getUserInfo(access_token);
+
+		JsonElement userInfoElement = parser.parse(tmp);
+		id = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("id").getAsString();
 		try {
-
-			String inputLine;
-			StringBuffer res = new StringBuffer();
-
-			// 정상적으로 토큰을 가져오면 Gson 으로 JSON 파일을 파싱해준다.
-
-			String id, nickName, email, profile_img_url,name, tmp;
-			JsonParser parser = new JsonParser();
-
-			// 파싱한 access_token 값으로 네이버에 유저 정보를 요청. 이 함수의 return 값은 id, email, nickname 등
-			// 유저정보들과 상태 코드 등.
-
-			tmp = getUserInfo(access_token);
-
-			JsonElement userInfoElement = parser.parse(tmp);
-			id = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("id").getAsString();
-			name =  userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("name")
-					.getAsString();
+			name = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("name").getAsString();
+		} catch (Exception e) {
+			name = "user" + userService.selectLastSeq();
+		}
+		try {
 			nickName = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("nickname")
 					.getAsString();
+		} catch (Exception e) {
+			nickName = "user" + userService.selectLastSeq();
+		}
+		try {
 			email = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("email").getAsString();
-
+		} catch (Exception e) {
+			email = "user" + userService.selectLastSeq() + "@devlog.com";
+		}
+		try {
 			profile_img_url = userInfoElement.getAsJsonObject().get("response").getAsJsonObject().get("profile_image")
 					.getAsString();
+		} catch (Exception e) {
+			profile_img_url = "http://i3a402.p.ssafy.io/images/profile_default.png";
+		}
 
-			/*
-			 * id:99480180 nickname:dfaf email:tab1200@naver.com profile_img_url :
-			 * https://ssl.pstatic.net/static/pwe/address/img_profile.png
-			 */
-
+		/*
+		 * id:99480180 nickname:dfaf email:tab1200@naver.com profile_img_url :
+		 * https://ssl.pstatic.net/static/pwe/address/img_profile.png
+		 */
+		try {
 			User user = userService.selectUserBySocialId(id);
 			// 첫 로그인시 회원가입 및 블로그 생성
 			if (user == null) {
 				user = new User();
 				user.setSocial_id(id);
 				user.setSocial("Naver");
-				StringTokenizer st = new StringTokenizer(email,"@");
+				StringTokenizer st = new StringTokenizer(email, "@");
 				user.setId(st.nextToken() + "Naver");
 				user.setName(name);
 				user.setPassword(id);
@@ -271,9 +282,8 @@ public class UserController {
 
 			// seq로 JWT를 만들어준다.
 			jwt = jwtService.create("member", user.getSeq(), "user");
-
 		} catch (Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 		return new ResponseEntity<String>(jwt, HttpStatus.OK);
 
@@ -333,7 +343,7 @@ public class UserController {
 				// 최초 로그인
 				if (user == null) {
 					user = getUserInfoKakao(token);
-					
+
 					userService.insertUser(user);
 
 					user = userService.selectUserBySocialId(id);
@@ -443,13 +453,12 @@ public class UserController {
 			user.setPassword(id);
 			try {
 				String email = kakao_account.getAsJsonObject().get("email").getAsString();
-				StringTokenizer st = new StringTokenizer(email,"@");
+				StringTokenizer st = new StringTokenizer(email, "@");
 				user.setId(st.nextToken() + "Kakao");
 				user.setEmail(email);
 			} catch (NullPointerException e) {
-				// email x
-//				System.out.println("============No Email=============");
-				return null;
+				user.setId("user" + userService.selectLastSeq());
+				user.setEmail(user.getId() + "@devlog.com");
 			}
 			try {
 				String nickName = properties.get("nickname").getAsString();
@@ -471,80 +480,76 @@ public class UserController {
 		}
 		return user;
 	}
-	
+
 	@GetMapping("/findid")
 	@ApiOperation(value = "아이디 찾는 메일 전송")
-	public ResponseEntity<String> findid(@RequestParam(required = true) final String email){
-	
+	public ResponseEntity<String> findid(@RequestParam(required = true) final String email) {
+
 		User user = userService.selectUserByEmail(email);
 		System.out.println(email);
-        /* 임시 비밀번호 발급 메일 전송 */
-        try {
-        	 MimeMessage msg = mailSender.createMimeMessage();
-             MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
-             messageHelper.setSubject(user.getName()+"님 아이디 찾기 메일입니다.");
-             messageHelper.setText("아이디는 "+user.getId()+" 입니다."); 
-             messageHelper.setTo(email);
-             msg.setRecipients(MimeMessage.RecipientType.TO , InternetAddress.parse(email));
-             mailSender.send(msg);
-                         
-        }catch(MessagingException e) {
-            System.out.println("MessagingException");
-            e.printStackTrace();
-       }
-        
+		/* 임시 비밀번호 발급 메일 전송 */
+		try {
+			MimeMessage msg = mailSender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
+			messageHelper.setSubject(user.getName() + "님 아이디 찾기 메일입니다.");
+			messageHelper.setText("아이디는 " + user.getId() + " 입니다.");
+			messageHelper.setTo(email);
+			msg.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(email));
+			mailSender.send(msg);
 
-        return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-		
-    }
-	
+		} catch (MessagingException e) {
+			System.out.println("MessagingException");
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+
+	}
+
 	@GetMapping("/findpwd")
 	@ApiOperation(value = "임시 비밀번호 발급")
-	public ResponseEntity<String> auth(@RequestParam(required = true) final String email){
-	
+	public ResponseEntity<String> auth(@RequestParam(required = true) final String email) {
+
 		User user = userService.selectUserByEmail(email);
 		String code;
 		/* 존재하는 이메일이 없을시 */
-		if (user==null) 
+		if (user == null)
 			return new ResponseEntity<String>("null", HttpStatus.NOT_FOUND);
-		
-		
-		/* 임시 비밀번호 6자리 생성*/
+
+		/* 임시 비밀번호 6자리 생성 */
 		Random random = new Random(System.currentTimeMillis());
-        
-        int range = (int)Math.pow(10,6);
-        int trim = (int)Math.pow(10, 5);
-        int value = random.nextInt(range)+trim;
-         
-        if(value>range)
-        	value = value - trim;
-        
-        code = String.valueOf(value);
-        
-        /* 임시 비밀번호 발급 메일 전송 */
-        try {
-        	 MimeMessage msg = mailSender.createMimeMessage();
-             MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
-             messageHelper.setSubject(user.getName()+"님 임시 비밀번호 발급 메일입니다.");
-             messageHelper.setText("임시 비밀번호는 "+code+" 입니다."); 
-             messageHelper.setTo(email);
-             msg.setRecipients(MimeMessage.RecipientType.TO , InternetAddress.parse(email));
-             mailSender.send(msg);
-                         
-        }catch(MessagingException e) {
-            System.out.println("MessagingException");
-            e.printStackTrace();
-       }
-        
-        /* 임시 비밀번호로 세팅 */
-        user.setPassword(code);
-        if (userService.updateUser(user) == 1) {
+
+		int range = (int) Math.pow(10, 6);
+		int trim = (int) Math.pow(10, 5);
+		int value = random.nextInt(range) + trim;
+
+		if (value > range)
+			value = value - trim;
+
+		code = String.valueOf(value);
+
+		/* 임시 비밀번호 발급 메일 전송 */
+		try {
+			MimeMessage msg = mailSender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
+			messageHelper.setSubject(user.getName() + "님 임시 비밀번호 발급 메일입니다.");
+			messageHelper.setText("임시 비밀번호는 " + code + " 입니다.");
+			messageHelper.setTo(email);
+			msg.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(email));
+			mailSender.send(msg);
+
+		} catch (MessagingException e) {
+			System.out.println("MessagingException");
+			e.printStackTrace();
+		}
+
+		/* 임시 비밀번호로 세팅 */
+		user.setPassword(code);
+		if (userService.updateUser(user) == 1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
-		
-    }
 
-	
-	
+	}
+
 }
